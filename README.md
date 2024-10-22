@@ -13,7 +13,8 @@ Reasons to switch to dcd:
 * You want to run tests on Android Arm64
 * You need a longer flow run timeout (10 mins)
 * You've got issues with Maestro Cloud that haven't been resolved
-*
+
+
 
 Reasons to stick with Maestro Cloud:
 
