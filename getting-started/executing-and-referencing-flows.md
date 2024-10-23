@@ -1,50 +1,64 @@
 # Executing & Referencing flows
 
-There are two main ways to execute flows from the cli;
+There are multiple ways to execute flows from the CLI:
 
-1. Executing a file
-2. Executing a directory, based on a [#workspace-configuration](executing-and-referencing-flows.md#workspace-configuration "mention") file.
+1. a single YAML flow;
+2. a directory of flows;
+3. flows that match a glob.
+4. flows specified in a [#workspace-configuration](executing-and-referencing-flows.md#workspace-configuration "mention") file.
 
-## Executing a single flow
+### 1. Executing a single flow
 
-The most simplistic way of executing a flow file is to call the flow directory from the cli explicitly using a `<flowFile>`.
+The most simplistic way of executing a flow file is to call the flow directory from the CLI explicitly using a `<flowFile>`.
 
 ```
 dcd cloud --apiKey <apiKey> <appFile> <flowFile>
 ```
 
-Where;
+Where:
 
-* `<appFile>` is one of;&#x20;
+* `<appFile>` is one of:&#x20;
   * `.app`
-  * `.app.zip`
   * `.zip`
   * `.apk`
-* `<flowFile>` is one of;
+* `<flowFile>` is one of:
   * `.yaml`
   * `.yml`
 
-## Executing a directory of flows
-
-You can execute a directory of flows by specifying a directory path instead of an individual file, the cli will execute tests as defined by the rules in the [#workspace-configuration](executing-and-referencing-flows.md#workspace-configuration "mention") file, `config.yaml`, in the working directory. This can be an absolute or relative directory path.&#x20;
+### 2. Executing flows by passing a directory
 
 ```
 dcd cloud --apiKey <apiKey> <appFile> <directoryPath>
 ```
 
-Where;
+Where `<directoryPath>` is either:
 
-* `<directoryPath>` is either an;
-  * absolute path. i.e. `/path/from/root`
-  * relative path, i.e. `./` or `path/from/currentDir`
+* an absolute path. i.e. `/path/from/root`
+* a relative path, i.e. `./` or `path/from/currentDir`
 
-### Workspace Configuration
+In this case, the CLI will inspect all YAML files in the directory (but not sub-directories) and create new tests for each. Note: if the specified directory contains a `config.yaml` folder, then the CLI will switch to using the workspace configuration.
 
-For executing a directory of flows a workspace configuration file, `config.yaml` should be used. This file is explained in detail in the [Maestro Cloud documentation](https://cloud.mobile.dev/reference/workspace-configuration). We only supported the Maestro configuration options listed below. A `config.yaml` containing unsupported configuration will be processed, but unsupported config options ignored.
+### 3. Executing flows by passing a glob
 
-{% hint style="info" %}
-If no `config.yaml` file is found, all flows matching `.yaml` in the working directory (and any subfolders) will be executed.
-{% endhint %}
+```
+dcd cloud --apiKey <apiKey> <appFile> <glob>
+```
+
+Where `<glob>`is path matching string such as `./**/*.yaml`
+
+The CLI uses the [NPM glob](https://www.npmjs.com/package/glob) module. This package provides its own CLI which you can use for debugging globs.
+
+### 4. Executing flows using a Workspace Config file
+
+```
+dcd cloud --apiKey <apiKey> <appFile> <directoryPathIncludingConfigYaml>
+```
+
+To use a Workspace Config file (`config.yaml`), include it in the top-level directory. The CLI will inspect this file and match flows by name or glob using the `flows` key.
+
+### Workspace Config
+
+For complex setups a `config.yaml` file is recommended. This file is explained in detail in the [Maestro Cloud documentation](https://cloud.mobile.dev/reference/workspace-configuration). We only supported the Maestro configuration options listed below. A `config.yaml` containing unsupported configuration will be processed, but unsupported config options will be skipped.
 
 #### Supported Config
 
@@ -61,31 +75,7 @@ If no `config.yaml` file is found, all flows matching `.yaml` in the working dir
 
 ### Referencing flows&#x20;
 
-Referenced files will only be matched down directory levels from the working directory, we do not support referencing files outside of a recursive search of the current working directory.&#x20;
+As of version 2.0.0, the CLI will search for all nested dependencies referenced by your YAML flows using Maestro keywords (`addMedia`, `runFlow`, `runScript`)
 
-#### Valid workspace configuration
 
-In the below example, referencing `subflow.yaml` from `flow.yaml` will work, as they are both contained within the working directory.
-
-```
-<working directory>
-│── flows/
-│   │── subflows/
-│   │   │── subflow.yaml
-│   │
-│   │── flow.yaml
-```
-
-#### Invalid workspace configuration
-
-In the below case if `flow.yaml` referenced `subflow.yaml`, which is outside the working directory, the flow would fail to execute.
-
-```
-│── subflows/
-│   │── subflow.yaml
-│
-│── <working directory>
-│   │── flows
-│   │   │── flow.yaml
-```
 
