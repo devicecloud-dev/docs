@@ -14,7 +14,6 @@
 
 * [Landscape Orientation (android only)](advanced/landscape-orientation-android-only.md)
 * [Google Play APIs](advanced/google-play-apis.md)
-* [Arm64 Android (beta)](advanced/arm64-android-beta.md)
 
 ## Infrastructure
 
