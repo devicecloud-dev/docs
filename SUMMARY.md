@@ -10,10 +10,11 @@
 * [Devices Configuration](getting-started/devices-configuration.md)
 * [Limits](getting-started/limits.md)
 
-## Advanced
+## Reference
 
-* [Landscape Orientation (android only)](advanced/landscape-orientation-android-only.md)
-* [Google Play APIs](advanced/google-play-apis.md)
+* [Email Notifications](reference/email-notifications.md)
+* [Landscape Orientation (android only)](reference/landscape-orientation-android-only.md)
+* [Google Play APIs](reference/google-play-apis.md)
 
 ## Infrastructure
 

@@ -66,11 +66,11 @@ For complex setups a `config.yaml` file is recommended. This file is explained i
 * `includeTags`
 * `excludeTags`
 * `executionOrder`
+* `notifications` (see [email-notifications.md](../reference/email-notifications.md "mention"))
 
 #### Unsupported Config
 
 * `baselineBranch`
-* `notifications`
 * `disableRetries`
 
 ### Referencing flows&#x20;
