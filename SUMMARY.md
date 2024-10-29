@@ -10,6 +10,10 @@
 * [Devices Configuration](getting-started/devices-configuration.md)
 * [Limits](getting-started/limits.md)
 
+## CI Integration
+
+* [GitHub Action](ci-integration/github-action.md)
+
 ## Reference
 
 * [Email Notifications](reference/email-notifications.md)
