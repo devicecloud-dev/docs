@@ -10,10 +10,10 @@ If you don't specify a device or OS version, then you will be allocated the defa
 
 ### Android API Levels
 
-dcd will default to API level 33 unless you pass the `--android-api-level` flag:
+dcd will default to API level 34 unless you pass the `--android-api-level` flag:
 
 ```
-dcd cloud --apiKey <yourKey> --android-api-level 32 app.apk test.yaml
+dcd cloud --apiKey <yourKey> --android-api-level 35 app.apk test.yaml
 ```
 
 | Android Version | API Level |
@@ -22,27 +22,28 @@ dcd cloud --apiKey <yourKey> --android-api-level 32 app.apk test.yaml
 | Android 14      | 34        |
 | Android 13      | 33        |
 | Android 12L     | 32        |
-
-Need lower levels? Use [Maestro Cloud](https://cloud.mobile.dev/reference/device-configuration).
+| Android 12      | 31        |
+| Android 11      | 30        |
+| Android 10      | 29        |
 
 Need Google Play? See [google-play-apis.md](../reference/google-play-apis.md "mention")
 
 ### Android Devices
 
-dcd will default to Pixel 6 unless you pass the `--android-device` flag:
+dcd will default to Pixel 7 unless you pass the `--android-device` flag:
 
 ```
 dcd cloud --apiKey <yourKey> --android-device pixel-7 app.apk test.yaml
 ```
 
-| id               | Name                                                                                                                                                                                      | Dimensions  | Valid Android API Levels |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------------------ |
-| `pixel-6`        | Pixel 6                                                                                                                                                                                   | 1080 x 2400 | 32, 33, 34, 35           |
-| `pixel-6a`       | Pixel 6a                                                                                                                                                                                  | 1080 x 2400 | 32, 33, 34, 35           |
-| `pixel-6-pro`    | Pixel 6 Pro                                                                                                                                                                               | 1440 x 3120 | 32, 33, 34, 35           |
-| `pixel-7`        | Pixel 7                                                                                                                                                                                   | 1080 x 2340 | 32, 33, 34, 35           |
-| `pixel-7-pro`    | Pixel 7 Pro                                                                                                                                                                               | 1440 x 3120 | 32, 33, 34, 35           |
-| `generic-tablet` | <p>Generic Tablet<br><br>Note: this device starts in landscape by default, use <a href="../reference/landscape-orientation-android-only.md">orientation</a>=90 to use it in portrait.</p> | 1440 x 2560 | 32, 33, 34, 35           |
+| id               | Name                                                                                                                                                                                      | Dimensions  | Valid Android API Levels   |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | -------------------------- |
+| `pixel-6`        | Pixel 6                                                                                                                                                                                   | 1080 x 2400 | 29, 30, 31, 32, 33, 34, 35 |
+| `pixel-6a`       | Pixel 6a                                                                                                                                                                                  | 1080 x 2400 | 33, 34, 35                 |
+| `pixel-6-pro`    | Pixel 6 Pro                                                                                                                                                                               | 1440 x 3120 | 33, 34, 35                 |
+| `pixel-7`        | Pixel 7                                                                                                                                                                                   | 1080 x 2340 | 33, 34, 35                 |
+| `pixel-7-pro`    | Pixel 7 Pro                                                                                                                                                                               | 1440 x 3120 | 33, 34, 35                 |
+| `generic-tablet` | <p>Generic Tablet<br><br>Note: this device starts in landscape by default, use <a href="../reference/landscape-orientation-android-only.md">orientation</a>=90 to use it in portrait.</p> | 1440 x 2560 | 33, 34, 35                 |
 
 ### iOS Versions
 
