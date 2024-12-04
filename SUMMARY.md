@@ -20,6 +20,7 @@
 * [Landscape Orientation (android only)](reference/landscape-orientation-android-only.md)
 * [Google Play APIs](reference/google-play-apis.md)
 * [Maestro Version](reference/maestro-version.md)
+* [Device Locale](reference/device-locale.md)
 
 ## Infrastructure
 
