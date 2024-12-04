@@ -24,7 +24,7 @@
 
 ## Infrastructure
 
-* [IP Addresses](infrastructure/ip-addresses.md)
+* [IP Address](infrastructure/ip-addresses.md)
 
 ## Security
 
