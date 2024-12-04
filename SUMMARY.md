@@ -19,6 +19,7 @@
 * [Email Notifications](reference/email-notifications.md)
 * [Landscape Orientation (android only)](reference/landscape-orientation-android-only.md)
 * [Google Play APIs](reference/google-play-apis.md)
+* [Maestro Version](reference/maestro-version.md)
 
 ## Infrastructure
 
