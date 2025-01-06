@@ -13,6 +13,8 @@
 ## CI Integration
 
 * [GitHub Action](ci-integration/github-action.md)
+* [BitRise](ci-integration/bitrise.md)
+* [Any CI](ci-integration/any-ci.md)
 
 ## Reference
 
