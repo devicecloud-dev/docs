@@ -4,9 +4,9 @@ As experienced engineers, we take security seriously and adopt industry standard
 
 ### SOC2 Compliance Timeline
 
-DCD has begun preparing and organising policies and controls that align with the SOC2 Type 1 compliance framework. The target compliance date is currently Q2 2025.
+DCD has begun preparing and organising policies and controls that align with the SOC2 Type 1 compliance framework. The target compliance date is currently Q4 2025.
 
-Want to work with DCD but require SOC2? Please contact us, we will fast-track this process if enough users request it.&#x20;
+Want to work with Device Cloud but require SOC2? Please contact us, we will fast-track this process if enough users request it.&#x20;
 
 ### Infrastructure
 
@@ -18,7 +18,7 @@ All user data is encrypted at rest with AES-256 and in transit via TLS. Addition
 
 ### Data Retention <a href="#data-encryption" id="data-encryption"></a>
 
-Binary uploads are automatically deleted 6 months after upload. All account data is permanently deleted when you request account deletion. This can be done by contacting support.
+Uploads (both binaries and workflow files) are automatically deleted 6 months after upload. All account data is permanently deleted when you request account deletion. This can be done by contacting support.
 
 Android emulators are instantiated into a clean operating system instance for every test run. iOS simulators undertake an extensive teardown process to remove all cached data, but the underlying operating system persists due to Apple licensing requirements. All customer test data is completely removed from the test runner as soon as the test is finished.
 
@@ -26,9 +26,9 @@ Android emulators are instantiated into a clean operating system instance for ev
 
 DCD uses Paddle to handle payments. Paddle is PCI DSS SAQ A and SOC2 Type 1 compliant.
 
-### Code Review <a href="#payments" id="payments"></a>
+### Code Control <a href="#payments" id="payments"></a>
 
-All code and configurations deployed inside DCD undergo a thorough code review process, which includes security considerations. All code is written directly by UK-based employees.
+All code and configurations deployed inside DCD undergo a thorough code control process, which includes security considerations. All code is written directly by UK-based employees.
 
 
 
