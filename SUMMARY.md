@@ -10,19 +10,22 @@
 - [Upgrade Guide](getting-started/upgrade.md)
 
 ## Reference
-- [Test Execution](reference/execution.md)
+- [Test Execution](reference/test-execution.md)
 - [App Management](reference/app-management.md)
 - [Device Configuration](devices/configuration.md)
 - [Device Orientation](reference/orientation.md)
-- [Device Locale](reference/locale.md)
-- [Async Execution](reference/async.md)
-- [Retry Strategies](reference/retry.md)
-- [Report Formats](reference/reports.md)
-- [Download Artifacts](reference/artifacts.md)
+- [Device Locale](reference/device-locale.md)
+- [Async Execution](reference/async-execution.md)
+- [Retry Strategies](reference/retry-strategies.md)
+- [Report Formats](reference/report-formats.md)
+- [Download Artifacts](reference/download-artifacts.md)
 - [Quiet Mode](reference/quiet-mode.md)
-- [Maestro Versions](reference/maestro-version.md)
+- [Maestro Versions](reference/maestro-versions.md)
+- [Test Run Name](reference/test-run-name.md)
 - [Google Play APIs](reference/google-play-apis.md)
 - [Email Notifications](reference/email-notifications.md)
+- [Exit Codes](reference/exit-codes.md)
+- [Troubleshooting](reference/troubleshooting.md)
 
 ## Core Concepts
 - [Flow Selection](core/flow-selection.md)
@@ -39,10 +42,6 @@
 - [Security Overview](security/security-overview.md)
 - [IT Security Policies](security/it-security-policies.md)
 - [Enterprise SSO](security/enterprise-single-sign-on.md)
-
-## Troubleshooting
-- [Exit Codes](reference/exit-codes.md)
-- [Common Issues](reference/troubleshooting.md)
 
 ## Legal
 - [Service Level Agreements](legal/service-level-agreements.md)
