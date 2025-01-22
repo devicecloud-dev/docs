@@ -4,7 +4,7 @@
 npm install -g @devicecloud.dev/dcd@latest
 ```
 
-## Prerelease versions
+## Prerelease versions (not recommended)
 
 Occasionally, prerelease versions of DCD are available under the `rc` tag.
 

@@ -1,6 +1,6 @@
-# Devices Configuration
+# Device Configuration
 
-### **Default devices**
+### Default Devices
 
 If you don't specify a device or OS version, then you will be allocated the default device image:
 
@@ -12,8 +12,8 @@ If you don't specify a device or OS version, then you will be allocated the defa
 
 dcd will default to API level 34 unless you pass the `--android-api-level` flag:
 
-```
-dcd cloud --apiKey <yourKey> --android-api-level 35 app.apk test.yaml
+```bash
+dcd cloud --android-api-level 35 app.apk test.yaml
 ```
 
 | Android Version | API Level |
@@ -26,14 +26,14 @@ dcd cloud --apiKey <yourKey> --android-api-level 35 app.apk test.yaml
 | Android 11      | 30        |
 | Android 10      | 29        |
 
-Need Google Play? See [google-play-apis.md](../reference/google-play-apis.md "mention")
+Need Google Play? See [google-play-apis.md](../reference/google-play-apis.md)
 
 ### Android Devices
 
 dcd will default to Pixel 7 unless you pass the `--android-device` flag:
 
-```
-dcd cloud --apiKey <yourKey> --android-device pixel-7 app.apk test.yaml
+```bash
+dcd cloud --android-device pixel-7 app.apk test.yaml
 ```
 
 | id               | Name                                                                                                                                                                                      | Dimensions  | Valid Android API Levels   |
@@ -43,14 +43,14 @@ dcd cloud --apiKey <yourKey> --android-device pixel-7 app.apk test.yaml
 | `pixel-6-pro`    | Pixel 6 Pro                                                                                                                                                                               | 1440 x 3120 | 33, 34, 35                 |
 | `pixel-7`        | Pixel 7                                                                                                                                                                                   | 1080 x 2340 | 33, 34, 35                 |
 | `pixel-7-pro`    | Pixel 7 Pro                                                                                                                                                                               | 1440 x 3120 | 33, 34, 35                 |
-| `generic-tablet` | <p>Generic Tablet<br><br>Note: this device starts in landscape by default, use <a href="../reference/landscape-orientation-android-only.md">orientation</a>=90 to use it in portrait.</p> | 1440 x 2560 | 33, 34, 35                 |
+| `generic-tablet` | Generic Tablet (Note: starts in landscape by default, use [orientation](../features/orientation.md)=90 for portrait) | 1440 x 2560 | 33, 34, 35                 |
 
 ### iOS Versions
 
 dcd will default to iOS 17.2 unless you pass the `--ios-version` flag:
 
-```
-dcd cloud --apiKey <yourKey> --ios-version 15 app.zip test.yaml
+```bash
+dcd cloud --ios-version 15 app.zip test.yaml
 ```
 
 | id   | Version |
@@ -63,10 +63,71 @@ dcd cloud --apiKey <yourKey> --ios-version 15 app.zip test.yaml
 
 dcd will default to iPhone 14 unless you pass the `--ios-device` flag:
 
-```
-dcd cloud --apiKey <yourKey> --ios-device ipad-pro-6th-gen app.zip test.yaml
+```bash
+dcd cloud --ios-device ipad-pro-6th-gen app.zip test.yaml
 ```
 
 <table><thead><tr><th>id</th><th>Name</th><th width="131">Dimensions</th><th>Valid iOS versions</th></tr></thead><tbody><tr><td><code>iphone-14</code></td><td>iPhone 14</td><td>1170 x 2532</td><td>16, 17, 18</td></tr><tr><td><code>iphone-14-plus</code></td><td>iPhone 14 Plus</td><td>1284 x 2778</td><td>16, 17, 18</td></tr><tr><td><code>iphone-14-pro</code></td><td>iPhone 14 Pro</td><td>1179 x 2556</td><td>16, 17, 18</td></tr><tr><td><code>iphone-14-pro-max</code></td><td>iPhone 14 Pro Max</td><td>1290 x 2796</td><td>16, 17, 18</td></tr><tr><td><code>iphone-15</code></td><td>iPhone 15</td><td>1170 x 2532</td><td>17, 18</td></tr><tr><td><code>iphone-15-plus</code></td><td>iPhone 15 Plus</td><td>1284 x 2778</td><td>17, 18</td></tr><tr><td><code>iphone-15-pro</code></td><td>iPhone 15 Pro</td><td>1179 x 2556</td><td>17, 18</td></tr><tr><td><code>iphone-15-pro-max</code></td><td>iPhone 15 Pro Max</td><td>1290 x 2796</td><td>17, 18</td></tr><tr><td><code>iphone-16</code></td><td>iPhone 16</td><td>1170 x 2532</td><td>18</td></tr><tr><td><code>iphone-16-plus</code></td><td>iPhone 16 Plus</td><td>1284 x 2778</td><td>18</td></tr><tr><td><code>iphone-16-pro</code></td><td>iPhone 16 Pro</td><td>1179 x 2556</td><td>18</td></tr><tr><td><code>iphone-16-pro-max</code></td><td>iPhone 16 Pro Max</td><td>1290 x 2796</td><td>18</td></tr><tr><td><code>ipad-pro-6th-gen</code></td><td>iPad Pro (6th Generation)</td><td>2732 x 2048</td><td>16, 17, 18</td></tr></tbody></table>
 
 Feel free to request more devices via Discord.
+
+## Common Device Settings
+
+### Device Locale
+Set specific locale for your tests:
+```bash
+dcd cloud --device-locale de_DE
+```
+
+The locale format follows ISO standards:
+- Language code: ISO-639-1 (lowercase)
+- Country code: ISO-3166-1 (uppercase)
+
+### Device Orientation
+[Android only] Set device orientation in degrees:
+```bash
+dcd cloud --orientation 90
+```
+
+Supported values:
+- 0: Portrait
+- 90: Landscape right
+- 180: Portrait upside down
+- 270: Landscape left
+
+## Best Practices
+
+1. **Device Selection**
+   - Choose devices that match your target user base
+   - Test on multiple API levels/iOS versions for better coverage
+
+2. **Performance Considerations**
+   - x86 simulators may provide faster execution but less real-world accuracy
+   - Consider using real device profiles for production tests
+
+3. **Locale Testing**
+   - Test with locales that match your target markets
+   - Include RTL languages if your app supports them
+
+## Troubleshooting
+
+Common issues and solutions:
+
+1. **Device Unavailability**
+   - Check device status in dashboard
+   - Consider using alternative device model
+   - Verify account limits and quotas
+
+2. **Orientation Issues**
+   - Ensure app supports requested orientation
+   - Verify manifest settings for Android
+   - Note that orientation control is Android-only
+
+For more specific configuration options, refer to the [CLI Reference](../reference/cli.md).
+
+## Related Topics
+- [Device Orientation](../features/orientation.md) - Control device orientation for Android devices
+- [Locale Settings](../features/locale-settings.md) - Configure device language and region
+- [Test Execution](../features/test-execution.md) - Running tests on configured devices
+- [App Management](../features/app-management.md) - Managing app binaries for different devices
+- [Maestro Versions](../features/maestro-versions.md) - Version compatibility with different devices 

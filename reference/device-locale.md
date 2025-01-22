@@ -1,9 +1,37 @@
-# Device Locale
+# Device Locale Settings
 
-You can specify a device locale in the same way you do in Maestro, using the `--device-locale` flags:
+Set device language and region for localization testing.
 
+## Format
+
+`{language_code}_{COUNTRY_CODE}`
+- Language: ISO-639-1 (lowercase)
+- Country: ISO-3166-1 (uppercase)
+
+## Usage
+
+```bash
+# German
+dcd cloud --device-locale de_DE
+
+# With device selection
+dcd cloud --android-device pixel-6 --device-locale ja_JP
 ```
-dcd cloud --apiKey=<key> sample.apk flow.yaml --device-locale de_DE
-```
 
-See a full list of flags and more details here: [Maestro Locale Reference](https://maestro.mobile.dev/advanced/testing-in-different-locales#supported-device-locales-on-android)
+## Common Locales
+
+### European
+- `en_GB`: English (UK)
+- `de_DE`: German
+- `fr_FR`: French
+- `it_IT`: Italian
+
+### Asian
+- `zh_CN`: Chinese
+- `ja_JP`: Japanese
+- `ko_KR`: Korean
+
+### RTL
+- `ar_SA`: Arabic
+- `he_IL`: Hebrew
+
