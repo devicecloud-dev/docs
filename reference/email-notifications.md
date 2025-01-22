@@ -8,7 +8,7 @@ Simply make the changes to your `config.yaml`:\
 #### To get notified on failures
 
 ```
-# maestro_workspace/config.yaml
+# .maestro/config.yaml
 notifications:
   email:
     enabled: true
@@ -20,7 +20,7 @@ notifications:
 #### To get notified on successes and failures
 
 ```
-# maestro_workspace/config.yaml
+# .maestro/config.yaml
 notifications:
   email:
     enabled: true

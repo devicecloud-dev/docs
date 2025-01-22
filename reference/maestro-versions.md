@@ -11,6 +11,7 @@ Run `dcd cloud --help` to see the latest versions.
 ## Version Selection
 
 ### Specify Version
+
 ```bash
-dcd cloud <options> --maestro-version 1.39.7
+dcd cloud ... --maestro-version 1.39.7
 ```

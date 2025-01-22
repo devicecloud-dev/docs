@@ -1,15 +1,17 @@
 # Report Formats
 
-Device Cloud supports multiple report formats.
+Device Cloud supports multiple report formats. These are the same reports you see when running Maestro locally.
 
 ## Available Formats
 
 ### JUnit Format
+
 ```bash
-dcd cloud <options> --report junit
+dcd cloud ... --report junit
 ```
 
 ### HTML Format
+
 ```bash
-dcd cloud <options> --report html
+dcd cloud ... --report html
 ```

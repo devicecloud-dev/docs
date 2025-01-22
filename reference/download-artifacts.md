@@ -5,25 +5,28 @@ Device Cloud captures various artifacts during test execution that can help debu
 ## Available Artifacts
 
 Each test run generates:
-- Logs
-- Screenshots
-- Videos
-- Test reports
+
+* Logs
+* Screenshots
+* Videos
+* Test reports
 
 ## Download Options
 
 ### Download All Artifacts
+
 To download artifacts for all test runs:
 
 ```bash
-dcd cloud <options> --download-artifacts ALL
+dcd cloud ... --download-artifacts ALL
 ```
 
 ### Download Failed Test Artifacts
+
 To download artifacts only for failed tests:
 
 ```bash
-dcd cloud <options> --download-artifacts FAILED
+dcd cloud ... --download-artifacts FAILED
 ```
 
 ## Pricing
@@ -33,7 +36,9 @@ dcd cloud <options> --download-artifacts FAILED
 ## Artifact Management
 
 ### Storage Location
+
 Artifacts are downloaded as a zip file containing:
+
 ```
 artifacts/
 ├── test1/
@@ -46,4 +51,3 @@ artifacts/
 │   └── video/
 └── summary.json # if [JUnit report](./report-formats.md) was requested
 ```
-
