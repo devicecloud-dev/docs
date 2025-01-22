@@ -1,18 +1,25 @@
-# Summary
+# Table of contents
+
+* [Welcome to dcd](README.md)
 
 ## Getting Started
-- [Introduction](introduction.md)
 - [Quick Start](getting-started/quickstart.md)
-- [Authentication](authentication.md)
 - [API Keys](getting-started/api-keys.md)
 - [Executing Flows](getting-started/executing-and-referencing-flows.md)
 - [Limits](getting-started/limits.md)
 - [Upgrade Guide](getting-started/upgrade.md)
+- [Device Configuration](getting-started/devices-configuration.md)
+
+## CI/CD Integration
+- [Overview](integrations/ci-cd.md)
+- [GitHub Actions](ci-integration/github-action.md)
+- [BitRise](ci-integration/bitrise.md)
+- [Any CI](ci-integration/any-ci.md)
 
 ## Reference
 - [Test Execution](reference/test-execution.md)
 - [App Management](reference/app-management.md)
-- [Device Configuration](devices/configuration.md)
+- [Environment Variables](reference/environment-variables.md)
 - [Device Orientation](reference/orientation.md)
 - [Device Locale](reference/device-locale.md)
 - [Async Execution](reference/async-execution.md)
@@ -25,17 +32,6 @@
 - [Google Play APIs](reference/google-play-apis.md)
 - [Email Notifications](reference/email-notifications.md)
 - [Exit Codes](reference/exit-codes.md)
-- [Troubleshooting](reference/troubleshooting.md)
-
-## Core Concepts
-- [Flow Selection](core/flow-selection.md)
-- [Environment Variables](core/environment-variables.md)
-
-## CI/CD Integration
-- [Overview](integrations/ci-cd.md)
-- [GitHub Actions](ci-integration/github-action.md)
-- [BitRise](ci-integration/bitrise.md)
-- [Any CI](ci-integration/any-ci.md)
 
 ## Infrastructure & Security
 - [IP Addresses](infrastructure/ip-addresses.md)

@@ -2,7 +2,7 @@
 
 Control Android device orientation during test execution.
 
-> **Note**: Android only. iOS devices use their default orientation.
+> **Note**: Android only. iOS devices are always portrait.
 
 ## Options
 

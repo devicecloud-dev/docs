@@ -11,7 +11,7 @@ Device Cloud uses standard exit codes to indicate the status of command executio
 
 ### General Errors
 ```bash
-1    # CLI Failed (your test didn't explicity fail but something went wrong - e.g. yaml parsing)
+1    # CLI failed due to bad workspace or dcd bug
 2    # Test run explicitly failed
 ```
 

@@ -1,6 +1,6 @@
 # App Management
 
-Device Cloud provides flexible options for managing your application binaries during test execution.
+Device Cloud provides several ways to manage your application binaries during test execution.
 
 ## App Binary Options
 
@@ -34,7 +34,7 @@ dcd cloud --app-file main.apk --additional-app-binary-ids companion-id
 ## Binary Management
 
 ### SHA Hash Checking
-By default, Device Cloud checks the SHA hash of your binary to avoid redundant uploads (it will automatically work out the app-binary-id for you   ). To override:
+By default, Device Cloud checks the SHA hash of your binary to avoid redundant uploads (it will automatically work out the app-binary-id for you). To override:
 
 ```bash
 dcd cloud --app-file ./app.apk --ignore-sha-check
