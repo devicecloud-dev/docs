@@ -1,0 +1,74 @@
+# Status API
+
+You can query the status of an upload using the following CLI command:
+
+```
+dcd status --apiKey <key> --upload-id <uuid>
+```
+
+Or using the upload name:
+
+```
+dcd status --apiKey <key> --name "Upload 123"
+```
+
+Example output:
+
+```
+
+📊 Upload Status
+════════════════════════════════════════════════════════════════════════════════
+✓  Status:      PASSED
+🆔 Upload ID:   7e12345f-eb12-12ec-a30b-bb1234f1d12a
+📱 Binary ID:   67894274-b789-4c1e-80d4-da8998998999
+🔗 Console:     https://console.devicecloud.dev/results?upload=7e12345f-eb12-12ec-a30b-bb1234f1d12a&result=4500
+
+📋 Test Results
+────────────────────────────────────────────────────────────────────────────────
+✓ ./login-test/onboarding.yaml
+   Status: PASSED
+
+```
+
+
+
+### JSON Output
+
+Use the `--json` flag to trigger machine interpretable output:
+
+```
+dcd status --apiKey <key> --name "Upload 123" --json
+```
+
+Example output:
+
+```json
+{
+  "status": "PASSED",
+  "tests": [
+    {
+      "name": "./login-test/onboarding.yaml",
+      "status": "PASSED"
+    }
+  ],
+  "appBinaryId": "67894274-b789-4c1e-80d4-da8998998999",
+  "uploadId": "7e12345f-eb12-12ec-a30b-bb1234f1d12a",
+  "consoleUrl": "https://console.devicecloud.dev/results?upload=7e12345f-eb12-12ec-a30b-bb1234f1d12a&result=4500"
+}
+```
+
+This can be interpreted by command line tools such as [jq](https://jqlang.github.io/jq/) to pull out values.
+
+For example, to extract the app binary ID and save it to a local ENV var:
+
+```bash
+export APP_BINARY_ID=$(dcd status \
+    --api-key <key> \
+    --name "Upload 123" \
+    --json \
+    | jq -r '.appBinaryId')
+
+echo $APP_BINARY_ID
+# 67894274-b789-4c1e-80d4-da8998998999
+```
+
