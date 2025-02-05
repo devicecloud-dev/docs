@@ -15,69 +15,73 @@ dcd cloud --name "smoke-tests" --app-file ./app.apk --flows ./tests/
 ## Execution Modes
 
 ### Sync (Default)
-- Blocks until completion
-- Shows real-time progress
-- Returns results immediately
+
+* Blocks until completion
+* Shows real-time progress
+* Returns results immediately
 
 ### Async
+
 ```bash
-dcd cloud <options> --async --name "nightly"
+dcd cloud ... --async --name "nightly" 
 ```
-- Returns immediately
-- Continues in background
-- Check dashboard for results
+
+* Returns immediately
+* Continues in background
+* Check dashboard for results
 
 ## Test Selection
 
 ```bash
 # Single flow
-dcd cloud --flows login.yaml
+dcd cloud ... --flows login.yaml
 
 # Directory
-dcd cloud --flows smoke/
-
-# Multiple files
-dcd cloud first.yaml second.yaml
+dcd cloud ... --flows smoke/
 
 # By tags
-dcd cloud --include-tags smoke,critical
-dcd cloud --exclude-tags slow
+dcd cloud ... --include-tags smoke,critical
+dcd cloud ... --exclude-tags slow
 ```
 
 ## Options
 
 ### Output
+
 ```bash
 # Quiet mode
-dcd cloud -q
+dcd cloud ... -q
 
 # Generate reports
-dcd cloud --report junit
+dcd cloud ... --report junit
 ```
 
 ### Retry & Environment
+
 ```bash
 # Retry failed tests
-dcd cloud --retry 3
+dcd cloud ... --retry 3
 
 # Set variables
-dcd cloud -e API_URL=https://test-api.com
+dcd cloud ... -e API_URL=https://test-api.com
 ```
 
 ### Binary Management
+
 ```bash
 # Multiple apps
-dcd cloud --app-file main.apk --additional-app-files helper.apk
+dcd cloud --app-file main.apk --additional-app-files helper.apk ...
 
 # Using IDs
-dcd cloud --app-binary-id abc123
+dcd cloud --app-binary-id abc123 ...
 ```
 
 ### Device Selection
+
 ```bash
 # Android
-dcd cloud --android-device pixel-6 --android-api-level 33
+dcd cloud ... --android-device pixel-6 --android-api-level 33
 
 # iOS
-dcd cloud --ios-device iphone-15 --ios-version 17
+dcd cloud ... --ios-device iphone-15 --ios-version 17
 ```
