@@ -36,6 +36,7 @@
 * [Google Play APIs](reference/google-play-apis.md)
 * [Email Notifications](reference/email-notifications.md)
 * [Exit Codes](reference/exit-codes.md)
+* [Runner Type](reference/runner-type.md)
 
 ## Infrastructure & Security
 
