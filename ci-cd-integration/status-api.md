@@ -12,6 +12,10 @@ Or using the upload name:
 dcd status --apiKey <key> --name "Upload 123"
 ```
 
+_Note: if you have multiple uploads with the same name, it will return the latest result only._
+
+
+
 Example output:
 
 ```
