@@ -100,17 +100,7 @@ Supported values:
 * 180: Portrait upside down
 * 270: Landscape left
 
-## Best Practices
 
-1. **Device Selection**
-   * Choose devices that match your target user base
-   * Test on multiple API levels/iOS versions for better coverage
-2. **Performance Considerations**
-   * x86 simulators may provide faster execution but less real-world accuracy
-   * Consider using real device profiles for production tests
-3. **Locale Testing**
-   * Test with locales that match your target markets
-   * Include RTL languages if your app supports them
 
 ## Troubleshooting
 
