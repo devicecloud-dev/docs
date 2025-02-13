@@ -1,3 +1,7 @@
+---
+hidden: true
+---
+
 # Runner Type
 
 {% hint style="info" %}
