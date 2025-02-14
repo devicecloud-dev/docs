@@ -69,13 +69,3 @@ dcd cloud --ios-device ipad-pro-6th-gen app.zip test.yaml
 <table><thead><tr><th>id</th><th>Name</th><th width="131">Dimensions</th><th>Valid iOS versions</th></tr></thead><tbody><tr><td><code>iphone-14</code></td><td>iPhone 14</td><td>1170 x 2532</td><td>16, 17, 18</td></tr><tr><td><code>iphone-14-plus</code></td><td>iPhone 14 Plus</td><td>1284 x 2778</td><td>16, 17, 18</td></tr><tr><td><code>iphone-14-pro</code></td><td>iPhone 14 Pro</td><td>1179 x 2556</td><td>16, 17, 18</td></tr><tr><td><code>iphone-14-pro-max</code></td><td>iPhone 14 Pro Max</td><td>1290 x 2796</td><td>16, 17, 18</td></tr><tr><td><code>iphone-15</code></td><td>iPhone 15</td><td>1170 x 2532</td><td>17, 18</td></tr><tr><td><code>iphone-15-plus</code></td><td>iPhone 15 Plus</td><td>1284 x 2778</td><td>17, 18</td></tr><tr><td><code>iphone-15-pro</code></td><td>iPhone 15 Pro</td><td>1179 x 2556</td><td>17, 18</td></tr><tr><td><code>iphone-15-pro-max</code></td><td>iPhone 15 Pro Max</td><td>1290 x 2796</td><td>17, 18</td></tr><tr><td><code>iphone-16</code></td><td>iPhone 16</td><td>1170 x 2532</td><td>18</td></tr><tr><td><code>iphone-16-plus</code></td><td>iPhone 16 Plus</td><td>1284 x 2778</td><td>18</td></tr><tr><td><code>iphone-16-pro</code></td><td>iPhone 16 Pro</td><td>1179 x 2556</td><td>18</td></tr><tr><td><code>iphone-16-pro-max</code></td><td>iPhone 16 Pro Max</td><td>1290 x 2796</td><td>18</td></tr><tr><td><code>ipad-pro-6th-gen</code></td><td>iPad Pro (6th Generation)</td><td>2732 x 2048</td><td>16, 17, 18</td></tr></tbody></table>
 
 Feel free to request more devices via Discord.
-
-
-
-## Related Topics
-
-* [Device Orientation](../features/orientation.md) - Control device orientation for Android devices
-* [Locale Settings](../features/locale-settings.md) - Configure device language and region
-* [Test Execution](../features/test-execution.md) - Running tests on configured devices
-* [App Management](../features/app-management.md) - Managing app binaries for different devices
-* [Maestro Versions](../features/maestro-versions.md) - Version compatibility with different devices

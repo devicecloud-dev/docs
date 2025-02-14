@@ -1,6 +1,6 @@
 # Any CI
 
-As DCD uses a simple CLI, you can run it in any CI service using a basic script in bash (or any lang).
+As DeviceCloud uses a simple CLI, you can run it in any CI service using a basic script in bash (or any lang).
 
 We recommend using npx so you don't need to install the npm package. For example:
 

@@ -1,6 +1,6 @@
 # Test Execution
 
-Run Maestro flows on Device Cloud.
+Run Maestro flows on DeviceCloud.
 
 ## Basic Usage
 
