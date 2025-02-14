@@ -70,52 +70,7 @@ dcd cloud --ios-device ipad-pro-6th-gen app.zip test.yaml
 
 Feel free to request more devices via Discord.
 
-## Common Device Settings
 
-### Device Locale
-
-Set specific locale for your tests:
-
-```bash
-dcd cloud --device-locale de_DE
-```
-
-The locale format follows ISO standards:
-
-* Language code: ISO-639-1 (lowercase)
-* Country code: ISO-3166-1 (uppercase)
-
-### Device Orientation
-
-\[Android only] Set device orientation in degrees:
-
-```bash
-dcd cloud --orientation 90
-```
-
-Supported values:
-
-* 0: Portrait
-* 90: Landscape right
-* 180: Portrait upside down
-* 270: Landscape left
-
-
-
-## Troubleshooting
-
-Common issues and solutions:
-
-1. **Device Unavailability**
-   * Check device status in dashboard
-   * Consider using alternative device model
-   * Verify account limits and quotas
-2. **Orientation Issues**
-   * Ensure app supports requested orientation
-   * Verify manifest settings for Android
-   * Note that orientation control is Android-only
-
-For more specific configuration options, refer to the [CLI Reference](../reference/cli.md).
 
 ## Related Topics
 
