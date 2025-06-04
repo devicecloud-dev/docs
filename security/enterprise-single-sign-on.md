@@ -4,7 +4,9 @@ description: SAML-based authentication for larger companies
 
 # Enterprise SSO
 
+{% hint style="info" %}
 This feature is currently available to orgs who have purchased $2000 USD or more in DeviceCloud credits.
+{% endhint %}
 
 Single sign-on solutions (such as OKTA) allow organisations to centrally manage user access to DeviceCloud.&#x20;
 
