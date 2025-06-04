@@ -24,11 +24,6 @@ Using a provider that is not on the list? Contact us and we'd be happy to help s
 
 These steps have been written with OKTA in mind, but are applicable to other identity providers too.
 
-1. Email support@devicecloud.dev saying you'd like to set up enterprise SSO.
-2. If you're eligible, we'll reply with the latest SAML settings (ACS URL, SP Entity ID, default relay state).
-3. Use these values to configure a new SAML app in your Identity Provider's dashboard. **Important: ensure that the Name ID Format is set to Email Address.**
-4. Send us your Metadata URL and required email domain(s) - we'll then add these into DCD auth config for your account.
-
 
 
 1. &#x20;Create a new application with SAML in OKTA
@@ -53,6 +48,6 @@ These steps have been written with OKTA in mind, but are applicable to other ide
    1. your metadata URL (or XML)
    2. the email domain(s) you wish to protect
 7. Our support team will then verify you have purchased the required amount of credits and enforce SSO for the requested domains.
-8. Once activation, DeviceCloud supports Service Provider initiated login via SSO using the SSO button on the DeviceCloud login screen:
+8. Once activated, DeviceCloud supports Service Provider initiated login via SSO using the SSO button on the DeviceCloud login screen:
 
 <figure><img src="../.gitbook/assets/Screenshot 2025-05-29 at 09.21.10.png" alt=""><figcaption></figcaption></figure>
