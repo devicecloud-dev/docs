@@ -22,7 +22,7 @@ We may amend these terms and conditions from time to time, and such amendments s
 
 **2. Credits**
 
-2.1 The Platform grants each user $10 USD per month for trial and experimentation purposes. This credit cannot be redeemed for anything other than test runs and may be withdrawn at any time.
+2.1 The Platform grants each team account $20 USD for trial and experimentation purposes. This credit cannot be redeemed for anything other than test runs and may be withdrawn at any time.
 
 2.2 Users may purchase additional credit via the billing page in the Platform. Purchased credits are valid for 12 months.
 
