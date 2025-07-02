@@ -49,5 +49,5 @@ artifacts/
 │   ├── logs/
 │   ├── screenshots/
 │   └── video/
-└── summary.json # if [JUnit report](./report-formats.md) was requested
+└── report.xml # if JUnit report was requested
 ```
