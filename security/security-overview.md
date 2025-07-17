@@ -18,7 +18,7 @@ All user data is encrypted at rest with AES-256 and in transit via TLS. Addition
 
 ### Data Retention <a href="#data-encryption" id="data-encryption"></a>
 
-Uploads (both binaries and workflow files) are automatically deleted 1 month after last use; result data including maestro logs, screenshots and videos are retained for 12 months. All account data is permanently deleted when you request account deletion. This can be done by contacting support.
+Uploads (both binaries and workflow files) are automatically deleted 2 months after last use; result data including maestro logs, screenshots and videos are retained for 12 months. All account data is permanently deleted when you request account deletion. This can be done by contacting support.
 
 Android emulators are instantiated into a clean operating system instance for every test run. iOS simulators undertake an extensive teardown process to remove all cached data, but the underlying operating system persists due to Apple licensing requirements. All customer test data is completely removed from the test runner as soon as the test is finished.
 
