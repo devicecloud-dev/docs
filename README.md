@@ -1,6 +1,6 @@
 # Welcome to DeviceCloud
 
-DeviceCloud is a third-party Maestro Cloud and Robin Test alternative.
+DeviceCloud is a third-party Maestro Cloud alternative.
 
 Reasons to switch:
 
