@@ -6,9 +6,7 @@ Reasons to switch:
 
 * Cheap unit-based pricing
 * Up to 20 parallel runs
-* It's much faster than Maestro Cloud
-* It's much faster than Robin (unless you've purchased 10+ concurrent runners from them)
+* Twice as fast as Maestro Cloud for half the cost
 * Google Play APIs
 * Tablets and iPads
-* Longer flow run timeout (10 mins)
-* Fast support response times (via Discord)
+* Fast support response times (via Discord or Slack Connect)
