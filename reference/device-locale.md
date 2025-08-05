@@ -15,6 +15,8 @@ The default locale for Android is `en_US` . The default locale for iOS is curren
 
 ## Usage
 
+To set locale for the whole upload:
+
 ```bash
 # German
 dcd cloud ... --device-locale de_DE
@@ -22,6 +24,19 @@ dcd cloud ... --device-locale de_DE
 # With device selection
 dcd cloud ... --android-device pixel-6 --device-locale ja_JP
 ```
+
+To override locale for a specific test, pass in the DeviceCloud env variable. This will override the upload setting above, but just for a single test:
+
+```yaml
+# in your test.yaml
+appId: my.app
+env:
+    DEVICECLOUD_OVERRIDE_DEVICE_LCOALE: de_DE
+---
+# test steps
+```
+
+
 
 ## Common Locales
 
