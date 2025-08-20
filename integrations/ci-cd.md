@@ -10,13 +10,12 @@ DeviceCloud supports a wide range of CI/CD options. If you don't see your CI/CD 
 
 ### Useful Features For CI/CD
 
-* [Async Execution](../features/async-execution.md) - Run tests asynchronously in CI
+* [Async Execution](../reference/async-execution.md) - Run tests asynchronously in CI
 * [Report Formats](../reference/report-formats.md) - Generate CI-compatible reports
-* [Name and Tagging](../features/name-and-tagging.md) - Organize CI test runs
-* [Download Artifacts](../features/download-artifacts.md) - Access test results
+* [Download Artifacts](../reference/download-artifacts.md) - Access test results
 
 ### Configuration
 
-* [Environment Variables](../core/environment-variables.md) - Configure CI environments
+* [Environment Variables](../reference/environment-variables.md) - Configure CI environments
 * [API Keys](../getting-started/api-keys.md) - Manage authentication
 * [Exit Codes](../reference/exit-codes.md) - Handle CI pipeline flow
