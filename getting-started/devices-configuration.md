@@ -46,7 +46,7 @@ dcd cloud --android-device pixel-7 app.apk test.yaml
 
 ### iOS Versions
 
-dcd will default to iOS 17 unless you pass the `--ios-version` flag:
+DeviceCloud will default to iOS 17 unless you pass the `--ios-version` flag:
 
 ```bash
 dcd cloud --ios-version 18 app.zip test.yaml
@@ -55,7 +55,7 @@ dcd cloud --ios-version 18 app.zip test.yaml
 | id   | Version |
 | ---- | ------- |
 | `16` | 16.4    |
-| `17` | 17.5    |
+| `17` | 17.4    |
 | `18` | 18.6    |
 
 ### iOS Devices
