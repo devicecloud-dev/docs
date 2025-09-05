@@ -33,4 +33,4 @@ This will:
 
 ## Cost Implications
 
-> **Note**: Each retry counts as a separate test execution and will deduct credits from your account.
+> **Note**: Retries are now free of charge but limited to 2 (for a total of 3 runs). If you're test is still failing after 2 retries, please ask for help on Discord.
