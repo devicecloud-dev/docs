@@ -1,6 +1,6 @@
 # IT Security Policies
 
-DCD implements a number of internal security policies to help protect data and systems.
+DeviceCloud implements a number of internal security policies to help protect data and systems.
 
 You may request access to these policies by emailing support@devicecloud.dev
 

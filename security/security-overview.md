@@ -6,11 +6,11 @@ As experienced engineers, we take security seriously and adopt industry standard
 
 DeviceCloud has begun preparing and organising policies and controls that align with the SOC2 Type 1 compliance framework. The target compliance date is currently Q3 2026.
 
-Want to work with Device Cloud but require SOC2? Please contact us, we will fast-track this process if enough users request it.&#x20;
+Want to work with DeviceCloud but require SOC2? Please contact us, we will fast-track this process if enough users request it.&#x20;
 
 ### Infrastructure
 
-DeviceCloud stores customer data and performs processing using Supabase, Vercel and AWS. All these cloud platforms are SOC2 compliant. Some test execution is done using our dedicated secure data centre in the UK.
+DeviceCloud stores customer data and performs processing using Supabase and Railway. These cloud platforms are SOC2 compliant. Some test execution is done using our dedicated secure data centre in the UK.
 
 ### Data Encryption <a href="#data-encryption" id="data-encryption"></a>
 
