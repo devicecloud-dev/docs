@@ -1,6 +1,6 @@
 # Webhook Notifications
 
-DCD can be configured to notify you via webhook when a set of tests are complete.
+DeviceCloud can be configured to notify you via webhook when a set of tests are complete.
 
 ### Enabling Webhooks
 
@@ -55,6 +55,6 @@ The request body will contain a JSON structured as follows:
 
 ### Webhook Secrets
 
-We sign all webhook requests with the secret found on your DCD console. You can use this secret to verify the request came from us.
+We sign all webhook requests with the secret found on your DeviceCloud console. You can use this secret to verify the request came from us.
 
 Just like your API key, you should not share this secret with anyone.
