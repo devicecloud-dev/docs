@@ -10,15 +10,6 @@ To enable this, head to the [settings](https://console.devicecloud.dev/settings)
 Please note that we only support HTTPS URLs.
 {% endhint %}
 
-To enable webhook notifications, add the following to your config.yaml file:
-
-```
-# .maestro/config.yaml
-notifications:
-  webhook:
-    enabled: true
-```
-
 ### Triggering a Webhook
 
 When a job is completed, we'll send a POST request to the URL specified.
