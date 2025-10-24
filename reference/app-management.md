@@ -4,9 +4,9 @@ Device Cloud provides several ways to manage your application binaries during te
 
 ## App Binary Options
 
-### Primary App Binary
 
-You have two ways to specify your main application binary:
+
+You have two ways to specify your application binary:
 
 1. **Direct File Upload**
 
@@ -20,20 +20,7 @@ dcd cloud --app-file ./path/to/your/app.apk flow.yaml
 dcd cloud --app-binary-id abc123 flow.yaml
 ```
 
-### Additional App Binaries
 
-For testing scenarios requiring multiple apps (e.g., companion apps):
-
-```bash
-# Upload multiple new apps
-dcd cloud --app-file main.apk --additional-app-files companion.apk other.apk
-
-# Use previously uploaded binaries
-dcd cloud --app-binary-id main-id --additional-app-binary-ids companion-id other-id
-
-# Mix and match
-dcd cloud --app-file main.apk --additional-app-binary-ids companion-id
-```
 
 ## Binary Management
 
