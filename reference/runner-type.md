@@ -4,9 +4,9 @@
 Runner Type is currently an experimental feature
 {% endhint %}
 
-By default each test run uses the following underlying  hardware specifications:
+By default each test run uses the following underlying hardware specifications:
 
-<table><thead><tr><th width="156">Runner Type</th><th>Platform</th><th>Host OS</th><th>Architecture</th><th>RAM</th><th>CPU Cores</th></tr></thead><tbody><tr><td><code>default</code></td><td>iOS</td><td>MacOS</td><td>M1</td><td>8 GB</td><td>8</td></tr><tr><td><code>default</code></td><td>Android</td><td>Ubuntu</td><td>x86</td><td>12 GB</td><td>12</td></tr></tbody></table>
+<table><thead><tr><th width="156">Runner Type</th><th>Platform</th><th>Host OS</th><th>Architecture</th><th>RAM</th><th>CPU Cores</th></tr></thead><tbody><tr><td><code>default</code></td><td>iOS</td><td>MacOS</td><td>M1</td><td>8 GB</td><td>8</td></tr><tr><td><code>cpu1</code></td><td>Android</td><td>Ubuntu</td><td>x86</td><td>12 GB</td><td>12</td></tr></tbody></table>
 
 
 
