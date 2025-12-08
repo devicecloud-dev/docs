@@ -12,4 +12,4 @@ If config-based onboarding fails, we automatically switch to Maestro-based onboa
 
 If you're experiencing issues with Chrome, you can force Maestro-based onboarding using the CLI flag `--maestro-chrome-onboarding`.
 
-**Important: U**sing Maestro-based onboarding **will slow your test suite down**. We therefore we only recommend using it if you are experiencing issues with the default config-based method.
+**Important:** Using Maestro-based onboarding **will slow your test suite down**. We therefore we only recommend using it if you are experiencing issues with the default config-based method.
