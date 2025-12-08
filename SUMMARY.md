@@ -38,6 +38,7 @@
 * [Webhook Notifications](reference/webhook-notifications.md)
 * [Exit Codes](reference/exit-codes.md)
 * [Runner Type](reference/runner-type.md)
+* [Chrome Onboarding](reference/chrome-onboarding.md)
 
 ## Infrastructure & Security
 
