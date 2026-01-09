@@ -1,6 +1,6 @@
 # Terms and Conditions
 
-These are the terms and conditions of devicecloud.dev (the “Platform”)
+These are the terms and conditions of devicecloud.dev (the “Platform”), operated by Moropo Limited (the "Company")
 
 By using the Platform, you are deemed to accept these terms and conditions, and a legally binding contract is formed between the Company and you. If you do not accept these terms and conditions, please do not use the Platform. You also agree to the terms of our privacy policy.
 
