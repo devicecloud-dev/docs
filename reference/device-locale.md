@@ -31,7 +31,7 @@ To override locale for a specific test, pass in the DeviceCloud env variable. Th
 # in your test.yaml
 appId: my.app
 env:
-    DEVICECLOUD_OVERRIDE_DEVICE_LCOALE: de_DE
+    DEVICECLOUD_OVERRIDE_DEVICE_LOCALE: de_DE
 ---
 # test steps
 ```
