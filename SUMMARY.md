@@ -10,6 +10,7 @@
 * [Limits](getting-started/limits.md)
 * [Upgrade Guide](getting-started/upgrade.md)
 * [Device Configuration](getting-started/devices-configuration.md)
+* [Concurrency & Parallel Runs](getting-started/concurrency-and-parallel-runs.md)
 
 ## CI/CD Integration
 

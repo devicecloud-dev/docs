@@ -24,7 +24,7 @@ We may amend these terms and conditions from time to time, and such amendments s
 
 2.1 The Platform grants each team account $20 USD for trial and experimentation purposes. This credit cannot be redeemed for anything other than test runs and may be withdrawn at any time.
 
-2.2 Users may purchase additional credit via the billing page in the Platform. Purchased credits are valid for 12 months.
+2.2 Users may purchase additional credit via the billing page in the Platform. Purchased credits are valid for 12 months when offered as one-off purchases or for the subscription period (typically one month) when purchased as part of a subscription.
 
 2.3 The Company may suspend your access to the Platform, and terminate the Licence, at any time where you (or a member of your organisation) have materially breached these terms and conditions (which includes failing to make payment). Where the Company does so, no refunds will be provided for the then-current period of your subscription. Read the full [refund-policy.md](refund-policy.md "mention")
 
