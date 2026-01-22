@@ -8,7 +8,7 @@ Cheaper plans typically have no Concurrency Protection, which means that during 
 
 Once you reach your maximum concurrency for iOS or Android, additional tests enter a queued state and sit in a backlog until you're under your concurrency limits. At that point, they automatically move to pending and are processed by the runners.
 
-If you have a plan with a minimum concurrency guarantee, DeviceCloud will prioritise your jobs to ensure your minimum concurrency is met.
+If you have a plan with Concurrency Protection, DeviceCloud will prioritise your jobs to ensure your minimum concurrency is met.
 
 Note that concurrency guarantees only apply to standard runner types. Experimental runner types, such as Android's M1 runner, are not covered by these concurrency rules.
 
