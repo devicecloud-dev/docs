@@ -2,9 +2,9 @@
 
 DeviceCloud supports parallel runs, also known as concurrency. This means multiple tests run simultaneously, greatly reducing the overall test suite execution time for a given CI run.
 
-In your DeviceCloud settings page, you'll see two values for each platform: minimum guaranteed concurrency and maximum concurrency.
+In your DeviceCloud settings page, you'll see two values for each platform: minimum guaranteed concurrency (known as **Concurrency Protection**) and maximum concurrency.
 
-Cheaper plans typically have no guaranteed minimum concurrency, which means that during busy periods when runner capacity is stretched, you may need to wait for runner availability or experience less concurrency than your maximum.
+Cheaper plans typically have no Concurrency Protection, which means that during busy periods when runner capacity is stretched, you may need to wait for runner availability or experience less concurrency than your maximum.
 
 Once you reach your maximum concurrency for iOS or Android, additional tests enter a queued state and sit in a backlog until you're under your concurrency limits. At that point, they automatically move to pending and are processed by the runners.
 
