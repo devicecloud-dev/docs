@@ -1,6 +1,8 @@
 # Maestro Versions
 
-Device Cloud supports multiple Maestro versions to ensure compatibility with your test flows. We do periodically remove support for older versions so we always recommend you stay up to date.
+Device Cloud supports multiple Maestro versions to ensure compatibility with your test flows.&#x20;
+
+Please note that we periodically remove support for older versions so we always recommend you stay up to date.
 
 ## Available Versions
 
