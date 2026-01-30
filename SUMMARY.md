@@ -55,3 +55,8 @@
 * [Privacy Policy](legal/privacy-policy.md)
 * [Terms and Conditions](legal/terms-and-conditions.md)
 * [Refund Policy](legal/refund-policy.md)
+
+## Billing
+
+* [Test Run Billing](billing/test-run-billing.md)
+* [Subscriptions](billing/subscriptions.md)

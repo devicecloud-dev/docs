@@ -5,7 +5,7 @@ description: SAML-based authentication for larger companies
 # Enterprise SSO
 
 {% hint style="info" %}
-This feature is currently available to orgs who have purchased $2000 USD or more in DeviceCloud credits.
+This feature is currently available to orgs who have purchased $2000 USD or more in DeviceCloud credits or have the Max subscription or above.
 {% endhint %}
 
 Single sign-on solutions (such as OKTA) allow organisations to centrally manage user access to DeviceCloud.&#x20;
@@ -36,8 +36,7 @@ These steps have been written with OKTA in mind, but are applicable to other ide
 
 <table><thead><tr><th width="255.06890869140625">key</th><th>value</th></tr></thead><tbody><tr><td>Single sign-on URL (ACS URL) </td><td>https://cloud.devicecloud.dev/auth/v1/sso/saml/acs</td></tr><tr><td>Audience URI (SP Entity ID)</td><td>https://cloud.devicecloud.dev/auth/v1/sso/saml/metadata</td></tr><tr><td>Default Relay State</td><td>https://cloud.devicecloud.dev/</td></tr></tbody></table>
 
-3.  Ensure the application username is set to EMAIL\
-
+3.  Ensure the application username is set to EMAIL<br>
 
     ![](https://mail.google.com/mail/u/0?ui=2\&ik=c2f7326118\&attid=0.1\&permmsgid=msg-a:r7654004608782227746\&th=1942d0e92629043e\&view=fimg\&fur=ip\&permmsgid=msg-a:r7654004608782227746\&sz=s0-l75-ft\&attbid=ANGjdJ9gKZSxFL_J0cUbAIweK-HIvqs8c1z2ifYKFn66SvZVflWixzj2LEPpukQwMbghnwRt0SNgTG5v9F-n56SZ1MplqseD6Zve6WFNIy1jj9mfjDFTylB-VawGkgU\&disp=emb\&realattid=ii_m0fbmkqg1\&zw)
 
