@@ -6,7 +6,7 @@ Chrome Onboarding pre-configures Chrome browser settings before your tests run o
 
 By default we use config-based Chrome onboarding which adds minimal overhead and works for most scenarios.
 
-If config-based onboarding fails, we automatically switch to Maestro-based onboarding which uses a Maestro script. While more thorough, Maestro-based onboading adds significant overhead as it runs an additional flow on the device before your tests.
+If config-based onboarding fails, we automatically switch to Maestro-based onboarding which uses a Maestro script. While more thorough, Maestro-based onboarding adds significant overhead as it runs an additional flow on the device before your tests.
 
 ### Forcing Maestro-based Onboarding
 

@@ -20,7 +20,7 @@ Enterprise customers with volume discounts or grandfathered users with older pri
 
 ### Credits
 
-Historically, DeviceCloud users have purchased credits in advanced and these have been drawn down via usage.
+Historically, DeviceCloud users have purchased credits in advance and these have been drawn down via usage.
 
 Note: credits are only valid for 12 months, after which they automatically expire.
 

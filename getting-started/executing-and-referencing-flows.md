@@ -58,7 +58,7 @@ To use a Workspace Config file (`config.yaml`), include it in the top-level dire
 
 ### Workspace Config
 
-For complex setups a `config.yaml` file is recommended. This file is explained in detail in the [Maestro Cloud documentation](https://cloud.mobile.dev/reference/workspace-configuration). We only supported the Maestro configuration options listed below. A `config.yaml` containing unsupported configuration will be processed, but unsupported config options will be skipped.
+For complex setups a `config.yaml` file is recommended. This file is explained in detail in the [Maestro Cloud documentation](https://cloud.mobile.dev/reference/workspace-configuration). We only support the Maestro configuration options listed below. A `config.yaml` containing unsupported configuration will be processed, but unsupported config options will be skipped.
 
 #### Supported Config
 

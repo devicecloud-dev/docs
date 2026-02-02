@@ -12,7 +12,7 @@ Additional usage beyond $25 will be billed as overage and charged in your next m
 
 This plan lets you run up to 5 iOS and 5 Android tests in parallel. Read about [concurrency-and-parallel-runs.md](../getting-started/concurrency-and-parallel-runs.md "mention") to understand how this may be reduced at peak times.
 
-If you require support when using this plan, you can contract our team and community via Discord.\
+If you require support when using this plan, you can contact our team and community via Discord.\
 \
 This plan supports unlimited users and unlimited apps. Results are retained for 6 months.
 
