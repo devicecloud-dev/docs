@@ -15,3 +15,9 @@ dcd cloud ... --report junit
 ```bash
 dcd cloud ... --report html
 ```
+
+### HTML Detailed Format
+
+```bash
+dcd cloud ... --report html-detailed
+```

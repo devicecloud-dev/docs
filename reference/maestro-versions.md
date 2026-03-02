@@ -17,6 +17,7 @@ We currently support the following versions of Maestro:
 * 2.0.4
 * 2.0.9
 * 2.1.0
+* 2.2.0
 
 ## Version Selection
 
