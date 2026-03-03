@@ -40,6 +40,7 @@
 * [Exit Codes](reference/exit-codes.md)
 * [Runner Type](reference/runner-type.md)
 * [Chrome Onboarding](reference/chrome-onboarding.md)
+* [REST API](reference/api.md)
 
 ## Infrastructure & Security
 
