@@ -91,11 +91,16 @@ curl "https://api.devicecloud.dev/uploads/status?uploadId=7e12345f-eb12-12ec-a30
 {
   "uploadId": "7e12345f-eb12-12ec-a30b-bb1234f1d12a",
   "status": "FAILED",
+  "name": "Nightly regression",
+  "createdAt": "2026-01-15T10:30:00Z",
+  "appBinaryId": "67894274-b789-4c1e-80d4-da8998998999",
+  "consoleUrl": "https://console.devicecloud.dev/results?upload=7e12345f-eb12-12ec-a30b-bb1234f1d12a",
   "tests": [
     {
-      "id": 4500,
-      "test_file_name": "./login-test/onboarding.yaml",
-      "status": "FAILED"
+      "name": "./login-test/onboarding.yaml",
+      "status": "FAILED",
+      "durationSeconds": 32,
+      "failReason": "Element not found: Text matching regex next.* not found"
     }
   ]
 }
@@ -233,6 +238,7 @@ GET /flows
 | `days` | number | No | Lookback window in days. Default: `14`. Ignored if `startDate` is set. |
 | `startDate` | string | No | Start of date range (ISO 8601). Overrides `days`. |
 | `endDate` | string | No | End of date range (ISO 8601). Defaults to now if `startDate` is set. |
+| `tags` | string | No | Comma-separated tag filter. Returns flows that have any of the given tags (e.g. `smoke,critical`). |
 
 **Example**
 
@@ -256,6 +262,7 @@ curl "https://api.devicecloud.dev/flows?platform=ios&startDate=2026-01-01&endDat
       "total_runs": 50,
       "avg_duration": 38,
       "last_run_at": "2026-01-31T14:22:00Z",
+      "tags": ["smoke", "critical"],
       "daily_data": {
         "2026-01-31": "passed",
         "2026-01-30": "mixed",
