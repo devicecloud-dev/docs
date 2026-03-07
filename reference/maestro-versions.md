@@ -1,6 +1,6 @@
 # Maestro Versions
 
-Device Cloud supports multiple Maestro versions to ensure compatibility with your test flows.&#x20;
+Device Cloud supports multiple Maestro versions to ensure compatibility with your test flows.
 
 Please note that we periodically remove support for older versions so we always recommend you stay up to date.
 
@@ -19,11 +19,15 @@ We currently support the following versions of Maestro:
 * 2.1.0
 * 2.2.0
 
+{% hint style="warning" %}
+NOTE: Maestro 1.39.2 and 1.39.7 will be deprecated at the end of March 2026.
+{% endhint %}
+
 ## Version Selection
 
 You can specify a version using `--maestro-version <version>`.
 
-We additionally support the use of `--maestro-version latest` which will default to the most up-to-date version we support.&#x20;
+We additionally support the use of `--maestro-version latest` which will default to the most up-to-date version we support.
 
 ### Examples
 
