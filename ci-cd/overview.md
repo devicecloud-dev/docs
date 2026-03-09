@@ -11,7 +11,7 @@ DeviceCloud supports a wide range of CI/CD options. If you don't see your provid
 ### Useful Features For CI/CD
 
 * [Async Execution](../advanced/async-execution.md) - Fire-and-forget tests without blocking your pipeline
-* [Status API](status-api.md) - Poll for results after an async run
+* [Status API](../advanced/status-api.md) - Poll for results after an async run
 * [Report Formats](../test-results/report-formats.md) - Generate JUnit/HTML reports for your CI system
 * [Artifacts & Downloads](../test-results/artifacts.md) - Access logs, screenshots, and videos
 

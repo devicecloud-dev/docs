@@ -16,7 +16,6 @@
 * [GitHub Actions](ci-cd/github-actions.md)
 * [Bitrise](ci-cd/bitrise.md)
 * [Any CI](ci-cd/any-ci.md)
-* [Status API](ci-cd/status-api.md)
 
 ## Configuration
 
@@ -37,6 +36,7 @@
 ## Advanced
 
 * [Async Execution](advanced/async-execution.md)
+* [Status API](advanced/status-api.md)
 * [Retry Strategies](advanced/retry-strategies.md)
 * [Chrome Onboarding](advanced/chrome-onboarding.md)
 * [Exit Codes](advanced/exit-codes.md)
