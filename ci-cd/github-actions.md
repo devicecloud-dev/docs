@@ -25,7 +25,9 @@ on:
     branches: [main]
 ```
 
-**Supporting repo forks:** If you use `pull_request_target` to run tests from forked PRs, explicitly check out the PR HEAD to ensure you're testing the changed code:
+{% hint style="info" %}
+If you use `pull_request_target` to run tests from forked PRs, explicitly check out the PR HEAD to ensure you're testing the changed code.
+{% endhint %}
 
 ```yaml
 on:
