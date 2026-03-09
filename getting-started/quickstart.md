@@ -46,9 +46,11 @@ That's it! Questions? Issues? Head to our Discord.
 npm install -g @devicecloud.dev/dcd@latest
 ```
 
-**Prerelease versions** (not recommended): Occasionally, prerelease versions are available under the `rc` tag. See [available versions on NPM](https://www.npmjs.com/package/@devicecloud.dev/dcd?activeTab=versions).
+**Prerelease versions** (not recommended): Occasionally, prerelease versions are available under the `alpha`, `beta`, and `rc` tags, in increasing order of stability. See [available versions on NPM](https://www.npmjs.com/package/@devicecloud.dev/dcd?activeTab=versions).
 
 ```
+npm install -g @devicecloud.dev/dcd@alpha
+npm install -g @devicecloud.dev/dcd@beta
 npm install -g @devicecloud.dev/dcd@rc
 ```
 
