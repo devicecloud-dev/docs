@@ -43,7 +43,10 @@
 
 ## REST API
 
-* [API Reference](api/rest-api.md)
+* [Overview](api/overview.md)
+* [Uploads](api/uploads.md)
+* [Results](api/results.md)
+* [Flows](api/flows.md)
 
 ## Security & Compliance
 
