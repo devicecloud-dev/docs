@@ -6,58 +6,61 @@
 
 * [Quick Start](getting-started/quickstart.md)
 * [API Keys](getting-started/api-keys.md)
-* [Executing Flows](getting-started/executing-and-referencing-flows.md)
-* [Limits](getting-started/limits.md)
-* [Upgrade Guide](getting-started/upgrade.md)
-* [Device Configuration](getting-started/devices-configuration.md)
+* [Devices & OS Versions](getting-started/devices-configuration.md)
+* [Flows & Workspaces](getting-started/flows.md)
 * [Concurrency & Parallel Runs](getting-started/concurrency-and-parallel-runs.md)
 
 ## CI/CD Integration
 
-* [Overview](integrations/ci-cd.md)
-* [GitHub Actions](ci-integration/github-action.md)
-* [BitRise](ci-integration/bitrise.md)
-* [Any CI](ci-integration/any-ci.md)
-* [Status API](ci-cd-integration/status-api.md)
+* [Overview](ci-cd/overview.md)
+* [GitHub Actions](ci-cd/github-actions.md)
+* [Bitrise](ci-cd/bitrise.md)
+* [Any CI](ci-cd/any-ci.md)
+* [Status API](ci-cd/status-api.md)
 
-## Reference
+## Configuration
 
-* [Test Execution](reference/test-execution.md)
-* [App Management](reference/app-management.md)
-* [Environment Variables](reference/environment-variables.md)
-* [Device Orientation](reference/orientation.md)
-* [Device Locale](reference/device-locale.md)
-* [Async Execution](reference/async-execution.md)
-* [Retry Strategies](reference/retry-strategies.md)
-* [Report Formats](reference/report-formats.md)
-* [Download Artifacts](reference/download-artifacts.md)
-* [Quiet Mode](reference/quiet-mode.md)
-* [Maestro Versions](reference/maestro-versions.md)
-* [Test Run Name](reference/test-run-name.md)
-* [Google Play APIs](reference/google-play-apis.md)
-* [Email Notifications](reference/email-notifications.md)
-* [Webhook Notifications](reference/webhook-notifications.md)
-* [Exit Codes](reference/exit-codes.md)
-* [Runner Type](reference/runner-type.md)
-* [Chrome Onboarding](reference/chrome-onboarding.md)
-* [REST API](reference/api.md)
+* [App Management](configuration/app-management.md)
+* [Environment Variables](configuration/environment-variables.md)
+* [Device Locale](configuration/device-locale.md)
+* [Device Orientation](configuration/orientation.md)
+* [Maestro Versions](configuration/maestro-versions.md)
+* [Google Play APIs](configuration/google-play-apis.md)
+* [Runner Types](configuration/runner-type.md)
 
-## Infrastructure & Security
+## Test Results & Artifacts
 
-* [IP Addresses](infrastructure/ip-addresses.md)
+* [Artifacts & Downloads](test-results/artifacts.md)
+* [Report Formats](test-results/report-formats.md)
+* [Notifications](test-results/notifications.md)
+
+## Advanced
+
+* [Async Execution](advanced/async-execution.md)
+* [Retry Strategies](advanced/retry-strategies.md)
+* [Chrome Onboarding](advanced/chrome-onboarding.md)
+* [Exit Codes](advanced/exit-codes.md)
+
+## REST API
+
+* [API Reference](api/rest-api.md)
+
+## Security & Compliance
+
 * [Security Overview](security/security-overview.md)
+* [IP Addresses](security/ip-addresses.md)
 * [IT Security Policies](security/it-security-policies.md)
 * [Enterprise SSO](security/enterprise-single-sign-on.md)
 
-## Legal
-
-* [Service Level Agreements](legal/service-level-agreements.md)
-* [Open Source Notices](legal/open-source-notices.md)
-* [Privacy Policy](legal/privacy-policy.md)
-* [Terms and Conditions](legal/terms-and-conditions.md)
-* [Refund Policy](legal/refund-policy.md)
-
 ## Billing
 
-* [Test Run Billing](billing/test-run-billing.md)
 * [Subscriptions](billing/subscriptions.md)
+* [Test Run Billing](billing/test-run-billing.md)
+
+## Legal
+
+* [Terms & Conditions](legal/terms-and-conditions.md)
+* [Privacy Policy](legal/privacy-policy.md)
+* [Refund Policy](legal/refund-policy.md)
+* [Service Level Agreements](legal/service-level-agreements.md)
+* [Open Source Notices](legal/open-source-notices.md)

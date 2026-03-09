@@ -66,7 +66,7 @@ For complex setups a `config.yaml` file is recommended. This file is explained i
 * `includeTags`
 * `excludeTags`
 * `executionOrder`
-* `notifications` (see [email-notifications.md](../reference/email-notifications.md "mention"))
+* `notifications` (see [Notifications](../test-results/notifications.md))
 
 #### Unsupported Config
 

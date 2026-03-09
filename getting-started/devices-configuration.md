@@ -27,7 +27,7 @@ dcd cloud --android-api-level 35 app.apk test.yaml
 | Android 11      | 30        |
 | Android 10      | 29        |
 
-Need Google Play? See [google-play-apis.md](../reference/google-play-apis.md)
+Need Google Play? See [google-play-apis.md](../configuration/google-play-apis.md)
 
 ### Android Devices
 
@@ -43,7 +43,7 @@ dcd cloud --android-device pixel-6 app.apk test.yaml
 | `pixel-6-pro`    | Pixel 6 Pro                                                                                                          | 1440 x 3120 | 33, 34, 35                 |
 | `pixel-7`        | Pixel 7                                                                                                              | 1080 x 2340 | 33, 34, 35                 |
 | `pixel-7-pro`    | Pixel 7 Pro                                                                                                          | 1440 x 3120 | 33, 34, 35                 |
-| `generic-tablet` | Generic Tablet (Note: starts in landscape by default, use [orientation](../features/orientation.md)=90 for portrait) | 1440 x 2560 | 33, 34, 35                 |
+| `generic-tablet` | Generic Tablet (Note: starts in landscape by default, use [orientation](../configuration/orientation.md)=90 for portrait) | 1440 x 2560 | 33, 34, 35                 |
 
 ### iOS Versions
 
