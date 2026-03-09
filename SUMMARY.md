@@ -33,13 +33,6 @@
 * [Report Formats](test-results/report-formats.md)
 * [Notifications](test-results/notifications.md)
 
-## Advanced
-
-* [Async Execution](advanced/async-execution.md)
-* [Retry Strategies](advanced/retry-strategies.md)
-* [Chrome Onboarding](advanced/chrome-onboarding.md)
-* [Exit Codes](advanced/exit-codes.md)
-
 ## CLI Reference
 
 * [Overview](cli/overview.md)
@@ -54,6 +47,13 @@
 * [Uploads](api/uploads.md)
 * [Results](api/results.md)
 * [Flows](api/flows.md)
+
+## Advanced
+
+* [Async Execution](advanced/async-execution.md)
+* [Retry Strategies](advanced/retry-strategies.md)
+* [Chrome Onboarding](advanced/chrome-onboarding.md)
+* [Exit Codes](advanced/exit-codes.md)
 
 ## Security & Compliance
 
