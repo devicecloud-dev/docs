@@ -29,10 +29,6 @@ To download artifacts only for failed tests:
 dcd cloud ... --download-artifacts FAILED
 ```
 
-## Pricing
-
-> **Note**: Downloading artifacts incurs a $0.01 egress fee per result.
-
 ## Artifact Management
 
 ### Storage Location

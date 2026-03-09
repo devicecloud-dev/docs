@@ -139,7 +139,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 |-------|----------|---------|-------------|
 | `async` | No | `false` | Exit immediately without waiting for results. Returns exit code `0` regardless of test outcome. See [Async Execution](../advanced/async-execution.md). |
 | `quiet` | No | `false` | Reduce console output. Useful in verbose CI environments. |
-| `download-artifacts` | No | — | Download logs, screenshots, and videos after the run. Options: `ALL`, `FAILED`. Note: $0.01 egress fee per result. |
+| `download-artifacts` | No | — | Download logs, screenshots, and videos after the run. Options: `ALL`, `FAILED`. |
 | `json-file` | No | `false` | Write test results to a JSON file (`<run_name>_dcd.json` or `<upload_id>_dcd.json`). |
 | `debug` | No | `false` | Enable verbose debug output. |
 | `use-beta` | No | `false` | Use the beta version of the DCD CLI. |
