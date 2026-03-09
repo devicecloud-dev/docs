@@ -1,11 +1,11 @@
-# Executing & Referencing flows
+# Executing & Referencing Flows
 
 There are multiple ways to execute flows from the CLI:
 
-1. a single YAML flow;
-2. a directory of flows;
-3. flows that match a glob.
-4. flows specified in a [#workspace-configuration](executing-and-referencing-flows.md#workspace-configuration "mention") file.
+1. a single YAML flow
+2. a directory of flows
+3. flows that match a glob
+4. flows specified in a workspace config file
 
 ### 1. Executing a single flow
 
@@ -17,7 +17,7 @@ dcd cloud --apiKey <apiKey> <appFile> <flowFile>
 
 Where:
 
-* `<appFile>` is one of:&#x20;
+* `<appFile>` is one of:
   * `.app`
   * `.zip`
   * `.apk`
@@ -33,10 +33,10 @@ dcd cloud --apiKey <apiKey> <appFile> <directoryPath>
 
 Where `<directoryPath>` is either:
 
-* an absolute path. i.e. `/path/from/root`
+* an absolute path, i.e. `/path/from/root`
 * a relative path, i.e. `./` or `path/from/currentDir`
 
-In this case, the CLI will inspect all YAML files in the directory (but not sub-directories) and create new tests for each. Note: if the specified directory contains a `config.yaml` folder, then the CLI will switch to using the workspace configuration.
+The CLI will inspect all YAML files in the directory (but not sub-directories) and create a test for each.
 
 ### 3. Executing flows by passing a glob
 
@@ -44,21 +44,19 @@ In this case, the CLI will inspect all YAML files in the directory (but not sub-
 dcd cloud --apiKey <apiKey> <appFile> <glob>
 ```
 
-Where `<glob>`is path matching string such as `./**/*.yaml`
+Where `<glob>` is a path matching string such as `./**/*.yaml`
 
 The CLI uses the [NPM glob](https://www.npmjs.com/package/glob) module. This package provides its own CLI which you can use for debugging globs.
 
 ### 4. Executing flows using a Workspace Config file
 
+For complex setups, a `config.yaml` file is recommended. Place it in the top-level directory you pass to the CLI — it will be detected automatically. The CLI will match flows by name or glob using the `flows` key.
+
 ```
 dcd cloud --apiKey <apiKey> <appFile> <directoryPathIncludingConfigYaml>
 ```
 
-To use a Workspace Config file (`config.yaml`), include it in the top-level directory. The CLI will inspect this file and match flows by name or glob using the `flows` key.
-
-### Workspace Config
-
-For complex setups a `config.yaml` file is recommended. This file is explained in detail in the [Maestro Cloud documentation](https://cloud.mobile.dev/reference/workspace-configuration). We only support the Maestro configuration options listed below. A `config.yaml` containing unsupported configuration will be processed, but unsupported config options will be skipped.
+This file format is explained in detail in the [Maestro Cloud documentation](https://cloud.mobile.dev/reference/workspace-configuration). We only support the options listed below — unsupported keys will be silently skipped.
 
 #### Supported Config
 
@@ -73,9 +71,6 @@ For complex setups a `config.yaml` file is recommended. This file is explained i
 * `baselineBranch`
 * `disableRetries`
 
-### Referencing flows&#x20;
+### Referencing flows
 
-As of version 2.0.0, the CLI will search for all nested dependencies referenced by your YAML flows using Maestro keywords (`addMedia`, `runFlow`, `runScript`)
-
-
-
+As of version 2.0.0, the CLI will search for all nested dependencies referenced by your YAML flows using Maestro keywords (`addMedia`, `runFlow`, `runScript`).
