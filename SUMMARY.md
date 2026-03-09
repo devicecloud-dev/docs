@@ -36,10 +36,10 @@
 ## CLI Reference
 
 * [Overview](cli/overview.md)
-* [dcd cloud](cli/dcd-cloud.md)
-* [dcd upload](cli/dcd-upload.md)
-* [dcd status](cli/dcd-status.md)
-* [dcd list](cli/dcd-list.md)
+* [Cloud](cli/dcd-cloud.md)
+* [Upload](cli/dcd-upload.md)
+* [Status](cli/dcd-status.md)
+* [List](cli/dcd-list.md)
 
 ## REST API
 
