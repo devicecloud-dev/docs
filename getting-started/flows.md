@@ -9,7 +9,7 @@ There are multiple ways to execute flows from the CLI:
 
 ### 1. Executing a single flow
 
-The most simplistic way of executing a flow file is to call the flow directory from the CLI explicitly using a `<flowFile>`.
+The most straightforward way to execute a single flow is to pass the flow file path directly to the CLI using a `<flowFile>`.
 
 ```
 dcd cloud --apiKey <apiKey> <appFile> <flowFile>
