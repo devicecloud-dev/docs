@@ -42,7 +42,7 @@ dcd cloud -e USERNAME=${CI_USERNAME} \
 On iOS, variables prefixed with `SIMCTL_CHILD_` are passed through by the simulator directly to the app under test, with the prefix stripped. This allows you to inject values that are readable from inside the app via `ProcessInfo.processInfo.environment`.
 
 ```bash
-dcd cloud -e SIMCTL_CHILD_API_URL=https://staging-api.example.com app.zip flow.yaml
+dcd cloud app.zip flow.yaml -e SIMCTL_CHILD_API_URL=https://staging-api.example.com
 ```
 
 Inside the iOS app, this is accessible as `API_URL`:

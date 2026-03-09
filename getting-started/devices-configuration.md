@@ -13,7 +13,7 @@ If you don't specify a device or OS version, then you will be allocated the defa
 DeviceCloud will default to API level 34 unless you pass the `--android-api-level` flag:
 
 ```bash
-dcd cloud --android-api-level 35 app.apk test.yaml
+dcd cloud app.apk test.yaml --android-api-level 35
 ```
 
 | Android Version | API Level |
@@ -34,7 +34,7 @@ Need Google Play? See [google-play-apis.md](../configuration/google-play-apis.md
 DeviceCloud will default to Pixel 7 unless you pass the `--android-device` flag:
 
 ```bash
-dcd cloud --android-device pixel-6 app.apk test.yaml
+dcd cloud app.apk test.yaml --android-device pixel-6
 ```
 
 | id               | Name                                                                                                                 | Dimensions  | Valid Android API Levels   |
@@ -50,7 +50,7 @@ dcd cloud --android-device pixel-6 app.apk test.yaml
 DeviceCloud will default to iOS 17 unless you pass the `--ios-version` flag:
 
 ```bash
-dcd cloud --ios-version 18 app.zip test.yaml
+dcd cloud app.zip test.yaml --ios-version 18
 ```
 
 | id   | Version |
@@ -65,7 +65,7 @@ dcd cloud --ios-version 18 app.zip test.yaml
 DeviceCloud will default to iPhone 14 unless you pass the `--ios-device` flag:
 
 ```bash
-dcd cloud --ios-device ipad-pro-6th-gen app.zip test.yaml
+dcd cloud app.zip test.yaml --ios-device ipad-pro-6th-gen
 ```
 
 | id                    | Name                      | Dimensions  | Valid iOS versions |
