@@ -55,10 +55,10 @@ dcd cloud --ios-version 18 app.zip test.yaml
 
 | id   | Version |
 | ---- | ------- |
-| `16` | 16.4    |
-| `17` | 17.4    |
-| `18` | 18.6    |
 | `26` | 26.0.1  |
+| `18` | 18.6    |
+| `17` | 17.4    |
+| `16` | 16.4    |
 
 ### iOS Devices
 
@@ -68,5 +68,13 @@ DeviceCloud will default to iPhone 14 unless you pass the `--ios-device` flag:
 dcd cloud --ios-device ipad-pro-6th-gen app.zip test.yaml
 ```
 
-<table><thead><tr><th>id</th><th>Name</th><th width="131">Dimensions</th><th>Valid iOS versions</th></tr></thead><tbody><tr><td><code>iphone-14</code></td><td>iPhone 14</td><td>1170 x 2532</td><td>16, 17, 18</td></tr><tr><td><code>iphone-15</code></td><td>iPhone 15</td><td>1170 x 2532</td><td>17</td></tr><tr><td><code>iphone-16</code></td><td>iPhone 16</td><td>1170 x 2532</td><td>18, 26</td></tr><tr><td><code>iphone-16-plus</code></td><td>iPhone 16 Plus</td><td>1284 x 2778</td><td>18, 26</td></tr><tr><td><code>iphone-16-pro</code></td><td>iPhone 16 Pro</td><td>1179 x 2556</td><td>18, 26</td></tr><tr><td><code>iphone-16-pro-max</code></td><td>iPhone 16 Pro Max</td><td>1290 x 2796</td><td>18, 26</td></tr><tr><td><code>ipad-pro-6th-gen</code></td><td>iPad Pro (6th Generation)</td><td>2732 x 2048</td><td>18, 26</td></tr></tbody></table>
+| id                    | Name                      | Dimensions  | Valid iOS versions |
+| --------------------- | ------------------------- | ----------- | ------------------ |
+| `iphone-16-pro-max`   | iPhone 16 Pro Max         | 1290 x 2796 | 18, 26             |
+| `iphone-16-pro`       | iPhone 16 Pro             | 1179 x 2556 | 18, 26             |
+| `iphone-16-plus`      | iPhone 16 Plus            | 1284 x 2778 | 18, 26             |
+| `iphone-16`           | iPhone 16                 | 1170 x 2532 | 18, 26             |
+| `iphone-15`           | iPhone 15                 | 1170 x 2532 | 17                 |
+| `iphone-14`           | iPhone 14                 | 1170 x 2532 | 16, 17, 18         |
+| `ipad-pro-6th-gen`    | iPad Pro (6th Generation) | 2732 x 2048 | 18, 26             |
 
