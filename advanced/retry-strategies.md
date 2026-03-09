@@ -1,36 +1,21 @@
 # Retry Strategies
 
-Device Cloud provides retry functionality to handle flaky tests and temporary failures.
+Failed tests can be automatically retried using the `--retry` flag. Retries are free of charge and capped at 2, giving a maximum of 3 total runs per test.
 
-## Basic Usage
-
-### Setting Retry Count
+## Usage
 
 ```bash
-dcd cloud ... --retry 3
+dcd cloud app.apk flows/ --retry 2
 ```
 
-This will:
+On failure, DeviceCloud will re-run the test up to the specified number of times, stopping as soon as a run passes. The final status reflects the last run.
 
-* Run the test initially
-* Retry up to 3 times on failure
-* Stop on first success
-* Report final status
+## Limitations
 
-## Understanding Retries
+- Maximum value is `--retry 2` (3 runs total)
+- Only failed test executions are retried — configuration errors (invalid flow files, authentication failures, missing dependencies) will not be retried
+- Retries count toward your concurrency limit while running
 
-### What Gets Retried
-
-* Failed test executions
-* Infrastructure issues
-* Device availability problems
-
-### What Doesn't Get Retried
-
-* Invalid flow files
-* Missing dependencies
-* Authentication failures
-
-## Cost Implications
-
-> **Note**: Retries are now free of charge but limited to 2 (for a total of 3 runs). If your test is still failing after 2 retries, please ask for help on Discord.
+{% hint style="info" %}
+If your test is still failing after 2 retries, reach out on Discord for help diagnosing the root cause.
+{% endhint %}
