@@ -1,8 +1,8 @@
 # Report Formats
 
-Device Cloud supports multiple report formats. These are the same reports you see when running Maestro locally.
+Device Cloud supports standard Maestro report formats as well as Allure, a DeviceCloud-specific format that provides enhanced visualisation and history tracking.
 
-## Available Formats
+## Maestro Formats
 
 ### JUnit Format
 
@@ -20,4 +20,14 @@ dcd cloud ... --report html
 
 ```bash
 dcd cloud ... --report html-detailed
+```
+
+## DeviceCloud Formats
+
+### Allure Format
+
+Allure is not a standard Maestro format — it is provided by DeviceCloud and offers richer reporting with trend history, categories, and timeline views.
+
+```bash
+dcd cloud ... --report allure
 ```

@@ -123,7 +123,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `env` | No | — | Multiline list of environment variables (`KEY=value`) to inject into flows. |
 | `name` | No | Commit message | Custom name for this test run, visible in the console. |
 | `retry` | No | `0` | Number of retries on failure (max `3`). Retries are free — same as pressing retry in the UI. |
-| `report` | No | — | Report format. Options: `junit`, `html`, `html-detailed`. See [Report Formats](../test-results/report-formats.md). |
+| `report` | No | — | Report format. Options: `junit`, `html`, `html-detailed`, `allure`. See [Report Formats](../test-results/report-formats.md). |
 
 ### Android-Specific Options
 
