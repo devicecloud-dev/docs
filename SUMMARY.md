@@ -36,10 +36,17 @@
 ## Advanced
 
 * [Async Execution](advanced/async-execution.md)
-* [Status API](advanced/status-api.md)
 * [Retry Strategies](advanced/retry-strategies.md)
 * [Chrome Onboarding](advanced/chrome-onboarding.md)
 * [Exit Codes](advanced/exit-codes.md)
+
+## CLI Reference
+
+* [Overview](cli/overview.md)
+* [dcd cloud](cli/dcd-cloud.md)
+* [dcd upload](cli/dcd-upload.md)
+* [dcd status](cli/dcd-status.md)
+* [dcd list](cli/dcd-list.md)
 
 ## REST API
 

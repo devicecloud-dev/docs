@@ -237,7 +237,7 @@ jobs:
 
 ### Run async tests (non-blocking)
 
-Use `async: true` to start tests without blocking your pipeline. Then use the [Status API](../advanced/status-api.md) or `dcd status` to check results separately.
+Use `async: true` to start tests without blocking your pipeline. Then use [`dcd status`](../cli/dcd-status.md) to check results separately.
 
 ```yaml
 - uses: devicecloud-dev/device-cloud-for-maestro@v2

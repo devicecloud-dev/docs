@@ -24,7 +24,7 @@ Use the `dcd status` command to poll for results by upload ID:
 dcd status --apiKey <apiKey> <uploadId>
 ```
 
-Or use the [Status API](status-api.md) to query results programmatically via HTTP.
+Or use the [dcd status](../cli/dcd-status.md) to query results programmatically via HTTP.
 
 ## GitHub Actions Pattern
 
@@ -62,4 +62,4 @@ jobs:
 
 - The console URL is available via the `DEVICE_CLOUD_CONSOLE_URL` action output so you can link to results from your CI summary.
 - Retries (`--retry`) and async mode work together — DeviceCloud handles retries in the background.
-- If you need the final pass/fail status in CI, use `dcd status` to poll or use the [Status API](status-api.md) directly.
+- If you need the final pass/fail status in CI, use `dcd status` to poll or use the [dcd status](../cli/dcd-status.md) directly.
