@@ -18,5 +18,5 @@ Device Cloud uses standard exit codes to indicate the status of command executio
 ```
 
 {% hint style="info" %}
-Note: flags `--json` and `--json-file` suppress Exit 2 and will instead Exit 0 as results failures are expressed via JSON.
+When using `--json` or `--json-file`, the CLI always exits 0. Test failures are communicated through the JSON output rather than the exit code.
 {% endhint %}
