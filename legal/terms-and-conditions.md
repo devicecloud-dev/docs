@@ -12,7 +12,7 @@ We may amend these terms and conditions from time to time, and such amendments s
 
 **1. The Platform**
 
-1.1 The Company is the exclusive owner of the Platform, and the Company and/or its licensors own all Intellectual Property rights in the Platform. The Company grants to you a non-exclusive, non-transferable, non-sublicensable, royalty-free licence to use the Platform, subject to these terms and conditions (the “**Licence**”). The Platform may be accessed by you via a web browser or other device owned or controlled by you. The Platform is designed to allow you to connect and automate your mobile app development workflow. The Platform utilises open source software, which is attributed [open-source-notices.md](open-source-notices.md "mention")‍
+1.1 The Company is the exclusive owner of the Platform, and the Company and/or its licensors own all Intellectual Property rights in the Platform. The Company grants to you a non-exclusive, non-transferable, non-sublicensable, royalty-free licence to use the Platform, subject to these terms and conditions (the “**Licence**”). The Platform may be accessed by you via a web browser or other device owned or controlled by you. The Platform is designed to allow you to connect and automate your mobile app development workflow. The Platform utilises open source software, which is attributed [here](open-source-notices.md "mention")‍
 
 1.2 You acknowledge that you are licensed to use the Platform only in accordance with these express terms and conditions, and not further or otherwise. Nothing in these terms and conditions transfers any ownership right in the Platform to you or any other party.
 

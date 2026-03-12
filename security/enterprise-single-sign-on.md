@@ -34,7 +34,11 @@ These steps have been written with OKTA in mind, but are applicable to other ide
 
 2. Populate the SAML fields using the below values.
 
-<table><thead><tr><th width="255.06890869140625">key</th><th>value</th></tr></thead><tbody><tr><td>Single sign-on URL (ACS URL) </td><td>https://cloud.devicecloud.dev/auth/v1/sso/saml/acs</td></tr><tr><td>Audience URI (SP Entity ID)</td><td>https://cloud.devicecloud.dev/auth/v1/sso/saml/metadata</td></tr><tr><td>Default Relay State</td><td>https://cloud.devicecloud.dev/</td></tr></tbody></table>
+| Key | Value |
+| --- | ----- |
+| Single sign-on URL (ACS URL) | `https://cloud.devicecloud.dev/auth/v1/sso/saml/acs` |
+| Audience URI (SP Entity ID) | `https://cloud.devicecloud.dev/auth/v1/sso/saml/metadata` |
+| Default Relay State | `https://cloud.devicecloud.dev/` |
 
 3.  Ensure the application username is set to EMAIL<br>
 

@@ -37,6 +37,22 @@ dcd cloud -e USERNAME=${CI_USERNAME} \
           -e PASSWORD=${CI_PASSWORD}
 ```
 
+## iOS: SIMCTL Variable Passthrough
+
+On iOS, variables prefixed with `SIMCTL_CHILD_` are passed through by the simulator directly to the app under test, with the prefix stripped. This allows you to inject values that are readable from inside the app via `ProcessInfo.processInfo.environment`.
+
+```bash
+dcd cloud app.zip flow.yaml -e SIMCTL_CHILD_API_URL=https://staging-api.example.com
+```
+
+Inside the iOS app, this is accessible as `API_URL`:
+
+```swift
+let apiUrl = ProcessInfo.processInfo.environment["API_URL"]
+```
+
+This is useful for feature flags, environment switching, or any value your app reads at launch without needing to rebuild the binary.
+
 ## Best Practices
 
 - Never commit sensitive values
