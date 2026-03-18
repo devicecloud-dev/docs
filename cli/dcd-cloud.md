@@ -28,6 +28,7 @@ The command blocks until all tests have completed, then exits with an appropriat
 | Flag | Description |
 |------|-------------|
 | `--app-binary-id <id>` | Reuse a previously uploaded binary instead of uploading again |
+| `--app-url <url>` | Signed URL to an Expo iOS build (`.tar.gz`). The archive is downloaded and extracted automatically. Expo signed URLs expire after ~1 hour. Mutually exclusive with `--app-file` |
 | `--additional-app-files <paths>` | Comma-separated list of additional app files to upload |
 | `--additional-app-binary-ids <ids>` | Comma-separated list of additional binary IDs to include |
 | `--ignore-sha-check` | Force re-upload even if a binary with the same SHA already exists |
@@ -64,6 +65,18 @@ The command blocks until all tests have completed, then exits with an appropriat
 | `--name <name>` | Name for this upload (shown in the console) |
 | `--retry <n>` | Retry failed tests up to `n` times. Max `2` (see [Retry Strategies](../advanced/retry-strategies.md)) |
 | `--report <format>` | Generate a report. Options: `junit`, `html`, `html-detailed`, `allure` (see [Report Formats](../test-results/report-formats.md)) |
+
+### GitHub / PR Context
+
+Attach Git and pull request metadata to a run. These values are displayed in the DeviceCloud console alongside the test results, making it easy to trace a run back to the exact commit or PR that triggered it.
+
+| Flag | Description |
+|------|-------------|
+| `--branch <name>` | Git branch name for this run |
+| `--commit-sha <sha>` | Git commit SHA for this run |
+| `--repo-name <owner/repo>` | Repository in `owner/repo` format (e.g. `acme/my-app`) |
+| `--pr-number <number>` | Pull request number |
+| `--pr-url <url>` | Pull request URL |
 
 ### Android-Specific
 

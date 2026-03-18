@@ -69,6 +69,23 @@ jobs:
 
 `app-file` must point to an Apple silicon compatible Simulator `.app` build, or a zipped `.zip` bundle. Glob patterns are supported; the first match is used.
 
+### iOS with Expo
+
+If you build with EAS, you can pass the signed build URL directly using `app-url` instead of downloading the archive yourself. The URL is fetched and extracted automatically.
+
+```yaml
+- name: Build with EAS
+  run: eas build --platform ios --profile simulator --non-interactive --json > build.json
+
+- uses: devicecloud-dev/device-cloud-for-maestro@v2
+  with:
+    api-key: ${{ secrets.DCD_API_KEY }}
+    app-url: ${{ fromJson(steps.eas-build.outputs.result).artifacts.buildUrl }}
+    flows: .maestro/
+```
+
+> **Note:** Expo signed URLs expire after ~1 hour. Generate a fresh URL immediately before this step.
+
 ---
 
 ## Inputs Reference
@@ -132,6 +149,18 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `maestro-chrome-onboarding` | No | `false` | Force Maestro-based Chrome onboarding. Fixes browser-related crashes but slows tests. See [Chrome Onboarding](../advanced/chrome-onboarding.md). |
 | `android-no-snapshot` | No | `false` | Force cold boot instead of snapshot boot. Automatically enabled for API level 35+. |
 | `enable-animations` | No | `false` | Keep device animations enabled during tests. By default animations are disabled to reduce CPU load. |
+
+### GitHub / PR Context
+
+Attach Git and pull request metadata to a run. These values are displayed in the DeviceCloud console alongside the test results.
+
+| Input | Required | Default | Description |
+|-------|----------|---------|-------------|
+| `branch` | No | — | Git branch name for this run. |
+| `commit-sha` | No | — | Git commit SHA for this run. |
+| `repo-name` | No | — | Repository in `owner/repo` format (e.g. `acme/my-app`). |
+| `pr-number` | No | — | Pull request number. |
+| `pr-url` | No | — | Pull request URL. |
 
 ### Execution Options
 
@@ -234,6 +263,22 @@ jobs:
 ---
 
 ## Common Patterns
+
+### Attach PR context to test runs
+
+Pass Git and PR metadata so each run is traceable back to the commit or PR that triggered it. The information is displayed in the DeviceCloud console.
+
+```yaml
+- uses: devicecloud-dev/device-cloud-for-maestro@v2
+  with:
+    api-key: ${{ secrets.DCD_API_KEY }}
+    app-file: app.apk
+    branch: ${{ github.head_ref || github.ref_name }}
+    commit-sha: ${{ github.sha }}
+    repo-name: ${{ github.repository }}
+    pr-number: ${{ github.event.pull_request.number }}
+    pr-url: ${{ github.event.pull_request.html_url }}
+```
 
 ### Run async tests (non-blocking)
 

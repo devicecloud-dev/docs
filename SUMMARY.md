@@ -37,6 +37,7 @@
 
 * [Overview](cli/overview.md)
 * [Cloud](cli/dcd-cloud.md)
+* [Artifacts](cli/dcd-artifacts.md)
 * [Upload](cli/dcd-upload.md)
 * [Status](cli/dcd-status.md)
 * [List](cli/dcd-list.md)
