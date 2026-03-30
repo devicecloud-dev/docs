@@ -84,7 +84,12 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 |------|-------------|
 | `--maestro-chrome-onboarding` | Run Chrome onboarding before tests (see [Chrome Onboarding](../advanced/chrome-onboarding.md)) |
 | `--android-no-snapshot` | Disable snapshot restore at test start |
-| `--enable-animations` | Enable device animations during tests |
+
+### Performance
+
+| Flag | Description |
+|------|-------------|
+| `--disable-animations` | Disable device animations during test execution. On Android, disables system animation scales. On iOS, enables Reduce Motion. |
 
 ### Output & Execution
 

@@ -148,7 +148,12 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 |-------|----------|---------|-------------|
 | `maestro-chrome-onboarding` | No | `false` | Force Maestro-based Chrome onboarding. Fixes browser-related crashes but slows tests. See [Chrome Onboarding](../advanced/chrome-onboarding.md). |
 | `android-no-snapshot` | No | `false` | Force cold boot instead of snapshot boot. Automatically enabled for API level 35+. |
-| `enable-animations` | No | `false` | Keep device animations enabled during tests. By default animations are disabled to reduce CPU load. |
+
+### Performance Options
+
+| Input | Required | Default | Description |
+|-------|----------|---------|-------------|
+| `disable-animations` | No | `false` | Disable device animations during test execution. On Android, disables system animation scales. On iOS, enables Reduce Motion. Reduces CPU load and may improve test reliability. |
 
 ### GitHub / PR Context
 

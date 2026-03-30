@@ -65,6 +65,17 @@ This file format is explained in detail in the [Maestro Cloud documentation](htt
 * `excludeTags`
 * `executionOrder`
 * `notifications` (see [Notifications](../test-results/notifications.md))
+* `platform` — platform-specific settings:
+
+```yaml
+platform:
+  ios:
+    disableAnimations: true   # enables Reduce Motion on the simulator
+  android:
+    disableAnimations: true   # disables system animation scales
+```
+
+These are equivalent to passing `--disable-animations` via the CLI. The CLI flag takes precedence if both are set.
 
 #### Unsupported Config
 
