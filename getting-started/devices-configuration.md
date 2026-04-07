@@ -6,7 +6,7 @@ If you don't specify a device or OS version, then you will be allocated the defa
 
 **Android:** Pixel 7 (API level 34)
 
-**iOS:** iPhone 14 (iOS 17.2)
+**iOS:** iPhone 14 (iOS 17.4)
 
 ### Android API Levels
 
