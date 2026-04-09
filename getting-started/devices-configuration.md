@@ -55,9 +55,9 @@ dcd cloud app.zip test.yaml --ios-version 18
 
 | id   | Version |
 | ---- | ------- |
-| `26` | 26.0.1  |
+| `26` | 26.4    |
 | `18` | 18.6    |
-| `17` | 17.4    |
+| `17` | 17.5    |
 | `16` | 16.4    |
 
 ### iOS Devices
