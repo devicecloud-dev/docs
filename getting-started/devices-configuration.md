@@ -40,7 +40,7 @@ dcd cloud app.apk test.yaml --android-device pixel-6
 | id            | Name        | Dimensions  | Valid Android API Levels       |
 | ------------- | ----------- | ----------- | ------------------------------ |
 | `pixel-6`     | Pixel 6     | 1080 x 2400 | 29, 30, 31, 32, 33, 34, 35, 36 |
-| `pixel-6-pro` | Pixel 6 Pro | 1440 x 3120 | 35                             |
+| `pixel-6-pro` | Pixel 6 Pro | 1440 x 3120 | 33, 35                         |
 | `pixel-7`     | Pixel 7     | 1080 x 2340 | 33, 34, 35, 36                 |
 | `pixel-7-pro` | Pixel 7 Pro | 1440 x 3120 | 33, 34, 35, 36                 |
 
