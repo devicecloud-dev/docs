@@ -8,8 +8,9 @@ Simply add the `--google-play` flag:
 dcd cloud ... --google-play
 ```
 
-The following devices are available with Google Play APIs:
+Google Play APIs are currently only available on a single device:
 
-* `pixel-6` on API level `34` and `35`
-* `pixel-7` on API level `34` and `35`
+* `pixel-7` on API level `34`&#x20;
+
+Please contact support if you would like more device/API availability.
 

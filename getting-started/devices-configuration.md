@@ -37,13 +37,12 @@ DeviceCloud will default to Pixel 7 unless you pass the `--android-device` flag:
 dcd cloud app.apk test.yaml --android-device pixel-6
 ```
 
-| id               | Name                                                                                                                      | Dimensions  | Valid Android API Levels   |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------- | ----------- | -------------------------- |
-| `pixel-6`        | Pixel 6                                                                                                                   | 1080 x 2400 | 29, 30, 31, 32, 33, 34, 35 |
-| `pixel-6-pro`    | Pixel 6 Pro                                                                                                               | 1440 x 3120 | 33, 34, 35                 |
-| `pixel-7`        | Pixel 7                                                                                                                   | 1080 x 2340 | 33, 34, 35                 |
-| `pixel-7-pro`    | Pixel 7 Pro                                                                                                               | 1440 x 3120 | 33, 34, 35                 |
-| `generic-tablet` | Generic Tablet (Note: starts in landscape by default, use [orientation](../configuration/orientation.md)=90 for portrait) | 1440 x 2560 | 33, 34, 35                 |
+| id            | Name        | Dimensions  | Valid Android API Levels   |
+| ------------- | ----------- | ----------- | -------------------------- |
+| `pixel-6`     | Pixel 6     | 1080 x 2400 | 29, 30, 31, 32, 33, 34, 35 |
+| `pixel-6-pro` | Pixel 6 Pro | 1440 x 3120 | 33, 34, 35                 |
+| `pixel-7`     | Pixel 7     | 1080 x 2340 | 33, 34, 35                 |
+| `pixel-7-pro` | Pixel 7 Pro | 1440 x 3120 | 33, 34, 35                 |
 
 ### iOS Versions
 
