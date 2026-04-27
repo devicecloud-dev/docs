@@ -1,4 +1,4 @@
-# Device Configuration
+# Devices & OS Versions
 
 ### Default Devices
 
@@ -37,12 +37,12 @@ DeviceCloud will default to Pixel 7 unless you pass the `--android-device` flag:
 dcd cloud app.apk test.yaml --android-device pixel-6
 ```
 
-| id               | Name                                                                                                                 | Dimensions  | Valid Android API Levels   |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------- | ----------- | -------------------------- |
-| `pixel-6`        | Pixel 6                                                                                                              | 1080 x 2400 | 29, 30, 31, 32, 33, 34, 35 |
-| `pixel-6-pro`    | Pixel 6 Pro                                                                                                          | 1440 x 3120 | 33, 34, 35                 |
-| `pixel-7`        | Pixel 7                                                                                                              | 1080 x 2340 | 33, 34, 35                 |
-| `pixel-7-pro`    | Pixel 7 Pro                                                                                                          | 1440 x 3120 | 33, 34, 35                 |
+| id               | Name                                                                                                                      | Dimensions  | Valid Android API Levels   |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------- | ----------- | -------------------------- |
+| `pixel-6`        | Pixel 6                                                                                                                   | 1080 x 2400 | 29, 30, 31, 32, 33, 34, 35 |
+| `pixel-6-pro`    | Pixel 6 Pro                                                                                                               | 1440 x 3120 | 33, 34, 35                 |
+| `pixel-7`        | Pixel 7                                                                                                                   | 1080 x 2340 | 33, 34, 35                 |
+| `pixel-7-pro`    | Pixel 7 Pro                                                                                                               | 1440 x 3120 | 33, 34, 35                 |
 | `generic-tablet` | Generic Tablet (Note: starts in landscape by default, use [orientation](../configuration/orientation.md)=90 for portrait) | 1440 x 2560 | 33, 34, 35                 |
 
 ### iOS Versions
@@ -68,13 +68,11 @@ DeviceCloud will default to iPhone 14 unless you pass the `--ios-device` flag:
 dcd cloud app.zip test.yaml --ios-device ipad-pro-6th-gen
 ```
 
-| id                    | Name                      | Dimensions  | Valid iOS versions |
-| --------------------- | ------------------------- | ----------- | ------------------ |
-| `iphone-16-pro-max`   | iPhone 16 Pro Max         | 1290 x 2796 | 18, 26             |
-| `iphone-16-pro`       | iPhone 16 Pro             | 1179 x 2556 | 18, 26             |
-| `iphone-16-plus`      | iPhone 16 Plus            | 1284 x 2778 | 18, 26             |
-| `iphone-16`           | iPhone 16                 | 1170 x 2532 | 18, 26             |
-| `iphone-15`           | iPhone 15                 | 1170 x 2532 | 17                 |
-| `iphone-14`           | iPhone 14                 | 1170 x 2532 | 16, 17, 18         |
-| `ipad-pro-6th-gen`    | iPad Pro (6th Generation) | 2732 x 2048 | 18, 26             |
-
+| id                  | Name                      | Dimensions  | Valid iOS versions |
+| ------------------- | ------------------------- | ----------- | ------------------ |
+| `iphone-16-pro-max` | iPhone 16 Pro Max         | 1290 x 2796 | 18, 26             |
+| `iphone-16-pro`     | iPhone 16 Pro             | 1179 x 2556 | 18, 26             |
+| `iphone-16`         | iPhone 16                 | 1170 x 2532 | 18, 26             |
+| `iphone-15`         | iPhone 15                 | 1170 x 2532 | 17                 |
+| `iphone-14`         | iPhone 14                 | 1170 x 2532 | 16, 17, 18         |
+| `ipad-pro-6th-gen`  | iPad Pro (6th Generation) | 2732 x 2048 | 18, 26             |
