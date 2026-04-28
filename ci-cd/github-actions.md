@@ -121,9 +121,9 @@ If you build with EAS, you can pass the signed build URL directly using `app-url
 
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
-| `android-device` | No | — | Android device model. Options: `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`, `generic-tablet`. |
+| `android-device` | No | — | Android device model. Options: `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`. |
 | `android-api-level` | No | `34` | Android API level. Options: `29`, `30`, `31`, `32`, `33`, `34`, `35`, `36`. |
-| `ios-device` | No | — | iOS device model. Options: `iphone-14`, `iphone-14-pro`, `iphone-15`, `iphone-15-pro`, `iphone-16`, `iphone-16-plus`, `iphone-16-pro`, `iphone-16-pro-max`, `ipad-pro-6th-gen`. |
+| `ios-device` | No | — | iOS device model. Options: `iphone-14`, `iphone-15`,  `iphone-16`, `iphone-16-pro`, `iphone-16-pro-max`, `ipad-pro-6th-gen`. |
 | `ios-version` | No | `17` | Major iOS version. Options: `16`, `17`, `18`, `26`. |
 | `device-locale` | No | — | Device locale in `ISO-639-1_ISO-3166-1` format (e.g. `de_DE`). See [Device Locale](../configuration/device-locale.md). |
 | `orientation` | No | `0` | Android only. Device orientation in degrees. Options: `0`, `90`, `180`, `270`. |
@@ -139,7 +139,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `maestro-version` | No | — | Maestro CLI version to run flows with. See [Maestro Versions](../configuration/maestro-versions.md). |
 | `env` | No | — | Multiline list of environment variables (`KEY=value`) to inject into flows. |
 | `name` | No | Commit message | Custom name for this test run, visible in the console. |
-| `retry` | No | `0` | Number of retries on failure (max `3`). Retries are free — same as pressing retry in the UI. |
+| `retry` | No | `0` | Number of retries on failure (max `2`). Retries are free — same as pressing retry in the UI. |
 | `report` | No | — | Report format. Options: `junit`, `html`, `html-detailed`, `allure`. See [Report Formats](../test-results/report-formats.md). |
 
 ### Android-Specific Options
