@@ -4,7 +4,7 @@ A `config.yaml` (or `config.yml`) file lets you configure how the CLI discovers,
 
 ## Auto-detection
 
-Place `config.yaml` at the root of the directory you pass to `dcd cloud` and the CLI will pick it up automatically.
+Place your `config.yaml` file at the root of the directory you pass to `dcd cloud` and the CLI will pick it up automatically.
 ```bash
 dcd cloud app.apk flows/        # flows/config.yaml is loaded automatically
 ```
@@ -35,7 +35,7 @@ If `flows` is omitted, all `.yaml` / `.yml` files in the directory (except confi
 
 ### `includeTags` / `excludeTags`
 
-Filter flows by their Maestro `tags`. Values here are **merged** with any tags set using the CLI flags and both sets apply simultaneously.
+Filter flows by their Maestro `tags`. Values here are **merged** with any tags set using the CLI flags.
 
 ```yaml
 includeTags:
