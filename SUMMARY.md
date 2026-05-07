@@ -26,6 +26,7 @@
 * [Maestro Versions](configuration/maestro-versions.md)
 * [Google Play APIs](configuration/google-play-apis.md)
 * [Runner Types](configuration/runner-type.md)
+* [Workspace Configuration](configuration/workspace-config.md)
 
 ## Test Results & Artifacts
 

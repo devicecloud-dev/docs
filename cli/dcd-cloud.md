@@ -51,7 +51,7 @@ The command blocks until all tests have completed, then exits with an appropriat
 | Flag | Description |
 |------|-------------|
 | `--flows <paths>` | Comma-separated list of flow files to run (alternative to positional arg) |
-| `--config <path>` | Path to a `config.yaml` workspace config file |
+| `--config <path>` | Path to a `config.yaml` workspace config file (see [Workspace Configuration](../configuration/workspace-config.md)) |
 | `--exclude-flows <paths>` | Comma-separated list of flow files to exclude |
 | `--include-tags <tags>` | Only run flows with these tags (comma-separated) |
 | `--exclude-tags <tags>` | Skip flows with these tags (comma-separated) |
