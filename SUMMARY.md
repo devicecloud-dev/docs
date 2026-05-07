@@ -21,12 +21,12 @@
 
 * [App Management](configuration/app-management.md)
 * [Environment Variables](configuration/environment-variables.md)
+* [Workspace Configuration](configuration/workspace-config.md)
 * [Device Locale](configuration/device-locale.md)
 * [Device Orientation](configuration/orientation.md)
 * [Maestro Versions](configuration/maestro-versions.md)
 * [Google Play APIs](configuration/google-play-apis.md)
 * [Runner Types](configuration/runner-type.md)
-* [Workspace Configuration](configuration/workspace-config.md)
 
 ## Test Results & Artifacts
 
