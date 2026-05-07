@@ -4,8 +4,7 @@ A `config.yaml` (or `config.yml`) file lets you configure how the CLI discovers,
 
 ## Auto-detection
 
-Place `config.yaml` at the root of the directory you pass to `dcd cloud`. The CLI picks it up automatically — no extra flag required.
-
+Place `config.yaml` at the root of the directory you pass to `dcd cloud` and the CLI will pick it up automatically.
 ```bash
 dcd cloud app.apk flows/        # flows/config.yaml is loaded automatically
 ```
@@ -22,7 +21,7 @@ dcd cloud app.apk flows/ --config ci/workspace.yaml
 
 ### `flows`
 
-Glob patterns that select which flow files to run. Accepts a list of patterns; the CLI uses the [NPM glob](https://www.npmjs.com/package/glob) module.
+Glob patterns that select which flow files to run. Accepts a list of patterns using the [NPM glob](https://www.npmjs.com/package/glob) syntax.
 
 ```yaml
 flows:
@@ -36,7 +35,7 @@ If `flows` is omitted, all `.yaml` / `.yml` files in the directory (except confi
 
 ### `includeTags` / `excludeTags`
 
-Filter flows by their Maestro `tags`. Values here are **merged** with any `--include-tags` / `--exclude-tags` CLI flags — both sets apply simultaneously.
+Filter flows by their Maestro `tags`. Values here are **merged** with any tags set using the CLI flags and both sets apply simultaneously.
 
 ```yaml
 includeTags:
@@ -63,7 +62,7 @@ executionOrder:
 - `continueOnFailure` — if `true`, subsequent flows in the sequence run even if an earlier one fails. Defaults to `false`.
 
 {% hint style="info" %}
-If a flow name in `flowsOrder` doesn't match any discovered flow (e.g. after tag filtering), the CLI emits a warning and lists the available names to help diagnose the mismatch.
+If a flow name in `flowsOrder` doesn't match any discovered flow (e.g. after tag filtering), the CLI will emit a warning and lists the available names to help diagnose the mismatch.
 {% endhint %}
 
 ### `notifications`
