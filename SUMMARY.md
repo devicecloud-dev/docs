@@ -7,7 +7,7 @@
 * [Quick Start](getting-started/quickstart.md)
 * [API Keys](getting-started/api-keys.md)
 * [Devices & OS Versions](getting-started/devices-configuration.md)
-* [Flows & Workspaces](getting-started/flows.md)
+* [Flows & Workspaces](getting-started/flows-and-workspaces.md)
 * [Concurrency & Parallel Runs](getting-started/concurrency-and-parallel-runs.md)
 
 ## CI/CD Integration
@@ -21,6 +21,7 @@
 
 * [App Management](configuration/app-management.md)
 * [Environment Variables](configuration/environment-variables.md)
+* [Workspace Configuration](configuration/workspace-config.md)
 * [Device Locale](configuration/device-locale.md)
 * [Device Orientation](configuration/orientation.md)
 * [Maestro Versions](configuration/maestro-versions.md)

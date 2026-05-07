@@ -50,37 +50,13 @@ The CLI uses the [NPM glob](https://www.npmjs.com/package/glob) module. This pac
 
 ### 4. Executing flows using a Workspace Config file
 
-For complex setups, a `config.yaml` file is recommended. Place it in the top-level directory you pass to the CLI — it will be detected automatically. The CLI will match flows by name or glob using the `flows` key.
+For complex setups, a `config.yaml` file is recommended. Place it in the top-level directory you pass to the CLI and it will be detected automatically.
 
 ```
 dcd cloud --apiKey <apiKey> <appFile> <directoryPathIncludingConfigYaml>
 ```
 
-This file format is explained in detail in the [Maestro Cloud documentation](https://cloud.mobile.dev/reference/workspace-configuration). We only support the options listed below — unsupported keys will be silently skipped.
-
-#### Supported Config
-
-* `flows`
-* `includeTags`
-* `excludeTags`
-* `executionOrder`
-* `notifications` (see [Notifications](../test-results/notifications.md))
-* `platform` — platform-specific settings:
-
-```yaml
-platform:
-  ios:
-    disableAnimations: true   # enables Reduce Motion on the simulator
-  android:
-    disableAnimations: true   # disables system animation scales
-```
-
-These are equivalent to passing `--disable-animations` via the CLI. The CLI flag takes precedence if both are set.
-
-#### Unsupported Config
-
-* `baselineBranch`
-* `disableRetries`
+See [Workspace Configuration](../configuration/workspace-config.md) for more information.
 
 ### Referencing flows
 
