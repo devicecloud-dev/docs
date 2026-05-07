@@ -7,7 +7,7 @@
 * [Quick Start](getting-started/quickstart.md)
 * [API Keys](getting-started/api-keys.md)
 * [Devices & OS Versions](getting-started/devices-configuration.md)
-* [Flows & Workspaces](getting-started/flows.md)
+* [Flows & Workspaces](getting-started/flows-and-workspaces.md)
 * [Concurrency & Parallel Runs](getting-started/concurrency-and-parallel-runs.md)
 
 ## CI/CD Integration

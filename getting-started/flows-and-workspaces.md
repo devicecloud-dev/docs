@@ -50,13 +50,13 @@ The CLI uses the [NPM glob](https://www.npmjs.com/package/glob) module. This pac
 
 ### 4. Executing flows using a Workspace Config file
 
-For complex setups, a `config.yaml` file is recommended. Place it in the top-level directory you pass to the CLI — it will be detected automatically.
+For complex setups, a `config.yaml` file is recommended. Place it in the top-level directory you pass to the CLI and it will be detected automatically.
 
 ```
 dcd cloud --apiKey <apiKey> <appFile> <directoryPathIncludingConfigYaml>
 ```
 
-See [Workspace Configuration](../configuration/workspace-config.md) for the full field reference, including flow glob patterns, tag filtering, sequential execution order, email notifications, and per-platform settings.
+See [Workspace Configuration](../configuration/workspace-config.md) for more information.
 
 ### Referencing flows
 
