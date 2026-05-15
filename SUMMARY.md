@@ -23,7 +23,7 @@
 * [Environment Variables](configuration/environment-variables.md)
 * [Workspace Configuration](configuration/workspace-config.md)
 * [Device Locale](configuration/device-locale.md)
-* [Disable Animations](configuration/disable-animations.md)
+* [Animations](configuration/disable-animations.md)
 * [Device Orientation](configuration/orientation.md)
 * [Maestro Versions](configuration/maestro-versions.md)
 * [Google Play APIs](configuration/google-play-apis.md)

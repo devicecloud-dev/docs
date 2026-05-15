@@ -1,19 +1,8 @@
-# Disable Animations
+# Animations
 
-Turn off device animations during a test run. On Android this zeroes the three
+You can turn off device animations during a test run. On Android this works by zeroing the three
 system animation scales (`window`, `transition`, `animator`) via adb. On iOS this
 enables the **Reduce Motion** accessibility setting.
-
-{% hint style="info" %}
-Disabling animations is the most common fix for `scrollUntilVisible` failing on an
-element that is clearly visible, and for tests that hit the 10-minute timeout because
-every `tapOn` is slow. Both are caused by the Android `uiautomator` hierarchy dump
-waiting for the window to be "idle" while animations keep it busy.
-{% endhint %}
-
-## Format
-
-Boolean (`true` or `false`).
 
 ## Usage
 
