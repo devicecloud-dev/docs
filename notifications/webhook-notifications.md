@@ -1,45 +1,4 @@
-# Notifications
-
-DeviceCloud can notify you when a test run is complete via email, [Slack](slack-notifications.md), or webhook.
-
-## Email Notifications
-
-Configure email notifications in your `config.yaml`:
-
-#### Notify on failures only
-
-```yaml
-# .maestro/config.yaml
-notifications:
-  email:
-    enabled: true
-    recipients:
-      - sam@example.com
-      - devs@example.com
-```
-
-#### Notify on successes and failures
-
-```yaml
-# .maestro/config.yaml
-notifications:
-  email:
-    enabled: true
-    onSuccess: true
-    recipients:
-      - sam@example.com
-      - devs@example.com
-```
-
----
-
-## Slack Notifications
-
-DeviceCloud can post a pass/fail summary to a Slack channel when a run completes. This is configured per-organization from the console — see [Slack Notifications](slack-notifications.md) for the setup steps.
-
----
-
-## Webhook Notifications
+# Webhook Notifications
 
 DeviceCloud can send a POST request to a URL of your choice when a set of tests completes.
 

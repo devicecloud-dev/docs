@@ -29,12 +29,16 @@
 * [Google Play APIs](configuration/google-play-apis.md)
 * [Runner Types](configuration/runner-type.md)
 
-## Test Results & Artifacts
+## Test Artifacts & Reports
 
-* [Artifacts & Downloads](test-results/artifacts.md)
-* [Report Formats](test-results/report-formats.md)
-* [Notifications](test-results/notifications.md)
-* [Slack Notifications](test-results/slack-notifications.md)
+* [Artifacts & Downloads](test-reports/artifacts.md)
+* [Report Formats](test-reports/report-formats.md)
+
+## Notifications
+* [Notifications](notifications/notifications.md)
+* [Email Notifications](notifications/email-notifications.md)
+* [Slack Notifications](notifications/slack-notifications.md)
+* [Webhook Notifications](notifications/webhook-notifications.md)
 
 ## CLI Reference
 
