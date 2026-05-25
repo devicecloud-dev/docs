@@ -28,10 +28,27 @@ Once a channel is selected, use **Send test** to post a sample message to that c
 Each notification includes:
 
 - An overall **passed / failed** status.
-- The test suite (upload) name.
-- Pass/fail counts and total duration.
+- The test suite (upload) name, pass/fail counts, and total duration.
+- **Run environment**: app ID, device & OS (e.g. *Android · Pixel 7 · API 34*), Maestro version, and runner type.
 - A list of failed flows (with their failure reason, where available).
-- A **View in DeviceCloud** button linking to the run in the console.
+- A **View results in DeviceCloud** link to the run in the console.
+
+### Git / CI context
+
+When a run carries git metadata, the message also shows a line with the **repository**, **branch**, a linked **commit**, and a linked **pull request**.
+
+This is populated automatically when you run in CI, or when you pass the git flags to the CLI:
+
+```bash
+dcd cloud app.apk flows/ \
+  --branch "$GIT_BRANCH" \
+  --commit-sha "$GIT_SHA" \
+  --repo-name "owner/repo" \
+  --pr-number "123" \
+  --pr-url "https://github.com/owner/repo/pull/123"
+```
+
+The line only appears when at least one of these values is present, and the commit/PR become clickable GitHub links when a `--repo-name` is supplied.
 
 ## Disconnecting
 
