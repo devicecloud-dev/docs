@@ -6,7 +6,7 @@ Slack is configured once per organization from the DeviceCloud console — there
 
 ## Connecting Slack
 
-1. Head to the [console settings](https://console.devicecloud.dev/settings?section=slack) page and open the **Slack** section.
+1. Head to the [console settings](https://console.devicecloud.dev/settings?section=notifications) page and open the **Notifications** section.
 2. Click **Connect Slack**. You'll be redirected to Slack to authorize DeviceCloud for your workspace.
 3. After you approve, you'll be returned to the console.
 4. Pick the **channel** you want notifications posted to and click **Save**.
