@@ -54,4 +54,15 @@ If you are not receiving emails for your test runs, try adding **hello@deviceclo
 
 ### Disabling emails
 
-Simply set `enabled: false` (or remove the `notifications.email` block) from your `config.yaml`. 
+Simply set `enabled: false` (or remove the `notifications.email` block) from your `config.yaml`.
+
+```yaml
+# config.yaml
+notifications:
+  email:
+    enabled: false
+    onSuccess: true
+    recipients:
+      - sam@example.com
+      - devs@example.com
+```
