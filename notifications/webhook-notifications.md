@@ -1,39 +1,4 @@
-# Notifications
-
-DeviceCloud can notify you when a test run is complete via email or webhook.
-
-## Email Notifications
-
-Configure email notifications in your `config.yaml`:
-
-#### Notify on failures only
-
-```yaml
-# .maestro/config.yaml
-notifications:
-  email:
-    enabled: true
-    recipients:
-      - sam@example.com
-      - devs@example.com
-```
-
-#### Notify on successes and failures
-
-```yaml
-# .maestro/config.yaml
-notifications:
-  email:
-    enabled: true
-    onSuccess: true
-    recipients:
-      - sam@example.com
-      - devs@example.com
-```
-
----
-
-## Webhook Notifications
+# Webhook Notifications
 
 DeviceCloud can send a POST request to a URL of your choice when a set of tests completes.
 
