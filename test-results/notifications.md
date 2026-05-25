@@ -1,6 +1,6 @@
 # Notifications
 
-DeviceCloud can notify you when a test run is complete via email or webhook.
+DeviceCloud can notify you when a test run is complete via email, [Slack](slack-notifications.md), or webhook.
 
 ## Email Notifications
 
@@ -30,6 +30,12 @@ notifications:
       - sam@example.com
       - devs@example.com
 ```
+
+---
+
+## Slack Notifications
+
+DeviceCloud can post a pass/fail summary to a Slack channel when a run completes. This is configured per-organization from the console — see [Slack Notifications](slack-notifications.md) for the setup steps.
 
 ---
 

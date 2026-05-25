@@ -34,6 +34,7 @@
 * [Artifacts & Downloads](test-results/artifacts.md)
 * [Report Formats](test-results/report-formats.md)
 * [Notifications](test-results/notifications.md)
+* [Slack Notifications](test-results/slack-notifications.md)
 
 ## CLI Reference
 
