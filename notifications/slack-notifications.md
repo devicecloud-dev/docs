@@ -15,13 +15,13 @@ Slack is configured once per organization from the DeviceCloud console — there
 DeviceCloud requests only the permissions it needs to list your channels and post messages. It cannot read your messages.
 {% endhint %}
 
-## Only notify on failures
-
-By default DeviceCloud posts after **every** completed run. To cut down on noise, turn on **Only notify on failures** in the Slack section — passing runs will then be skipped and you'll only get a message when a run has at least one failed flow.
-
 ## Sending a test message
 
 Once a channel is selected, use **Send test** to post a sample message to that channel and confirm everything is wired up. The test uses data from your most recent run when available.
+
+## Only notify on failures
+
+By default DeviceCloud posts after **every** completed run. To cut down on noise, turn on **Only notify on failures** in the Slack section — passing runs will then be skipped and you'll only get a message when a run has at least one failed flow.
 
 ## What's in the message
 
@@ -52,4 +52,4 @@ The line only appears when at least one of these values is present, and the comm
 
 ## Disconnecting
 
-Click **Disconnect** in the Slack section to stop notifications and revoke DeviceCloud's access to your workspace. You can reconnect at any time.
+Click **Disconnect** in the Slack section to stop notifications and revoke DeviceCloud's access to your workspace. You can disconnect and reconnect at any time.
