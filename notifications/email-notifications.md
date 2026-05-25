@@ -18,7 +18,7 @@ notifications:
       - devs@example.com
 ```
 
-With this configuration you'll only be emailed when a run has at least one failed or cancelled flow. Passing runs are skipped to cut down on noise.
+By default you'll only be emailed when a suite has at least one failed or cancelled flow.
 
 {% hint style="info" %}
 The `config.yaml` is picked up automatically from the directory you pass to `dcd cloud`. See [Workspace Configuration](../configuration/workspace-config.md) for where the file lives and how it's loaded.
@@ -26,7 +26,7 @@ The `config.yaml` is picked up automatically from the directory you pass to `dcd
 
 #### Also notify on passing runs
 
-To receive a summary after **every** completed run — passes included — set `onSuccess` to `true`:
+To receive a summary after **every** completed run set `onSuccess` to `true`:
 
 ```yaml
 # config.yaml
@@ -43,11 +43,15 @@ notifications:
 
 The email is sent from **DeviceCloud &lt;hello@devicecloud.dev&gt;** and includes:
 
-- A **subject line** that summarises the outcome at a glance — e.g. *"2 failed for test run Smoke Suite"*, *"All 12 tests passed for test run Smoke Suite"*, or *"All 3 tests cancelled for test run Smoke Suite"*.
-- The **test suite (upload) name** and an overall count of **total / passed / failed / cancelled** flows.
-- A list of every flow **grouped by status**, with each flow name linking straight to its result in the console. Retried flows are tagged with a **RETRY** badge.
-- A **View Full Results** button linking to the complete run in the console.
+- An at-a-glance summary in the subject line.
+- The test suite name and overall counts of passed, failed and cancelled flows.
+- A grouped list of all flows by status.
+- Links to view the suite or individual flows on the console.
+
+{% hint style="info" %}
+If you are not receiving emails for your test runs, try adding **hello@devicecloud.dev** to your safe senders list.
+{% endhint %}
 
 ### Disabling
 
-Set `enabled: false` (or remove the `notifications.email` block) and commit the change to stop email notifications. Because the setting lives in `config.yaml`, it takes effect on the next run that uses that config.
+Simply set `enabled: false` (or remove the `notifications.email` block) from your `config.yaml`. 
