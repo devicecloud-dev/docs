@@ -52,6 +52,6 @@ The email is sent from **DeviceCloud &lt;hello@devicecloud.dev&gt;** and include
 If you are not receiving emails for your test runs, try adding **hello@devicecloud.dev** to your safe senders list.
 {% endhint %}
 
-### Disabling
+### Disabling emails
 
 Simply set `enabled: false` (or remove the `notifications.email` block) from your `config.yaml`. 
