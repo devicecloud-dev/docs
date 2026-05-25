@@ -35,7 +35,6 @@
 * [Report Formats](test-reports/report-formats.md)
 
 ## Notifications
-* [Notifications](notifications/notifications.md)
 * [Email Notifications](notifications/email-notifications.md)
 * [Slack Notifications](notifications/slack-notifications.md)
 * [Webhook Notifications](notifications/webhook-notifications.md)
