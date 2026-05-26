@@ -26,7 +26,7 @@ jobs:
 Store your API key as an [EAS secret](https://docs.expo.dev/eas/workflows/syntax/#secrets) named `DEVICE_CLOUD_API_KEY`. You can find your API key in the [console settings](https://console.devicecloud.dev/settings).
 
 {% hint style="info" %}
-EAS Workflow custom jobs run on EAS-hosted runners. `linux-medium` is sufficient — the wrapper just hands off to DeviceCloud, which runs your tests on its own device fleet.
+EAS Workflow custom jobs run on EAS-hosted runners. `linux-medium` is sufficient — the wrapper just hands off to DeviceCloud, which runs your tests on our own device fleet.
 {% endhint %}
 
 ## How It Works
@@ -93,10 +93,6 @@ jobs:
           EAS_BUILD_ID: ${{ after.build_ios.outputs.build_id }}
 ```
 
-{% hint style="info" %}
-You don't need a macOS runner for iOS — DeviceCloud runs iOS simulators on its own Mac fleet.
-{% endhint %}
-
 ---
 
 ## Environment Variables
@@ -119,8 +115,6 @@ One of these is required. Use `EAS_BUILD_URL` after an EAS `build` job, or pass 
 
 ### Run Metadata (Optional)
 
-All optional. Attach as much context as you want — each one becomes a searchable tag on the test run in the [DeviceCloud console](https://console.devicecloud.dev).
-
 | Variable | Source | Tagged As |
 |----------|--------|-----------|
 | `EAS_BUILD_ID` | `${{ after.<build_job>.outputs.build_id }}` | `eas_build_id` |
@@ -133,13 +127,6 @@ All optional. Attach as much context as you want — each one becomes a searchab
 | `EAS_GH_PR_URL` | `${{ github.event.pull_request.html_url }}` | `gh_pr_url` |
 | `EAS_GH_REPO` | `${{ github.repository }}` | `gh_repo` |
 | `EAS_GH_RUN_ID` | `${{ github.run_id }}` | `gh_run_id` |
-
-### Advanced
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `DEVICE_CLOUD_API_URL` | — | Override the API URL. Used for staging environments. |
-| `DCD_USE_BETA` | `false` | Set to `true` to use the beta DCD CLI. |
 
 ---
 
@@ -179,7 +166,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `--maestro-version <semver>` | Maestro CLI version. See [Maestro Versions](../configuration/maestro-versions.md). |
 | `--env KEY=value` | Inject environment variables into your flows. Repeatable. |
 | `--name <name>` | Custom name for this test run. |
-| `--retry <n>` | Number of retries on failure (max `2`). Free — same as the UI retry button. |
+| `--retry <n>` | Number of automatic retries on failure (max `2`). Retries are free. |
 | `--report <format>` | `junit`, `html`, `html-detailed`, `allure`. See [Report Formats](../test-reports/report-formats.md). |
 
 ### App Source (alternative to `EAS_BUILD_URL`)
@@ -198,10 +185,10 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `--download-artifacts <mode>` | Download logs/screenshots/videos. Options: `ALL`, `FAILED`. |
 | `--disable-animations` | Disable device animations. See [Animations](../configuration/disable-animations.md). |
 | `--maestro-chrome-onboarding` | Android only. See [Chrome Onboarding](../advanced/chrome-onboarding.md). |
-| `--android-no-snapshot` | Force cold boot. Auto-enabled for API 35+. |
+| `--android-no-snapshot` | Force cold boot. Enabled by default for API 35+. |
 | `--debug` | Verbose debug output. |
 
-The full CLI reference is at [CLI: Cloud](../cli/dcd-cloud.md).
+The full CLI reference can be found at [CLI: Cloud](../cli/dcd-cloud.md).
 
 ---
 
@@ -368,8 +355,4 @@ e2e:
         EAS_BUILD_URL: ${{ after.build.outputs.build_url }}
 ```
 
-Update your secret name from `MAESTRO_CLOUD_API_KEY` to `DEVICE_CLOUD_API_KEY` (or whatever name you choose for your DeviceCloud key).
-
-## Source
-
-The wrapper is open source: [github.com/devicecloud-dev/device-cloud-for-eas](https://github.com/devicecloud-dev/device-cloud-for-eas). Issues and PRs welcome.
+Update your secret name from `MAESTRO_CLOUD_API_KEY` to `DEVICE_CLOUD_API_KEY`.
