@@ -6,6 +6,7 @@ DeviceCloud supports a wide range of CI/CD options. If you don't see your provid
 
 * [GitHub Actions](github-actions.md) - Full GitHub Actions integration with all options
 * [Bitrise](bitrise.md) - Bitrise integration
+* [EAS Workflows](eas-workflows.md) - EAS integration
 * [Any CI](any-ci.md) - Generic integration using the CLI directly
 
 ### Useful Features For CI/CD

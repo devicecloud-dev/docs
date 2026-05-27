@@ -37,21 +37,10 @@ eas env:create --scope project --environment production --environment preview --
 
 You can find your API key in the [DeviceCloud console settings](https://console.devicecloud.dev/settings).
 
-{% hint style="warning" %}
-**Never use env-var names starting with `EAS_BUILD_*`.** That namespace is reserved by EAS Build workers (`EAS_BUILD_ID`, `EAS_BUILD_PROJECT_ID`, `EAS_BUILD_WORKINGDIR`, etc.). If you set e.g. `EAS_BUILD_ID: ${{ needs.X.outputs.build_id }}` in your YAML, you'll clobber the worker's own job-run identifier and the job will fail silently after `PREPARE_PROJECT` with no error message — only a confusing `Failed to refresh project archive` warning in the logs. This wrapper uses `DCD_EAS_*` prefixes to avoid the collision.
-{% endhint %}
-
-{% hint style="info" %}
-EAS automatically injects project-scoped secret env vars into every step as process environment variables — **don't** reference them via `${{ secrets.X }}` in YAML. That syntax doesn't exist in EAS Workflows (it'll error with "Invalid identifier 'secrets'"). Just declare the env var with `--visibility secret` and the wrapper reads it via `process.env`.
-{% endhint %}
 
 {% hint style="info" %}
 EAS Workflow custom jobs run on EAS-hosted runners. `linux-medium` is sufficient — the wrapper just hands off to DeviceCloud, which runs your tests on its own device fleet.
 {% endhint %}
-
-## How It Works
-
-The wrapper reads EAS/git context (build ID, commit SHA, branch) from environment variables, then shells out to the [DeviceCloud CLI](../cli/overview.md) with the right flags. The build artifact is downloaded by EAS's built-in `eas/download_build` step and passed to the wrapper as `--app-file`. The wrapper parses the run status when complete and emits EAS step outputs so downstream jobs can react to the result.
 
 ## Platform Examples
 
@@ -147,7 +136,7 @@ The wrapper turns these into either DCD flags or `--metadata` tags (so each run 
 
 | Variable | Source | Purpose |
 |----------|--------|---------|
-| `DEVICE_CLOUD_API_KEY` | project secret (set via `eas env:create --visibility secret`) | DCD `--apiKey` (required). Auto-injected; don't reference via `${{ secrets.X }}`. |
+| `DEVICE_CLOUD_API_KEY` |`eas env:create --visibility secret` | DCD `--apiKey` (required). Auto-injected at runtime. |
 
 ### Build context (recommended)
 
@@ -407,4 +396,4 @@ Then store your DeviceCloud API key as a project secret (as shown in [Quick Star
 
 ## Source
 
-The wrapper is open source: [github.com/devicecloud-dev/device-cloud-for-eas](https://github.com/devicecloud-dev/device-cloud-for-eas). Issues and PRs welcome.
+The wrapper is open source and can be found here: [github.com/devicecloud-dev/device-cloud-for-eas](https://github.com/devicecloud-dev/device-cloud-for-eas).
