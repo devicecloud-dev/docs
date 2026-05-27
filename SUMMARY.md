@@ -15,6 +15,7 @@
 * [Overview](ci-cd/overview.md)
 * [GitHub Actions](ci-cd/github-actions.md)
 * [Bitrise](ci-cd/bitrise.md)
+* [EAS Workflows](ci-cd/eas-workflows.md)
 * [Any CI](ci-cd/any-ci.md)
 
 ## Configuration
