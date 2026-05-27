@@ -23,7 +23,7 @@ jobs:
           build_id: ${{ needs.build_android.outputs.build_id }}
       - id: dcd
         run: |
-          npx --yes @devicecloud.dev/eas-workflow@next \
+          npx --yes @devicecloud.dev/eas-workflow@v1 \
             --app-file ${{ steps.download.outputs.artifact_path }} \
             --flows ./.maestro
 ```
@@ -86,7 +86,7 @@ jobs:
           build_id: ${{ needs.build_android.outputs.build_id }}
       - id: dcd
         run: |
-          npx --yes @devicecloud.dev/eas-workflow@next \
+          npx --yes @devicecloud.dev/eas-workflow@v1 \
             --app-file ${{ steps.download.outputs.artifact_path }} \
             --flows ./.maestro \
             --android-device pixel-7 \
@@ -124,7 +124,7 @@ jobs:
           build_id: ${{ needs.build_ios.outputs.build_id }}
       - id: dcd
         run: |
-          npx --yes @devicecloud.dev/eas-workflow@next \
+          npx --yes @devicecloud.dev/eas-workflow@v1 \
             --app-file ${{ steps.download.outputs.artifact_path }} \
             --flows ./.maestro \
             --ios-device iphone-16 \
@@ -182,7 +182,7 @@ The build artifact itself is downloaded by `eas/download_build` and passed via `
 
 ## CLI Flags
 
-Anything you pass on the command line after `npx @devicecloud.dev/eas-workflow@next ...` is forwarded verbatim to [`dcd cloud`](../cli/dcd-cloud.md).
+Anything you pass on the command line after `npx @devicecloud.dev/eas-workflow@v1 ...` is forwarded verbatim to [`dcd cloud`](../cli/dcd-cloud.md).
 
 ### App source
 
@@ -271,7 +271,7 @@ jobs:
           build_id: ${{ needs.build_android.outputs.build_id }}
       - id: dcd
         run: |
-          npx --yes @devicecloud.dev/eas-workflow@next \
+          npx --yes @devicecloud.dev/eas-workflow@v1 \
             --app-file ${{ steps.download.outputs.artifact_path }} \
             --flows ./.maestro
 
@@ -324,7 +324,7 @@ jobs:
         with:
           build_id: ${{ needs.build_android.outputs.build_id }}
       - run: |
-          npx --yes @devicecloud.dev/eas-workflow@next \
+          npx --yes @devicecloud.dev/eas-workflow@v1 \
             --app-file ${{ steps.download.outputs.artifact_path }} \
             --flows ./.maestro
 ```
@@ -333,7 +333,7 @@ jobs:
 
 ```yaml
 - run: |
-    npx --yes @devicecloud.dev/eas-workflow@next \
+    npx --yes @devicecloud.dev/eas-workflow@v1 \
       --app-file ${{ steps.download.outputs.artifact_path }} \
       --flows ./.maestro \
       --async \
@@ -353,7 +353,7 @@ Then reference it as a regular env var in the wrapper invocation:
 
 ```yaml
 - run: |
-    npx --yes @devicecloud.dev/eas-workflow@next \
+    npx --yes @devicecloud.dev/eas-workflow@v1 \
       --app-file ${{ steps.download.outputs.artifact_path }} \
       --flows ./.maestro \
       --env "USERNAME=$TEST_USERNAME" \
@@ -364,7 +364,7 @@ Then reference it as a regular env var in the wrapper invocation:
 
 ```yaml
 - run: |
-    npx --yes @devicecloud.dev/eas-workflow@next \
+    npx --yes @devicecloud.dev/eas-workflow@v1 \
       --flows ./.maestro \
       --app-file ${{ steps.download.outputs.artifact_path }} \
       --include-tags smoke,critical \
@@ -398,7 +398,7 @@ e2e:
       with:
         build_id: ${{ needs.build.outputs.build_id }}
     - run: |
-        npx --yes @devicecloud.dev/eas-workflow@next \
+        npx --yes @devicecloud.dev/eas-workflow@v1 \
           --app-file ${{ steps.download.outputs.artifact_path }} \
           --flows ./.maestro
 ```
