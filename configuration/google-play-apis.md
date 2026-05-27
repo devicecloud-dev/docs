@@ -39,9 +39,6 @@ Play rate, the others at the standard rate.
 2. The upload-wide `--google-play` flag
 3. Default: standard Google APIs image
 
-The upload-wide flag is a floor, not a ceiling — once `--google-play` is set on the
-upload, every flow runs on Play and a per-test override cannot turn it off.
-
 ## Device availability
 
 Google Play APIs are currently only available on a single device:
