@@ -75,7 +75,9 @@ The pipe variables map 1:1 to the [`dcd cloud`](dcd-cloud.md) CLI flags. The ful
 
 ## Bitbucket context auto-attached
 
-The pipe auto-attaches Bitbucket context (commit SHA, repo, branch, PR number) as metadata on every run. These surface as styled Bitbucket badges on the run in the [DeviceCloud console](https://console.devicecloud.dev/results) — no extra config needed. Set `INCLUDE_BITBUCKET_CONTEXT: 'false'` to disable.
+The pipe auto-attaches Bitbucket context (commit SHA, repo, branch, PR number) as metadata on every run and are included on the Console UI so you know what triggered each run. 
+
+If you would prefer not to include this metadata, set `INCLUDE_BITBUCKET_CONTEXT: 'false'`.
 
 ## Outputs
 
