@@ -1,4 +1,4 @@
-# BitRise
+# BitRise Steps
 
 DeviceCloud includes a BitRise step to allow automatic triggering of tests via your BitRise CI process.
 

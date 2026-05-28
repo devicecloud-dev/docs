@@ -14,7 +14,7 @@
 
 * [Overview](ci-cd/overview.md)
 * [GitHub Actions](ci-cd/github-actions.md)
-* [Bitrise](ci-cd/bitrise.md)
+* [Bitrise Steps](ci-cd/bitrise-steps.md)
 * [EAS Workflows](ci-cd/eas-workflows.md)
 * [Bitbucket Pipelines](ci-cd/bitbucket-pipelines.md)
 * [Any CI](ci-cd/any-ci.md)
