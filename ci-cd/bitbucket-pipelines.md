@@ -14,7 +14,7 @@ pipelines:
     - step:
         name: E2E tests
         script:
-          - pipe: docker://moropo/device-cloud-for-bitbucket:1.0.3
+          - pipe: docker://moropo/device-cloud-for-bitbucket:1.1.0
             variables:
               API_KEY: $DEVICE_CLOUD_API_KEY
               APP_FILE: 'build/app-release.apk'
@@ -32,7 +32,7 @@ Find your API key at [console.devicecloud.dev/settings](https://console.devicecl
 ### Android
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.0.3
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.1.0
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'build/app-release.apk'
@@ -45,7 +45,7 @@ Find your API key at [console.devicecloud.dev/settings](https://console.devicecl
 ### iOS
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.0.3
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.1.0
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'build/MyApp.app.zip'
@@ -73,12 +73,16 @@ The pipe variables map 1:1 to the [`dcd cloud`](dcd-cloud.md) CLI flags. The ful
 | `ASYNC` | `"true"` to fire-and-forget. |
 | `RUNNER_TYPE` | `m1` or `m4` for premium runners. |
 
+## Bitbucket context auto-attached
+
+The pipe auto-attaches Bitbucket context (commit SHA, repo, branch, PR number) as metadata on every run. These surface as styled Bitbucket badges on the run in the [DeviceCloud console](https://console.devicecloud.dev/results) — no extra config needed. Set `INCLUDE_BITBUCKET_CONTEXT: 'false'` to disable.
+
 ## Outputs
 
 The pipe writes a `dcd-result.env` file into the repo's working directory. Subsequent script lines in the same step can `source` it:
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.0.3
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.1.0
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'app.apk'
@@ -96,7 +100,7 @@ The pipe exits non-zero on test failures so the build fails by default.
 ## Passing env vars into flows
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.0.3
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.1.0
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'app.apk'
@@ -117,7 +121,7 @@ To expose a report as a Bitbucket artifact (and have Bitbucket pick up the test 
 - step:
     name: E2E tests
     script:
-      - pipe: docker://moropo/device-cloud-for-bitbucket:1.0.3
+      - pipe: docker://moropo/device-cloud-for-bitbucket:1.1.0
         variables:
           API_KEY: $DEVICE_CLOUD_API_KEY
           APP_FILE: 'app.apk'
