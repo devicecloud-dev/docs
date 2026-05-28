@@ -54,8 +54,6 @@ Find your API key at [console.devicecloud.dev/settings](https://console.devicecl
     IOS_VERSION: '18'
 ```
 
-You don't need a macOS runner — DeviceCloud runs iOS simulators on its own Mac fleet.
-
 ## Variables
 
 The pipe variables map 1:1 to the [`dcd cloud`](dcd-cloud.md) CLI flags. The full list lives in the pipe's [README](https://bitbucket.org/devicecloud-dev/device-cloud-for-bitbucket/src/main/README.md). Required: `API_KEY`. Common ones:
@@ -113,7 +111,7 @@ The pipe exits non-zero on test failures so the build fails by default.
 
 ## Reports as build artifacts
 
-To expose a JUnit report as a Bitbucket artifact (and have Bitbucket pick up the test results UI), declare it on the step:
+To expose a report as a Bitbucket artifact (and have Bitbucket pick up the test results UI), declare it on the step. For example, if you would like a JUnit report, set up your pipe like this:
 
 ```yaml
 - step:
@@ -131,4 +129,4 @@ To expose a JUnit report as a Bitbucket artifact (and have Bitbucket pick up the
 
 ## Source
 
-Open source: [bitbucket.org/devicecloud-dev/device-cloud-for-bitbucket](https://bitbucket.org/devicecloud-dev/device-cloud-for-bitbucket).
+[bitbucket.org/devicecloud-dev/device-cloud-for-bitbucket](https://bitbucket.org/devicecloud-dev/device-cloud-for-bitbucket).
