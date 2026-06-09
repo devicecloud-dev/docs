@@ -45,7 +45,7 @@ env:
 Matching is case-insensitive and matches anywhere in the name, so `apiToken`, `loginPassword`, `userPIN`, and `OTP_CODE` all qualify.
 
 {% hint style="warning" %}
-DeviceCloud accepts no liability for any secret that may be unintentionally displayed through this system. **If your secret has been leaked, rotate it immediately then contact our support team to flag the issue.**
+DeviceCloud accepts no liability for any secret that may be unintentionally displayed through this system. **If your secret has been leaked, rotate it immediately** then contact our support team to flag the issue.
 {% endhint %}
 
 ### What masking covers
