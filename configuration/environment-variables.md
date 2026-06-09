@@ -59,4 +59,5 @@ This is useful for feature flags, environment switching, or any value your app r
 - Use CI/CD secrets
 - Use UPPERCASE for variable names
 - Use descriptive names
+- Name secret-bearing variables with a keyword like `PASSWORD`, `TOKEN`, `SECRET`, or `API_KEY` so their values are automatically masked in logs and artifacts — see [Inspecting Variables](../test-reports/inspecting-variables.md)
 

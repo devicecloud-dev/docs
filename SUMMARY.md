@@ -35,6 +35,7 @@
 
 * [Artifacts & Downloads](test-reports/artifacts.md)
 * [Report Formats](test-reports/report-formats.md)
+* [Inspecting Variables](test-reports/inspecting-variables.md)
 
 ## Notifications
 * [Email Notifications](notifications/email-notifications.md)
