@@ -52,7 +52,7 @@ DeviceCloud accepts no liability for any secret that may be unintentionally disp
 
 For a variable whose name matches, DeviceCloud:
 
-- shows "Hidden — secret value" on hover instead of the value — the value is never sent to your browser;
+- shows "Hidden value" on hover instead of the value ensuring the value is never sent to your browser nor logged internally;
 - replaces the value with `***` in the result-page log;
 - scrubs the value from downloadable artifacts (`maestro.log`, stdout/stderr, `commands.json`).
 
