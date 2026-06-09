@@ -44,7 +44,7 @@ env:
 
 Matching is case-insensitive and matches anywhere in the name, so `apiToken`, `loginPassword`, `userPIN`, and `OTP_CODE` all qualify.
 
-{% hint style="info" %}
+{% hint style="warning" %}
 DeviceCloud accepts no liability for any secret that may be unintentionally displayed through this system. **If your secret has been leaked, rotate it immediately then contact our support team to flag the issue.**
 {% endhint %}
 
@@ -57,5 +57,5 @@ For a variable whose name matches, DeviceCloud:
 - scrubs the value from downloadable artifacts (`maestro.log`, stdout/stderr, `commands.json`).
 
 {% hint style="warning" %}
-Masking is based on the variable **name**, not the value. A sensitive value stored under an innocent-looking name (e.g. `loginUrl = "https://example.com?key=abc123"`) **will not** be masked. Always name secret-bearing variables with one of the keywords above.
+Masking is based on the variable **name**, not the value. A sensitive value stored under an innocent-looking name (e.g. `loginUrl = "https://example.com?key=abc123"`) will **not** be masked. Always name secret-bearing variables with one of the keywords above.
 {% endhint %}
