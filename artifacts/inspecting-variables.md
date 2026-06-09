@@ -1,6 +1,6 @@
 # Inspecting Variables
 
-When you view a test result, the Maestro log shows the commands your flow ran — including any variable references such as `${APP_ID}` or `${output.userId}`. DeviceCloud resolves those references for you and you can hover over a variable in the log to see the value it had during the run.
+When you view a test result, the Maestro log shows the commands your flow ran — including any variable references such as `${APP_ID}` or `${output.userId}`. DeviceCloud resolves those references for you and you can hover over a variable in the log or use the variables tab to see the value it had during the run.
 
 This works for variables from any source:
 
