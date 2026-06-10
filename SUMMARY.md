@@ -25,6 +25,7 @@
 * [Environment Variables](configuration/environment-variables.md)
 * [Workspace Configuration](configuration/workspace-config.md)
 * [Device Locale](configuration/device-locale.md)
+* [Device Date & Time](configuration/device-datetime.md)
 * [Animations](configuration/disable-animations.md)
 * [Device Orientation](configuration/orientation.md)
 * [Maestro Versions](configuration/maestro-versions.md)
