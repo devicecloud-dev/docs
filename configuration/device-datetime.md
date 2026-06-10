@@ -37,7 +37,7 @@ The override sets the device's starting clock. The clock then ticks forward norm
 Sets the real emulator clock, so `Date.now()`, `System.currentTimeMillis()`, date pickers, and anything else the app reads all see the new time. Auto‑time sync is disabled for the run so the value sticks.
 
 {% hint style="info" %}
-Please note that this is not available on Google Play images.** [Google Play](google-play-apis.md) emulators are not rootable, so the clock cannot be set. Those flows log a warning and continue on the real time (auto‑time is left on so the device stays correctly synced). Use the standard image if you need the date/time override.
+Please note that this is not available on Google Play images. [Google Play](google-play-apis.md) emulators are not rootable, so the clock cannot be set. Those flows log a warning and continue on the real time (auto‑time is left on so the device stays correctly synced). Use the standard image if you need the date/time override.
 {% endhint %}
 
 ## iOS — cosmetic only
