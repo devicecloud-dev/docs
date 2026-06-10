@@ -18,10 +18,8 @@ env:
 # test steps
 ```
 
-* `DEVICECLOUD_OVERRIDE_DEVICE_DATETIME` — target date/time, ISO 8601 (e.g.
-  `2030-01-01T09:00:00Z`).
-* `DEVICECLOUD_OVERRIDE_DEVICE_TIMEZONE` — optional [IANA timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
-  (e.g. `Europe/London`). Android only.
+* `DEVICECLOUD_OVERRIDE_DEVICE_DATETIME` — target date/time, ISO 8601 (e.g.  `2030-01-01T09:00:00Z`).
+* `DEVICECLOUD_OVERRIDE_DEVICE_TIMEZONE` — optional [IANA timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) (e.g. `Europe/London`). Android only.
 
 If the value can't be parsed, it is ignored and the flow runs with the default
 (real) time.
