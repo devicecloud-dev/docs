@@ -1,6 +1,6 @@
 # Google Play APIs
 
-DeviceCloud allows flow execution using Android emulators with the Google Play APIs.
+DeviceCloud allows flow execution using Android emulators with the Google Play APIs. Please note that these are charged at our advanced rate as per our [pricing](../billing/test-run-billing.md).
 
 ## Usage
 
