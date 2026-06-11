@@ -32,7 +32,7 @@ This plan supports unlimited users and unlimited apps. Results are retained for 
 
 ### Enterprise Plan
 
-This subscription costs from $6000 per year and allows for custom terms including volume discounts.
+This subscription starts at $6000 per year and allows for custom terms including volume discounts.
 
 This plan is paid by invoice and includes private, dedicated support via Slack as standard.
 
