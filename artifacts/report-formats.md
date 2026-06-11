@@ -2,32 +2,29 @@
 
 Device Cloud supports standard Maestro report formats as well as Allure, a DeviceCloud-specific format that provides enhanced visualisation and history tracking.
 
-## Maestro Formats
+## Available Reports
 
-### JUnit Format
+| Report type  | Information |
+| --- | --- |
+| junit | XML based reports, industry standard for CI/CD runs |
+| html | Human readable summary reports including screenshots |
+| html-detailed | More detailed report including flow steps |
+| allure | Detailed, human readable with rich visualisation |
 
-```bash
-dcd cloud ... --report junit
-```
+You can enable each report using `--report <type>`.
 
-### HTML Format
+The CLI will automatically download the report to your working directory for you after the run finishes. To change the download path, pass `--artifacts-path=<path>`.
 
-```bash
-dcd cloud ... --report html
-```
+## Types of Report
 
-### HTML Detailed Format
+### JUnit
 
-```bash
-dcd cloud ... --report html-detailed
-```
+JUnit reports are XML-based and are generally the standard format for CI/CD reports.
 
-## DeviceCloud Formats
+### HTML and HTML-Detailed
 
-### Allure Format
+HTML reports are human-readable provide a summary overview of a test run including failure screenshots. Detailed reports include test steps alongside everything from standard HTML reports.
 
-Allure is not a standard Maestro format — it is provided by DeviceCloud and offers richer reporting with trend history, categories, and timeline views.
+### Allure
 
-```bash
-dcd cloud ... --report allure
-```
+Allure reports are HTML-based and include rich and comprehensive visualisations of test results. Read more [here](https://allurereport.org/).
