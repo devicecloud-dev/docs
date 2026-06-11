@@ -27,9 +27,10 @@ Enterprise customers with volume discounts or grandfathered users with older pri
 
 Historically, DeviceCloud users have purchased credits in advance and these have been drawn down via usage.
 
+{% hint style="info" %}
 Note: credits are only valid for 12 months, after which they automatically expire.
+{% endhint %}
 
 New users are given free credits to test the service.
 
 The ability to purchase credits is being phased out in favour of [subscriptions](subscriptions.md).
-

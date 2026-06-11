@@ -13,7 +13,7 @@ By default each test run uses the following underlying hardware specifications:
 
 As modern simulators and emulators are becoming more resource intensive, DeviceCloud is gradually rolling out additional runner types to support more advanced/intensive test scenarios.
 
-If your app or test is struggling with the default runner types, you can try the options below. Note: non-default runner types are charged at the advanced run fee as per [pricing](https://devicecloud.dev/#pricing).
+If your app or test is struggling with the default runner types, you can try the options below. Note: non-default runner types are charged at the advanced run fee as per [pricing](../billing/test-run-billing.md).
 
 Opt-in to non-default runner types using the CLI flag:
 
