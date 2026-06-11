@@ -4,12 +4,12 @@ Device Cloud supports standard Maestro report formats as well as Allure, a Devic
 
 ## Available Reports
 
-| Report type  | Information |
-| --- | --- |
-| junit | XML based reports, industry standard for CI/CD runs |
-| html | Human readable summary reports including screenshots |
-| html-detailed | More detailed report including flow steps |
-| allure | Detailed, human readable with rich visualisation |
+We support the following report types:
+
+- `junit`
+- `html`
+- `html-detailed`
+- `allure`
 
 You can enable each report using `--report <type>`.
 
