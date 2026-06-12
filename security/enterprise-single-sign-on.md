@@ -4,11 +4,13 @@ description: SAML-based authentication for larger companies
 
 # Enterprise SSO
 
+
+
 {% hint style="info" %}
-This feature is currently available to orgs who have purchased $2000 USD or more in DeviceCloud credits or have the Max subscription or above.
+This feature is currently available to orgs who have the Max subscription or above.
 {% endhint %}
 
-Single sign-on solutions (such as OKTA) allow organisations to centrally manage user access to DeviceCloud.&#x20;
+Single sign-on solutions (such as OKTA) allow organisations to centrally manage user access to DeviceCloud.
 
 We support the following identity providers:
 
@@ -20,34 +22,21 @@ We support the following identity providers:
 
 Using a provider that is not on the list? Contact us and we'd be happy to help setup the integration.
 
-
-
 #### Integration Steps
 
 These steps have been written with OKTA in mind, but are applicable to other identity providers too.
 
-
-
-1. &#x20;Create a new application with SAML in OKTA
-
-![Select SAML 2.0 when creating a new app](https://mail.google.com/mail/u/0?ui=2\&ik=c2f7326118\&attid=0.2\&permmsgid=msg-a:r7654004608782227746\&th=1942d0e92629043e\&view=fimg\&fur=ip\&permmsgid=msg-a:r7654004608782227746\&sz=s0-l75-ft\&attbid=ANGjdJ9p6PSZiVK3E2K-IdRTLys8m3-UJqcPqECeO15OdLaLI3IHj1x1XEm3GsH0LhlTpCUxnBY6mQZDJQR0xFStP1acgRrEsBpQeico75WQdI-rDdOafhFl7-ZWAG8\&disp=emb\&realattid=ii_m0fbk91r0\&zw)
-
+1. Create a new application with SAML in OKTA
 2. Populate the SAML fields using the below values.
 
-| Key | Value |
-| --- | ----- |
-| Single sign-on URL (ACS URL) | `https://cloud.devicecloud.dev/auth/v1/sso/saml/acs` |
-| Audience URI (SP Entity ID) | `https://cloud.devicecloud.dev/auth/v1/sso/saml/metadata` |
-| Default Relay State | `https://cloud.devicecloud.dev/` |
+| Key                          | Value                                                     |
+| ---------------------------- | --------------------------------------------------------- |
+| Single sign-on URL (ACS URL) | `https://cloud.devicecloud.dev/auth/v1/sso/saml/acs`      |
+| Audience URI (SP Entity ID)  | `https://cloud.devicecloud.dev/auth/v1/sso/saml/metadata` |
+| Default Relay State          | `https://cloud.devicecloud.dev/`                          |
 
-3.  Ensure the application username is set to EMAIL<br>
-
-    ![](https://mail.google.com/mail/u/0?ui=2\&ik=c2f7326118\&attid=0.1\&permmsgid=msg-a:r7654004608782227746\&th=1942d0e92629043e\&view=fimg\&fur=ip\&permmsgid=msg-a:r7654004608782227746\&sz=s0-l75-ft\&attbid=ANGjdJ9gKZSxFL_J0cUbAIweK-HIvqs8c1z2ifYKFn66SvZVflWixzj2LEPpukQwMbghnwRt0SNgTG5v9F-n56SZ1MplqseD6Zve6WFNIy1jj9mfjDFTylB-VawGkgU\&disp=emb\&realattid=ii_m0fbmkqg1\&zw)
-
-
-4.  Ensure the Name ID Format is set also to EMAIL
-
-    <figure><img src="../.gitbook/assets/Screenshot 2025-05-29 at 09.17.35.png" alt="" width="375"><figcaption></figcaption></figure>
+3. Ensure the application username is set to EMAIL
+4. Ensure the Name ID Format is set also to EMAIL
 5. Generate your metadata URL (or XML file for some providers)
 6. Send the following to support@devicecloud.dev from an email address registered with DeviceCloud:
    1. your metadata URL (or XML)
