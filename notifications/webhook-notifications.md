@@ -32,8 +32,15 @@ User-Agent: DCD-Webhooks/1.0
   "timestamp": "2025-09-19T15:07:15.357Z",
   "upload_id": "test_upload_synthetic_123",
   "console_url": "https://console.devicecloud.dev/results?upload=test_upload_synthetic_123",
+  "status": "PASSED",
+  "device": {
+    "name": "iPhone 15",
+    "osVersion": "17.5",
+    "runnerType": "standard",
+    "maestroVersion": "1.39.0"
+  },
   "summary": {
-    "total_tests": 1,
+    "totalTests": 1,
     "passed": 1,
     "failed": 0,
     "durationSeconds": 45
@@ -42,12 +49,28 @@ User-Agent: DCD-Webhooks/1.0
     {
       "name": "test_flow.yaml",
       "status": "PASSED",
-      "duration_seconds": 45
+      "durationSeconds": 45
     }
   ],
+  "metadata": {
+    "branch": "main",
+    "commit": "abc1234"
+  },
   "test": true
 }
 ```
+
+**Fields:**
+
+| Field | Description |
+| --- | --- |
+| `event` | Always `upload.completed`. |
+| `status` | Overall run outcome: `PASSED` only when every test passed, otherwise `FAILED`. Use this to gate a deploy or set a commit status. |
+| `device` | Device and runner context for the run: `name`, `osVersion`, `runnerType`, and `maestroVersion`. Individual fields are omitted when unavailable. |
+| `summary` | Aggregate counts (`totalTests`, `passed`, `failed`, and optional `cancelled`/`queued`/`pending`/`running`) plus `durationSeconds`, `wallClockDurationSeconds`, and `retryCount`. |
+| `results` | One entry per test: `name`, `status`, `durationSeconds`, and `failReason` (failures only). |
+| `metadata` | The key/value pairs you supplied via the CLI `--metadata` flag. Omitted when none were provided. |
+| `test` | Present and `true` only for test requests sent from the console. |
 
 ### Webhook Secrets
 
