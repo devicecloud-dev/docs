@@ -54,7 +54,7 @@ dcd cloud app.zip test.yaml --ios-version 18
 ```
 
 {% hint style="warning" %}
-iOS 16 is deprecated and will be removed on 24th July 2026, after which tests targeting it will fail. We recommend switching to iOS 17 or newer — iPhone 14 also supports 17 and 18.
+iOS 16 is deprecated and will be removed on 23rd August 2026, after which tests targeting it will fail. We recommend switching to iOS 17 or newer — iPhone 14 also supports 17 and 18.
 {% endhint %}
 
 | id   | Version              |
