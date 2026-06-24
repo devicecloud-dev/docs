@@ -53,12 +53,16 @@ DeviceCloud will default to iOS 17 unless you pass the `--ios-version` flag:
 dcd cloud app.zip test.yaml --ios-version 18
 ```
 
-| id   | Version |
-| ---- | ------- |
-| `26` | 26.4    |
-| `18` | 18.6    |
-| `17` | 17.5    |
-| `16` | 16.4    |
+{% hint style="warning" %}
+iOS 16 is deprecated and will be removed on 23rd August 2026, after which tests targeting it will fail. We recommend switching to iOS 17 or newer — iPhone 14 also supports 17 and 18.
+{% endhint %}
+
+| id   | Version              |
+| ---- | -------------------- |
+| `26` | 26.4                 |
+| `18` | 18.6                 |
+| `17` | 17.5                 |
+| `16` | 16.4 (deprecated)    |
 
 ### iOS Devices
 
@@ -74,5 +78,5 @@ dcd cloud app.zip test.yaml --ios-device ipad-pro-6th-gen
 | `iphone-16-pro`     | iPhone 16 Pro             | 1179 x 2556 | 18, 26             |
 | `iphone-16`         | iPhone 16                 | 1170 x 2532 | 18, 26             |
 | `iphone-15`         | iPhone 15                 | 1170 x 2532 | 17                 |
-| `iphone-14`         | iPhone 14                 | 1170 x 2532 | 16, 17, 18         |
+| `iphone-14`         | iPhone 14                 | 1170 x 2532 | 16 (deprecated), 17, 18 |
 | `ipad-pro-6th-gen`  | iPad Pro (6th Generation) | 2732 x 2048 | 18, 26             |
