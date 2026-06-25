@@ -77,4 +77,4 @@ UPLOAD_ID=$(jq -r .uploadId results.json)
 dcd artifacts --upload-id "$UPLOAD_ID" --download-artifacts ALL
 ```
 
-See [Async Execution](../advanced/async-execution.md) and [Report Formats](../test-results/report-formats.md) for more details.
+See [Async Execution](../advanced/async-execution.md) and [Report Formats](../artifacts/report-formats.md) for more details.

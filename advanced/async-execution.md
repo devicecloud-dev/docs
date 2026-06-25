@@ -5,7 +5,7 @@ By default, `dcd cloud` waits for all tests to complete before exiting. Async mo
 ## Basic Usage
 
 ```bash
-dcd cloud --apiKey <apiKey> <appFile> <flowFile> --async
+dcd cloud <appFile> <flowFile> --async
 ```
 
 When tests are submitted successfully, the command exits with code `0` regardless of test outcome. If submission itself fails, it exits with code `1`.
@@ -13,7 +13,7 @@ When tests are submitted successfully, the command exits with code `0` regardles
 Pair `--async` with `--name` to make it easy to look up results later:
 
 ```bash
-dcd cloud --apiKey <apiKey> <appFile> <flowFile> --async --name "build-$GIT_SHA"
+dcd cloud <appFile> <flowFile> --async --name "build-$GIT_SHA"
 ```
 
 ## Checking Results After an Async Run
@@ -21,7 +21,7 @@ dcd cloud --apiKey <apiKey> <appFile> <flowFile> --async --name "build-$GIT_SHA"
 Use the `dcd status` command to poll for results by upload ID:
 
 ```bash
-dcd status --apiKey <apiKey> <uploadId>
+dcd status --upload-id <uploadId>
 ```
 
 Or use the [dcd status](../cli/dcd-status.md) to query results programmatically via HTTP.

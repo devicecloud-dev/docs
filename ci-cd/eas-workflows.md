@@ -136,7 +136,7 @@ The wrapper turns these into either DCD flags or `--metadata` tags (so each run 
 
 | Variable | Source | Purpose |
 |----------|--------|---------|
-| `DEVICE_CLOUD_API_KEY` |`eas env:create --visibility secret` | DCD `--apiKey` (required). Auto-injected at runtime. |
+| `DEVICE_CLOUD_API_KEY` |`eas env:create --visibility secret` | DCD `--api-key` (required). Auto-injected at runtime. |
 
 ### Build context (recommended)
 
@@ -214,7 +214,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `--env KEY=value` | Inject environment variables into your flows. Repeatable. |
 | `--name <name>` | Custom name for this test run. |
 | `--retry <n>` | Number of automatic retries on failure (max `2`). Retries are free. |
-| `--report <format>` | `junit`, `html`, `html-detailed`, `allure`. See [Report Formats](../test-reports/report-formats.md). |
+| `--report <format>` | `junit`, `html`, `html-detailed`, `allure`. See [Report Formats](../artifacts/report-formats.md). |
 
 ### Execution Options
 

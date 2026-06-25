@@ -5,7 +5,7 @@ DeviceCloud supports a wide range of CI/CD options. If you don't see your provid
 ### Integration Guides
 
 * [GitHub Actions](github-actions.md) - Full GitHub Actions integration with all options
-* [Bitrise](bitrise.md) - Bitrise integration
+* [Bitrise](bitrise-steps.md) - Bitrise integration
 * [Bitbucket Pipelines](bitbucket-pipelines.md) - Bitbucket Pipelines integration
 * [EAS Workflows](eas-workflows.md) - EAS integration
 * [Any CI](any-ci.md) - Generic integration using the CLI directly
@@ -14,8 +14,8 @@ DeviceCloud supports a wide range of CI/CD options. If you don't see your provid
 
 * [Async Execution](../advanced/async-execution.md) - Fire-and-forget tests without blocking your pipeline
 * [dcd status](../cli/dcd-status.md) - Poll for results after an async run
-* [Report Formats](../test-results/report-formats.md) - Generate JUnit/HTML reports for your CI system
-* [Artifacts & Downloads](../test-results/artifacts.md) - Access logs, screenshots, and videos
+* [Report Formats](../artifacts/report-formats.md) - Generate JUnit/HTML reports for your CI system
+* [Artifacts & Downloads](../artifacts/artifacts.md) - Access logs, screenshots, and videos
 
 ### Configuration
 
