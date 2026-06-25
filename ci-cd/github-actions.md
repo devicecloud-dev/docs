@@ -89,8 +89,6 @@ If you build with EAS, download the build artifact in an earlier step and pass t
 |-------|----------|---------|-------------|
 | `app-file` | No* | — | Path or glob to the app binary (APK or .app/.zip). *Either `app-file` or `app-binary-id` is required. |
 | `app-binary-id` | No* | — | ID of a previously uploaded app binary. Skips the upload step. |
-| `additional-app-files` | No | — | Multiline list of additional binary paths to install before the test. |
-| `additional-app-binary-ids` | No | — | Multiline list of additional previously-uploaded binary IDs. |
 | `ignore-sha-check` | No | `false` | Skip the SHA hash check that prevents duplicate uploads. Not recommended. |
 
 ### Flow Selection
