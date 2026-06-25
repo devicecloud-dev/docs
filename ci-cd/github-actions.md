@@ -71,20 +71,7 @@ jobs:
 
 ### iOS with Expo
 
-If you build with EAS, you can pass the signed build URL directly using `app-url` instead of downloading the archive yourself. The URL is fetched and extracted automatically.
-
-```yaml
-- name: Build with EAS
-  run: eas build --platform ios --profile simulator --non-interactive --json > build.json
-
-- uses: devicecloud-dev/device-cloud-for-maestro@v2
-  with:
-    api-key: ${{ secrets.DCD_API_KEY }}
-    app-url: ${{ fromJson(steps.eas-build.outputs.result).artifacts.buildUrl }}
-    flows: .maestro/
-```
-
-> **Note:** Expo signed URLs expire after ~1 hour. Generate a fresh URL immediately before this step.
+If you build with EAS, download the build artifact in an earlier step and pass the resulting file to `app-file`. For a first-class Expo experience that wires this up for you, use the dedicated [EAS Workflows integration](eas-workflows.md) instead.
 
 ---
 
@@ -140,7 +127,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `env` | No | — | Multiline list of environment variables (`KEY=value`) to inject into flows. |
 | `name` | No | Commit message | Custom name for this test run, visible in the console. |
 | `retry` | No | `0` | Number of retries on failure (max `2`). Retries are free — same as pressing retry in the UI. |
-| `report` | No | — | Report format. Options: `junit`, `html`, `html-detailed`, `allure`. See [Report Formats](../artifacts/report-formats.md). |
+| `report` | No | — | Report format. Options: `junit`, `html`. See [Report Formats](../artifacts/report-formats.md). |
 
 ### Android-Specific Options
 
@@ -157,15 +144,11 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 
 ### GitHub / PR Context
 
-Attach Git and pull request metadata to a run. These values are displayed in the DeviceCloud console alongside the test results.
+The action automatically attaches Git and pull request metadata to each run, read from the GitHub Actions environment. These values are displayed in the DeviceCloud console alongside the results, so you can trace a run back to the commit or PR that triggered it — you don't need to pass branch, commit, or PR values yourself.
 
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
-| `branch` | No | — | Git branch name for this run. |
-| `commit-sha` | No | — | Git commit SHA for this run. |
-| `repo-name` | No | — | Repository in `owner/repo` format (e.g. `acme/my-app`). |
-| `pr-number` | No | — | Pull request number. |
-| `pr-url` | No | — | Pull request URL. |
+| `include-github-context` | No | `true` | Automatically attach GitHub/PR context (branch, commit SHA, PR number, PR URL, run ID, repository) to the run as metadata. Set to `false` to opt out. |
 
 ### Execution Options
 
@@ -269,20 +252,16 @@ jobs:
 
 ## Common Patterns
 
-### Attach PR context to test runs
+### Opt out of automatic PR context
 
-Pass Git and PR metadata so each run is traceable back to the commit or PR that triggered it. The information is displayed in the DeviceCloud console.
+Git and PR metadata (branch, commit SHA, PR number/URL, repository, run ID) is attached automatically — see [GitHub / PR Context](#github--pr-context). To turn it off, set `include-github-context: false`:
 
 ```yaml
 - uses: devicecloud-dev/device-cloud-for-maestro@v2
   with:
     api-key: ${{ secrets.DCD_API_KEY }}
     app-file: app.apk
-    branch: ${{ github.head_ref || github.ref_name }}
-    commit-sha: ${{ github.sha }}
-    repo-name: ${{ github.repository }}
-    pr-number: ${{ github.event.pull_request.number }}
-    pr-url: ${{ github.event.pull_request.html_url }}
+    include-github-context: false
 ```
 
 ### Run async tests (non-blocking)
