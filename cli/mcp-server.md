@@ -6,6 +6,10 @@ The `@devicecloud.dev/dcd` package ships a second binary, `dcd-mcp` — a [Model
 The MCP server is a new, beta capability. The tool surface may change.
 {% endhint %}
 
+{% hint style="warning" %}
+Please note that we accept no liability for anything your agent(s) may read or execute when using our MCP server. LLMs are a new technology and should be used with caution at your own risk.
+{% endhint %}
+
 ## Setup
 
 Add the server to your MCP client's configuration. It runs over stdio via `npx`, so there's nothing to install separately:
@@ -43,7 +47,7 @@ By default `dcd_run_cloud_test` is asynchronous: it returns an `uploadId` immedi
 
 ## Read-only mode
 
-`dcd_run_cloud_test` consumes test credits, so it's annotated as a destructive/non-read-only tool — well-behaved clients can prompt before calling it. To hide it entirely (recommended for autonomous or untrusted agents), either:
+`dcd_run_cloud_test` consumes test credits, so it's annotated as a destructive/non-read-only tool so well-behaved clients can (and should) prompt before calling it. To hide it entirely (recommended for autonomous or untrusted agents), either:
 
 - pass `--read-only` in `args`, or
 - set `DCD_MCP_READONLY=1` in `env`.
