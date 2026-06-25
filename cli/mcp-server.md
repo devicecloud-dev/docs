@@ -27,9 +27,7 @@ Add the server to your MCP client's configuration. It runs over stdio via `npx`,
 Auth is inherited from the CLI:
 
 - Set `DEVICE_CLOUD_API_KEY` in the server's `env` (as above), **or**
-- Run [`dcd login`](dcd-login.md) once and the server picks up the stored session.
-
-Point the server at a non-production environment with the `DCD_API_URL` environment variable.
+- Run [`dcd login`](dcd-login.md) once and the server will pick up the stored session.
 
 ## Tools
 
@@ -45,7 +43,7 @@ By default `dcd_run_cloud_test` is asynchronous: it returns an `uploadId` immedi
 
 ## Read-only mode
 
-`dcd_run_cloud_test` consumes test minutes, so it's annotated as a destructive/non-read-only tool — well-behaved clients can prompt before calling it. To hide it entirely (recommended for autonomous or untrusted agents), either:
+`dcd_run_cloud_test` consumes test credits, so it's annotated as a destructive/non-read-only tool — well-behaved clients can prompt before calling it. To hide it entirely (recommended for autonomous or untrusted agents), either:
 
 - pass `--read-only` in `args`, or
 - set `DCD_MCP_READONLY=1` in `env`.
