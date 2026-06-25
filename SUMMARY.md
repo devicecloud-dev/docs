@@ -5,7 +5,7 @@
 ## Getting Started
 
 * [Quick Start](getting-started/quickstart.md)
-* [API Keys](getting-started/api-keys.md)
+* [Authentication](getting-started/api-keys.md)
 * [Devices & OS Versions](getting-started/devices-configuration.md)
 * [Flows & Workspaces](getting-started/flows-and-workspaces.md)
 * [Concurrency & Parallel Runs](getting-started/concurrency-and-parallel-runs.md)
@@ -51,6 +51,9 @@
 * [Upload](cli/dcd-upload.md)
 * [Status](cli/dcd-status.md)
 * [List](cli/dcd-list.md)
+* [Login & Accounts](cli/dcd-login.md)
+* [Live Sessions](cli/dcd-live.md)
+* [MCP Server](cli/mcp-server.md)
 
 ## REST API
 

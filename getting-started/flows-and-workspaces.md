@@ -12,7 +12,7 @@ There are multiple ways to execute flows from the CLI:
 The most straightforward way to execute a single flow is to pass the flow file path directly to the CLI using a `<flowFile>`.
 
 ```
-dcd cloud --apiKey <apiKey> <appFile> <flowFile>
+dcd cloud <appFile> <flowFile>
 ```
 
 Where:
@@ -28,7 +28,7 @@ Where:
 ### 2. Executing flows by passing a directory
 
 ```
-dcd cloud --apiKey <apiKey> <appFile> <directoryPath>
+dcd cloud <appFile> <directoryPath>
 ```
 
 Where `<directoryPath>` is either:
@@ -41,7 +41,7 @@ The CLI will inspect all YAML files in the directory (but not sub-directories) a
 ### 3. Executing flows by passing a glob
 
 ```
-dcd cloud --apiKey <apiKey> <appFile> <glob>
+dcd cloud <appFile> <glob>
 ```
 
 Where `<glob>` is a path matching string such as `./**/*.yaml`
@@ -53,7 +53,7 @@ The CLI uses the [NPM glob](https://www.npmjs.com/package/glob) module. This pac
 For complex setups, a `config.yaml` file is recommended. Place it in the top-level directory you pass to the CLI and it will be detected automatically.
 
 ```
-dcd cloud --apiKey <apiKey> <appFile> <directoryPathIncludingConfigYaml>
+dcd cloud <appFile> <directoryPathIncludingConfigYaml>
 ```
 
 See [Workspace Configuration](../configuration/workspace-config.md) for more information.

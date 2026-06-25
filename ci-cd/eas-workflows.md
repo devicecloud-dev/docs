@@ -136,7 +136,7 @@ The wrapper turns these into either DCD flags or `--metadata` tags (so each run 
 
 | Variable | Source | Purpose |
 |----------|--------|---------|
-| `DEVICE_CLOUD_API_KEY` |`eas env:create --visibility secret` | DCD `--apiKey` (required). Auto-injected at runtime. |
+| `DEVICE_CLOUD_API_KEY` |`eas env:create --visibility secret` | DCD `--api-key` (required). Auto-injected at runtime. |
 
 ### Build context (recommended)
 
@@ -155,9 +155,13 @@ The build artifact itself is downloaded by `eas/download_build` and passed via `
 |----------|-------------|-----------|
 | `DCD_GH_SHA` | `${{ github.sha }}` | `gh_sha` metadata |
 | `DCD_GH_BRANCH` | `${{ github.ref_name }}` | `gh_branch` metadata |
+| `DCD_GH_RUN_ID` | `${{ github.run_id }}` | `gh_run_id` metadata |
+| `DCD_GH_PR_NUMBER` | `${{ github.event.pull_request.number }}` | `gh_pr_number` metadata |
+| `DCD_GH_PR_URL` | `${{ github.event.pull_request.html_url }}` | `gh_pr_url` metadata |
+| `DCD_GH_REPO` | `${{ github.repository }}` | `gh_repo` metadata |
 
 {% hint style="warning" %}
-`${{ github.event.pull_request.number }}` and `${{ github.repository }}` resolve to `null` on manual triggers and EAS rejects them as invalid env values. Only use them inside an `if:` guard that limits the job to PR events, or omit them. `github.sha` and `github.ref_name` coerce to empty strings safely.
+`${{ github.event.pull_request.number }}`, `${{ github.event.pull_request.html_url }}` and `${{ github.repository }}` resolve to `null` on manual triggers and EAS rejects them as invalid env values. Only set the PR and repo variables inside an `if:` guard that limits the job to PR events, or omit them. `github.sha`, `github.ref_name` and `github.run_id` coerce to empty strings safely.
 {% endhint %}
 
 ### Advanced
@@ -165,7 +169,8 @@ The build artifact itself is downloaded by `eas/download_build` and passed via `
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `DEVICE_CLOUD_API_URL` | `https://api.devicecloud.dev` | Override the API URL (staging/dev environments). |
-| `DCD_USE_BETA` | `false` | Set to `true` to use the beta DCD CLI. |
+| `DCD_USE_BETA` | `false` | Set to the string `true` to use the beta DCD CLI (any other value is treated as `false`). |
+| `DCD_EAS_BUILD_URL` | — | Supply a build URL directly (mapped to `dcd cloud --app-url`) instead of downloading the artifact and passing `--app-file`. Useful when you host the binary yourself. |
 
 ---
 
@@ -214,7 +219,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `--env KEY=value` | Inject environment variables into your flows. Repeatable. |
 | `--name <name>` | Custom name for this test run. |
 | `--retry <n>` | Number of automatic retries on failure (max `2`). Retries are free. |
-| `--report <format>` | `junit`, `html`, `html-detailed`, `allure`. See [Report Formats](../test-reports/report-formats.md). |
+| `--report <format>` | `junit`, `html`, `html-detailed`, `allure`. See [Report Formats](../artifacts/report-formats.md). |
 
 ### Execution Options
 
