@@ -4,6 +4,9 @@ The DeviceCloud Test Runner IP addresses are listed below. Add these to your fir
 
 These addresses are used by both Android and iOS
 
-`46.17.215.144`&#x20;
+`46.17.215.144`
 
 `46.17.215.145`
+
+`83.217.174.249`
+
