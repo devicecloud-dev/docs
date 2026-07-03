@@ -24,7 +24,7 @@ Use the `dcd status` command to poll for results by upload ID:
 dcd status --upload-id <uploadId>
 ```
 
-Or use the [dcd status](../cli/dcd-status.md) to query results programmatically via HTTP.
+You can also look a run up by name with `--name` (handy when paired with `--async --name`). See [dcd status](../cli/dcd-status.md) for the full reference.
 
 ## GitHub Actions Pattern
 

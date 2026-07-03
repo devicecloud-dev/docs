@@ -2,7 +2,7 @@
 
 The DeviceCloud GitHub Action is a drop-in replacement for the [Maestro Cloud Action](https://github.com/mobile-dev-inc/action-maestro-cloud). The inputs are identical where practical, so switching is straightforward.
 
-Additionally, you can setup our GitHub App to use GitHub Checks to manage Pull Requests and blocking. Read more (here)[github-checks.md].
+Additionally, you can set up our GitHub App to use GitHub Checks to manage pull requests and blocking. Read more [here](github-checks.md).
 
 ## Quick Start
 
@@ -108,12 +108,12 @@ If you build with EAS, download the build artifact in an earlier step and pass t
 
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
-| `android-device` | No | — | Android device model. Options: `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`. |
+| `android-device` | No | — | Android device model. Options: `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`, `generic-tablet`. |
 | `android-api-level` | No | `34` | Android API level. Options: `29`, `30`, `31`, `32`, `33`, `34`, `35`, `36`. |
-| `ios-device` | No | — | iOS device model. Options: `iphone-14`, `iphone-15`,  `iphone-16`, `iphone-16-pro`, `iphone-16-pro-max`, `ipad-pro-6th-gen`. |
+| `ios-device` | No | — | iOS device model. Options: `iphone-14`, `iphone-15`,  `iphone-16`, `iphone-16-plus`, `iphone-16-pro`, `iphone-16-pro-max`, `ipad-pro-6th-gen`. |
 | `ios-version` | No | `17` | Major iOS version. Options: `16`, `17`, `18`, `26`. |
 | `device-locale` | No | — | Device locale in `ISO-639-1_ISO-3166-1` format (e.g. `de_DE`). See [Device Locale](../configuration/device-locale.md). |
-| `orientation` | No | `0` | Android only. Device orientation in degrees. Options: `0`, `90`, `180`, `270`. |
+| `orientation` | No | `0` | Android only. Device orientation in degrees. Options: `0`, `90`. |
 | `google-play` | No | `false` | Android only. Run flows against Google Play devices. |
 | `runner-type` | No | `default` | Runner type. Options: `default`, `m1`, `m4`. Non-default runners incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
 

@@ -7,9 +7,9 @@ Control Android device orientation during test execution.
 ## Options
 
 * `0`: Portrait (default)
-* `90`: Landscape Right
-* `180`: Portrait Upside Down
-* `270`: Landscape Left
+* `90`: Landscape
+
+> **Note**: Only `0` and `90` are supported. The legacy `180` and `270` values are no longer accepted.
 
 ## Usage
 
