@@ -275,6 +275,10 @@ Use `async: true` to start tests without blocking your pipeline. Then use [`dcd 
     name: ${{ github.sha }}
 ```
 
+{% hint style="info" %}
+Install the [DeviceCloud GitHub App](github-checks.md) to get a pass/fail **check** posted directly on your pull requests when an async run finishes — so you can gate merges on your mobile tests without a runner waiting on results.
+{% endhint %}
+
 ### Filter tests by tag
 
 ```yaml
