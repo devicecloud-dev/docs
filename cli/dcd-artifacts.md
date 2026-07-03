@@ -70,11 +70,11 @@ dcd artifacts --upload-id 123e4567-e89b-12d3-a456-426614174000 --report allure -
 
 ```bash
 # Submit tests and capture the upload ID
-dcd cloud app.apk flows/ --async --json-file results.json
+dcd cloud app.apk flows/ --async --json-file --json-file-name results.json
 
 # ... later, once the run is complete ...
 UPLOAD_ID=$(jq -r .uploadId results.json)
 dcd artifacts --upload-id "$UPLOAD_ID" --download-artifacts ALL
 ```
 
-See [Async Execution](../advanced/async-execution.md) and [Report Formats](../test-results/report-formats.md) for more details.
+See [Async Execution](../advanced/async-execution.md) and [Report Formats](../artifacts/report-formats.md) for more details.

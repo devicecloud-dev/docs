@@ -10,8 +10,6 @@ Please note that we periodically remove support for older versions so we always 
 
 We currently support the following versions of Maestro:
 
-* 1.39.5
-* 1.41.0
 * 2.0.4
 * 2.0.9
 * 2.1.0
@@ -20,10 +18,6 @@ We currently support the following versions of Maestro:
 * 2.5.1
 * 2.6.0
 * 2.6.1
-
-{% hint style="warning" %}
-Maestro 1.39.5 and 1.41.0 will be deprecated on 26th June 2026 and will no longer be available. We recommend upgrading to 2.6.0 or above.
-{% endhint %}
 
 ## Version Selection
 

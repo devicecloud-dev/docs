@@ -16,7 +16,7 @@ One of `--upload-id` or `--name` is required. If multiple uploads share the same
 | `--upload-id <uuid>` | UUID of the upload to check |
 | `--name <name>` | Name of the upload to check |
 | `--api-key <key>` | Your DeviceCloud API key. Defaults to `DEVICE_CLOUD_API_KEY` env var |
-| `--json` | Output results as JSON. Always exits `0` |
+| `--json` | Output results as JSON. Exits `0` once a result is retrieved (including a `FAILED` run); usage errors, such as omitting both `--upload-id` and `--name`, exit `1` |
 
 ## Examples
 

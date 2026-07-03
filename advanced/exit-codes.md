@@ -18,5 +18,7 @@ Device Cloud uses standard exit codes to indicate the status of command executio
 ```
 
 {% hint style="info" %}
-When using `--json` or `--json-file`, the CLI always exits 0. Test failures are communicated through the JSON output rather than the exit code.
+`--json` still reflects the run outcome in its exit code: `0` on success, `2` on test failure, `1` on CLI/infrastructure errors.
+
+Only `--json-file` forces exit `0` even when the test run fails (infrastructure errors still exit `1`). Test failures are then communicated through the JSON output rather than the exit code — useful when you want a later CI step to decide what to do with the results.
 {% endhint %}

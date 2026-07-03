@@ -214,7 +214,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `--env KEY=value` | Inject environment variables into your flows. Repeatable. |
 | `--name <name>` | Custom name for this test run. |
 | `--retry <n>` | Number of automatic retries on failure (max `2`). Retries are free. |
-| `--report <format>` | `junit`, `html`, `html-detailed`, `allure`. See [Report Formats](../test-reports/report-formats.md). |
+| `--report <format>` | `junit`, `html`, `html-detailed`, `allure`. See [Report Formats](../artifacts/report-formats.md). |
 
 ### Execution Options
 

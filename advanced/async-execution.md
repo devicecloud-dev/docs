@@ -21,10 +21,10 @@ dcd cloud --apiKey <apiKey> <appFile> <flowFile> --async --name "build-$GIT_SHA"
 Use the `dcd status` command to poll for results by upload ID:
 
 ```bash
-dcd status --apiKey <apiKey> <uploadId>
+dcd status --api-key <apiKey> --upload-id <uploadId>
 ```
 
-Or use the [dcd status](../cli/dcd-status.md) to query results programmatically via HTTP.
+You can also look a run up by name with `--name` (handy when paired with `--async --name`). See [dcd status](../cli/dcd-status.md) for the full reference.
 
 ## GitHub Actions Pattern
 

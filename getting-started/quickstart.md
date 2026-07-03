@@ -64,7 +64,7 @@ Every flow has a 10-minute execution limit after which it will be automatically 
 
 ### Next steps
 
-- [Flows & Workspaces](flows.md) — organise and run multiple flows
+- [Flows & Workspaces](flows-and-workspaces.md) — organise and run multiple flows
 - [Devices & OS Versions](devices-configuration.md) — choose Android API level or iOS version
 - [App Management](../configuration/app-management.md) — upload and reuse binaries
 - [CI/CD Integration](../ci-cd/overview.md) — run tests in your pipeline

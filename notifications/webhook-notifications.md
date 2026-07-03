@@ -18,10 +18,10 @@ You can also send a test request from the console to verify that your endpoint p
 
 ```
 Content-Type: application/json
-X-DCD-Secret: DeviceCloud_<webhook_secret>
-X-DCD-Webhook-ID: wh_test_<random_hex>
-X-DCD-Timestamp: <unix_timestamp>
-User-Agent: DCD-Webhooks/1.0
+X-DeviceCloud-Secret: DeviceCloud_<webhook_secret>
+X-DeviceCloud-Webhook-ID: wh_test_<random_hex>
+X-DeviceCloud-Timestamp: <unix_timestamp>
+User-Agent: DeviceCloud-Webhooks/1.0
 ```
 
 **Request body:**

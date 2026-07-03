@@ -6,7 +6,7 @@ If you don't specify a device or OS version, then you will be allocated the defa
 
 **Android:** Pixel 7 (API level 34)
 
-**iOS:** iPhone 14 (iOS 17.4)
+**iOS:** iPhone 14 (iOS 17.5)
 
 ### Android API Levels
 
@@ -72,6 +72,7 @@ dcd cloud app.zip test.yaml --ios-device ipad-pro-6th-gen
 | ------------------- | ------------------------- | ----------- | ------------------ |
 | `iphone-16-pro-max` | iPhone 16 Pro Max         | 1290 x 2796 | 18, 26             |
 | `iphone-16-pro`     | iPhone 16 Pro             | 1179 x 2556 | 18, 26             |
+| `iphone-16-plus`    | iPhone 16 Plus            | 1290 x 2796 | 26                 |
 | `iphone-16`         | iPhone 16                 | 1170 x 2532 | 18, 26             |
 | `iphone-15`         | iPhone 15                 | 1170 x 2532 | 17                 |
 | `iphone-14`         | iPhone 14                 | 1170 x 2532 | 16, 17, 18         |

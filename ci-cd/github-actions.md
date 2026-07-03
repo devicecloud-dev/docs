@@ -71,16 +71,17 @@ jobs:
 
 ### iOS with Expo
 
-If you build with EAS, you can pass the signed build URL directly using `app-url` instead of downloading the archive yourself. The URL is fetched and extracted automatically.
+If you build with EAS, you can pass the signed build URL straight to `app-file`. When `app-file` is a URL, the archive is downloaded and extracted automatically — no need to fetch it yourself first.
 
 ```yaml
 - name: Build with EAS
+  id: eas-build
   run: eas build --platform ios --profile simulator --non-interactive --json > build.json
 
 - uses: devicecloud-dev/device-cloud-for-maestro@v2
   with:
     api-key: ${{ secrets.DCD_API_KEY }}
-    app-url: ${{ fromJson(steps.eas-build.outputs.result).artifacts.buildUrl }}
+    app-file: ${{ fromJson(steps.eas-build.outputs.result).artifacts.buildUrl }}
     flows: .maestro/
 ```
 
@@ -102,8 +103,6 @@ If you build with EAS, you can pass the signed build URL directly using `app-url
 |-------|----------|---------|-------------|
 | `app-file` | No* | — | Path or glob to the app binary (APK or .app/.zip). *Either `app-file` or `app-binary-id` is required. |
 | `app-binary-id` | No* | — | ID of a previously uploaded app binary. Skips the upload step. |
-| `additional-app-files` | No | — | Multiline list of additional binary paths to install before the test. |
-| `additional-app-binary-ids` | No | — | Multiline list of additional previously-uploaded binary IDs. |
 | `ignore-sha-check` | No | `false` | Skip the SHA hash check that prevents duplicate uploads. Not recommended. |
 
 ### Flow Selection
@@ -121,9 +120,9 @@ If you build with EAS, you can pass the signed build URL directly using `app-url
 
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
-| `android-device` | No | — | Android device model. Options: `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`. |
+| `android-device` | No | — | Android device model. Options: `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`, `generic-tablet`. |
 | `android-api-level` | No | `34` | Android API level. Options: `29`, `30`, `31`, `32`, `33`, `34`, `35`, `36`. |
-| `ios-device` | No | — | iOS device model. Options: `iphone-14`, `iphone-15`,  `iphone-16`, `iphone-16-pro`, `iphone-16-pro-max`, `ipad-pro-6th-gen`. |
+| `ios-device` | No | — | iOS device model. Options: `iphone-14`, `iphone-15`,  `iphone-16`, `iphone-16-plus`, `iphone-16-pro`, `iphone-16-pro-max`, `ipad-pro-6th-gen`. |
 | `ios-version` | No | `17` | Major iOS version. Options: `16`, `17`, `18`, `26`. |
 | `device-locale` | No | — | Device locale in `ISO-639-1_ISO-3166-1` format (e.g. `de_DE`). See [Device Locale](../configuration/device-locale.md). |
 | `orientation` | No | `0` | Android only. Device orientation in degrees. Options: `0`, `90`, `180`, `270`. |
@@ -140,7 +139,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `env` | No | — | Multiline list of environment variables (`KEY=value`) to inject into flows. |
 | `name` | No | Commit message | Custom name for this test run, visible in the console. |
 | `retry` | No | `0` | Number of retries on failure (max `2`). Retries are free — same as pressing retry in the UI. |
-| `report` | No | — | Report format. Options: `junit`, `html`, `html-detailed`, `allure`. See [Report Formats](../test-results/report-formats.md). |
+| `report` | No | — | Report format. Options: `junit`, `html`. See [Report Formats](../artifacts/report-formats.md). (The Action supports `junit` and `html`; for `html-detailed` or `allure` reports, download them separately with [`dcd artifacts`](../cli/dcd-artifacts.md).) |
 
 ### Android-Specific Options
 
@@ -157,15 +156,11 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 
 ### GitHub / PR Context
 
-Attach Git and pull request metadata to a run. These values are displayed in the DeviceCloud console alongside the test results.
-
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
-| `branch` | No | — | Git branch name for this run. |
-| `commit-sha` | No | — | Git commit SHA for this run. |
-| `repo-name` | No | — | Repository in `owner/repo` format (e.g. `acme/my-app`). |
-| `pr-number` | No | — | Pull request number. |
-| `pr-url` | No | — | Pull request URL. |
+| `include-github-context` | No | `true` | Automatically attach GitHub/PR context (branch, commit SHA, PR number, PR URL, run ID, repository) to the run as metadata. These values are shown in the DeviceCloud console alongside the results. Set to `false` to opt out. |
+
+The Action derives this context from the GitHub workflow environment automatically — you don't pass the individual values yourself.
 
 ### Execution Options
 
@@ -271,18 +266,23 @@ jobs:
 
 ### Attach PR context to test runs
 
-Pass Git and PR metadata so each run is traceable back to the commit or PR that triggered it. The information is displayed in the DeviceCloud console.
+Git and PR metadata (branch, commit SHA, PR number, PR URL, run ID, repository) is attached automatically so each run is traceable back to the commit or PR that triggered it. The information is displayed in the DeviceCloud console. This is on by default — no extra inputs required:
 
 ```yaml
 - uses: devicecloud-dev/device-cloud-for-maestro@v2
   with:
     api-key: ${{ secrets.DCD_API_KEY }}
     app-file: app.apk
-    branch: ${{ github.head_ref || github.ref_name }}
-    commit-sha: ${{ github.sha }}
-    repo-name: ${{ github.repository }}
-    pr-number: ${{ github.event.pull_request.number }}
-    pr-url: ${{ github.event.pull_request.html_url }}
+```
+
+To opt out, set `include-github-context: false`:
+
+```yaml
+- uses: devicecloud-dev/device-cloud-for-maestro@v2
+  with:
+    api-key: ${{ secrets.DCD_API_KEY }}
+    app-file: app.apk
+    include-github-context: false
 ```
 
 ### Run async tests (non-blocking)

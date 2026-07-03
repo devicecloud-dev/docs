@@ -67,7 +67,7 @@ If a flow name in `flowsOrder` doesn't match any discovered flow (e.g. after tag
 
 ### `notifications`
 
-Send email notifications when a run completes. See [Notifications](../test-results/notifications.md) for full context.
+Send email notifications when a run completes. See [Email Notifications](../notifications/email-notifications.md) for full context.
 
 ```yaml
 notifications:

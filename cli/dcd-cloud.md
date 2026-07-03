@@ -29,8 +29,6 @@ The command blocks until all tests have completed, then exits with an appropriat
 |------|-------------|
 | `--app-binary-id <id>` | Reuse a previously uploaded binary instead of uploading again |
 | `--app-url <url>` | Signed URL to an Expo iOS build (`.tar.gz`). The archive is downloaded and extracted automatically. Expo signed URLs expire after ~1 hour. Mutually exclusive with `--app-file` |
-| `--additional-app-files <paths>` | Comma-separated list of additional app files to upload |
-| `--additional-app-binary-ids <ids>` | Comma-separated list of additional binary IDs to include |
 | `--ignore-sha-check` | Force re-upload even if a binary with the same SHA already exists |
 
 ### Device
@@ -64,7 +62,7 @@ The command blocks until all tests have completed, then exits with an appropriat
 | `--env <KEY=VALUE>` | Environment variables to pass to the test. Repeat for multiple values |
 | `--name <name>` | Name for this upload (shown in the console) |
 | `--retry <n>` | Retry failed tests up to `n` times. Max `2` (see [Retry Strategies](../advanced/retry-strategies.md)) |
-| `--report <format>` | Generate a report. Options: `junit`, `html`, `html-detailed`, `allure` (see [Report Formats](../test-results/report-formats.md)) |
+| `--report <format>` | Generate a report. Options: `junit`, `html`, `html-detailed`, `allure` (see [Report Formats](../artifacts/report-formats.md)) |
 
 ### GitHub / PR Context
 
@@ -97,11 +95,11 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 |------|-------------|
 | `--async` | Submit tests and return immediately without waiting for results (see [Async Execution](../advanced/async-execution.md)) |
 | `--quiet` | Suppress per-test output; print only the final summary |
-| `--json` | Output results as JSON. Exits `0` even on test failure |
-| `--json-file <path>` | Write JSON results to a file |
-| `--download-artifacts <ALL\|FAILED>` | Download test artifacts after completion (see [Artifacts](../test-results/artifacts.md)) |
+| `--json` | Output results as JSON. Exit codes: `0` on success, `2` if the test run fails, `1` on CLI/infrastructure errors |
+| `--json-file` | Write JSON results to a file. The file is named `<upload_id>_dcd.json` unless you also pass `--json-file-name`. Exits `0` even on test failure (infrastructure errors still exit `1`) |
+| `--json-file-name <name>` | Custom name (or relative path) for the JSON results file. Requires `--json-file` |
+| `--download-artifacts <ALL\|FAILED>` | Download test artifacts after completion (see [Artifacts](../artifacts/artifacts.md)) |
 | `--debug` | Enable verbose debug logging |
-| `--use-beta` | Use the beta version of the DeviceCloud runner |
 
 ## Examples
 
@@ -127,5 +125,9 @@ dcd cloud flows/ --app-binary-id 67894274-b789-4c1e-80d4-da8998998999
 
 **Save results to JSON:**
 ```bash
-dcd cloud app.apk flows/ --json-file results.json
+# Writes to <upload_id>_dcd.json
+dcd cloud app.apk flows/ --json-file
+
+# Or choose the filename yourself
+dcd cloud app.apk flows/ --json-file --json-file-name results.json
 ```
