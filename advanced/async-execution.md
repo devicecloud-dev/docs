@@ -63,4 +63,4 @@ jobs:
 - The console URL is available via the `DEVICE_CLOUD_CONSOLE_URL` action output so you can link to results from your CI summary.
 - Retries (`--retry`) and async mode work together — DeviceCloud handles retries in the background.
 - If you need the final pass/fail status in CI, use `dcd status` to poll or use the [dcd status](../cli/dcd-status.md) directly.
-- On GitHub, install the [DeviceCloud GitHub App](../ci-cd/github-checks.md) to have the async result posted back as a pass/fail **check** on your pull request — gate merges without polling for the result yourself.
+- With the [DeviceCloud GitHub App](../ci-cd/github-checks.md) installed, an async run reports its result back as a pass/fail check on the pull request, so you don't have to poll for it yourself.
