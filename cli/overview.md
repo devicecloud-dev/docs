@@ -81,7 +81,6 @@ When both are present, precedence is: `--api-key` flag → `DEVICE_CLOUD_API_KEY
 |---------|-------------|
 | [`dcd cloud`](dcd-cloud.md) | Upload an app and run Maestro flows on DeviceCloud |
 | [`dcd upload`](dcd-upload.md) | Upload an app binary and get a reusable binary ID |
-| [`dcd artifacts`](dcd-artifacts.md) | Download artifacts or reports for a completed run |
 | [`dcd status`](dcd-status.md) | Check the status of a test upload |
 | [`dcd list`](dcd-list.md) | List recent uploads for your organisation |
 | [`dcd artifacts`](dcd-artifacts.md) | Download artifacts or reports for a completed run |
