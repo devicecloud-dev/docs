@@ -2,6 +2,8 @@
 
 The DeviceCloud GitHub Action is a drop-in replacement for the [Maestro Cloud Action](https://github.com/mobile-dev-inc/action-maestro-cloud). The inputs are identical where practical, so switching is straightforward.
 
+Additionally, you can setup our GitHub App to use GitHub Checks to manage Pull Requests and blocking. Read more (here)[github-checks.md].
+
 ## Quick Start
 
 ```yaml
@@ -274,6 +276,10 @@ Use `async: true` to start tests without blocking your pipeline. Then use [`dcd 
     async: true
     name: ${{ github.sha }}
 ```
+
+{% hint style="info" %}
+With the [DeviceCloud GitHub App](github-checks.md) installed, an async run reports back as a pass/fail check on the pull request, so you can gate merges without keeping a runner alive to wait for results.
+{% endhint %}
 
 ### Filter tests by tag
 
