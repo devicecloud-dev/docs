@@ -5,7 +5,7 @@
 ## Getting Started
 
 * [Quick Start](getting-started/quickstart.md)
-* [API Keys](getting-started/api-keys.md)
+* [Authentication](getting-started/api-keys.md)
 * [Devices & OS Versions](getting-started/devices-configuration.md)
 * [Flows & Workspaces](getting-started/flows-and-workspaces.md)
 * [Concurrency & Parallel Runs](getting-started/concurrency-and-parallel-runs.md)
@@ -14,6 +14,7 @@
 
 * [Overview](ci-cd/overview.md)
 * [GitHub Actions](ci-cd/github-actions.md)
+* [GitHub Checks](ci-cd/github-checks.md)
 * [Bitrise Steps](ci-cd/bitrise-steps.md)
 * [EAS Workflows](ci-cd/eas-workflows.md)
 * [Bitbucket Pipelines](ci-cd/bitbucket-pipelines.md)
@@ -51,6 +52,9 @@
 * [Upload](cli/dcd-upload.md)
 * [Status](cli/dcd-status.md)
 * [List](cli/dcd-list.md)
+* [Login & Accounts](cli/dcd-login.md)
+* [Live Sessions](cli/dcd-live.md)
+* [MCP Server](cli/mcp-server.md)
 
 ## REST API
 

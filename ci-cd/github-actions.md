@@ -2,6 +2,8 @@
 
 The DeviceCloud GitHub Action is a drop-in replacement for the [Maestro Cloud Action](https://github.com/mobile-dev-inc/action-maestro-cloud). The inputs are identical where practical, so switching is straightforward.
 
+Additionally, you can setup our GitHub App to use GitHub Checks to manage Pull Requests and blocking. Read more (here)[github-checks.md].
+
 ## Quick Start
 
 ```yaml
@@ -71,21 +73,7 @@ jobs:
 
 ### iOS with Expo
 
-If you build with EAS, you can pass the signed build URL straight to `app-file`. When `app-file` is a URL, the archive is downloaded and extracted automatically — no need to fetch it yourself first.
-
-```yaml
-- name: Build with EAS
-  id: eas-build
-  run: eas build --platform ios --profile simulator --non-interactive --json > build.json
-
-- uses: devicecloud-dev/device-cloud-for-maestro@v2
-  with:
-    api-key: ${{ secrets.DCD_API_KEY }}
-    app-file: ${{ fromJson(steps.eas-build.outputs.result).artifacts.buildUrl }}
-    flows: .maestro/
-```
-
-> **Note:** Expo signed URLs expire after ~1 hour. Generate a fresh URL immediately before this step.
+If you build with EAS, download the build artifact in an earlier step and pass the resulting file to `app-file`. For a first-class Expo experience that wires this up for you, use the dedicated [EAS Workflows integration](eas-workflows.md) instead.
 
 ---
 
@@ -139,7 +127,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `env` | No | — | Multiline list of environment variables (`KEY=value`) to inject into flows. |
 | `name` | No | Commit message | Custom name for this test run, visible in the console. |
 | `retry` | No | `0` | Number of retries on failure (max `2`). Retries are free — same as pressing retry in the UI. |
-| `report` | No | — | Report format. Options: `junit`, `html`. See [Report Formats](../artifacts/report-formats.md). (The Action supports `junit` and `html`; for `html-detailed` or `allure` reports, download them separately with [`dcd artifacts`](../cli/dcd-artifacts.md).) |
+| `report` | No | — | Report format. Options: `junit`, `html`. See [Report Formats](../artifacts/report-formats.md). |
 
 ### Android-Specific Options
 
@@ -156,11 +144,11 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 
 ### GitHub / PR Context
 
+The action automatically attaches Git and pull request metadata to each run, read from the GitHub Actions environment. These values are displayed in the DeviceCloud console alongside the results, so you can trace a run back to the commit or PR that triggered it — you don't need to pass branch, commit, or PR values yourself.
+
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
-| `include-github-context` | No | `true` | Automatically attach GitHub/PR context (branch, commit SHA, PR number, PR URL, run ID, repository) to the run as metadata. These values are shown in the DeviceCloud console alongside the results. Set to `false` to opt out. |
-
-The Action derives this context from the GitHub workflow environment automatically — you don't pass the individual values yourself.
+| `include-github-context` | No | `true` | Automatically attach GitHub/PR context (branch, commit SHA, PR number, PR URL, run ID, repository) to the run as metadata. Set to `false` to opt out. |
 
 ### Execution Options
 
@@ -264,18 +252,9 @@ jobs:
 
 ## Common Patterns
 
-### Attach PR context to test runs
+### Opt out of automatic PR context
 
-Git and PR metadata (branch, commit SHA, PR number, PR URL, run ID, repository) is attached automatically so each run is traceable back to the commit or PR that triggered it. The information is displayed in the DeviceCloud console. This is on by default — no extra inputs required:
-
-```yaml
-- uses: devicecloud-dev/device-cloud-for-maestro@v2
-  with:
-    api-key: ${{ secrets.DCD_API_KEY }}
-    app-file: app.apk
-```
-
-To opt out, set `include-github-context: false`:
+Git and PR metadata (branch, commit SHA, PR number/URL, repository, run ID) is attached automatically — see [GitHub / PR Context](#github--pr-context). To turn it off, set `include-github-context: false`:
 
 ```yaml
 - uses: devicecloud-dev/device-cloud-for-maestro@v2
@@ -297,6 +276,10 @@ Use `async: true` to start tests without blocking your pipeline. Then use [`dcd 
     async: true
     name: ${{ github.sha }}
 ```
+
+{% hint style="info" %}
+With the [DeviceCloud GitHub App](github-checks.md) installed, an async run reports back as a pass/fail check on the pull request, so you can gate merges without keeping a runner alive to wait for results.
+{% endhint %}
 
 ### Filter tests by tag
 

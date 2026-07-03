@@ -21,7 +21,9 @@ The command blocks until all tests have completed, then exits with an appropriat
 
 | Flag | Description |
 |------|-------------|
-| `--api-key <key>` | Your DeviceCloud API key. Defaults to `DEVICE_CLOUD_API_KEY` env var |
+| `--api-key <key>` | Your DeviceCloud API key. Defaults to the `DEVICE_CLOUD_API_KEY` env var. Optional if you've run [`dcd login`](dcd-login.md) |
+
+See [Authentication](../getting-started/api-keys.md) for the full picture.
 
 ### App
 
@@ -29,6 +31,7 @@ The command blocks until all tests have completed, then exits with an appropriat
 |------|-------------|
 | `--app-binary-id <id>` | Reuse a previously uploaded binary instead of uploading again |
 | `--app-url <url>` | Signed URL to an Expo iOS build (`.tar.gz`). The archive is downloaded and extracted automatically. Expo signed URLs expire after ~1 hour. Mutually exclusive with `--app-file` |
+| `--app-file <path>` | Path to the app binary (alternative to the positional `<app-file>` argument) |
 | `--ignore-sha-check` | Force re-upload even if a binary with the same SHA already exists |
 
 ### Device
@@ -40,8 +43,8 @@ The command blocks until all tests have completed, then exits with an appropriat
 | `--ios-device <device>` | iOS device model to run on (see [Devices](../getting-started/devices-configuration.md)) |
 | `--ios-version <version>` | iOS version |
 | `--device-locale <locale>` | Device locale (see [Device Locale](../configuration/device-locale.md)) |
-| `--orientation <orientation>` | Device orientation (see [Orientation](../configuration/orientation.md)) |
-| `--google-play` | Use a Google Play-enabled device (see [Google Play APIs](../configuration/google-play-apis.md)) |
+| `--orientation <orientation>` | Device orientation, `0` (portrait) or `90` (landscape). Android only (see [Orientation](../configuration/orientation.md)) |
+| `--google-play` | Use a Google Play-enabled device. Android only (see [Google Play APIs](../configuration/google-play-apis.md)) |
 | `--runner-type <type>` | Runner type to use (see [Runner Types](../configuration/runner-type.md)) |
 
 ### Flows
@@ -50,7 +53,7 @@ The command blocks until all tests have completed, then exits with an appropriat
 |------|-------------|
 | `--flows <paths>` | Comma-separated list of flow files to run (alternative to positional arg) |
 | `--config <path>` | Path to a `config.yaml` workspace config file (see [Workspace Configuration](../configuration/workspace-config.md)) |
-| `--exclude-flows <paths>` | Comma-separated list of flow files to exclude |
+| `--exclude-flows <paths>` | Comma-separated list of flow files or sub-directories to exclude |
 | `--include-tags <tags>` | Only run flows with these tags (comma-separated) |
 | `--exclude-tags <tags>` | Skip flows with these tags (comma-separated) |
 
@@ -58,11 +61,11 @@ The command blocks until all tests have completed, then exits with an appropriat
 
 | Flag | Description |
 |------|-------------|
-| `--maestro-version <version>` | Maestro version to use (see [Maestro Versions](../configuration/maestro-versions.md)) |
+| `--maestro-version <version>` | Maestro version to use, or `latest` (see [Maestro Versions](../configuration/maestro-versions.md)) |
 | `--env <KEY=VALUE>` | Environment variables to pass to the test. Repeat for multiple values |
+| `--metadata <key=value>` | Arbitrary metadata to attach to the run (shown in the console). Repeat for multiple values |
 | `--name <name>` | Name for this upload (shown in the console) |
-| `--retry <n>` | Retry failed tests up to `n` times. Max `2` (see [Retry Strategies](../advanced/retry-strategies.md)) |
-| `--report <format>` | Generate a report. Options: `junit`, `html`, `html-detailed`, `allure` (see [Report Formats](../artifacts/report-formats.md)) |
+| `--retry <n>` | Retry failed tests up to `n` times (free of charge). Max `2` (see [Retry Strategies](../advanced/retry-strategies.md)) |
 
 ### GitHub / PR Context
 
@@ -80,37 +83,44 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 
 | Flag | Description |
 |------|-------------|
-| `--maestro-chrome-onboarding` | Run Chrome onboarding before tests (see [Chrome Onboarding](../advanced/chrome-onboarding.md)) |
-| `--android-no-snapshot` | Disable snapshot restore at test start |
+| `--maestro-chrome-onboarding` | Force Maestro-based Chrome onboarding. Slows tests but can fix browser-related crashes (see [Chrome Onboarding](../advanced/chrome-onboarding.md)) |
+| `--android-no-snapshot` | Force cold boot instead of snapshot boot. Automatically enabled for API 35+ |
+| `--show-crosshairs` | Display crosshairs for screen interactions during test execution |
 
 ### Performance
 
 | Flag | Description |
 |------|-------------|
-| `--disable-animations` | Disable device animations during test execution. On Android, disables system animation scales. On iOS, enables Reduce Motion. |
+| `--disable-animations` | Disable device animations during test execution. On Android, disables system animation scales. On iOS, enables Reduce Motion |
 
 ### Output & Execution
 
 | Flag | Description |
 |------|-------------|
-| `--async` | Submit tests and return immediately without waiting for results (see [Async Execution](../advanced/async-execution.md)) |
-| `--quiet` | Suppress per-test output; print only the final summary |
-| `--json` | Output results as JSON. Exit codes: `0` on success, `2` if the test run fails, `1` on CLI/infrastructure errors |
-| `--json-file` | Write JSON results to a file. The file is named `<upload_id>_dcd.json` unless you also pass `--json-file-name`. Exits `0` even on test failure (infrastructure errors still exit `1`) |
-| `--json-file-name <name>` | Custom name (or relative path) for the JSON results file. Requires `--json-file` |
+| `--async` | Submit tests and return immediately (exit `0`) without waiting for results (see [Async Execution](../advanced/async-execution.md)) |
+| `--quiet`, `-q` | Suppress per-test progress; print only the final summary |
+| `--json` | Output results as JSON. Exits `0` on success, `2` on test failure, `1` on CLI/infrastructure errors |
+| `--json-file` | Write JSON results to a file (`<upload_id>_dcd.json` by default). Exits `0` even if the test run fails; infrastructure errors still exit `1` |
+| `--json-file-name <name>` | Custom name (or relative path) for the JSON file. Requires `--json-file` |
+| `--dry-run` | Simulate the run without uploading or triggering a test — useful for debugging workflow issues |
+| `--report <format>` | Generate and download a report. Options: `junit`, `html`, `html-detailed`, `allure` (see [Report Formats](../artifacts/report-formats.md)) |
+| `--junit-path <path>` | Output path for the JUnit report (requires `--report junit`) |
+| `--html-path <path>` | Output path for the HTML report (requires `--report html` or `html-detailed`) |
+| `--allure-path <path>` | Output path for the Allure report (requires `--report allure`) |
 | `--download-artifacts <ALL\|FAILED>` | Download test artifacts after completion (see [Artifacts](../artifacts/artifacts.md)) |
+| `--artifacts-path <path>` | Output path for the artifacts zip (default `./artifacts.zip`). Requires `--download-artifacts` |
 | `--debug` | Enable verbose debug logging |
 
 ## Examples
 
 **Android:**
 ```bash
-dcd cloud app.apk flows/ --android-device "Pixel 8" --android-api-level 34
+dcd cloud app.apk flows/ --android-device pixel-7 --android-api-level 34
 ```
 
 **iOS:**
 ```bash
-dcd cloud app.zip flows/ --ios-device "iPhone 16" --ios-version 18
+dcd cloud app.zip flows/ --ios-device iphone-16 --ios-version 18
 ```
 
 **Filter by tag:**
@@ -125,9 +135,5 @@ dcd cloud flows/ --app-binary-id 67894274-b789-4c1e-80d4-da8998998999
 
 **Save results to JSON:**
 ```bash
-# Writes to <upload_id>_dcd.json
-dcd cloud app.apk flows/ --json-file
-
-# Or choose the filename yourself
 dcd cloud app.apk flows/ --json-file --json-file-name results.json
 ```

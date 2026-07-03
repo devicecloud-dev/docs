@@ -15,6 +15,6 @@ DeviceCloud includes a BitRise step to allow automatic triggering of tests via y
 
 <figure><img src="../.gitbook/assets/Screenshot 2025-01-06 at 14.45.32.png" alt=""><figcaption></figcaption></figure>
 
-4. Populate the API key using a BitRise secret and set any variables. These should exactly match the DCD CLI.
+4. Populate the API key using a BitRise secret and set any variables. The step inputs mirror the [`dcd cloud`](../cli/dcd-cloud.md) flags — see that reference for the full list and accepted values.
 
 <figure><img src="../.gitbook/assets/Screenshot 2025-01-06 at 14.45.51.png" alt=""><figcaption></figcaption></figure>
