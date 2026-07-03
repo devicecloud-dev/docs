@@ -63,7 +63,7 @@ At the top, the pass/fail count and total runtime. Below that, a table of every 
 Usually it's one of these:
 
 - **Nothing posts on the PR.** The App isn't installed on that repo, isn't connected to your team, or the run used a different team's API key. Check **Settings → Integrations**.
-- **The check is stuck in progress.** The run probably hasn't finished yet — find it in the console. The check only resolves once every flow reaches a final state.
+- **The check is stuck in progress.** The run probably hasn't finished yet. Look it up in the console; the check only resolves once every flow reaches a final state.
 - **"That GitHub account isn't linked."** Link your GitHub identity under **Settings → Account**, then connect.
 - **The check isn't in the branch-protection list.** It has to run once on the repo before GitHub will offer it. Open a pull request first.
 

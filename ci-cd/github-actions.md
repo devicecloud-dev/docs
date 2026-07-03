@@ -276,7 +276,7 @@ Use `async: true` to start tests without blocking your pipeline. Then use [`dcd 
 ```
 
 {% hint style="info" %}
-With the [DeviceCloud GitHub App](github-checks.md) installed, an async run reports back as a pass/fail check on the pull request — handy for gating merges without a runner waiting around for results.
+With the [DeviceCloud GitHub App](github-checks.md) installed, an async run reports back as a pass/fail check on the pull request, so you can gate merges without keeping a runner alive to wait for results.
 {% endhint %}
 
 ### Filter tests by tag
