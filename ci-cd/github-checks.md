@@ -1,12 +1,14 @@
 # GitHub Checks
 
-Install the DeviceCloud GitHub App and every test run posts a pass/fail check on the pull request that started it. It works best with the Action's [`async`](github-actions.md#execution-options) mode: your workflow submits the run and exits after a few seconds, DeviceCloud runs the tests on its own devices, and the result lands on the PR when it's ready. Nothing sits waiting on a runner, so you're not burning CI minutes while the tests execute.
+Install the DeviceCloud GitHub App and every test run posts a pass/fail check on the pull request that started it. It works best with the Action's [`async`](github-actions.md#execution-options) mode where your workflow submits the run and exits after a few seconds, we run the tests on our own devices, and the result will land on the PR when it's ready. Nothing sits waiting on a runner, so you're not burning CI minutes while the tests execute.
 
-It's optional. Skip the App and the Action behaves exactly as it does today.
+{% hint style="info" %}
+You do not need to install our Checks app to use the GitHub Action, but you do need the GitHub Action to use Checks.
+{% endhint %}
 
 ## How it works
 
-The Action submits your tests and, with `async: true`, returns straight away. DeviceCloud posts an in-progress check against the PR's commit and updates it to passed or failed once every flow has finished. The check links back to the full run in the console, and because it's an ordinary GitHub check you can require it in branch protection to keep failing builds out of your main branch.
+The Action submits your tests and either polls for results or if you set `async: true`, returns straight away. DeviceCloud posts an in-progress check against the PR's commit and updates it to passed or failed once every flow has finished. The check links back to the full run in the console, and because it's an ordinary GitHub check you can require it in branch protection to keep failing builds out of your main branch.
 
 ## Connect the App
 
@@ -15,12 +17,12 @@ Open **Settings → Integrations** in the [console](https://console.devicecloud.
 A few things worth knowing:
 
 - Only owners and admins can connect GitHub for a team.
-- Your GitHub account needs to be linked to DeviceCloud first, under **Settings → Account**. If it isn't, the connect flow will say so.
-- If you're an admin on more than one team, you'll be asked which one to connect.
+- Your GitHub account needs to be linked to DeviceCloud first, under **Settings → Account**.
+- If you're an admin on more than one team, you may be asked which one to connect if we can't figure it out automatically using account context.
 
 ## Run your tests
 
-Run the [Action](github-actions.md) on your pull requests with `async: true`. It attaches the branch, commit, and PR number for you, which is how DeviceCloud knows where to post the check, so leave [`include-github-context`](github-actions.md#github--pr-context) on (it already is by default).
+Run the [Action](github-actions.md) on your pull requests with `async: true`. It attaches the branch, commit, and PR number for you, which is how DeviceCloud knows where to post the check, so ensure you do not disable [`include-github-context`](github-actions.md#github--pr-context) (it's enabled by default).
 
 ```yaml
 on:
@@ -40,23 +42,21 @@ jobs:
           async: true
 ```
 
-The one thing to get right: the `api-key` you pass has to belong to the same team the App is connected to. If it doesn't, DeviceCloud can't match the run to your installation and nothing gets posted.
-
 ## Require it before merging
 
 To make the check a merge gate, add it to a branch protection rule: your repo's **Settings → Branches → Require status checks to pass**, then pick **DeviceCloud**. GitHub only lists a check here after it's run at least once, so open a pull request before you set up the rule.
 
 ## Re-running failures
 
-A failed check has a **Re-run failed tests** button. It re-runs only the flows that failed (free, the same as hitting retry in the console) and moves the check back to in-progress until they finish. GitHub's own re-run button on the check does the same thing.
+A failed check has a **Re-run failed tests** button. It re-runs only the flows that failed and is completely free, just like retries from the CI. It'll move the check back to in-progress until they finish.
 
 ## What the check shows
 
-At the top, the pass/fail count and total runtime. Below that, a table of every flow with its result, the reason for anything that failed, and a link into the console for the logs, video, and screenshots.
+The pass/fail count and total runtime. Below that, a table of every flow with its result, the reason for anything that failed, and a link into the console for the logs, video, and screenshots.
 
 ## Managing the connection
 
-**Settings → Integrations** shows the connected account and the repositories the App can reach. Owners and admins can disconnect from there, which removes the App from GitHub and stops the checks. If you reconnect later, DeviceCloud picks up your existing installation instead of making you install again.
+**Settings → Integrations** shows the connected account and the repositories the App can reach. Owners and admins can disconnect from there, which removes the App from GitHub and stops the checks. If you reconnect later, DeviceCloud picks up your existing installation instead of making you install again. You can also remove the App from your GitHub settings.
 
 ## When a check doesn't show up
 
