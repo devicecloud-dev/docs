@@ -1,0 +1,49 @@
+name: Sync IP addresses
+
+# Regenerates security/ip-addresses.md from the DeviceCloud IP-addresses API
+# (the single source of truth) and commits it if it changed. GitBook republishes
+# the page on push. Runs daily and on demand — never on push, so a commit made
+# here can't re-trigger the workflow.
+on:
+  schedule:
+    - cron: '17 6 * * *' # daily at 06:17 UTC
+  workflow_dispatch:
+    inputs:
+      endpoint:
+        description: 'IP-addresses endpoint to read from'
+        required: false
+        default: 'https://api.devicecloud.dev/ip-addresses'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-ip-addresses
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Regenerate security/ip-addresses.md
+        env:
+          IP_ENDPOINT: ${{ github.event.inputs.endpoint || 'https://api.devicecloud.dev/ip-addresses' }}
+        run: node .github/scripts/render-ip-addresses.mjs
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- security/ip-addresses.md; then
+            echo "No change to security/ip-addresses.md."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add security/ip-addresses.md
+          git commit -m "chore: sync IP addresses from API"
+          git push
