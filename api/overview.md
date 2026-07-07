@@ -25,3 +25,4 @@ https://api.devicecloud.dev
 | [Uploads](uploads.md) | List uploads and poll run status |
 | [Results](results.md) | Fetch results, reports, and artifacts for an upload |
 | [Flows](flows.md) | Aggregated analytics and run history per flow file |
+| [IP Addresses](ip-addresses.md) | Current egress IPs for firewall allow-listing (no API key required) |
