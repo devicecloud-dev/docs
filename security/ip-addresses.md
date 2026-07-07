@@ -24,4 +24,6 @@ GET https://api.devicecloud.dev/ip-addresses
 
 The response includes a flat `ipAddresses` array (for simple consumers) and a structured `ranges` array (CIDR, platforms, purpose), plus an `updatedAt` date you can watch for changes.
 
+See the [IP Addresses API reference](../api/ip-addresses.md) for the full response schema and examples.
+
 _Last updated: 2026-07-06._
