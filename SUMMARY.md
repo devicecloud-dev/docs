@@ -62,6 +62,7 @@
 * [Uploads](api/uploads.md)
 * [Results](api/results.md)
 * [Flows](api/flows.md)
+* [IP Addresses](api/ip-addresses.md)
 
 ## Advanced
 
