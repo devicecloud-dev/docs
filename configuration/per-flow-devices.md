@@ -1,4 +1,4 @@
-# Per-flow Device Targeting
+# Per-flow Devices
 
 By default every flow in an upload runs on the same device, set by the `--ios-device`,
 `--ios-version`, `--android-device` and `--android-api-level` flags on `dcd cloud`.
@@ -60,7 +60,7 @@ iPhone upload charges that one flow at the advanced rate, and the rest at the st
 
 - You cannot target across platforms in the same upload.
 
-- Not supported on `m1` runners.
+- Currently not supported on `m1` runners due to device limitations.
 
 ## Running a whole suite across several devices
 

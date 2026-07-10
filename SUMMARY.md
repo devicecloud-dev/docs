@@ -25,7 +25,7 @@
 * [App Management](configuration/app-management.md)
 * [Environment Variables](configuration/environment-variables.md)
 * [Workspace Configuration](configuration/workspace-config.md)
-* [Per-flow Device Targeting](configuration/per-flow-device-targeting.md)
+* [Per-flow Devices](configuration/per-flow-devices.md)
 * [Device Locale](configuration/device-locale.md)
 * [Device Date & Time](configuration/device-datetime.md)
 * [Animations](configuration/disable-animations.md)
