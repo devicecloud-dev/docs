@@ -81,3 +81,25 @@ dcd cloud app.zip test.yaml --ios-device ipad-pro-6th-gen
 | `iphone-15`         | iPhone 15                 | 1170 x 2532 | 17                 |
 | `iphone-14`         | iPhone 14                 | 1170 x 2532 | 16 (deprecated), 17, 18 |
 | `ipad-pro-6th-gen`  | iPad Pro (6th Generation) | 2732 x 2048 | 18, 26             |
+
+### Targeting a single flow
+
+The flags above set the device for the **whole upload**. When only one flow needs a particular
+device — a checkout flow you must verify on a tablet, say — that flow can name its own device in
+its YAML instead. See [per-flow-device-targeting.md](../configuration/per-flow-device-targeting.md).
+
+### Running a suite across several devices
+
+To run your **entire** suite against more than one device, submit one upload per device:
+
+```bash
+for device in iphone-16-pro iphone-16-pro-max; do
+  dcd cloud --app-binary-id <id> ./flows \
+    --ios-device "$device" --ios-version 18 --async
+done
+```
+
+{% hint style="warning" %}
+`--async` matters here. Without it, each `dcd cloud` blocks on its own poll loop waiting for
+results, so the uploads run one after another instead of concurrently.
+{% endhint %}
