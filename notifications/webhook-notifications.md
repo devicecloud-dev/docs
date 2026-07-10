@@ -49,7 +49,12 @@ User-Agent: DeviceCloud-Webhooks/1.0
     {
       "name": "test_flow.yaml",
       "status": "PASSED",
-      "durationSeconds": 45
+      "durationSeconds": 45,
+      "tags": ["smoke"],
+      "properties": {
+        "jira_ticket": "ENG-402",
+        "deployment_env": "staging"
+      }
     }
   ],
   "metadata": {
@@ -68,9 +73,35 @@ User-Agent: DeviceCloud-Webhooks/1.0
 | `status` | Overall run outcome: `PASSED` only when every test passed, otherwise `FAILED`. Use this to gate a deploy or set a commit status. |
 | `device` | Device and runner context for the run: `name`, `osVersion`, `runnerType`, and `maestroVersion`. Individual fields are omitted when unavailable. |
 | `summary` | Aggregate counts (`totalTests`, `passed`, `failed`, and optional `cancelled`/`queued`/`pending`/`running`) plus `durationSeconds`, `wallClockDurationSeconds`, and `retryCount`. |
-| `results` | One entry per test: `name`, `status`, `durationSeconds`, and `failReason` (failures only). |
+| `results` | One entry per test: `name`, `status`, `durationSeconds`, `failReason` (failures only), plus `tags` and `properties` (see below). |
 | `metadata` | The key/value pairs you supplied via the CLI `--metadata` flag. Omitted when none were provided. |
 | `test` | Present and `true` only for test requests sent from the console. |
+
+### Tags and Custom Properties
+
+Each entry in `results` carries the `tags` and `properties` declared in that flow's YAML front matter, so you can route or filter events without a second API call:
+
+```yaml
+appId: com.example.app
+name: Login Flow
+tags:
+  - smoke
+properties:
+  jira_ticket: "ENG-402"
+  deployment_env: "staging"
+---
+- launchApp
+```
+
+`tags` and `properties` are each omitted from a result when the flow declares none.
+
+{% hint style="info" %}
+Property values are always delivered as strings — numbers and booleans are converted (`42` becomes `"42"`, `true` becomes `"true"`).
+{% endhint %}
+
+{% hint style="warning" %}
+Property values must be scalars. Maestro rejects a flow whose `properties:` contains a nested object or a list, failing it before it runs with `Incorrect Format: <key>`.
+{% endhint %}
 
 ### Webhook Secrets
 
