@@ -84,12 +84,7 @@ dcd cloud app.zip test.yaml --ios-device ipad-pro-6th-gen
 
 ### Targeting a single flow
 
-The flags above set the device for the **whole upload**. When only one flow needs a particular
-device — a checkout flow you must verify on a tablet, say — that flow can name its own device in
-its YAML instead. See [per-flow-device-targeting.md](../configuration/per-flow-device-targeting.md).
-
-### Running a suite across several devices
-
+The flags above set the device for the **whole upload**. When only one flow needs a particular device then that flow can name its own device inits YAML instead. See [per-flow-device-targeting.md](../configuration/per-flow-device-targeting.md).
 To run your **entire** suite against more than one device, submit one upload per device:
 
 ```bash
