@@ -96,7 +96,11 @@ properties:
 `tags` and `properties` are each omitted from a result when the flow declares none.
 
 {% hint style="info" %}
-Property values are always delivered as strings — numbers and booleans are converted (`42` becomes `"42"`, `true` becomes `"true"`). Nested objects and lists are not supported and are dropped.
+Property values are always delivered as strings — numbers and booleans are converted (`42` becomes `"42"`, `true` becomes `"true"`).
+{% endhint %}
+
+{% hint style="warning" %}
+Property values must be scalars. Maestro rejects a flow whose `properties:` contains a nested object or a list, failing it before it runs with `Incorrect Format: <key>`.
 {% endhint %}
 
 ### Webhook Secrets
