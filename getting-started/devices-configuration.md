@@ -86,36 +86,6 @@ dcd cloud app.zip test.yaml --ios-device ipad-pro-6th-gen
 
 The flags above set the device for the **whole upload**. When only one flow needs a particular device then that flow can name its own device in its YAML instead. See [per-flow-devices.md](../configuration/per-flow-devices.md).
 
-### Running your whole suite across a device matrix
+### Running your whole suite across several devices
 
-To run your **entire** suite against several devices in one go, pass a repeatable `--ios-device-matrix <device>:<version>` (or `--android-device-matrix <device>:<apiLevel>`) for each device you want. Every flow runs once per config, all under **one upload** — one console entry, one pass/fail rollup, results comparable side by side.
-
-```bash
-dcd cloud --app-binary-id <id> ./flows \
-  --ios-device-matrix iphone-16-pro:18 \
-  --ios-device-matrix iphone-16-pro:26 \
-  --ios-device-matrix iphone-16-pro-max:26
-# → one upload, 3 devices × N flows
-```
-
-Android works the same way — append `:play` to target a Google Play device for that cell:
-
-```bash
-dcd cloud --app-binary-id <id> ./flows \
-  --android-device-matrix pixel-7:34 \
-  --android-device-matrix pixel-7:34:play
-```
-
-Each `--ios-device-matrix` / `--android-device-matrix` is **one explicit device cell** — there is no cross-product. `--ios-device-matrix iphone-15:17 --ios-device-matrix iphone-16-plus:26` runs exactly those two configs, nothing else. Every config is validated against the [compatibility tables above](#ios-devices) before anything runs, so an unsupported pair fails fast, naming it, and no partial run is submitted.
-
-Before submitting, the CLI prints the number of cells and the estimated **cost** — a device matrix bills one run per (flow × config), so a 4-config matrix over 10 flows is 40 runs.
-
-A few rules:
-
-- **One platform per upload.** A matrix runs one app binary, so `--ios-device-matrix` and `--android-device-matrix` can't be combined in the same run.
-- **A flow that names its own device wins.** If a flow sets its own device via [`DEVICECLOUD_OVERRIDE_*`](../configuration/per-flow-devices.md), it runs once on that device and is excluded from the matrix.
-- **`--json` distinguishes devices.** Under `--json`, each entry in `tests[]` carries a `device` object, so the same flow run on two devices is no longer ambiguous.
-
-{% hint style="info" %}
-Prefer separate uploads (e.g. in CI, one per shard)? You can still submit one `dcd cloud` per device with `--ios-device` / `--ios-version` and `--async` — but a single matrix upload keeps the results together and comparable.
-{% endhint %}
+To run every flow against several devices from a single `dcd cloud` invocation — one upload, one pass/fail rollup, results comparable side by side — use a [device matrix](../configuration/device-matrix.md).
