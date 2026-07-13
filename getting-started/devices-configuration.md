@@ -84,8 +84,8 @@ dcd cloud app.zip test.yaml --ios-device ipad-pro-6th-gen
 
 ### Targeting a single flow
 
-The flags above set the device for the **whole upload**. When only one flow needs a particular device then that flow can name its own device in its YAML instead. See [per-flow-devices.md](../configuration/per-flow-devices.md).
+The flags above set the device for the whole upload. When only one flow needs a particular device then that flow can name its own device in its YAML instead. See [per-flow-devices.md](../configuration/per-flow-devices.md).
 
-### Running your whole suite across several devices
+### Running your suite across several devices
 
-To run every flow against several devices from a single `dcd cloud` invocation — one upload, one pass/fail rollup, results comparable side by side — use a [device matrix](../configuration/device-matrix.md).
+To run every flow against several devices from a single `dcd cloud` invocation use a [device matrix](../configuration/device-matrix.md).

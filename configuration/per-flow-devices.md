@@ -62,19 +62,8 @@ iPhone upload charges that one flow at the advanced rate, and the rest at the st
 
 - Currently not supported on `m1` runners due to device limitations.
 
-## Running a whole suite across several devices
+## Running a suite across several devices
 
 Per-flow targeting picks a device for *one* flow. To run your **entire** suite against several
 devices, use a [device matrix](device-matrix.md) — every flow runs once per device, under a single
 upload.
-
-```bash
-# iOS
-dcd cloud [...] --ios-device-matrix iphone-16-pro:18 --ios-device-matrix iphone-16-pro-max:26
-
-# Android
-dcd cloud [...] --android-device-matrix pixel-7:34 --android-device-matrix pixel-6:33
-```
-
-The two features compose: a flow that names its own device runs once on that device and is
-excluded from the matrix.
