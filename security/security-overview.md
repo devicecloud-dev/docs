@@ -4,7 +4,7 @@ As experienced engineers, we take security seriously and adopt industry standard
 
 ### SOC2 Compliance Timeline
 
-DeviceCloud has begun preparing and organising policies and controls that align with the SOC2 Type 1 compliance framework. The target compliance date is currently Q3 2026.
+DeviceCloud has begun preparing and organising policies and controls that align with the SOC2 Type 1 compliance framework. The target compliance date is currently Q1 2027.
 
 Want to work with DeviceCloud but require SOC2? Please contact us, we will fast-track this process if enough users request it.
 
