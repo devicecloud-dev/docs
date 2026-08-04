@@ -18,12 +18,16 @@ We currently support the following versions of Maestro:
 * 2.5.1
 * 2.6.0
 * 2.6.1
+* 2.7.0
+* 2.8.0
 
 ## Version Selection
 
 You can specify a version using `--maestro-version <version>`.
 
-We additionally support the use of `--maestro-version latest` which will default to the most up-to-date version we support.
+We additionally support the use of `--maestro-version latest` which will default to the most up-to-date version we support. This currently resolves to 2.8.0.
+
+Note that Maestro 2.7.0 reorganised the per-flow debug output into a new bundle layout, with screenshots named `step-<number>-<command>.png`. If you download and process test artifacts programmatically, check your tooling against a 2.7.0 or later run before switching.
 
 ### Examples
 
