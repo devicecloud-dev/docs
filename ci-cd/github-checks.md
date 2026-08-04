@@ -12,13 +12,24 @@ The Action submits your tests and either polls for results or if you set `async:
 
 ## Connect the App
 
-Open **Settings → Integrations** in the [console](https://console.devicecloud.dev/settings) and click **Connect GitHub**. GitHub walks you through installing the App and choosing which repositories it can see; when you come back, it's connected to your current team.
+Open **Settings → Integrations** in the [console](https://console.devicecloud.dev/settings) and click **Connect GitHub**. GitHub asks you to authorize DeviceCloud, and what happens next depends on whether you already have the App:
+
+- **First time.** GitHub sends you on to install the App and choose which repositories it can see. Once you're done you land back on the Integrations page, connected to your current team.
+- **Already installed** (on another team, or you removed the connection earlier). We reconnect to your existing installation and return you straight to the console — no reinstall, and no repository step. Your existing repository selection carries over; change it any time with **Manage repositories on GitHub** on the Integrations card.
+
+If you have the App installed on more than one GitHub account or organization, we'll ask which one to connect.
 
 A few things worth knowing:
 
 - Only owners and admins can connect GitHub for a team.
-- Your GitHub account needs to be linked to DeviceCloud first, under **Settings → Account**.
+- Your GitHub account needs to be linked to DeviceCloud first, under **Settings → Account**. This is separate from installing the App — it's how we know which DeviceCloud account an installation belongs to.
 - If you're an admin on more than one team, you may be asked which one to connect if we can't figure it out automatically using account context.
+
+## Choosing which repositories
+
+Checks only post on repositories the App can access. **Settings → Integrations** shows the current scope — either *All repositories* or a count of selected ones — with a **Manage repositories on GitHub** link that opens the installation's settings, where you can add or remove repositories.
+
+Changes take effect immediately; we track GitHub's repository events, so the console reflects the new scope without you reconnecting.
 
 ## Run your tests
 
@@ -56,13 +67,16 @@ The pass/fail count and total runtime. Below that, a table of every flow with it
 
 ## Managing the connection
 
-**Settings → Integrations** shows the connected account and the repositories the App can reach. Owners and admins can disconnect from there, which removes the App from GitHub and stops the checks. If you reconnect later, DeviceCloud picks up your existing installation instead of making you install again. You can also remove the App from your GitHub settings.
+**Settings → Integrations** shows the connected account and the repositories the App can reach. Owners and admins can disconnect from there, which always removes the connection and stops the checks. We also try to uninstall the App from GitHub as part of that — if we can't, the console says so and links you to remove it yourself. You can uninstall from your GitHub settings at any time regardless.
+
+If you reconnect later, DeviceCloud picks up your existing installation instead of making you install again.
 
 ## When a check doesn't show up
 
 Usually it's one of these:
 
-- **Nothing posts on the PR.** The App isn't installed on that repo, isn't connected to your team, or the run used a different team's API key. Check **Settings → Integrations**.
+- **Nothing posts on the PR.** The App isn't installed on that repo, isn't connected to your team, or the run used a different team's API key. Check **Settings → Integrations**, and confirm the repo is in scope under **Manage repositories on GitHub**.
+- **Connect GitHub lands on a GitHub 404.** That's a configuration problem on our side, not yours — nothing you can change will fix it. Get in touch and we'll sort it.
 - **The check is stuck in progress.** The run probably hasn't finished yet. Look it up in the console; the check only resolves once every flow reaches a final state.
 - **"That GitHub account isn't linked."** Link your GitHub identity under **Settings → Account**, then connect.
 - **The check isn't in the branch-protection list.** It has to run once on the repo before GitHub will offer it. Open a pull request first.
