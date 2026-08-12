@@ -8,4 +8,8 @@ redirects:
   # The MCP server docs moved out of the CLI Reference section into their own
   # top-level group. Keep the old URL working — it's what's been shared in
   # Discord MCP-setup threads.
-  cli/mcp-server: mcp/overview.md
+  #
+  # Note the source is the PUBLISHED url path, not the repo path: GitBook
+  # builds urls as <slugified SUMMARY group heading>/<filename>, so
+  # cli/mcp-server.md was served at /cli-reference/mcp-server.
+  cli-reference/mcp-server: mcp/overview.md
