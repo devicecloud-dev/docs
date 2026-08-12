@@ -63,11 +63,11 @@ Start with the [Quick Start](getting-started/quickstart.md) to install the CLI a
 
 ### Is DeviceCloud really a drop-in replacement for Maestro Cloud?
 
-For most projects, yes. The CLI mimics the Maestro Cloud API, so you change `maestro cloud` to `dcd cloud` and drop the `--apiKey` flag. On GitHub Actions you swap a single `uses:` line — all other inputs are compatible. See [Quick Start](getting-started/quickstart.md) and [Migrating from Maestro Cloud](ci-cd/github-actions.md#migrating-from-maestro-cloud).
+For most projects, yes. The CLI mimics the Maestro Cloud API, so you change `maestro cloud` to `dcd cloud` and drop the `--apiKey` flag. On GitHub Actions you swap a single `uses:` line and all other inputs are compatible. See [Quick Start](getting-started/quickstart.md) and [Migrating from Maestro Cloud](ci-cd/github-actions.md#migrating-from-maestro-cloud).
 
 ### How much does it cost?
 
-DeviceCloud bills per test run — a single top-level flow on a single device — at $0.11 for standard iOS and $0.09 for standard Android. iPad, Google Play, tablet and non-default runner flows are charged at the advanced rate of $0.15. New accounts get $20 of free credits. See [Test Run Billing](billing/test-run-billing.md).
+DeviceCloud bills per test run i.e. a single top-level flow on a single device and are charged at $0.11 for standard iOS and $0.09 for standard Android. iPad, Google Play, tablet and non-default runner flows are charged at the advanced rate of $0.15. New accounts get $20 of free credits. See [Test Run Billing](billing/test-run-billing.md).
 
 ### How many tests can I run in parallel?
 
@@ -75,15 +75,15 @@ It depends on your plan: Pro runs up to 5 iOS and 5 Android tests at once, and M
 
 ### Which devices and OS versions can I run on?
 
-Android covers Pixel 6, 6 Pro, 7 and 7 Pro plus a generic tablet, on API levels 29–36, defaulting to a Pixel 7 on API 34. iOS covers the iPhone 14, 15 and 16 families and the iPad Pro (6th generation) on iOS 17, 18 and 26 — iOS 16 is deprecated and will be removed on 23 August 2026. Not every device supports every OS version, so check the availability tables in [Devices & OS Versions](getting-started/devices-configuration.md).
+Android covers Pixel 6, 6 Pro, 7 and 7 Pro plus a generic tablet, on API levels 29–36. iOS covers the iPhone 14, 15 and 16 families and the iPad Pro (6th generation) on iOS 17, 18 and 26. Not every device supports every OS version, so check the availability tables in [Devices & OS Versions](getting-started/devices-configuration.md).
 
 ### Which Maestro versions are supported?
 
-Ten versions from 2.0.4 to 2.8.0, selected with `--maestro-version`. Runs default to 2.2.0, and `--maestro-version latest` currently resolves to 2.8.0. We periodically remove support for older versions, so it's worth staying up to date. See [Maestro Versions](configuration/maestro-versions.md).
+We always support the latest version of Maestro with backwards compatibility up to v2.0.4. Runs default to v2.2.0, and you can use `--maestro-version latest` to always use the most up to date version. We periodically remove support for older versions, and these will be announced with plenty of warning. See [Maestro Versions](configuration/maestro-versions.md).
 
 ### Do I need an API key, or can I just log in?
 
-Both work. Run `dcd login` once for local use and the CLI stores a session, so you never pass a key on a command. In CI or any headless environment, set `DEVICE_CLOUD_API_KEY` or pass `--api-key`. When more than one credential is present, precedence is the `--api-key` flag, then the environment variable, then the stored session. See [Authentication](getting-started/api-keys.md).
+Both work. Run `dcd login` once for local use and our CLI will store your session, so you never pass a key on a command. For CI or any headless environment, you can generate and set `DEVICE_CLOUD_API_KEY` or pass `--api-key`. When more than one credential is present, precedence is the `--api-key` flag, then the environment variable, then the stored session. See [Authentication](getting-started/api-keys.md).
 
 ### How do I run DeviceCloud in my CI?
 
@@ -95,11 +95,11 @@ Pass `--download-artifacts ALL` (or `FAILED`) to a `dcd cloud` run, or fetch the
 
 ### Is there a time limit on a test?
 
-Yes — every flow has a 10-minute execution limit, after which it is automatically cancelled. Failed tests can be retried up to twice, giving a maximum of three total runs, free of charge. See [Quick Start](getting-started/quickstart.md#limits) and [Retry Strategies](advanced/retry-strategies.md).
+Yes. Every flow has a 10-minute execution limit, after which it is automatically cancelled. Failed tests can be retried up to twice, giving a maximum of three total runs, free of charge. See [Quick Start](getting-started/quickstart.md#limits) and [Retry Strategies](advanced/retry-strategies.md).
 
 ### Can I allow-list DeviceCloud in our firewall?
 
-Yes. Test runner egress comes from a published set of IP ranges, and the same list is served from an unauthenticated endpoint — `GET https://api.devicecloud.dev/ip-addresses` — so your tooling can poll it rather than watching a docs page. See [IP Addresses](security/ip-addresses.md).
+Yes. Test runner egress comes from a published set of IP ranges, and the same list is served from an unauthenticated endpoint — `GET https://api.devicecloud.dev/ip-addresses` so your tooling can poll it rather than watching a docs page. See [IP Addresses](security/ip-addresses.md).
 
 ### Can AI agents drive DeviceCloud?
 
@@ -107,8 +107,8 @@ Yes. The `@devicecloud.dev/dcd` package ships `dcd-mcp`, a Model Context Protoco
 
 ### How do I get support?
 
-Every account gets community and team support via [Discord](https://discord.gg/gm3mJwcNw8), and you can email [support@devicecloud.dev](mailto:support@devicecloud.dev). Target initial response times run from 4 hours (urgent) to 3 business days (low), with faster targets, priority email and dedicated Slack on the Max and Enterprise plans. Support hours are 8am–8pm UK time, Monday to Friday. See [Service Level Agreements](legal/service-level-agreements.md).
+Every account gets community and team support via [Discord](https://discord.gg/gm3mJwcNw8), and you can also email [support@devicecloud.dev](mailto:support@devicecloud.dev). We aim to respond within four hours for urgent queries and three days for non-urgent. Max and Enterprise customers both receive priority email support and Enterprise customers have direct access to the team via Slack Connect. Support hours are 8am–8pm UK time, Monday to Friday. See [Service Level Agreements](legal/service-level-agreements.md).
 
 {% hint style="info" %}
-Question not answered here? Ask in our [Discord](https://discord.gg/gm3mJwcNw8) or email [support@devicecloud.dev](mailto:support@devicecloud.dev) — we're happy to help.
+Question not answered here? Ask in our [Discord](https://discord.gg/gm3mJwcNw8) or email [support@devicecloud.dev](mailto:support@devicecloud.dev) and we'll be happy to help.
 {% endhint %}
