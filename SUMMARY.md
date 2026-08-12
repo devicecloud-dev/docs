@@ -56,7 +56,6 @@
 * [List](cli/dcd-list.md)
 * [Login & Accounts](cli/dcd-login.md)
 * [Live Sessions](cli/dcd-live.md)
-* [MCP Server](cli/mcp-server.md)
 
 ## REST API
 
@@ -65,6 +64,11 @@
 * [Results](api/results.md)
 * [Flows](api/flows.md)
 * [IP Addresses](api/ip-addresses.md)
+
+## AI Agents & MCP
+
+* [MCP Server](mcp/overview.md)
+* [Tools Reference](mcp/tools.md)
 
 ## Advanced
 

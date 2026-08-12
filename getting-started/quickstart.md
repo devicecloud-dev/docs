@@ -64,7 +64,7 @@ dcd cloud <appFile>.app <flowFile>
 dcd cloud <appFile>.apk <flowFile>
 ```
 
-That's it! Questions? Issues? Head to our Discord.
+That's it! Questions? Issues? Head to our [Discord](https://discord.gg/gm3mJwcNw8).
 
 ---
 

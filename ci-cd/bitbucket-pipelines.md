@@ -56,7 +56,7 @@ Find your API key at [console.devicecloud.dev/settings](https://console.devicecl
 
 ## Variables
 
-The pipe variables map 1:1 to the [`dcd cloud`](dcd-cloud.md) CLI flags. The full list lives in the pipe's [README](https://bitbucket.org/devicecloud-dev/device-cloud-for-bitbucket/src/main/README.md). Required: `API_KEY`. Common ones:
+The pipe variables map 1:1 to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flags. The full list lives in the pipe's [README](https://bitbucket.org/devicecloud-dev/device-cloud-for-bitbucket/src/main/README.md). Required: `API_KEY`. Common ones:
 
 | Variable | Description |
 |---|---|

@@ -1,0 +1,11 @@
+root: ./
+
+structure:
+  readme: README.md
+  summary: SUMMARY.md
+
+redirects:
+  # The MCP server docs moved out of the CLI Reference section into their own
+  # top-level group. Keep the old URL working — it's what's been shared in
+  # Discord MCP-setup threads.
+  cli/mcp-server: mcp/overview.md
