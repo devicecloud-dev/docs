@@ -17,5 +17,5 @@ If a test fails, DeviceCloud will re-run the test up to the specified number of 
 - Retries count toward your concurrency limit while running
 
 {% hint style="info" %}
-If your test is still failing after 2 retries, reach out on Discord for help diagnosing the root cause.
+If your test is still failing after 2 retries, reach out on [Discord](https://discord.gg/gm3mJwcNw8) for help diagnosing the root cause.
 {% endhint %}

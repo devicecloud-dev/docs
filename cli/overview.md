@@ -2,10 +2,10 @@
 
 The DCD CLI is the primary way to interact with DeviceCloud from your terminal or CI/CD pipeline. It is a drop-in replacement for `maestro cloud` — in most cases you can swap `maestro cloud` for `dcd cloud`.
 
-The CLI is published as `@devicecloud.dev/dcd` on npm and as a standalone binary. The same package also ships an [MCP server](mcp-server.md) so AI agents can drive DeviceCloud directly.
+The CLI is published as `@devicecloud.dev/dcd` on npm and as a standalone binary. The same package also ships an [MCP server](../mcp/overview.md) so AI agents can drive DeviceCloud directly.
 
 {% hint style="info" %}
-**New in v5:** browser-based [`dcd login`](dcd-login.md) (no more passing a key on every command), a standalone binary installer with `dcd upgrade`, interactive [`dcd live`](dcd-live.md) device sessions, and an [MCP server](mcp-server.md). Existing API keys and `dcd cloud` usage continue to work unchanged.
+**New in v5:** browser-based [`dcd login`](dcd-login.md) (no more passing a key on every command), a standalone binary installer with `dcd upgrade`, interactive [`dcd live`](dcd-live.md) device sessions, and an [MCP server](../mcp/overview.md). Existing API keys and `dcd cloud` usage continue to work unchanged.
 {% endhint %}
 
 ## Installation
