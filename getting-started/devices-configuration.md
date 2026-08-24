@@ -54,7 +54,7 @@ dcd cloud app.zip test.yaml --ios-version 18
 ```
 
 {% hint style="warning" %}
-iOS 16 is deprecated and will be removed on 23rd August 2026, after which tests targeting it will fail. We recommend switching to iOS 17 or newer — iPhone 14 also supports 17 and 18.
+iOS 16 was removed on 24th August 2026 and tests targeting it will now fail. Switch to iOS 17 or newer — iPhone 14 also supports 17 and 18.
 {% endhint %}
 
 | id   | Version              |
@@ -62,7 +62,6 @@ iOS 16 is deprecated and will be removed on 23rd August 2026, after which tests 
 | `26` | 26.4                 |
 | `18` | 18.6                 |
 | `17` | 17.5                 |
-| `16` | 16.4 (deprecated)    |
 
 ### iOS Devices
 
@@ -79,7 +78,7 @@ dcd cloud app.zip test.yaml --ios-device ipad-pro-6th-gen
 | `iphone-16-plus`    | iPhone 16 Plus            | 1290 x 2796 | 26                 |
 | `iphone-16`         | iPhone 16                 | 1170 x 2532 | 18, 26             |
 | `iphone-15`         | iPhone 15                 | 1170 x 2532 | 17                 |
-| `iphone-14`         | iPhone 14                 | 1170 x 2532 | 16 (deprecated), 17, 18 |
+| `iphone-14`         | iPhone 14                 | 1170 x 2532 | 17, 18             |
 | `ipad-pro-6th-gen`  | iPad Pro (6th Generation) | 2732 x 2048 | 18, 26             |
 
 ### Targeting a single flow

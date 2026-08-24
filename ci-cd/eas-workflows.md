@@ -203,7 +203,7 @@ Anything you pass on the command line after `npx @devicecloud.dev/eas-workflow@v
 | `--android-device <model>` | `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`. |
 | `--android-api-level <n>` | `29` – `36`. Default `34`. |
 | `--ios-device <model>` | `iphone-14`, `iphone-15`, `iphone-16`, `iphone-16-pro`, `iphone-16-pro-max`, `ipad-pro-6th-gen`. |
-| `--ios-version <n>` | `16`, `17`, `18`, `26`. Default `17`. |
+| `--ios-version <n>` | `17`, `18`, `26`. Default `17`. |
 | `--device-locale <code>` | E.g. `de_DE`. See [Device Locale](../configuration/device-locale.md). |
 | `--orientation <deg>` | Android only. `0`, `90`, `180`, `270`. |
 | `--google-play` | Android only. Run on Google Play devices. |
