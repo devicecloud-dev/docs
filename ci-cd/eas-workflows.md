@@ -159,6 +159,9 @@ The build artifact itself is downloaded by `eas/download_build` and passed via `
 | `DCD_GH_PR_NUMBER` | `${{ github.event.pull_request.number }}` | `gh_pr_number` metadata |
 | `DCD_GH_PR_URL` | `${{ github.event.pull_request.html_url }}` | `gh_pr_url` metadata |
 | `DCD_GH_REPO` | `${{ github.repository }}` | `gh_repo` metadata |
+| `DCD_CHECK_NAME` | a fixed string, e.g. `iOS` | `gh_check_name` metadata — names the [GitHub check](github-checks.md) this job posts (`DeviceCloud / iOS`) |
+
+Set `DCD_CHECK_NAME` when a commit is tested by more than one job, so each gets a check of its own that can be required separately in branch protection. Keep it fixed per job — GitHub matches required checks by name.
 
 {% hint style="warning" %}
 `${{ github.event.pull_request.number }}`, `${{ github.event.pull_request.html_url }}` and `${{ github.repository }}` resolve to `null` on manual triggers and EAS rejects them as invalid env values. Only set the PR and repo variables inside an `if:` guard that limits the job to PR events, or omit them. `github.sha`, `github.ref_name` and `github.run_id` coerce to empty strings safely.

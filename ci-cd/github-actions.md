@@ -149,6 +149,7 @@ The action automatically attaches Git and pull request metadata to each run, rea
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
 | `include-github-context` | No | `true` | Automatically attach GitHub/PR context (branch, commit SHA, PR number, PR URL, run ID, repository) to the run as metadata. Set to `false` to opt out. |
+| `check-name` | No | — | Names the [GitHub check](github-checks.md) this run posts — `iOS` gives a check called `DeviceCloud / iOS`. Use it when a PR runs more than once so each run gets its own check. Keep it fixed for a given job. |
 
 ### Execution Options
 

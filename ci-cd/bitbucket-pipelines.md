@@ -79,6 +79,8 @@ The pipe auto-attaches Bitbucket context (commit SHA, repo, branch, PR number) a
 
 If you would prefer not to include this metadata, set `INCLUDE_BITBUCKET_CONTEXT: 'false'`.
 
+If your repository is mirrored on GitHub and you use [GitHub checks](github-checks.md), pass `gh_repo` and `gh_sha` through `METADATA` (the Bitbucket context above is for the console, not for GitHub) and set `CHECK_NAME` to name the check this run posts — `iOS` gives `DeviceCloud / iOS`. Worth doing whenever a commit is tested more than once: checks that share a name share a single branch-protection entry.
+
 ## Outputs
 
 The pipe writes a `dcd-result.env` file into the repo's working directory. Subsequent script lines in the same step can `source` it:
