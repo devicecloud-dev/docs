@@ -53,9 +53,40 @@ jobs:
           async: true
 ```
 
+## More than one run per PR
+
+If a pull request kicks off more than one run — an iOS one and an Android one, say — each run posts its own check, but by default they're both called **DeviceCloud** and nothing on the PR tells them apart. Give each run a `check-name` and they get their own:
+
+```yaml
+jobs:
+  ios:
+    steps:
+      - uses: devicecloud-dev/device-cloud-for-maestro@v2
+        with:
+          api-key: ${{ secrets.DCD_API_KEY }}
+          app-file: build/app.ipa
+          async: true
+          check-name: iOS          # DeviceCloud / iOS
+
+  android:
+    steps:
+      - uses: devicecloud-dev/device-cloud-for-maestro@v2
+        with:
+          api-key: ${{ secrets.DCD_API_KEY }}
+          app-file: build/app.apk
+          async: true
+          check-name: Android      # DeviceCloud / Android
+```
+
+This matters for more than tidiness. GitHub identifies a required check by its name, so two runs sharing one name share one entry in branch protection — and that entry follows whichever run finished last, meaning a passing Android run can satisfy a gate the failing iOS run should have held. Separate names give you two checks you can require independently.
+
+Use a value that stays the same on every run of that job. A name built from the commit or the run number is a different check every time, so it can never be required — and it'll clutter the PR.
+
+The same setting exists on our other CI integrations: `check_name` on the [Bitrise step](bitrise-steps.md), `CHECK_NAME` on the [Bitbucket pipe](bitbucket-pipelines.md), and `DCD_CHECK_NAME` on [EAS Workflows](eas-workflows.md). From the CLI directly, pass it as metadata: `dcd cloud --metadata gh_check_name=iOS ...`.
+
 ## Require it before merging
 
-To make the check a merge gate, add it to a branch protection rule: your repo's **Settings → Branches → Require status checks to pass**, then pick **DeviceCloud**. GitHub only lists a check here after it's run at least once, so open a pull request before you set up the rule.
+To make the check a merge gate, add it to a branch protection rule: your repo's **Settings → Branches → Require status checks to pass**, then pick **DeviceCloud** (or each of your named checks, if you set `check-name`). GitHub only lists a check here after it's run at least once, so open a pull request before you set up the rule.
 
 ## Re-running failures
 
