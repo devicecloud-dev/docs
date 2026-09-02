@@ -59,10 +59,33 @@ executionOrder:
 ```
 
 - `flowsOrder` — list of flow names to run in sequence. A name matches either the `name:` field inside the flow YAML or the filename without extension.
-- `continueOnFailure` — if `true`, subsequent flows in the sequence run even if an earlier one fails. Defaults to `false`.
+- `continueOnFailure` — if `true`, subsequent flows in the sequence run even if an earlier one fails. Defaults to `true`. Set it to `false` when a later flow depends on an earlier one having passed.
+
+{% hint style="warning" %}
+**`executionOrder` must be a map containing `flowsOrder`.** A bare list of flow names is not valid:
+
+```yaml
+# WRONG — rejected by the CLI
+executionOrder:
+  - login
+  - checkout
+```
+
+```yaml
+# RIGHT
+executionOrder:
+  flowsOrder:
+    - login
+    - checkout
+```
+
+The bare-list form is not valid Maestro either. Older CLI versions accepted it and silently ignored it, so the flows ran **in parallel** while the run still reported success — the only symptom was flows executing out of order. The CLI now fails with an error naming the expected shape instead.
+{% endhint %}
 
 {% hint style="info" %}
 If a flow name in `flowsOrder` doesn't match any discovered flow (e.g. after tag filtering), the CLI will emit a warning and lists the available names to help diagnose the mismatch.
+
+Unrecognised top-level keys are also warned about (and ignored), which catches typos like `flowOrder`, a `continueOnFailure` placed at the top level instead of under `executionOrder`, and `tags:` in place of `includeTags`/`excludeTags`.
 {% endhint %}
 
 ### `notifications`
