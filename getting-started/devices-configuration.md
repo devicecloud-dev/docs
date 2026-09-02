@@ -88,3 +88,42 @@ The flags above set the device for the whole upload. When only one flow needs a 
 ### Running your suite across several devices
 
 To run every flow against several devices from a single `dcd cloud` invocation use a [device matrix](../configuration/device-matrix.md).
+
+## Device Support Policy
+
+We aim to provide a wide range of devices and OS versions so that you can test your apps as thoroughly as you need. However, due to storage constraints we can only provide access to certain devices and OS levels. Our policy on this is written below so you know what to expect. 
+
+If you need a device or OS that we don't currently offer, please feel free to reach out to support on [Discord](https://discord.gg/gm3mJwcNw8) or Slack (Enterprise customers only) or via email at [support@devicecloud.dev](mailto:support@devicecloud.dev) and we'll see what we can do.
+
+### iOS Support Policy
+
+We will always aim to have the following devices available as a baseline:
+
+- The latest even-numbered iPhone model & it's variations, i.e. iPhone 18, 18 Plus, 18 Pro & 18 Pro Max.
+- The previous two supported generations of iPhones, i.e. iPhone 16 & iPhone 14.
+- The latest generation of iPad Pro.
+Additionally we will aim to provide the latest odd-numbered iPhone in it's base configuration if there is a noticeable difference in dimensions however this may not always be possible.
+
+We will always aim to have the following iOS versions available as a baseline:
+
+- The latest version plus the previous two.
+- These should always be the latest point release.
+
+It may be possible in some cases to provide support for a beta version however this will be on a case-by-case basis; please contact our Support team if you would like to request this.
+
+The default configuration will always be the latest even-numbered base iPhone we support running the previous version of iOS, i.e. iPhone 16 running iOS 26.
+
+### Android Support Policy
+
+We will always aim to have the following devices available as a baseline:
+
+- The two latest Google Pixel models & all variations.
+- A generic-tablet model.
+
+We will always aim to have the following Android versions available as a baseline:
+- The latest version.
+- Any version still supported by Google Play Services.
+
+It may be possible in some cases to provide support for a beta version however this will be on a case-by-case basis; please contact our Support team if you would like to request this.
+
+The default configuration will always be the latest base Pixel we support running the previous version of Android, i.e. Pixel 10 running Android 16/API 36.
