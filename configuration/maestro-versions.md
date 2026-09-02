@@ -38,3 +38,15 @@ dcd cloud ... --maestro-version 2.1.0
 # Always use the most recent version of Maestro available
 dcd cloud ... --maestro-version latest
 ```
+
+## Maestro Support Policy
+
+We will always aim to support the following versions of Maestro:
+
+- The latest version plus the previous three.
+
+We additionally will aim to continue supporting previous versions up to a maximum of ten. 
+
+The default version will always be at maximum, four minor releases behind the latest. For example if the latest is 2.9.0, then the default is 2.5.0. We will always provide at least 30 days of notice before changing the default version.
+
+We will also always aim to provide at least 30 days of warning before removing support for previous Maestro versions.

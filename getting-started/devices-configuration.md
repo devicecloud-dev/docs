@@ -113,6 +113,8 @@ It may be possible in some cases to provide support for a beta version however t
 
 The default configuration will always be the latest even-numbered base iPhone we support running the previous version of iOS, i.e. iPhone 16 running iOS 26. Before we change the default, we will always provide a minimum of 30 days notice.
 
+Additionally when removing Device and OS support, we will always provide a minimum of 30 days notice.
+
 ### Android Support Policy
 
 We will always aim to have the following devices available as a baseline:
@@ -127,3 +129,5 @@ We will always aim to have the following Android versions available as a baselin
 It may be possible in some cases to provide support for a beta version however this will be on a case-by-case basis; please contact our Support team if you would like to request this.
 
 The default configuration will always be the latest base Pixel we support running the previous version of Android, i.e. Pixel 10 running Android 16/API 36. Before we change the default, we will always provide a minimum of 30 days notice.
+
+Additionally when removing Device and OS support, we will always provide a minimum of 30 days notice.
