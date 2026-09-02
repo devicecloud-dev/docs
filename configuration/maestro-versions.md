@@ -49,11 +49,11 @@ We will always aim to support the latest versions of Maestro and additionally co
 - Once a version reaches below 1% usage, we'll mark it as deprecated.
 - Deprecated versions are then removed after six weeks provided total usage is less than 0.5%.
 
-% hint style="info" %
+{% hint style="info" %}
 For example, Maestro 2.0.0 received 10 patch releases (2.0.1 -> 2.0.10) and we would provide support for all of them. Once Maestro 2.1.0 released, we would then remove support for 2.0.0 -> 2.0.9 and retain 2.0.10.
 
 Once Maestro 2.5.0 is released, we would then mark 2.0.10 as deprecated unless usage dropped below 1% before then.
-% endhint % 
+{% endhint %}
 
 We may change the default version from time to time and we will always provide at least 30 days of notice before changing the default version.
 
