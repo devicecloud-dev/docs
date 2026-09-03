@@ -2,6 +2,10 @@
 
 DeviceCloud ships a [Bitbucket Pipe](https://support.atlassian.com/bitbucket-cloud/docs/pipes/) that runs your Maestro flows on devicecloud.dev directly from your Bitbucket Pipelines.
 
+{% hint style="info"}
+We currently cannot update our step as Bitbucket has disabled contributions to their Pipe repository. We're in contact with their team and are working on a solution
+{ endhint }
+
 ## Quick Start
 
 Add the pipe to a step in your `bitbucket-pipelines.yml`:
