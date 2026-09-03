@@ -4,7 +4,7 @@ DeviceCloud ships a [Bitbucket Pipe](https://support.atlassian.com/bitbucket-clo
 
 {% hint style="info"}
 We currently cannot update our step as Bitbucket has disabled contributions to their Pipe repository. We're in contact with their team and are working on a solution
-{ endhint }
+{% endhint %}
 
 ## Quick Start
 
