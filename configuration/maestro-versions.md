@@ -55,6 +55,6 @@ For example, Maestro 2.0.0 received 10 patch releases (2.0.1 -> 2.0.10) and we p
 Once Maestro 2.5.0 is released, we would then mark 2.0.10 as deprecated unless usage dropped below 1% before then, in which case it would be deprecated earlier.
 {% endhint %}
 
-We may change the default version from time to time and we will always provide at least 30 days of notice before changing the default version.
+We may update the default version from time to time and we will always provide at least 30 days of notice beforehand.
 
 We will also always aim to provide at least 30 days of warning before removing support for previous Maestro versions.
