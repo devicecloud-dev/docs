@@ -99,10 +99,10 @@ If you need a device or OS that we don't currently offer, please feel free to re
 
 We will always aim to have the following devices available as a baseline:
 
-- The latest even-numbered iPhone model & it's variations, i.e. iPhone 18, 18 Plus, 18 Pro & 18 Pro Max.
+- The latest even-numbered iPhone model & its variations, i.e. iPhone 18, 18 Plus, 18 Pro & 18 Pro Max.
 - The previous two supported generations of iPhones, i.e. iPhone 16 & iPhone 14.
 - The latest generation of iPad Pro.
-Additionally we will aim to provide the latest odd-numbered iPhone in it's base configuration if there is a noticeable difference in dimensions however this may not always be possible.
+Additionally we will aim to provide the latest odd-numbered iPhone in its base configuration if there is a noticeable difference in dimensions however this may not always be possible.
 
 We will always aim to have the following iOS versions available as a baseline:
 
