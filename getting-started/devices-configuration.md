@@ -124,7 +124,7 @@ We will always aim to have the following devices available as a baseline:
 
 We will always aim to have the following Android versions available as a baseline:
 - The latest version.
-- Any version still supported by Google Play Services.
+- Any version still officially supported by Google. A release is considered unsupported once it is no longer included in Google's [Android Security Bulletins](https://source.android.com/docs/security/bulletin).
 
 It may be possible in some cases to provide support for a beta version however this will be on a case-by-case basis; please contact our Support team if you would like to request this.
 
