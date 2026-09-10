@@ -75,7 +75,7 @@ It depends on your plan: Pro runs up to 5 iOS and 5 Android tests at once, and M
 
 ### Which devices and OS versions can I run on?
 
-Android covers Pixel 6, 6 Pro, 7 and 7 Pro plus a generic tablet, on API levels 29–36. iOS covers the iPhone 14, 15 and 16 families and the iPad Pro (6th generation) on iOS 17, 18 and 26. Not every device supports every OS version, so check the availability tables in [Devices & OS Versions](getting-started/devices-configuration.md).
+Android covers Pixel 6, 6 Pro, 7 and 7 Pro plus a generic tablet, on API levels 29–37. iOS covers the iPhone 14, 15 and 16 families and the iPad Pro (6th generation) on iOS 17, 18 and 26. Not every device supports every OS version, so check the availability tables in [Devices & OS Versions](getting-started/devices-configuration.md).
 
 ### Which Maestro versions are supported?
 
