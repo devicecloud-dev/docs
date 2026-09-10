@@ -91,6 +91,10 @@ To run every flow against several devices from a single `dcd cloud` invocation u
 
 ## Device Support Policy
 
+{% hint style="info" %}
+Rollout: the Maestro and Android API-level parts of this policy take effect with the September 2026 release (first removals on 19 October 2026). The device baselines described below will be introduced in a later release.
+{% endhint %}
+
 We aim to provide a wide range of devices and OS versions so that you can test your apps as thoroughly as you need. However, due to storage constraints we can only provide access to certain devices and OS levels. Our policy on this is written below so you know what to expect. 
 
 If you need a device or OS that we don't currently offer, please feel free to reach out to support on [Discord](https://discord.gg/gm3mJwcNw8) or Slack (Enterprise customers only) or via email at [support@devicecloud.dev](mailto:support@devicecloud.dev) and we'll see what we can do.
