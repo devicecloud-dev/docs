@@ -41,9 +41,9 @@ dcd cloud app.apk test.yaml --android-device pixel-6
 | ---------------- | -------------------------------------------------------------------------------------- | ----------- | ------------------------------ |
 | `pixel-6`        | Pixel 6                                                                                | 1080 x 2400 | 29, 30, 31, 32, 33, 34, 35, 36 |
 | `pixel-6-pro`    | Pixel 6 Pro                                                                            | 1440 x 3120 | 33, 35                         |
-| `pixel-7`        | Pixel 7                                                                                | 1080 x 2340 | 33, 34, 35, 36                 |
+| `pixel-7`        | Pixel 7                                                                                | 1080 x 2400 | 33, 34, 35, 36                 |
 | `pixel-7-pro`    | Pixel 7 Pro                                                                            | 1440 x 3120 | 33, 34, 35, 36                 |
-| `generic-tablet` | Generic Tablet (Note: starts in landscape by default, use orientation=90 for portrait) | 1440 x 3120 | 33                             |
+| `generic-tablet` | Generic Tablet (Note: starts in landscape by default, use orientation=90 for portrait) | 2560 x 1440 | 33                             |
 
 ### iOS Versions
 
@@ -73,13 +73,13 @@ dcd cloud app.zip test.yaml --ios-device ipad-pro-6th-gen
 
 | id                  | Name                      | Dimensions  | Valid iOS versions |
 | ------------------- | ------------------------- | ----------- | ------------------ |
-| `iphone-16-pro-max` | iPhone 16 Pro Max         | 1290 x 2796 | 18, 26             |
-| `iphone-16-pro`     | iPhone 16 Pro             | 1179 x 2556 | 18, 26             |
+| `iphone-16-pro-max` | iPhone 16 Pro Max         | 1320 x 2868 | 18, 26             |
+| `iphone-16-pro`     | iPhone 16 Pro             | 1206 x 2622 | 18, 26             |
 | `iphone-16-plus`    | iPhone 16 Plus            | 1290 x 2796 | 26                 |
-| `iphone-16`         | iPhone 16                 | 1170 x 2532 | 18, 26             |
-| `iphone-15`         | iPhone 15                 | 1170 x 2532 | 17                 |
+| `iphone-16`         | iPhone 16                 | 1179 x 2556 | 18, 26             |
+| `iphone-15`         | iPhone 15                 | 1179 x 2556 | 17                 |
 | `iphone-14`         | iPhone 14                 | 1170 x 2532 | 17, 18             |
-| `ipad-pro-6th-gen`  | iPad Pro (6th Generation) | 2732 x 2048 | 18, 26             |
+| `ipad-pro-6th-gen`  | iPad Pro (6th Generation) | 2048 x 2732 | 18, 26             |
 
 ### Targeting a single flow
 
