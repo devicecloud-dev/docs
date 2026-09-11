@@ -4,7 +4,7 @@
 
 If you don't specify a device or OS version, then you will be allocated the default device image:
 
-**Android:** Pixel 7 (API level 34)
+**Android:** Pixel 7 (API level 34) - **from 19 October 2026 the default becomes API level 36** (still Pixel 7). Pin `--android-api-level 34` if you need to stay on it.
 
 **iOS:** iPhone 14 (iOS 17.5)
 
@@ -18,14 +18,19 @@ dcd cloud app.apk test.yaml --android-api-level 35
 
 | Android Version | API Level |
 | --------------- | --------- |
+| Android 17      | 37        |
 | Android 16      | 36        |
 | Android 15      | 35        |
 | Android 14      | 34        |
 | Android 13      | 33        |
 | Android 12L     | 32        |
-| Android 12      | 31        |
-| Android 11      | 30        |
-| Android 10      | 29        |
+| Android 12      | 31 (deprecated - removed 19 October 2026) |
+| Android 11      | 30 (deprecated - removed 19 October 2026) |
+| Android 10      | 29 (deprecated - removed 19 October 2026) |
+
+{% hint style="warning" %}
+API levels 29-31 (Android 10-12) are deprecated and will be removed on **19 October 2026**. Runs targeting them will fail after that date - move to API level 32 or newer. See the [Android Support Policy](#android-support-policy) for how versions are retired.
+{% endhint %}
 
 Need Google Play? See [google-play-apis.md](../configuration/google-play-apis.md)
 
@@ -39,11 +44,11 @@ dcd cloud app.apk test.yaml --android-device pixel-6
 
 | id               | Name                                                                                   | Dimensions  | Valid Android API Levels       |
 | ---------------- | -------------------------------------------------------------------------------------- | ----------- | ------------------------------ |
-| `pixel-6`        | Pixel 6                                                                                | 1080 x 2400 | 29, 30, 31, 32, 33, 34, 35, 36 |
+| `pixel-6`        | Pixel 6                                                                                | 1080 x 2400 | 29, 30, 31, 32, 33, 34, 35, 36, 37 |
 | `pixel-6-pro`    | Pixel 6 Pro                                                                            | 1440 x 3120 | 33, 35                         |
-| `pixel-7`        | Pixel 7                                                                                | 1080 x 2400 | 33, 34, 35, 36                 |
-| `pixel-7-pro`    | Pixel 7 Pro                                                                            | 1440 x 3120 | 33, 34, 35, 36                 |
-| `generic-tablet` | Generic Tablet (Note: starts in landscape by default, use orientation=90 for portrait) | 2560 x 1440 | 33                             |
+| `pixel-7`        | Pixel 7                                                                                | 1080 x 2400 | 33, 34, 35, 36, 37             |
+| `pixel-7-pro`    | Pixel 7 Pro                                                                            | 1440 x 3120 | 33, 34, 35, 36, 37             |
+| `generic-tablet` | Generic Tablet (Note: starts in landscape by default, use orientation=90 for portrait) | 2560 x 1440 | 33, 36                         |
 
 ### iOS Versions
 
