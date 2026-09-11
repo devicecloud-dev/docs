@@ -22,6 +22,10 @@ We currently support the following versions of Maestro:
 * 2.8.0
 * 2.9.0
 
+{% hint style="warning" %}
+Maestro 2.0.4, 2.0.9, 2.1.0, 2.2.0, 2.5.0, 2.5.1 and 2.6.0 are deprecated. The target date for removal is the 19th October 2026 but this is subject to change based on usage. See the [#maestro-support-policy](maestro-versions.md#maestro-support-policy "mention") for more information.
+{% endhint %}
+
 ## Version Selection
 
 You can specify a version using `--maestro-version <version>`.
@@ -44,10 +48,10 @@ dcd cloud ... --maestro-version latest
 
 We will always aim to support the latest versions of Maestro and additionally continue to provide support for previous versions. Our policy for this is as follows:
 
-- We will always add support for new versions.
-- Once a new minor version has been released (i.e. 2.x.0), we'll mark all previous patches of the previous minor (i.e. 2.6.x) bar the latest as deprecated.
-- Once a minor version is five versions old, we'll mark it as deprecated.
-- Deprecated versions are then removed after 30 days provided it's total usage over seven days is less than 0.5%.
+* We will always add support for new versions.
+* Once a new minor version has been released (i.e. 2.x.0), we'll mark all previous patches of the previous minor (i.e. 2.6.x) bar the latest as deprecated.
+* Once a minor version is five versions old, we'll mark it as deprecated.
+* Deprecated versions are then removed after 30 days provided it's total usage over seven days is less than 0.5%.
 
 {% hint style="info" %}
 For example, Maestro 2.0.0 received 10 patch releases (2.0.1 -> 2.0.10) and we provided support for all of them. Once Maestro 2.1.0 released, we would then deprecate support for 2.0.0 -> 2.0.9 and retain 2.0.10.
