@@ -4,6 +4,10 @@ Device Cloud supports multiple Maestro versions to ensure compatibility with you
 
 By default, tests currently run using Maestro 2.2.0.
 
+{% hint style="warning" %}
+The default Maestro version will change to 2.10.0 on the 19th October 2026.
+{% endhint %}
+
 Please note that we periodically remove support for older versions so we always recommend you stay up to date.
 
 ## Available Versions
