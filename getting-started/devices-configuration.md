@@ -13,23 +13,27 @@ If you don't specify a device or OS version, then you will be allocated the defa
 DeviceCloud will default to API level 34 unless you pass the `--android-api-level` flag:
 
 ```bash
-dcd cloud app.apk test.yaml --android-api-level 35
+dcd cloud app.apk test.yaml --android-api-level 37
 ```
 
-| Android Version | API Level |
-| --------------- | --------- |
-| Android 17      | 37        |
-| Android 16      | 36        |
-| Android 15      | 35        |
-| Android 14      | 34        |
-| Android 13      | 33        |
-| Android 12L     | 32        |
-| Android 12      | 31 (deprecated - removed 19 October 2026) |
-| Android 11      | 30 (deprecated - removed 19 October 2026) |
-| Android 10      | 29 (deprecated - removed 19 October 2026) |
+{% hint style="warning" %}
+The default version of Android is changing to API 36 on the 19th October 2026.
+{% endhint %}
+
+| Android Version | API Level       |
+| --------------- | --------------- |
+| Android 17      | 37              |
+| Android 16      | 36              |
+| Android 15      | 35              |
+| Android 14      | 34              |
+| Android 13      | 33              |
+| Android 12L     | 32              |
+| Android 12      | 31 (deprecated) |
+| Android 11      | 30 (deprecated) |
+| Android 10      | 29 (deprecated) |
 
 {% hint style="warning" %}
-API levels 29-31 (Android 10-12) are deprecated and will be removed on **19 October 2026**. Runs targeting them will fail after that date - move to API level 32 or newer. See the [Android Support Policy](#android-support-policy) for how versions are retired.
+API levels 29-31 (Android 10-12) are deprecated and we're targetting removal on **19 October 2026**. This is subject to change based on usage, see the [Android Support Policy](devices-configuration.md#android-support-policy) for more information.
 {% endhint %}
 
 Need Google Play? See [google-play-apis.md](../configuration/google-play-apis.md)
@@ -42,13 +46,13 @@ DeviceCloud will default to Pixel 7 unless you pass the `--android-device` flag:
 dcd cloud app.apk test.yaml --android-device pixel-6
 ```
 
-| id               | Name                                                                                   | Dimensions  | Valid Android API Levels       |
-| ---------------- | -------------------------------------------------------------------------------------- | ----------- | ------------------------------ |
+| id               | Name                                                                                   | Dimensions  | Valid Android API Levels           |
+| ---------------- | -------------------------------------------------------------------------------------- | ----------- | ---------------------------------- |
 | `pixel-6`        | Pixel 6                                                                                | 1080 x 2400 | 29, 30, 31, 32, 33, 34, 35, 36, 37 |
-| `pixel-6-pro`    | Pixel 6 Pro                                                                            | 1440 x 3120 | 33, 35                         |
-| `pixel-7`        | Pixel 7                                                                                | 1080 x 2400 | 33, 34, 35, 36, 37             |
-| `pixel-7-pro`    | Pixel 7 Pro                                                                            | 1440 x 3120 | 33, 34, 35, 36, 37             |
-| `generic-tablet` | Generic Tablet (Note: starts in landscape by default, use orientation=90 for portrait) | 2560 x 1440 | 33, 36                         |
+| `pixel-6-pro`    | Pixel 6 Pro                                                                            | 1440 x 3120 | 33, 35                             |
+| `pixel-7`        | Pixel 7                                                                                | 1080 x 2400 | 33, 34, 35, 36, 37                 |
+| `pixel-7-pro`    | Pixel 7 Pro                                                                            | 1440 x 3120 | 33, 34, 35, 36, 37                 |
+| `generic-tablet` | Generic Tablet (Note: starts in landscape by default, use orientation=90 for portrait) | 2560 x 1440 | 33, 36                             |
 
 ### iOS Versions
 
@@ -57,10 +61,6 @@ DeviceCloud will default to iOS 17 unless you pass the `--ios-version` flag:
 ```bash
 dcd cloud app.zip test.yaml --ios-version 18
 ```
-
-{% hint style="warning" %}
-iOS 16 was removed on 24th August 2026 and tests targeting it will now fail. Switch to iOS 17 or newer — iPhone 14 also supports 17 and 18.
-{% endhint %}
 
 | id   | Version |
 | ---- | ------- |
