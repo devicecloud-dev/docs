@@ -4,8 +4,6 @@ description: SAML-based authentication for larger companies
 
 # Enterprise SSO
 
-
-
 {% hint style="info" %}
 This feature is currently available to orgs who have the Max subscription or above.
 {% endhint %}
@@ -15,7 +13,7 @@ Single sign-on solutions (such as OKTA) allow organisations to centrally manage 
 We support the following identity providers:
 
 * Okta, Auth0
-* Google Workspaces (formerly known as GSuite)
+* Google Workspaces
 * Microsoft Active Directory, Azure Active Directory, Microsoft Entra
 * PingIdentity
 * OneLogin
