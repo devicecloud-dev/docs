@@ -1,6 +1,6 @@
 # Authentication
 
-DeviceCloud supports two ways to authenticate the CLI: **browser login** (best for local, interactive use) and an **API key** (best for CI and headless environments). The REST API uses the API key.
+DeviceCloud supports two ways to authenticate the CLI: **browser login** (best for local, interactive use) and an **API key** (best for CI and headless environments). The REST API uses an API key.
 
 ## `dcd login` (recommended for local use)
 
@@ -27,13 +27,13 @@ See [Login & Accounts](../cli/dcd-login.md) for `logout`, `whoami`, and `switch-
 
 In CI and other non-interactive environments, use an API key.
 
-### Getting your API key
+### Getting an API key
 
 1. Log in to the [console](https://console.devicecloud.dev/settings)
 2. Open **Settings → API Key**
 3. Copy the key
 
-### Using your API key
+### Using an API key
 
 Set it as an environment variable so you don't have to pass it on every command:
 
@@ -49,7 +49,7 @@ dcd cloud --api-key your-api-key-here <appFile> <flowFile>
 ```
 
 {% hint style="info" %}
-Store your API key as a secret in your CI provider (e.g. a GitHub Actions secret) — never commit it to your repository.
+Store your API keys as a secret in your CI provider (e.g. a GitHub Actions secret) — never commit it to your repository.
 {% endhint %}
 
 ## Precedence
@@ -62,7 +62,7 @@ When more than one credential is available, the CLI resolves authentication in t
 
 ## REST API
 
-The [REST API](../api/overview.md) authenticates with the API key, passed in the `x-app-api-key` header:
+The [REST API](../api/overview.md) authenticates with an API key, passed in the `x-app-api-key` header:
 
 ```bash
 curl https://api.devicecloud.dev/... \
