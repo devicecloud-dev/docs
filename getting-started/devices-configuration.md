@@ -52,7 +52,13 @@ dcd cloud app.apk test.yaml --android-device pixel-6
 | `pixel-6-pro`    | Pixel 6 Pro                                                                            | 1440 x 3120 | 33, 35                             |
 | `pixel-7`        | Pixel 7                                                                                | 1080 x 2400 | 33, 34, 35, 36, 37                 |
 | `pixel-7-pro`    | Pixel 7 Pro                                                                            | 1440 x 3120 | 33, 34, 35, 36, 37                 |
-| `generic-tablet` | Generic Tablet (Note: starts in landscape by default, use orientation=90 for portrait) | 2560 x 1440 | 33, 36                             |
+| `pixel-8`        | Pixel 8                                                                                | 1080 x 2400 | 34, 35, 36, 37                     |
+| `pixel-10`       | Pixel 10                                                                               | 1080 x 2424 | 36, 37                             |
+| `pixel-10-pro`   | Pixel 10 Pro                                                                           | 1280 x 2856 | 36, 37                             |
+| `pixel-10-pro-xl` | Pixel 10 Pro XL                                                                       | 1344 x 2992 | 36, 37                             |
+| `pixel-10-pro-fold` | Pixel 10 Pro Fold (unfolded)                                                        | 2076 x 2152 | 36, 37                             |
+| `pixel-11`       | Pixel 11                                                                               | 1080 x 2424 | 37                                 |
+| `generic-tablet` | Generic Tablet (Note: starts in landscape by default, use orientation=90 for portrait) | 2560 x 1440 | 33, 36, 37                         |
 
 ### iOS Versions
 
