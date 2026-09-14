@@ -25,13 +25,13 @@
 * [App Management](configuration/app-management.md)
 * [Environment Variables](configuration/environment-variables.md)
 * [Workspace Configuration](configuration/workspace-config.md)
+* [Maestro Versions](configuration/maestro-versions.md)
 * [Per-flow Devices](configuration/per-flow-devices.md)
 * [Device Matrix](configuration/device-matrix.md)
 * [Device Locale](configuration/device-locale.md)
 * [Device Date & Time](configuration/device-datetime.md)
 * [Animations](configuration/disable-animations.md)
 * [Device Orientation](configuration/orientation.md)
-* [Maestro Versions](configuration/maestro-versions.md)
 * [Google Play APIs](configuration/google-play-apis.md)
 * [Runner Types](configuration/runner-type.md)
 
@@ -42,6 +42,7 @@
 * [Inspecting Variables](artifacts/inspecting-variables.md)
 
 ## Notifications
+
 * [Email Notifications](notifications/email-notifications.md)
 * [Slack Notifications](notifications/slack-notifications.md)
 * [Webhook Notifications](notifications/webhook-notifications.md)

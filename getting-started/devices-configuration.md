@@ -106,13 +106,19 @@ If you need a device or OS that we don't currently offer, please feel free to re
 
 ### iOS Support Policy
 
-We will always aim to have the following devices available as a baseline:
+#### iOS Devices
 
-* The latest even-numbered iPhone model & its variations, i.e. iPhone 17, 17e, 17 Pro & 17 Pro Max.
-* The previous two supported generations of iPhones, i.e. iPhone 16 & iPhone 14.
+We will always aim to support the latest versions of iOS and additionally continue to provide support for previous versions. Our policy for this is as follows:
+
+* The latest even-numbered iPhone model & its variations, i.e. iPhone 18, 18e, 18 Pro & 18 Pro Max.
+* The previous two supported (i.e. even-numbered) generations of base-model iPhones, i.e. iPhone 16 & iPhone 14.
 * The latest "un-numbered" iPhones provided their screen dimensions are noticeably different from currently support devices, i.e. iPhone Air & iPhone Duo.
-* The latest odd-numbered iPhone provided it's screen dimensions are noticeably different from currently supported devices.
+* The latest odd-numbered, base-model iPhone, i.e. iPhone 17.
 * The latest generation of iPad Pro.
+* Once a device is to be no longer supported, we'll mark it as deprecated.
+* Deprecated devices are then removed after 30 days provided its total usage over seven days is less than 1%.
+
+#### iOS Versions
 
 We will always aim to support the latest versions of iOS and additionally continue to provide support for previous versions. Our policy for this is as follows:
 
@@ -125,14 +131,20 @@ It may be possible in some cases to provide support for a beta version however t
 
 The default configuration will always be the latest even-numbered base iPhone we support running the previous version of iOS, i.e. iPhone 16 running iOS 26. Before we change the default, we will always provide a minimum of 30 days notice.
 
-Additionally when removing Device and OS support, we will always provide a minimum of 30 days notice.
-
 ### Android Support Policy
 
-We will always aim to have the following devices available as a baseline:
+#### Android Devices
 
-* The two latest Google Pixel models & all variations.
+We will always aim to support the latest devices and additionally continue to provide support for previous versions. Our policy for this is as follows:
+
+* The latest even-numbered Google Pixel model & its variations, i.e. Pixel 10, 10 Pro, 10 Pro XL & 10 Pro Fold.
+* The previous two supported (i.e. even-numbered) generations of Pixels, i.e. Pixel 8 & Pixel 6.
+* The latest odd-numbered, base-model Pixel i.e. Pixel 11.
 * A generic-tablet model.
+* Once a device is to be no longer supported, we'll mark it as deprecated.
+* Deprecated devices are then removed after 30 days provided its total usage over seven days is less than 1%.
+
+#### Android Versions
 
 We will always aim to support the latest versions of Android and additionally continue to provide support for previous versions. Our policy for this is as follows:
 
@@ -144,5 +156,3 @@ We will always aim to support the latest versions of Android and additionally co
 It may be possible in some cases to provide support for a beta version however this will be on a case-by-case basis; please contact our Support team if you would like to request this.
 
 The default configuration will always be the latest base Pixel we support running the previous version of Android, i.e. Pixel 10 running Android 16/API 36. Before we change the default, we will always provide a minimum of 30 days notice.
-
-Additionally when removing Device and OS support, we will always provide a minimum of 30 days notice.

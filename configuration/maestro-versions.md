@@ -14,22 +14,18 @@ Please note that we periodically remove support for older versions so we always 
 
 We currently support the following versions of Maestro:
 
-* 2.0.4 (deprecated - removed 19 October 2026)
-* 2.0.9 (deprecated - removed 19 October 2026)
-* 2.1.0 (deprecated - removed 19 October 2026)
-* 2.2.0 (deprecated - removed 19 October 2026)
-* 2.5.0 (deprecated - removed 19 October 2026)
-* 2.5.1 (deprecated - removed 19 October 2026)
-* 2.6.0 (deprecated - removed 19 October 2026)
+* 2.0.4 (deprecated)
+* 2.0.9 (deprecated)
+* 2.1.0 (deprecated)
+* 2.2.0 (deprecated)
+* 2.5.0 (deprecated)
+* 2.5.1 (deprecated)
+* 2.6.0 (deprecated)
 * 2.6.1
 * 2.7.0
 * 2.8.0
 * 2.9.0
 * 2.10.0
-
-{% hint style="warning" %}
-Maestro 2.0.4, 2.0.9, 2.1.0, 2.2.0, 2.5.0, 2.5.1 and 2.6.0 are deprecated and will be removed on **19 October 2026**. Runs pinned to these versions will fail after that date - move to 2.6.1 or newer. On the same date the default version (used when `--maestro-version` is not passed) changes from 2.2.0 to 2.10.0.
-{% endhint %}
 
 {% hint style="warning" %}
 Maestro 2.0.4, 2.0.9, 2.1.0, 2.2.0, 2.5.0, 2.5.1 and 2.6.0 are deprecated. The target date for removal is the 19th October 2026 but this is subject to change based on usage. See the [#maestro-support-policy](maestro-versions.md#maestro-support-policy "mention") for more information.
@@ -70,4 +66,4 @@ Once Maestro 2.5.0 is released, we would then mark 2.0.10 as deprecated and look
 
 We may update the default version from time to time and we will always provide at least 30 days of notice beforehand.
 
-We will always aim to provide at least 30 days of warning before removing support for previous Maestro versions.
+We will always provide at least 30 days of warning before removing support for previous Maestro versions.
