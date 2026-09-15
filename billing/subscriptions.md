@@ -2,6 +2,10 @@
 
 DeviceCloud offers subscriptions for use of the service.
 
+{% hint style="info" %}
+All prices exclude Sales Tax. On the Pro and Max plans, tax is added at checkout for your country by our Merchant of Record, Paddle. On the Enterprise plan, tax is added to your invoice where applicable.
+{% endhint %}
+
 These are being rolled out during 2026 and may not be available to all users initially. Reach out to support if you need help.
 
 ### Pro Plan
