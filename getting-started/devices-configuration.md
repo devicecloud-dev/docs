@@ -4,7 +4,7 @@
 
 If you don't specify a device or OS version, then you will be allocated the default device image:
 
-**Android:** Pixel 7 (API level 34) - **from 19 October 2026 the default becomes API level 36** (still Pixel 7). Pin `--android-api-level 34` if you need to stay on it.
+**Android:** Pixel 7 (API level 34) - **from 19 October 2026 the default becomes API level 36** (still Pixel 7), and **from 26 October 2026 the default device becomes Pixel 10**. Pin `--android-api-level 34` or `--android-device pixel-7` if you need to stay on them.
 
 **iOS:** iPhone 14 (iOS 17.5)
 
@@ -49,9 +49,9 @@ dcd cloud app.apk test.yaml --android-device pixel-6
 | id               | Name                                                                                   | Dimensions  | Valid Android API Levels           |
 | ---------------- | -------------------------------------------------------------------------------------- | ----------- | ---------------------------------- |
 | `pixel-6`        | Pixel 6                                                                                | 1080 x 2400 | 29, 30, 31, 32, 33, 34, 35, 36, 37 |
-| `pixel-6-pro`    | Pixel 6 Pro                                                                            | 1440 x 3120 | 33, 35                             |
-| `pixel-7`        | Pixel 7                                                                                | 1080 x 2400 | 33, 34, 35, 36, 37                 |
-| `pixel-7-pro`    | Pixel 7 Pro                                                                            | 1440 x 3120 | 33, 34, 35, 36, 37                 |
+| `pixel-6-pro`    | Pixel 6 Pro (deprecated)                                                                            | 1440 x 3120 | 33, 35                             |
+| `pixel-7`        | Pixel 7 (deprecated)                                                                                | 1080 x 2400 | 33, 34, 35, 36, 37                 |
+| `pixel-7-pro`    | Pixel 7 Pro (deprecated)                                                                            | 1440 x 3120 | 33, 34, 35, 36, 37                 |
 | `pixel-8`        | Pixel 8                                                                                | 1080 x 2400 | 34, 35, 36, 37                     |
 | `pixel-10`       | Pixel 10                                                                               | 1080 x 2424 | 36, 37                             |
 | `pixel-10-pro`   | Pixel 10 Pro                                                                           | 1280 x 2856 | 36, 37                             |
@@ -59,6 +59,14 @@ dcd cloud app.apk test.yaml --android-device pixel-6
 | `pixel-10-pro-fold` | Pixel 10 Pro Fold (unfolded)                                                        | 2076 x 2152 | 36, 37                             |
 | `pixel-11`       | Pixel 11                                                                               | 1080 x 2424 | 37                                 |
 | `generic-tablet` | Generic Tablet (Note: starts in landscape by default, use orientation=90 for portrait) | 2560 x 1440 | 33, 36, 37                         |
+
+{% hint style="warning" %}
+Pixel 6 Pro, Pixel 7 and Pixel 7 Pro are deprecated and we're targetting removal on **26 October 2026**. This is subject to change based on usage, see the [Android Support Policy](devices-configuration.md#android-support-policy) for more information.
+{% endhint %}
+
+{% hint style="warning" %}
+Generic Tablet on API level 33 will be removed on **26 October 2026**. Move to API level 36 or 37, see the [Android Support Policy](devices-configuration.md#android-support-policy) for more information.
+{% endhint %}
 
 ### iOS Versions
 
