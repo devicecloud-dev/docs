@@ -18,7 +18,7 @@ pipelines:
     - step:
         name: E2E tests
         script:
-          - pipe: docker://moropo/device-cloud-for-bitbucket:1.3.0
+          - pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
             variables:
               API_KEY: $DEVICE_CLOUD_API_KEY
               APP_FILE: 'build/app-release.apk'
@@ -36,7 +36,7 @@ Find your API key at [console.devicecloud.dev/settings](https://console.devicecl
 ### Android
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.3.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'build/app-release.apk'
@@ -49,7 +49,7 @@ Find your API key at [console.devicecloud.dev/settings](https://console.devicecl
 ### iOS
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.3.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'build/MyApp.app.zip'
@@ -90,7 +90,7 @@ If your repository is mirrored on GitHub and you use [GitHub checks](github-chec
 The pipe writes a `dcd-result.env` file into the repo's working directory. Subsequent script lines in the same step can `source` it:
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.3.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'app.apk'
@@ -108,7 +108,7 @@ The pipe exits non-zero on test failures so the build fails by default.
 ## Passing env vars into flows
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.3.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'app.apk'
@@ -129,7 +129,7 @@ To expose a report as a Bitbucket artifact (and have Bitbucket pick up the test 
 - step:
     name: E2E tests
     script:
-      - pipe: docker://moropo/device-cloud-for-bitbucket:1.3.0
+      - pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
         variables:
           API_KEY: $DEVICE_CLOUD_API_KEY
           APP_FILE: 'app.apk'
