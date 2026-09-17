@@ -23,6 +23,14 @@ Details of charges made to your account can be found on the [billing page](https
 Enterprise customers with volume discounts or grandfathered users with older pricing may have different pricing. You can view your account's test run cost in the [billing page](https://console.devicecloud.dev/billing)
 {% endhint %}
 
+### Cancelled tests
+
+A test you cancel **before it starts running** is refunded **75%** of its cost. Nothing has been provisioned for it yet, so you only pay the 25% that covers queueing and scheduling it.
+
+A test that has already started is charged in full, because it is occupying a real device by the time you cancel it. In the console, the cancel button only appears on tests that are still queued or pending, so a cancel you make there is always refundable.
+
+Refunds appear as a separate negative line in your usage history, alongside the original charge. If the tests were paid for out of your plan's included credits, cancelling gives that allowance back for the rest of the billing period.
+
 ### Credits
 
 Historically, DeviceCloud users have purchased credits in advance and these have been drawn down via usage.
