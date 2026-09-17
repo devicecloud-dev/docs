@@ -156,6 +156,7 @@ The action automatically attaches Git and pull request metadata to each run, rea
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
 | `async` | No | `false` | Exit immediately without waiting for results. Returns exit code `0` regardless of test outcome. See [Async Execution](../advanced/async-execution.md). |
+| `cancel-previous` | No | `false` | Cancel the still-queued tests of the previous run of this job on the same branch or PR. See [Cancelling superseded runs](../advanced/cancel-previous.md). |
 | `quiet` | No | `false` | Reduce console output. Useful in verbose CI environments. |
 | `download-artifacts` | No | — | Download logs, screenshots, and videos after the run. Options: `ALL`, `FAILED`. |
 | `json-file` | No | `false` | Write test results to a JSON file (`<run_name>_dcd.json` or `<upload_id>_dcd.json`). |

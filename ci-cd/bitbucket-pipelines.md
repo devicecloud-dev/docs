@@ -71,6 +71,7 @@ The pipe variables map 1:1 to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flags. 
 | `REPORT` | `junit`, `html`, `html-detailed`, `allure`. |
 | `DOWNLOAD_ARTIFACTS` | `ALL` or `FAILED` — downloads logs/screenshots/videos. |
 | `ASYNC` | `"true"` to fire-and-forget. |
+| `CANCEL_PREVIOUS` | `"true"` to cancel the previous run's still-queued tests when this one starts. See [Cancelling superseded runs](../advanced/cancel-previous.md). |
 | `RUNNER_TYPE` | `m1` or `m4` for premium runners. |
 
 ## Bitbucket context auto-attached
