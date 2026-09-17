@@ -98,7 +98,7 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 | Flag | Description |
 |------|-------------|
 | `--async` | Submit tests and return immediately (exit `0`) without waiting for results (see [Async Execution](../advanced/async-execution.md)) |
-| `--cancel-previous` | Cancel the still-queued tests of the previous run from the same CI context (see [Cancelling superseded runs](../ci-cd/cancel-previous.md)) |
+| `--cancel-previous` | Cancel the still-queued tests of the previous run from the same CI context (see [Cancelling superseded runs](../advanced/cancel-previous.md)) |
 | `--quiet`, `-q` | Suppress per-test progress; print only the final summary |
 | `--json` | Output results as JSON. Exits `0` on success, `2` on test failure, `1` on CLI/infrastructure errors |
 | `--json-file` | Write JSON results to a file (`<upload_id>_dcd.json` by default). Exits `0` even if the test run fails; infrastructure errors still exit `1` |

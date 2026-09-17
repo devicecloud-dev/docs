@@ -229,7 +229,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | Flag | Description |
 |------|-------------|
 | `--async` | Exit immediately without waiting for results (exit code `0` regardless). See [Async Execution](../advanced/async-execution.md). |
-| `--cancel-previous` | Cancel the still-queued tests of the previous run of this job on the same branch or PR. Needs the `DCD_GH_*` context env vars. See [Cancelling superseded runs](cancel-previous.md). |
+| `--cancel-previous` | Cancel the still-queued tests of the previous run of this job on the same branch or PR. Needs the `DCD_GH_*` context env vars. See [Cancelling superseded runs](../advanced/cancel-previous.md). |
 | `--download-artifacts <mode>` | Download logs/screenshots/videos. Options: `ALL`, `FAILED`. |
 | `--disable-animations` | Disable device animations. See [Animations](../configuration/disable-animations.md). |
 | `--maestro-chrome-onboarding` | Android only. See [Chrome Onboarding](../advanced/chrome-onboarding.md). |

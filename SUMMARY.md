@@ -18,7 +18,6 @@
 * [Bitrise Steps](ci-cd/bitrise-steps.md)
 * [EAS Workflows](ci-cd/eas-workflows.md)
 * [Bitbucket Pipelines](ci-cd/bitbucket-pipelines.md)
-* [Cancelling superseded runs](ci-cd/cancel-previous.md)
 * [Any CI](ci-cd/any-ci.md)
 
 ## Configuration
@@ -75,6 +74,7 @@
 ## Advanced
 
 * [Async Execution](advanced/async-execution.md)
+* [Cancelling Superseded Runs](advanced/cancel-previous.md)
 * [Retry Strategies](advanced/retry-strategies.md)
 * [Chrome Onboarding](advanced/chrome-onboarding.md)
 * [Exit Codes](advanced/exit-codes.md)
