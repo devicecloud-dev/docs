@@ -4,11 +4,11 @@
 All amounts exclude Sales Tax - this will be added at checkout for your country by our Merchant of Record, Paddle.
 {% endhint %}
 
-DeviceCloud debits customers account per test run.
+DeviceCloud charges your Team's account per test run. This happens as soon as you run `dcd cloud`.
 
 In billing terms, a test run is a single top-level flow executing on a single device. Multiple flows in an upload will incur multiple charges. 
 
-For example, an upload with 10 flows running on iOS (at $0.11 per test run) will incur $1.10 of debits to the customer account.
+For example, an upload with 10 flows running on iOS (at $0.11 per test run) will incur $1.10 of charges to your Team's account.
 
 Details of charges made to your account can be found on the [billing page](https://console.devicecloud.dev/billing).
 
@@ -25,20 +25,8 @@ Enterprise customers with volume discounts or grandfathered users with older pri
 
 ### Cancelled tests
 
-A test you cancel **before it starts running** is refunded **75%** of its cost. Nothing has been provisioned for it yet, so you only pay the 25% that covers queueing and scheduling it.
+Once a test has started running, it cannot be cancelled.
 
-A test that has already started is charged in full, because it is occupying a real device by the time you cancel it. In the console, the cancel button only appears on tests that are still queued or pending, so a cancel you make there is always refundable.
+A test you cancel before it starts running is refunded at 75% of its cost. The 25% is used to cover our network and egress costs from preparing your test to run.
 
-Refunds appear as a separate negative line in your usage history, alongside the original charge. If the tests were paid for out of your plan's included credits, cancelling gives that allowance back for the rest of the billing period.
-
-### Credits
-
-Historically, DeviceCloud users have purchased credits in advance and these have been drawn down via usage.
-
-{% hint style="info" %}
-Note: credits are only valid for 12 months, after which they automatically expire.
-{% endhint %}
-
-New users are given $20 in free credits to test the service.
-
-The ability to purchase credits is being phased out in favour of [subscriptions](subscriptions.md).
+Refunds appear as a separate negative line in your usage history alongside the original charge and should appear in your balance immediately.
