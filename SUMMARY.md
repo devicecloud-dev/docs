@@ -18,6 +18,7 @@
 * [Bitrise Steps](ci-cd/bitrise-steps.md)
 * [EAS Workflows](ci-cd/eas-workflows.md)
 * [Bitbucket Pipelines](ci-cd/bitbucket-pipelines.md)
+* [Cancelling superseded runs](ci-cd/cancel-previous.md)
 * [Any CI](ci-cd/any-ci.md)
 
 ## Configuration
