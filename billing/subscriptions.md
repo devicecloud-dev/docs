@@ -40,4 +40,5 @@ This subscription starts at $6000 per year and allows for custom terms including
 
 This plan is paid by invoice and includes private, dedicated support via Slack as standard.
 
-Please reach out to [sales@devicecloud.dev](mailto:sales@devicecloud.dev) for more info.
+Please reach out to [hello@devicecloud.dev](mailto:hello@devicecloud.dev) for more info.
+
