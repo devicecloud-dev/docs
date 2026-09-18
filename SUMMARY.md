@@ -74,6 +74,7 @@
 ## Advanced
 
 * [Async Execution](advanced/async-execution.md)
+* [Visual Testing](advanced/visual-testing.md)
 * [Retry Strategies](advanced/retry-strategies.md)
 * [Chrome Onboarding](advanced/chrome-onboarding.md)
 * [Exit Codes](advanced/exit-codes.md)

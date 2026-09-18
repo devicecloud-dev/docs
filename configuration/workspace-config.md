@@ -33,6 +33,33 @@ Files named `config.yaml` / `config.yml` and paths containing `.app` path segmen
 
 If `flows` is omitted, all `.yaml` / `.yml` files in the directory (except config files) are included.
 
+### `includedPaths`
+
+Glob patterns selecting extra **non-flow** files to upload alongside your flows.
+
+The CLI works out what to upload by reading your flows, so it only picks up files a command actually references — `addMedia`, `runFlow` and `runScript` arguments. Anything else your test needs on the device is invisible to it and silently absent from the run. `includedPaths` is how you declare those files.
+
+```yaml
+includedPaths:
+  - screenshots/**      # assertScreenshot baselines
+  - fixtures/*.json     # test data read by a script
+  - certs/test-ca.pem
+```
+
+Patterns use the same [NPM glob](https://www.npmjs.com/package/glob) syntax as `flows`, and are always resolved **relative to the workspace folder you pass to `dcd cloud`** — not relative to the config file, even when you load it with `--config`.
+
+Matched files keep their position relative to your flows when they are uploaded, so a baseline at `screenshots/home.png` sitting next to `visual.yaml` arrives next to that flow on the device.
+
+{% hint style="warning" %}
+Patterns cannot escape the workspace folder. A pattern resolving to a file outside it (`../secrets.json`) fails the run rather than uploading it.
+{% endhint %}
+
+{% hint style="info" %}
+Run with `--debug` to list exactly which files were matched and uploaded.
+
+If your included files sit **beside** your flows folder rather than inside it, the upload root moves up to cover both, and flow paths shown in the console gain a leading folder (`login.yaml` becomes `flows/login.yaml`). This is expected — it is what keeps the relative path between a flow and its files intact — and affects display only.
+{% endhint %}
+
 ### `includeTags` / `excludeTags`
 
 Filter flows by their Maestro `tags`. Values here are **merged** with any tags set using the CLI flags.
@@ -119,6 +146,9 @@ platform:
 ```yaml
 flows:
   - ./**/*.yaml
+
+includedPaths:
+  - screenshots/**
 
 includeTags:
   - smoke
