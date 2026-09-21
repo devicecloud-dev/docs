@@ -87,6 +87,12 @@ The default version of iOS is changing to 26 on the 2nd November 2026.
 | `18` | 18.6            |
 | `17` | 17.5 (deprecated) |
 
+{% hint style="danger" %}
+**iOS 27 requires your app to adopt the UIScene lifecycle.** From iOS 27 UIKit terminates any app that has not adopted it, at launch, before your first screen renders — the crash report shows `EXC_BREAKPOINT` in `__UIApplicationEvaluateRuntimeIssueForNoSceneLifecycleAdoption`. iOS 26 and earlier only warn, so an app that works on iOS 26 can still fail immediately on iOS 27.
+
+This is an Apple platform change, not a DeviceCloud one, and it affects the app you upload rather than your flows. If your iOS 27 runs fail at the first `assertVisible` with the app apparently never appearing, check your run's crash logs for that symbol. Adopting `UIScene` in your app (or upgrading to a framework version that has) is the fix.
+{% endhint %}
+
 {% hint style="warning" %}
 iOS 17 is deprecated and **will be removed on 2 November 2026**. Move `--ios-version` to 18, 26 or 27. See the [iOS Support Policy](devices-configuration.md#ios-support-policy) for more information.
 {% endhint %}
