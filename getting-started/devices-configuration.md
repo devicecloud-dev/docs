@@ -101,18 +101,18 @@ dcd cloud app.zip test.yaml --ios-device ipad-pro-6th-gen
 
 | id                    | Name                                   | Dimensions  | Valid iOS versions |
 | --------------------- | -------------------------------------- | ----------- | ------------------ |
-| `iphone-18-pro-max`   | iPhone 18 Pro Max                      | TBC         | 27                 |
-| `iphone-18-pro`       | iPhone 18 Pro                          | TBC         | 27                 |
-| `iphone-air`          | iPhone Air                             | TBC         | 26, 27             |
-| `iphone-17`           | iPhone 17                              | TBC         | 26, 27             |
+| `iphone-18-pro-max`   | iPhone 18 Pro Max                      | 1320 x 2868         | 27                 |
+| `iphone-18-pro`       | iPhone 18 Pro                          | 1206 x 2622         | 27                 |
+| `iphone-air`          | iPhone Air                             | 1260 x 2736         | 26, 27             |
+| `iphone-17`           | iPhone 17                              | 1206 x 2622         | 26, 27             |
 | `iphone-16-pro-max`   | iPhone 16 Pro Max (deprecated)         | 1320 x 2868 | 18, 26, 27         |
 | `iphone-16-pro`       | iPhone 16 Pro (deprecated)             | 1206 x 2622 | 18, 26, 27         |
 | `iphone-16-plus`      | iPhone 16 Plus (deprecated)            | 1290 x 2796 | 26, 27             |
 | `iphone-16`           | iPhone 16                              | 1179 x 2556 | 18, 26, 27         |
 | `iphone-15`           | iPhone 15 (deprecated)                 | 1179 x 2556 | 17                 |
 | `iphone-14`           | iPhone 14                              | 1170 x 2532 | 17, 18             |
-| `ipad-pro-m5-13`      | iPad Pro 13-inch (M5)                  | TBC         | 26, 27             |
-| `ipad-pro-m5-11`      | iPad Pro 11-inch (M5)                  | TBC         | 26, 27             |
+| `ipad-pro-m5-13`      | iPad Pro 13-inch (M5)                  | 2064 x 2752         | 26, 27             |
+| `ipad-pro-m5-11`      | iPad Pro 11-inch (M5)                  | 1668 x 2420         | 26, 27             |
 | `ipad-pro-6th-gen`    | iPad Pro (6th Generation) (deprecated) | 2048 x 2732 | 18, 26, 27         |
 
 {% hint style="warning" %}
