@@ -84,11 +84,11 @@ An information request about devicecloud.dev or feature request.
 
 ### Target initial response times <a href="#target-initial-response-times" id="target-initial-response-times"></a>
 
-| Severity Level | Standard Account (pay-as-you-go) | Enterprise Account (annual contract) |
-| -------------- | -------------------------------- | ------------------------------------ |
-| 1. Urgent      | 4 hours                          | 1 hour                               |
-| 2. High        | 1 business day                   | 4 hours                              |
-| 3. Normal      | 2 business days                  | 1 business day                       |
-| 4. Low         | 3 business days                  | 2 business days                      |
+| Severity Level | Standard (Pro/Max) | Enterprise Account (annual contract) |
+| -------------- | ------------------ | ------------------------------------ |
+| 1. Urgent      | 4 hours            | 1 hour                               |
+| 2. High        | 1 business day     | 4 hours                              |
+| 3. Normal      | 2 business days    | 1 business day                       |
+| 4. Low         | 3 business days    | 2 business days                      |
 
 Support hours are from 8 am to 8 pm UK time, Monday-Friday, except where otherwise stated.
