@@ -151,7 +151,7 @@ We will always aim to support the latest versions of iOS and additionally contin
 
 * The latest even-numbered iPhone model & its variations, i.e. iPhone 18, 18e, 18 Pro & 18 Pro Max. We support the ones Apple has actually released; at the time of writing that is the iPhone 18 Pro and 18 Pro Max.
 * The previous two supported (i.e. even-numbered) generations of **base-model** iPhones, i.e. iPhone 16 & iPhone 14. Variations such as Plus, Pro and Pro Max are covered only for the latest even-numbered generation, so they fall out of support when a new even-numbered generation arrives.
-* The latest "un-numbered" iPhones provided their screen dimensions are noticeably different from currently supported devices, i.e. iPhone Air & iPhone Duo.
+* The latest "un-numbered" iPhones provided their screen dimensions are noticeably different from currently supported devices, i.e. iPhone Air.
 * The latest odd-numbered, base-model iPhone, i.e. iPhone 17.
 * The latest generation of iPad Pro, in both screen sizes.
 * Once a device is to be no longer supported, we'll mark it as deprecated.
