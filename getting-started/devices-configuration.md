@@ -6,7 +6,7 @@ If you don't specify a device or OS version, then you will be allocated the defa
 
 **Android:** Pixel 7 (API level 34) - **from 19 October 2026 the default becomes API level 36** (still Pixel 7), and **from 26 October 2026 the default device becomes Pixel 10**. Pin `--android-api-level 34` or `--android-device pixel-7` if you need to stay on them.
 
-**iOS:** iPhone 14 (iOS 17.5) - **from 2 November 2026 the default becomes iPhone 16 running iOS 26**. Pin `--ios-device iphone-14` if you need to stay on that device; iOS 17 is being removed on the same date, so there is no way to stay on it.
+**iOS:** iPhone 14 (iOS 17.5) - **from 2 November 2026 the default becomes iPhone 16 running iOS 26**. Pin `--ios-device iphone-14 --ios-version 18` if you need to stay on that device; iOS 17 is being removed on the same date, so there is no way to stay on it.
 
 ### Android API Levels
 
