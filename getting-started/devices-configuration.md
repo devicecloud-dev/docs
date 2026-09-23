@@ -70,10 +70,10 @@ Generic Tablet on API level 33 will be removed on **26 October 2026**. Move to A
 
 ### iOS Versions
 
-DeviceCloud will default to iOS 17 unless you pass the `--ios-version` flag:
+DeviceCloud will default to iOS 17 unless you pass the `--ios-version` flag. Pair it with an `--ios-device` that runs that version (see [iOS Devices](#ios-devices)), as the default iPhone 14 only runs iOS 17 and 18:
 
 ```bash
-dcd cloud app.zip test.yaml --ios-version 27
+dcd cloud app.zip test.yaml --ios-device iphone-16 --ios-version 27
 ```
 
 {% hint style="warning" %}
@@ -99,10 +99,10 @@ iOS 17 is deprecated and **will be removed on 2 November 2026**. Move `--ios-ver
 
 ### iOS Devices
 
-DeviceCloud will default to iPhone 14 unless you pass the `--ios-device` flag:
+DeviceCloud will default to iPhone 14 unless you pass the `--ios-device` flag. Pass `--ios-version` with it, choosing one of the versions in the device's row:
 
 ```bash
-dcd cloud app.zip test.yaml --ios-device ipad-pro-6th-gen
+dcd cloud app.zip test.yaml --ios-device ipad-pro-m5-13 --ios-version 26
 ```
 
 | id                    | Name                                   | Dimensions  | Valid iOS versions |
