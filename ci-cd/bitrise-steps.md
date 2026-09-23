@@ -19,6 +19,6 @@ DeviceCloud includes a BitRise step to allow automatic triggering of tests via y
 
 If your repository is on GitHub and you use [GitHub checks](github-checks.md), the **GitHub Check Name** input (`check_name`) names the check a run posts — `iOS` gives `DeviceCloud / iOS`. Set it when a commit is tested by more than one workflow, so each gets a check you can require separately in branch protection. It applies to runs that also carry `gh_repo` and `gh_sha` metadata.
 
-To cancel the previous run's still-queued tests when a new build starts, set the **Cancel Previous Run** input (`cancel_previous`) to `true` — see [Cancelling superseded runs](../advanced/cancel-previous.md). Bitrise reports no build id to DeviceCloud, so if one build runs the step more than once, give each invocation its own `check_name`; otherwise the second cancels the first.
+To cancel the previous run's still-queued tests when a new build starts, set the **Cancel Previous Run** input (`cancel_previous`) to `true` — see [Cancelling superseded runs](../advanced/cancel-previous.md). The step doesn't attach your repository or branch, so also add `gh_repo=<owner/repo>` and `gh_branch=$BITRISE_GIT_BRANCH` to the **Metadata** input (`metadata`), one per line; without them nothing is cancelled. Bitrise reports no build id to DeviceCloud, so if one build runs the step more than once, give each invocation its own `check_name`; otherwise the second cancels the first.
 
 <figure><img src="../.gitbook/assets/Screenshot 2025-01-06 at 14.45.51.png" alt=""><figcaption></figcaption></figure>
