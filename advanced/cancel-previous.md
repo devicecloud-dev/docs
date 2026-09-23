@@ -145,12 +145,14 @@ e2e_android:
           --cancel-previous
 ```
 
-The wrapper passes `--cancel-previous` straight to the CLI and builds the context
-from the job's `env:` block: `DCD_GH_REPO` plus `DCD_GH_BRANCH` or
-`DCD_GH_PR_NUMBER` are required. Instead of a check name per job, you can set
-`DCD_GH_RUN_ID: ${{ workflow.id }}` on every job so the jobs of one workflow run
-count as one run. See [EAS Workflows](../ci-cd/eas-workflows.md#git-context-optional)
-for the variables.
+The wrapper passes `--cancel-previous` straight to the CLI and builds the
+context from the job's `env:` block: `DCD_GH_REPO` plus `DCD_GH_BRANCH` or
+`DCD_GH_PR_NUMBER` are required. Giving `DCD_GH_REPO` as a fixed string, as
+above, keeps it valid on manual runs too. Instead of a check name per job, you
+can set `DCD_GH_RUN_ID: ${{ workflow.id }}` on every job so the jobs of one
+workflow run count as one run. See
+[EAS Workflows](../ci-cd/eas-workflows.md#git-context-optional) for the
+variables.
 {% endtab %}
 {% endtabs %}
 
