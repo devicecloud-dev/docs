@@ -6,12 +6,15 @@ Device Cloud allows you to inject environment variables into your test flows, en
 
 ### Command Line
 ```bash
-dcd cloud -e API_URL=https://api.example.com -e API_KEY=secret
+dcd cloud app.apk flows/ -e API_URL=https://api.example.com -e API_KEY=secret
 ```
+
+`-e` is short for `--env`.
 
 ### Multiple Variables
 ```bash
-dcd cloud -e DB_HOST=localhost \
+dcd cloud app.apk flows/ \
+          -e DB_HOST=localhost \
           -e DB_USER=test \
           -e DB_PASS=password \
           -e ENVIRONMENT=staging
@@ -22,20 +25,22 @@ dcd cloud -e DB_HOST=localhost \
 ### Configuration Management
 ```bash
 # Development
-dcd cloud -e API_URL=https://dev-api.example.com
+dcd cloud app.apk flows/ -e API_URL=https://dev-api.example.com
 
 # Staging
-dcd cloud -e API_URL=https://staging-api.example.com
+dcd cloud app.apk flows/ -e API_URL=https://staging-api.example.com
 
 # Production
-dcd cloud -e API_URL=https://api.example.com
+dcd cloud app.apk flows/ -e API_URL=https://api.example.com
 ```
 
 ### Secure Credentials
 ```bash
-dcd cloud -e USERNAME=${CI_USERNAME} \
+dcd cloud app.apk flows/ -e USERNAME=${CI_USERNAME} \
           -e PASSWORD=${CI_PASSWORD}
 ```
+
+Add `--encrypt` (or set `DCD_ENCRYPT=1`) to encrypt the `--env` values on your machine before they're uploaded. This also encrypts the app binary and your flow files.
 
 ## iOS: SIMCTL Variable Passthrough
 
@@ -53,11 +58,28 @@ let apiUrl = ProcessInfo.processInfo.environment["API_URL"]
 
 This is useful for feature flags, environment switching, or any value your app reads at launch without needing to rebuild the binary.
 
+Variables starting with `SIMCTL_CHILD_DYLD_` are blocked and never reach the app.
+
+## Maestro Settings
+
+Variables whose names start with `MAESTRO_` are also set in the environment of the Maestro process, as well as being available to your flows. Use them to pass settings that Maestro reads from its environment.
+
+## DeviceCloud Overrides
+
+`DEVICECLOUD_OVERRIDE_*` settings, such as [`DEVICECLOUD_OVERRIDE_DEVICE_LOCALE`](device-locale.md), only work in a flow's `env:` block. Passed with `-e`, they're treated as ordinary variables and have no effect.
+
+## Masking Secrets
+
+Values of variables whose names contain a keyword such as `PASSWORD`, `TOKEN`, `SECRET` or `API_KEY` are masked in the result log and in the downloadable `maestro.log`, stdout/stderr and `commands.json` — see [Inspecting Variables](../artifacts/inspecting-variables.md) for the full list of keywords. Masking has limits:
+
+- Values passed with `--env` / `-e` are only masked if they're 5 or more characters long, so a short value such as a 4-digit PIN stays visible.
+- Literal values assigned in a script, such as `password = '...'`, are masked. Values written directly in a flow's `env:` block, and values computed at runtime (`output.*`), are not.
+- HTML and JUnit reports, device logs, screenshots and videos are not scrubbed.
+
 ## Best Practices
 
 - Never commit sensitive values
 - Use CI/CD secrets
 - Use UPPERCASE for variable names
 - Use descriptive names
-- Name secret-bearing variables with a keyword like `PASSWORD`, `TOKEN`, `SECRET`, or `API_KEY` so their values are automatically masked in logs and artifacts — see [Inspecting Variables](../artifacts/inspecting-variables.md)
-
+- Name secret-bearing variables with a keyword like `PASSWORD`, `TOKEN`, `SECRET`, or `API_KEY` so their values are masked in logs, within the limits above
