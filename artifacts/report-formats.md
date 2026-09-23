@@ -19,6 +19,10 @@ The CLI will automatically download the report to your working directory for you
 - `--html-path <path>` (default `./report.html`, applies to `html` and `html-detailed`)
 - `--allure-path <path>` (default `./report.html`)
 
+{% hint style="info" %}
+The `html` and `html-detailed` reports are downloaded as a ZIP archive (the report plus its screenshots, videos and logs), even though the default file name is `report.html`. Pass `--html-path ./report.zip` so the file has the right extension, then unzip it to view the report.
+{% endhint %}
+
 (`--artifacts-path` is a separate flag that sets the download path for the artifacts zip and requires `--download-artifacts`.)
 
 ## Types of Report
@@ -29,8 +33,8 @@ JUnit reports are XML-based and are generally the standard format for CI/CD repo
 
 ### HTML and HTML-Detailed
 
-HTML reports are human-readable provide a summary overview of a test run including failure screenshots. Detailed reports include test steps alongside everything from standard HTML reports.
+HTML reports are human-readable provide a summary overview of a test run including failure screenshots. Detailed reports include test steps alongside everything from standard HTML reports. Both are delivered as a ZIP containing the report and the files it links to.
 
 ### Allure
 
-Allure reports are HTML-based and include rich and comprehensive visualisations of test results. Read more [here](https://allurereport.org/).
+Allure reports are HTML-based and include rich and comprehensive visualisations of test results. They are downloaded as a single, self-contained HTML file. Read more [here](https://allurereport.org/).
