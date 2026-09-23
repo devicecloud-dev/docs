@@ -23,6 +23,8 @@ Once a channel is selected, use **Send test** to post a sample message to that c
 
 By default DeviceCloud posts after **every** completed run. To cut down on noise, turn on **Only notify on failures** in the Slack section — passing runs will then be skipped and you'll only get a message when a run has at least one failed flow.
 
+A run superseded by a newer run through [`--cancel-previous`](../advanced/cancel-previous.md) never posts, whatever this setting.
+
 ### What's in the message
 
 Each notification includes:

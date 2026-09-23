@@ -18,7 +18,7 @@ notifications:
       - devs@example.com
 ```
 
-By default you'll only be emailed when a suite has at least one failed or cancelled flow.
+By default you'll only be emailed when a suite has at least one failed or cancelled flow. A run superseded by a newer run through [`--cancel-previous`](../advanced/cancel-previous.md) is never emailed.
 
 {% hint style="info" %}
 The `config.yaml` is picked up automatically from the directory you pass to `dcd cloud`. See [Workspace Configuration](../configuration/workspace-config.md) for where the file lives and how it's loaded.
