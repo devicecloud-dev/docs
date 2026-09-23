@@ -43,7 +43,7 @@ Maestro resolves the path **relative to the flow file's own directory**, so this
     home.png
 ```
 
-You can climb out of the flow's folder with `../` if you prefer to keep baselines in one shared place.
+You can climb out of the flow's folder with `../` if you prefer to keep baselines in one shared place. Keep them inside the workspace folder you pass to `dcd cloud`, because `includedPaths` can't reach outside it. Baselines outside the folder that holds your flows also move the upload root up, which changes the paths your flows are recorded under — see [`includedPaths`](../configuration/workspace-config.md#includedpaths).
 
 The file extension is optional. `assertScreenshot: screenshots/home` looks for `screenshots/home.png`.
 

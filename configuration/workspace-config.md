@@ -46,18 +46,18 @@ includedPaths:
   - certs/test-ca.pem
 ```
 
-Patterns use the same [NPM glob](https://www.npmjs.com/package/glob) syntax as `flows`, and are always resolved **relative to the workspace folder you pass to `dcd cloud`** — not relative to the config file, even when you load it with `--config`.
+Patterns use the same [NPM glob](https://www.npmjs.com/package/glob) syntax as `flows`, and are resolved **relative to the workspace folder you pass to `dcd cloud`** — not relative to the config file, even when you load it with `--config`. If you pass a single flow file with `--config` instead of a folder, patterns are resolved relative to that flow file's folder.
 
 Matched files keep their position relative to your flows when they are uploaded, so a baseline at `screenshots/home.png` sitting next to `visual.yaml` arrives next to that flow on the device.
 
 {% hint style="warning" %}
-Patterns cannot escape the workspace folder. A pattern resolving to a file outside it (`../secrets.json`) fails the run rather than uploading it.
+Patterns cannot escape the workspace folder. A pattern resolving to a file outside it (`../secrets.json`) stops the CLI with an error before anything is uploaded.
 {% endhint %}
 
 {% hint style="info" %}
 Run with `--debug` to list exactly which files were matched and uploaded.
 
-If your included files sit **beside** your flows folder rather than inside it, the upload root moves up to cover both, and flow paths shown in the console gain a leading folder (`login.yaml` becomes `flows/login.yaml`). This is expected — it is what keeps the relative path between a flow and its files intact — and affects display only.
+If included or referenced files sit **beside** your flows folder rather than inside it, the upload root moves up to cover both, and the paths your flows are recorded under gain a leading folder (`login.yaml` becomes `flows/login.yaml`). This is what keeps the relative path between a flow and its files intact, but it is more than cosmetic: a flow without a `name:` starts a new history under its new path, and anything that matches on the old path, such as `fileName` in the [Flows API](../api/flows.md), needs updating.
 {% endhint %}
 
 ### `includeTags` / `excludeTags`
