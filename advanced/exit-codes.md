@@ -27,3 +27,7 @@ The two JSON flags behave differently around test failures:
 {% hint style="info" %}
 Use `--json-file` when you want to inspect the result yourself rather than have a non-zero exit code fail the build. Use `--json` when you still want the exit code to gate your pipeline.
 {% endhint %}
+
+## Superseded Runs
+
+A run superseded by a newer run through [`--cancel-previous`](cancel-previous.md) exits `0`, even if one of its tests had already failed. With `--json` or `--json-file`, its `status` is `SUPERSEDED`.
