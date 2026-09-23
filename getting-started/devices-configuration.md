@@ -88,9 +88,9 @@ The default version of iOS is changing to 26 on the 2nd November 2026.
 | `17` | 17.5 (deprecated) |
 
 {% hint style="danger" %}
-**iOS 27 requires your app to adopt the UIScene lifecycle.** From iOS 27 UIKit terminates any app that has not adopted it, at launch, before your first screen renders — the crash report shows `EXC_BREAKPOINT` in `__UIApplicationEvaluateRuntimeIssueForNoSceneLifecycleAdoption`. iOS 26 and earlier only warn, so an app that works on iOS 26 can still fail immediately on iOS 27.
+**Apps built with the iOS 27 SDK must adopt the UIScene lifecycle.** Apple requires it from iOS 27 for apps built with the latest SDK: on iOS 27, UIKit terminates such an app at launch, before your first screen renders, with an `EXC_BREAKPOINT` crash and the message `UIScene life cycle is required for apps built with this SDK`. iOS 26 and earlier only warn, so a build that works on iOS 26 can still fail immediately on iOS 27. The requirement follows the SDK you build with (Xcode 27), not just the iOS version you test on.
 
-This is an Apple platform change, not a DeviceCloud one, and it affects the app you upload rather than your flows. If your iOS 27 runs fail at the first `assertVisible` with the app apparently never appearing, check your run's crash logs for that symbol. Adopting `UIScene` in your app (or upgrading to a framework version that has) is the fix.
+This is an Apple platform change, not a DeviceCloud one, and it affects the app you upload rather than your flows. If your iOS 27 runs fail at the first `assertVisible` with the app apparently never appearing, this is the likely cause, and our support team can confirm it from the run's crash report. Adopting `UIScene` in your app (or upgrading to a framework version that has) is the fix; see Apple's [TN3187: Migrating to the UIKit scene-based life cycle](https://developer.apple.com/documentation/technotes/tn3187-migrating-to-the-uikit-scene-based-life-cycle).
 {% endhint %}
 
 {% hint style="warning" %}
