@@ -51,16 +51,18 @@ jobs:
       - name: Run unit tests
         run: ./gradlew test
 
-      # Check test results at the end
-      - name: Verify DeviceCloud status
-        run: |
-          echo "Test results: ${{ steps.dcd.outputs.DEVICE_CLOUD_UPLOAD_STATUS }}"
-          echo "View at: ${{ steps.dcd.outputs.DEVICE_CLOUD_CONSOLE_URL }}"
+      # Record where to find the results
+      - name: Record the console URL
+        run: echo "View results at: ${{ steps.dcd.outputs.DEVICE_CLOUD_CONSOLE_URL }}"
 ```
+
+{% hint style="info" %}
+In async mode the Action doesn't wait for the run, so `DEVICE_CLOUD_UPLOAD_STATUS` is always `PENDING`, `DEVICE_CLOUD_FLOW_RESULTS` is `[]` and `DEVICE_CLOUD_APP_BINARY_ID` isn't set. For a pass/fail verdict, poll [`dcd status`](../cli/dcd-status.md#polling-an-async-run) or use the [DeviceCloud GitHub App](../ci-cd/github-checks.md) check.
+{% endhint %}
 
 ## Considerations
 
 - The console URL is available via the `DEVICE_CLOUD_CONSOLE_URL` action output so you can link to results from your CI summary.
 - Retries (`--retry`) and async mode work together — DeviceCloud handles retries in the background.
-- If you need the final pass/fail status in CI, use `dcd status` to poll or use the [dcd status](../cli/dcd-status.md) directly.
+- If you need the final pass/fail status in CI, poll with [`dcd status`](../cli/dcd-status.md#polling-an-async-run).
 - With the [DeviceCloud GitHub App](../ci-cd/github-checks.md) installed, an async run reports its result back as a pass/fail check on the pull request, so you don't have to poll for it yourself.
