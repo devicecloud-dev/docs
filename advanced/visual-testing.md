@@ -16,7 +16,9 @@ DeviceCloud runs these assertions like any other command. The one thing you need
 
 ## Uploading your baselines
 
-Baselines are not referenced by any command that the CLI inspects, so you must declare them in your workspace [`config.yaml`](../configuration/workspace-config.md):
+The CLI reads your flows before it uploads them, and bundles every baseline that an `assertScreenshot` command names with a literal path, the same way it bundles `addMedia` and `runScript` files. The example above needs no configuration: `screenshots/home.png` is uploaded with the flow.
+
+When the path contains a variable, the CLI can't tell which file you mean, so declare the baselines with `includedPaths` in your workspace [`config.yaml`](../configuration/workspace-config.md) — see [per-device baselines](#per-device-baselines) below:
 
 ```yaml
 # config.yaml
@@ -27,9 +29,7 @@ includedPaths:
   - screenshots/**
 ```
 
-That is the whole setup. Without it, the baseline never reaches the device and the run fails with `Screenshot file not found`.
-
-Baselines referenced by a plain literal path are also picked up automatically, so a simple layout often needs no configuration at all. You still need `includedPaths` whenever the path contains a variable — see [per-device baselines](#per-device-baselines) below.
+A baseline that isn't uploaded never reaches the device, and the assertion fails with `Screenshot file not found`. The CLI doesn't stop you uploading a flow whose baseline doesn't exist yet; the error comes from the run.
 
 ## Where baselines live
 
@@ -63,7 +63,7 @@ Maestro has no "record" mode, so you have to capture the first baseline yourself
 
 2. Copy the PNG out of Maestro's output directory into `screenshots/home.png` and commit it.
 
-3. Swap the command to `assertScreenshot` and add `includedPaths` to your config.
+3. Swap the command to `assertScreenshot`. A literal path needs nothing else; a path with a variable also needs `includedPaths` in your config.
 
 {% hint style="warning" %}
 **Don't use `--download-artifacts` to create a baseline.** Screenshots and videos from a run are downscaled and re-encoded for the console — a 1080x2400 screen comes back as a 486x1080 JPEG — so they will never match at full size. They are for looking at, not for asserting against.
