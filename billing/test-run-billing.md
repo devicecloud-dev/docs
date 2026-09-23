@@ -23,6 +23,10 @@ Details of charges made to your account can be found on the [billing page](https
 Enterprise customers with volume discounts or grandfathered users with older pricing may have different pricing. You can view your account's test run cost in the [billing page](https://console.devicecloud.dev/billing)
 {% endhint %}
 
+### Credits
+
+New Teams are given $20 of trial credit to test the service. Credit balances never expire and can't be topped up, and any remaining balance is used before the included credits of your [plan](subscriptions.md).
+
 ### Cancelled tests
 
 Once a test has started running, it cannot be cancelled.
