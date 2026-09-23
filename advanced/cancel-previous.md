@@ -16,9 +16,12 @@ started yet.
   reports normally — cancelling it would free no device and refund nothing.
 * **Cancelled tests are refunded at 75%**, the same as cancelling a
   not-yet-started test by hand in the console.
-* **The superseded run exits 0** instead of failing your build, and says so in
-  its output. It sends no completion email or webhook, and its GitHub check is
-  closed as `skipped` so it cannot block a pull request.
+* **The superseded run goes quiet.** It sends no completion email, Slack
+  message or webhook, and its GitHub check, if it has one, is closed as
+  `skipped` so it cannot block a pull request. `dcd cloud` exits `0` for it
+  rather than failing your build; see
+  [How a superseded run reports](#how-a-superseded-run-reports) for how each
+  integration treats it.
 
 ## What counts as "the same CI context"
 
@@ -101,19 +104,29 @@ step more than once.
 
 ## How a superseded run reports
 
-The superseded run's CLI stops as soon as its tests are cancelled and prints:
+The superseded run's CLI keeps waiting until any of its tests that were already
+running have finished, then prints:
 
 ```
-! Run superseded by a newer run from the same CI context — exiting 0
+⚠ Run superseded by a newer run from the same CI context — exiting 0
+  ⎿ superseded by   https://console.devicecloud.dev/results?upload=<newer upload id>
 ```
 
-It exits `0`, so the older CI job goes green rather than red. Under `--json`,
-`status` is `SUPERSEDED` — a third value alongside `PASSED` and `FAILED`, so
-update any script that switches on it.
+`dcd cloud` then exits `0`, even if one of the run's tests had already failed.
+Under `--json`, `status` is `SUPERSEDED` — a third value alongside `PASSED` and
+`FAILED`, so update any script that switches on it.
+
+That value only comes from `dcd cloud` itself: `dcd status` and
+[`GET /uploads/status`](../api/uploads.md) report a superseded run as `FAILED`,
+because its cancelled tests count against it. So whether the older CI job goes
+green depends on how you run the tests:
+
+* **CLI:** the job passes, because `dcd cloud` exits `0`.
+* **EAS Workflows:** the job still fails. The wrapper checks the run's status
+  after the CLI exits, and that reports `FAILED`.
 
 Each result cancelled this way carries a `cancellation_reason` of
-`superseded_by:<upload id>`, visible in the console and in
-[`GET /results/{uploadId}`](../api/results.md).
+`superseded_by:<upload id>` in [`GET /results/{uploadId}`](../api/results.md).
 
 ## Limitations
 
