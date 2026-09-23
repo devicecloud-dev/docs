@@ -94,7 +94,7 @@ dcd cloud app.zip test.yaml --ios-version 18
 DeviceCloud will default to iPhone 14 unless you pass the `--ios-device` flag:
 
 ```bash
-dcd cloud app.zip test.yaml --ios-device ipad-pro-6th-gen
+dcd cloud app.zip test.yaml --ios-device ipad-pro-6th-gen --ios-version 18
 ```
 
 | id                  | Name                      | Dimensions  | Valid iOS versions |
