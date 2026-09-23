@@ -94,7 +94,7 @@ A non-numeric value fails the step rather than falling back to the default.
 
 ## Per-device baselines
 
-Because baselines are resolution-locked, a [device matrix](../configuration/device-matrix.md) needs one baseline per device. Every run exposes the device profile as `DCD_DEVICE`, so you can select the right baseline from the path:
+Because baselines are resolution-locked, a [device matrix](../configuration/device-matrix.md) needs one baseline per device. Every run exposes the device it runs on as `DCD_DEVICE`, so you can select the right baseline from the path:
 
 ```yaml
 - assertScreenshot: screenshots/${DCD_DEVICE}/home.png
@@ -112,7 +112,19 @@ includedPaths:
   - screenshots/**
 ```
 
-`DCD_DEVICE` is a lowercased, hyphenated form of the device profile you requested — `pixel-7-api-34` on Android, `iphone-16-ios-18` on iOS. `DCD_PLATFORM` (`android` or `ios`) is available too. Setting either yourself as an environment variable overrides the built-in value.
+`DCD_DEVICE` is the device and OS version, lowercased and hyphenated:
+
+| Device | `DCD_DEVICE` |
+| --- | --- |
+| `--android-device pixel-7 --android-api-level 34` | `pixel-7-api-34` |
+| The same with `--google-play` | `pixel-7-api-34-play` |
+| `--android-device generic-tablet --android-api-level 36` | `13-5in-freeform-api-36` |
+| `--ios-device iphone-16 --ios-version 18` | `iphone-16-ios-18` |
+| `--ios-device ipad-pro-6th-gen --ios-version 26` | `ipad-pro-12-9-inch-6th-generation-ios-26` |
+
+iPads use their full model name and the generic tablet its emulator profile, so the value isn't always your device flag. Print it once before you name your folders: add `- evalScript: ${console.log('DCD_DEVICE=' + DCD_DEVICE)}` to a flow and look for the `JsConsole` line in the run's Maestro log.
+
+`DCD_PLATFORM` (`android` or `ios`) is available too. Passing either yourself with `--env` overrides the built-in value. See [Built-in Variables](../configuration/environment-variables.md#built-in-variables).
 
 {% hint style="info" %}
 A variable in the path means the CLI cannot work out which file is needed ahead of the run, so `includedPaths` is required here — the automatic pickup only handles literal paths.
