@@ -39,11 +39,16 @@ curl https://api.devicecloud.dev/results/7e12345f-eb12-12ec-a30b-bb1234f1d12a \
 }
 ```
 
-A `CANCELLED` result may also carry `cancellation_reason`. The only value
-today is `superseded_by:<upload id>`, set when a newer run from the same CI
-context replaced this one — see
-[Cancelling superseded runs](../advanced/cancel-previous.md). The field is absent
-on every other result.
+Each result also has a `cancellation_reason`, which is `null` unless the test
+was cancelled for a recorded reason:
+
+* `superseded_by:<upload id>` — a newer run from the same CI context replaced
+  this one. See [Cancelling superseded runs](../advanced/cancel-previous.md).
+* `Cancelled: payment for this run failed.` — the run's payment failed after
+  its tests were created.
+
+A test you cancel yourself has a `null` reason. Match on the `superseded_by:`
+prefix rather than comparing whole values, as more reasons may be added.
 
 ---
 
