@@ -144,5 +144,5 @@ Maestro also writes a diff image highlighting the changed regions. DeviceCloud c
 The diff is only produced for a pixel mismatch. A size mismatch fails before any comparison happens, and reports the expected and actual dimensions in the step error instead.
 
 {% hint style="warning" %}
-Maestro writes that diff next to the baseline **in your working directory** when you run locally, as `<baseline>_diff.png`. Add `**/*_diff.png` to your `.gitignore` so local runs don't leave them lying around your repository.
+When you run locally, Maestro writes that diff next to the baseline **in your working directory**, named after it: `screenshots/home_diff.png` for `screenshots/home.png`. Delete these before you run `dcd cloud` from the same folder. An `includedPaths` pattern such as `screenshots/**` uploads them, and DeviceCloud shows every `*_diff.png` it finds as a diff from the run. Add `**/*_diff.png` to your `.gitignore` too, so they never reach your repository.
 {% endhint %}
