@@ -39,10 +39,24 @@ Play rate, the others at the standard rate.
 2. The upload-wide `--google-play` flag
 3. Default: standard Google APIs image
 
+In a [device matrix](device-matrix.md) upload, each cell's own setting decides instead (`:play` on the cell, or `--google-play` for every cell). A flow's `DEVICECLOUD_OVERRIDE_GOOGLE_PLAY` is ignored there unless the flow also names its own device.
+
 ## Device availability
 
 Google Play APIs are currently only available on a single device:
 
 * `pixel-7` on API level `34`
+
+Google Play isn't available on the `m1` or `gpu1` [runner types](runner-type.md).
+
+Pin the device and API level on every Google Play run:
+
+```bash
+dcd cloud ... --google-play --android-device pixel-7 --android-api-level 34
+```
+
+If only some flows opt in with `DEVICECLOUD_OVERRIDE_GOOGLE_PLAY`, pin the same device and API level on the upload, or on those flows with [per-flow devices](per-flow-devices.md).
+
+The Android defaults change to Pixel 7 on API level 36 on 19 October 2026, then to Pixel 10 on 26 October 2026. Neither has a Google Play image, so don't rely on the defaults for Google Play runs.
 
 Please contact support if you would like more device/API availability.
