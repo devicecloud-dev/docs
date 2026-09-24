@@ -14,7 +14,7 @@ pipelines:
     - step:
         name: E2E tests
         script:
-          - pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
+          - pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
             variables:
               API_KEY: $DEVICE_CLOUD_API_KEY
               APP_FILE: 'build/app-release.apk'
@@ -32,7 +32,7 @@ Find your API key at [console.devicecloud.dev/settings](https://console.devicecl
 ### Android
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'build/app-release.apk'
@@ -45,7 +45,7 @@ Find your API key at [console.devicecloud.dev/settings](https://console.devicecl
 ### iOS
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'build/MyApp.app.zip'
@@ -56,7 +56,7 @@ Find your API key at [console.devicecloud.dev/settings](https://console.devicecl
 
 ## Variables
 
-Most pipe variables map to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flag of the same name, e.g. `ANDROID_API_LEVEL` sets `--android-api-level`. The full list for version 1.4.0 lives in the pipe's [README](https://bitbucket.org/devicecloud-dev/device-cloud-for-bitbucket/src/v1.4.0/README.md). Required: `API_KEY`. Common ones:
+Most pipe variables map to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flag of the same name, e.g. `ANDROID_API_LEVEL` sets `--android-api-level`. The full list for version 1.5.0 lives in the pipe's [README](https://bitbucket.org/devicecloud-dev/device-cloud-for-bitbucket/src/v1.5.0/README.md). Required: `API_KEY`. Common ones:
 
 | Variable | Description |
 |---|---|
@@ -88,7 +88,7 @@ If your repository is mirrored on GitHub and you use [GitHub checks](github-chec
 The pipe writes a `dcd-result.env` file into the repo's working directory. Subsequent script lines in the same step can `source` it:
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'app.apk'
@@ -101,16 +101,19 @@ The pipe writes a `dcd-result.env` file into the repo's working directory. Subse
 
 Exported: `DEVICE_CLOUD_CONSOLE_URL`, `DEVICE_CLOUD_UPLOAD_STATUS`, `DEVICE_CLOUD_FLOW_RESULTS`, `DEVICE_CLOUD_APP_BINARY_ID`, `DEVICE_CLOUD_UPLOAD_ID`.
 
+- `DEVICE_CLOUD_UPLOAD_STATUS` is `PASSED` or `FAILED` once the run has finished, or `PENDING`, `QUEUED` or `RUNNING` if it hadn't (an `ASYNC` run reports whatever it had reached at submission). It's `ERROR` if the status couldn't be read.
+- `DEVICE_CLOUD_FLOW_RESULTS` is a JSON array with one entry per flow: `[{"name": "...", "status": "PASSED"}]`, plus `failReason` for a failed flow.
+
 {% hint style="info" %}
-In pipe 1.4.0 only `DEVICE_CLOUD_CONSOLE_URL` and `DEVICE_CLOUD_UPLOAD_ID` are filled in; the other three are empty. Use the step's exit code as the pass/fail verdict, and [`dcd status --upload-id "$DEVICE_CLOUD_UPLOAD_ID" --json`](../cli/dcd-status.md) if you need per-flow results.
+Before pipe 1.5.0 only `DEVICE_CLOUD_CONSOLE_URL` and `DEVICE_CLOUD_UPLOAD_ID` are filled in; the other three are empty.
 {% endhint %}
 
-The pipe exits non-zero on test failures so the build fails by default. Leave `JSON_FILE` unset if you rely on that: with `JSON_FILE: 'true'` the CLI exits 0 even when tests fail.
+The pipe exits non-zero when the run fails, so the build fails by default. From 1.5.0 that holds with `JSON_FILE: 'true'` too; on earlier versions, where the CLI exits 0 in that mode, leave `JSON_FILE` unset if you rely on the pipe's result.
 
 ## Passing env vars into flows
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'app.apk'
@@ -131,7 +134,7 @@ Bitbucket's **Tests** tab only reads JUnit reports from folders such as `test-re
 - step:
     name: E2E tests
     script:
-      - pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
+      - pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
         variables:
           API_KEY: $DEVICE_CLOUD_API_KEY
           APP_FILE: 'app.apk'

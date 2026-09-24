@@ -58,6 +58,8 @@ jobs:
     app-file: app/build/outputs/apk/debug/app-debug.apk
 ```
 
+From v2.6.0, `app-file` also accepts a glob pattern such as `build/**/*.apk`. When a pattern matches several files, the first in sorted order is used.
+
 ### iOS
 
 ```yaml
@@ -67,7 +69,7 @@ jobs:
     app-file: <app_name>.zip
 ```
 
-`app-file` must point to an Apple silicon compatible Simulator `.app` build, or a zipped `.zip` bundle.
+`app-file` must point to an Apple silicon compatible Simulator `.app` build, or a zipped `.zip` bundle. From v2.6.0 it can also be a glob pattern, as for Android.
 
 ### iOS with Expo
 
@@ -87,7 +89,7 @@ If you build with EAS, download the build artifact in an earlier step and pass t
 
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
-| `app-file` | No* | — | Path to the app binary (`.apk`, `.app`/`.zip`, or an Expo iOS `.tar.gz`). *Either `app-file` or `app-binary-id` is required. |
+| `app-file` | No* | — | Path to the app binary (`.apk`, `.app`/`.zip`, or an Expo iOS `.tar.gz`), or from v2.6.0 a glob pattern (first match in sorted order). *Either `app-file` or `app-binary-id` is required. |
 | `app-binary-id` | No* | — | ID of a previously uploaded app binary. Skips the upload step. |
 | `ignore-sha-check` | No | `false` | Skip the SHA hash check that prevents duplicate uploads. Not recommended. |
 
@@ -125,7 +127,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `env` | No | — | Multiline list of environment variables (`KEY=value`) to inject into flows. |
 | `name` | No | PR title or commit message | Custom name for this test run, visible in the console. Defaults to the pull request's title on PR events, the commit message on push events, and the commit SHA otherwise. |
 | `retry` | No | `0` | Number of retries on failure (max `2`). Retries are free — same as pressing retry in the UI. |
-| `report` | No | — | Report format. Options: `junit`, `html`. See [Report Formats](../artifacts/report-formats.md). |
+| `report` | No | — | Report format. Options: `junit`, `html`, and from v2.6.0 `html-detailed`. See [Report Formats](../artifacts/report-formats.md). |
 
 ### Android-Specific Options
 
@@ -155,7 +157,7 @@ The action automatically attaches Git and pull request metadata to each run, rea
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
 | `async` | No | `false` | Exit immediately without waiting for results. Returns exit code `0` regardless of test outcome. See [Async Execution](../advanced/async-execution.md). |
-| `quiet` | No | — | Currently has no effect: the Action always runs the CLI in quiet mode. |
+| `quiet` | No | `true` | Quieter output, without progress updates while the run is polled. Set to `false` to see them. Before v2.6.0 this input had no effect and the output was always quiet. |
 | `download-artifacts` | No | — | Download logs, screenshots, and videos after the run. Options: `ALL`, `FAILED`. |
 | `json-file` | No | `false` | Write test results to `<upload_id>_dcd.json` in the working directory. See [Save JSON results file](#save-json-results-file). |
 | `debug` | No | `false` | Enable verbose debug output. |
