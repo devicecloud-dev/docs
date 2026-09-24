@@ -40,7 +40,7 @@ curl "https://api.devicecloud.dev/flows?platform=ios&startDate=2026-01-01&endDat
   "flows": [
     {
       "flow_name": "Login flow",
-      "file_name": "src/flows/login.yaml",
+      "file_name": "./auth/login.yaml",
       "pass_rate": 94,
       "passed_runs": 47,
       "failed_runs": 3,
@@ -58,7 +58,9 @@ curl "https://api.devicecloud.dev/flows?platform=ios&startDate=2026-01-01&endDat
 }
 ```
 
-**`daily_data` values:** `passed` (all runs passed), `failed` (all runs failed), `mixed` (both), `null` (no runs that day)
+**`daily_data` values:** `passed` (runs passed and none failed), `failed` (runs failed and none passed), `mixed` (both), `null` (the day had runs but none passed or failed — for example, they were all cancelled). Days with no runs have no entry.
+
+`total_runs` counts every run in the window whatever its status — including cancelled and in-progress runs and each retry — so it can be larger than `passed_runs` + `failed_runs`.
 
 ---
 
@@ -74,7 +76,7 @@ GET /flows/runs
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `fileName` | string | Yes | The flow file path (e.g. `src/flows/login.yaml`). |
+| `fileName` | string | Yes | The flow's path exactly as `GET /flows` returns it in `file_name` — relative to the flows folder you ran and starting with `./` (e.g. `./auth/login.yaml`). URL-encode it. |
 | `platform` | string | No | Filter by platform: `android` or `ios`. |
 | `appId` | string | No | Filter by app ID. |
 | `limit` | number | No | Maximum number of runs to return. Default: `100`. |
@@ -84,7 +86,9 @@ GET /flows/runs
 **Example**
 
 ```bash
-curl "https://api.devicecloud.dev/flows/runs?fileName=src/flows/login.yaml&platform=ios" \
+curl --get "https://api.devicecloud.dev/flows/runs" \
+  --data-urlencode "fileName=./auth/login.yaml" \
+  --data-urlencode "platform=ios" \
   -H "x-app-api-key: <key>"
 ```
 

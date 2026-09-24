@@ -49,21 +49,31 @@ See the [`dcd artifacts` reference](../cli/dcd-artifacts.md) for the full flag l
 
 ### From the Console
 
-Artifacts and workspace downloads are also available directly from the test result page in the [DeviceCloud console](https://console.devicecloud.dev). Use the download menu on any completed result to save videos, logs, screenshots, or the full workspace bundle.
+Each test result in the [DeviceCloud console](https://console.devicecloud.dev) has a download menu with the files for that result: `commands.json`, the Maestro log, Maestro stdout and stderr, the logcat (Android), the HTML, JUnit and Allure reports (when the run generated them), the app binary (APK or APP build) and the workspace. Videos and screenshots are shown on the result page; to download them in bulk, use `--download-artifacts` or `dcd artifacts`.
 
 ## Artifact Archive Structure
 
-Artifacts are downloaded as a zip file:
+Artifacts are downloaded as a zip file with one folder per test result, named after the result ID:
 
 ```
-artifacts/
-├── test1/
+artifacts.zip
+├── 4501/
+│   ├── logs/
+│   │   ├── login-maestro.log
+│   │   ├── login-commands.json
+│   │   └── ...
+│   ├── screenshots/
+│   └── videos/
+│       └── login-recording.mp4
+├── 4502/
 │   ├── logs/
 │   ├── screenshots/
-│   └── video/
-├── test2/
-│   ├── logs/
-│   ├── screenshots/
-│   └── video/
-└── report.xml  # if JUnit report was requested
+│   └── videos/
+└── report.xml  # merged JUnit report covering every test in the upload
 ```
+
+Files are named after the flow file (without its extension), e.g. `login-maestro.log` for `login.yaml`. The `logs/` folder also holds stdout/stderr, the device log (`-logcat.zip` on Android, `-ios-device-log.zip` on iOS) and any per-flow reports. With `--download-artifacts FAILED`, only failed tests get a folder, but `report.xml` is always included and still covers every test.
+
+## Retention
+
+App binaries and workspaces are deleted 1 month after they were last used. Test results and their artifacts (logs, screenshots and videos) are kept for 6 months.

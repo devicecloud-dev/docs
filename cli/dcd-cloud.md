@@ -12,7 +12,7 @@ The command blocks until all tests have completed, then exits with an appropriat
 
 | Argument | Description |
 |----------|-------------|
-| `<app-file>` | Path to your app binary (`.apk` for Android, `.app` or `.zip` for iOS) |
+| `<app-file>` | Path to your app binary: `.apk` for Android, `.app` or `.zip` for iOS, or an Expo iOS build archive (`.tar.gz`), which is extracted automatically |
 | `<flows-dir>` | Path to the flow file or directory of flows to run |
 
 ## Flags
@@ -21,7 +21,8 @@ The command blocks until all tests have completed, then exits with an appropriat
 
 | Flag | Description |
 |------|-------------|
-| `--api-key <key>` | Your DeviceCloud API key. Defaults to the `DEVICE_CLOUD_API_KEY` env var. Optional if you've run [`dcd login`](dcd-login.md) |
+| `--api-key <key>`, `--apiKey` | Your DeviceCloud API key. Defaults to the `DEVICE_CLOUD_API_KEY` env var. Optional if you've run [`dcd login`](dcd-login.md) |
+| `--api-url <url>` | API base URL. Defaults to the environment you logged in to with `dcd login`, otherwise `https://api.devicecloud.dev` |
 
 See [Authentication](../getting-started/api-keys.md) for the full picture.
 
@@ -33,6 +34,7 @@ See [Authentication](../getting-started/api-keys.md) for the full picture.
 | `--app-url <url>` | Signed URL to an Expo iOS build (`.tar.gz`). The archive is downloaded and extracted automatically. Expo signed URLs expire after ~1 hour. Mutually exclusive with `--app-file` |
 | `--app-file <path>` | Path to the app binary (alternative to the positional `<app-file>` argument) |
 | `--ignore-sha-check` | Force re-upload even if a binary with the same SHA already exists |
+| `--encrypt` | Encrypt the app binary, flow files and `--env` values on your machine before upload, each with its own key. An unchanged binary is still deduplicated, so it isn't uploaded again. Can also be enabled with `DCD_ENCRYPT=1` |
 
 ### Device
 
@@ -46,12 +48,15 @@ See [Authentication](../getting-started/api-keys.md) for the full picture.
 | `--orientation <orientation>` | Device orientation, `0` (portrait) or `90` (landscape). Android only (see [Orientation](../configuration/orientation.md)) |
 | `--google-play` | Use a Google Play-enabled device. Android only (see [Google Play APIs](../configuration/google-play-apis.md)) |
 | `--runner-type <type>` | Runner type to use (see [Runner Types](../configuration/runner-type.md)) |
+| `--render-engine <engine>` | Android only. Software renderer the emulator boots with: `lavapipe` (default) or `swiftshader`. Try `swiftshader` if your app fails to render or the device drops out mid-run. Apps built with Flutter are detected and switched automatically |
+| `--ios-device-matrix <device>:<version>` | Run every flow once on each listed iOS device, e.g. `iphone-16:18`. Repeat the flag for each device (see [Device Matrix](../configuration/device-matrix.md)) |
+| `--android-device-matrix <device>:<apiLevel>` | Run every flow once on each listed Android device, e.g. `pixel-8:34`. Append `:play` for Google Play. Repeat the flag for each device (see [Device Matrix](../configuration/device-matrix.md)) |
 
 ### Flows
 
 | Flag | Description |
 |------|-------------|
-| `--flows <paths>` | Comma-separated list of flow files to run (alternative to positional arg) |
+| `--flows <path>` | Path to a flow file or a directory of flows (alternative to the positional `<flows-dir>` argument) |
 | `--config <path>` | Path to a `config.yaml` workspace config file (see [Workspace Configuration](../configuration/workspace-config.md)) |
 | `--exclude-flows <paths>` | Comma-separated list of flow files or sub-directories to exclude |
 | `--include-tags <tags>` | Only run flows with these tags (comma-separated) |
@@ -61,9 +66,9 @@ See [Authentication](../getting-started/api-keys.md) for the full picture.
 
 | Flag | Description |
 |------|-------------|
-| `--maestro-version <version>` | Maestro version to use, or `latest` (see [Maestro Versions](../configuration/maestro-versions.md)) |
-| `--env <KEY=VALUE>` | Environment variables to pass to the test. Repeat for multiple values |
-| `--metadata <key=value>` | Arbitrary metadata to attach to the run (shown in the console). Repeat for multiple values |
+| `--maestro-version <version>`, `--maestroVersion` | Maestro version to use, or `latest` (see [Maestro Versions](../configuration/maestro-versions.md)) |
+| `--env <KEY=VALUE>`, `-e` | Environment variables to pass to the test. Repeat for multiple values (see [Environment Variables](../configuration/environment-variables.md)) |
+| `--metadata <key=value>`, `-m` | Arbitrary metadata to attach to the run (shown in the console). Repeat for multiple values |
 | `--name <name>` | Name for this upload (shown in the console) |
 | `--retry <n>` | Retry failed tests up to `n` times (free of charge). Max `2` (see [Retry Strategies](../advanced/retry-strategies.md)) |
 
@@ -84,7 +89,7 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 | Flag | Description |
 |------|-------------|
 | `--maestro-chrome-onboarding` | Force Maestro-based Chrome onboarding. Slows tests but can fix browser-related crashes (see [Chrome Onboarding](../advanced/chrome-onboarding.md)) |
-| `--android-no-snapshot` | Force cold boot instead of snapshot boot. Automatically enabled for API 35+ |
+| `--android-no-snapshot` | Force a cold boot instead of a snapshot boot on the standard Android runner. Automatically enabled for API 34+ |
 | `--show-crosshairs` | Display crosshairs for screen interactions during test execution |
 
 ### Performance
@@ -100,13 +105,13 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 | `--async` | Submit tests and return immediately (exit `0`) without waiting for results (see [Async Execution](../advanced/async-execution.md)) |
 | `--cancel-previous` | Cancel the still-queued tests of the previous run from the same CI context. Needs `--repo-name` plus `--branch` or `--pr-number` (see [Cancelling superseded runs](../advanced/cancel-previous.md)) |
 | `--quiet`, `-q` | Suppress per-test progress; print only the final summary |
-| `--json` | Output results as JSON. Exits `0` on success, `2` on test failure, `1` on CLI/infrastructure errors. A run superseded through `--cancel-previous` has `status` `SUPERSEDED` and exits `0` |
+| `--json` | Output results as JSON. Exits `0` on success, `2` on test failure, `1` on CLI/infrastructure errors. The output includes a `notices` array with any deprecation or other notices for the run. A run superseded through `--cancel-previous` has `status` `SUPERSEDED` and exits `0` |
 | `--json-file` | Write JSON results to a file (`<upload_id>_dcd.json` by default). Exits `0` even if the test run fails; infrastructure errors still exit `1` |
 | `--json-file-name <name>` | Custom name (or relative path) for the JSON file. Requires `--json-file` |
 | `--dry-run` | Simulate the run without uploading or triggering a test — useful for debugging workflow issues |
-| `--report <format>` | Generate and download a report. Options: `junit`, `html`, `html-detailed`, `allure` (see [Report Formats](../artifacts/report-formats.md)) |
+| `--report <format>`, `--format` | Generate and download a report. Options: `junit`, `html`, `html-detailed`, `allure` (see [Report Formats](../artifacts/report-formats.md)) |
 | `--junit-path <path>` | Output path for the JUnit report (requires `--report junit`) |
-| `--html-path <path>` | Output path for the HTML report (requires `--report html` or `html-detailed`) |
+| `--html-path <path>` | Output path for the HTML report (requires `--report html` or `html-detailed`). The HTML report downloads as a ZIP, so use a `.zip` path such as `./report.zip` |
 | `--allure-path <path>` | Output path for the Allure report (requires `--report allure`) |
 | `--download-artifacts <ALL\|FAILED>` | Download test artifacts after completion (see [Artifacts](../artifacts/artifacts.md)) |
 | `--artifacts-path <path>` | Output path for the artifacts zip (default `./artifacts.zip`). Requires `--download-artifacts` |
@@ -116,7 +121,7 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 
 **Android:**
 ```bash
-dcd cloud app.apk flows/ --android-device pixel-7 --android-api-level 34
+dcd cloud app.apk flows/ --android-device pixel-8 --android-api-level 34
 ```
 
 **iOS:**

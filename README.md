@@ -5,7 +5,7 @@ DeviceCloud is a third-party Maestro Cloud alternative.
 Reasons to switch:
 
 * Cheap unit-based pricing
-* Up to 200 parallel runs
+* Up to 100 parallel runs
 * Twice as fast as Maestro Cloud for half the cost
 * Google Play APIs
 * Tablets and iPads
@@ -63,11 +63,11 @@ Start with the [Quick Start](getting-started/quickstart.md) to install the CLI a
 
 ### Is DeviceCloud really a drop-in replacement for Maestro Cloud?
 
-For most projects, yes. The CLI mimics the Maestro Cloud API, so you change `maestro cloud` to `dcd cloud` and drop the `--apiKey` flag. On GitHub Actions you swap a single `uses:` line and all other inputs are compatible. See [Quick Start](getting-started/quickstart.md) and [Migrating from Maestro Cloud](ci-cd/github-actions.md#migrating-from-maestro-cloud).
+For most projects, yes. The CLI mimics the Maestro Cloud API, so you change `maestro cloud` to `dcd cloud` and drop the `--apiKey` flag. On GitHub Actions you swap a single `uses:` line and most inputs carry over unchanged; the migration guide lists the few Maestro-specific ones (such as `project-id` and `device-model`) to remove or replace. See [Quick Start](getting-started/quickstart.md) and [Migrating from Maestro Cloud](ci-cd/github-actions.md#migrating-from-maestro-cloud).
 
 ### How much does it cost?
 
-DeviceCloud bills per test run i.e. a single top-level flow on a single device and are charged at $0.11 for standard iOS and $0.09 for standard Android. iPad, Google Play, tablet and non-default runner flows are charged at the advanced rate of $0.15. New accounts get $20 of free credits. See [Test Run Billing](billing/test-run-billing.md).
+DeviceCloud bills per test run i.e. a single top-level flow on a single device and are charged at $0.11 for standard iOS and $0.09 for standard Android. iPad, Pixel 10 Pro Fold, Google Play, tablet and `m4`/`m1`/`gpu1` runner flows are charged at the advanced rate of $0.15. New accounts get $20 of free credits. See [Test Run Billing](billing/test-run-billing.md).
 
 ### How many tests can I run in parallel?
 
@@ -75,7 +75,7 @@ It depends on your plan: Pro runs up to 5 iOS and 5 Android tests at once, and M
 
 ### Which devices and OS versions can I run on?
 
-Android covers Pixel 6, 6 Pro, 7 and 7 Pro plus a generic tablet, on API levels 29–37. iOS covers the iPhone 14, 15 and 16 families and the iPad Pro (6th generation) on iOS 17, 18 and 26. Not every device supports every OS version, so check the availability tables in [Devices & OS Versions](getting-started/devices-configuration.md).
+Android runs cover a range of Google Pixel phones plus a generic tablet, and iOS runs cover recent iPhones and the iPad Pro. Not every device supports every OS version, and older devices and versions are retired over time, so check [Devices & OS Versions](getting-started/devices-configuration.md) for the current devices, Android API levels and iOS versions.
 
 ### Which Maestro versions are supported?
 
@@ -91,11 +91,11 @@ There are first-class integrations for GitHub Actions, Bitrise, Bitbucket Pipeli
 
 ### How do I get videos, logs and test reports?
 
-Pass `--download-artifacts ALL` (or `FAILED`) to a `dcd cloud` run, or fetch them after the fact with `dcd artifacts --upload-id <uuid> --download-artifacts ALL`. Everything is also downloadable from the console. Reports are available as `junit`, `html`, `html-detailed` and `allure` via `--report`. See [Artifacts & Downloads](artifacts/artifacts.md) and [Report Formats](artifacts/report-formats.md).
+Pass `--download-artifacts ALL` (or `FAILED`) to a `dcd cloud` run, or fetch them after the fact with `dcd artifacts --upload-id <uuid> --download-artifacts ALL`. Each result in the console also has a download menu for its logs, reports, app binary and workspace. Reports are available as `junit`, `html`, `html-detailed` and `allure` via `--report`. See [Artifacts & Downloads](artifacts/artifacts.md) and [Report Formats](artifacts/report-formats.md).
 
 ### Is there a time limit on a test?
 
-Yes. Every flow has a 10-minute execution limit, after which it is automatically cancelled. Failed tests can be retried up to twice, giving a maximum of three total runs, free of charge. See [Quick Start](getting-started/quickstart.md#limits) and [Retry Strategies](advanced/retry-strategies.md).
+Yes. Every flow has a 10-minute execution limit. A flow that is still running when it reaches the limit is stopped and marked as failed, with a "Test run timed out after 10 minutes" error. Failed tests can be retried up to twice, giving a maximum of three total runs, free of charge. See [Quick Start](getting-started/quickstart.md#limits) and [Retry Strategies](advanced/retry-strategies.md).
 
 ### Can I allow-list DeviceCloud in our firewall?
 

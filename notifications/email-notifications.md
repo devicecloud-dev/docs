@@ -39,6 +39,21 @@ notifications:
       - devs@example.com
 ```
 
+#### Also notify after retries
+
+If you retry tests after a run's summary has already been emailed, no further email is sent by default. To receive an updated summary once the retried tests finish, set `onRetry` to `true`. The updated summary follows the same rule as any other: unless `onSuccess` is also `true`, it's only sent while the run still has a failed or cancelled flow.
+
+```yaml
+# config.yaml
+notifications:
+  email:
+    enabled: true
+    onRetry: true
+    recipients:
+      - sam@example.com
+      - devs@example.com
+```
+
 ### What's in the email
 
 The email is sent from **DeviceCloud &lt;hello@devicecloud.dev&gt;** and includes:

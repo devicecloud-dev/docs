@@ -78,7 +78,7 @@ jobs:
           npx --yes @devicecloud.dev/eas-workflow@v1 \
             --app-file ${{ steps.download.outputs.artifact_path }} \
             --flows ./.maestro \
-            --android-device pixel-7 \
+            --android-device pixel-8 \
             --android-api-level 34
 ```
 
@@ -155,7 +155,7 @@ The build artifact itself is downloaded by `eas/download_build` and passed via `
 |----------|-------------|-----------|
 | `DCD_GH_SHA` | `${{ github.sha }}` | `gh_sha` metadata |
 | `DCD_GH_BRANCH` | `${{ github.ref_name }}` | `gh_branch` metadata |
-| `DCD_GH_RUN_ID` | `${{ workflow.id }}` | `gh_run_id` metadata — the same value on every job of one workflow run |
+| `DCD_GH_RUN_ID` | `${{ workflow.id }}` | `gh_run_id` metadata — the EAS workflow run ID, the same on every job of one workflow run (EAS has no `github.run_id`) |
 | `DCD_GH_PR_NUMBER` | `${{ github.event.pull_request.number }}` | `gh_pr_number` metadata |
 | `DCD_GH_PR_URL` | `${{ github.event.pull_request.html_url }}` | `gh_pr_url` metadata |
 | `DCD_GH_REPO` | `${{ github.repository }}` | `gh_repo` metadata |
@@ -173,7 +173,7 @@ Set `DCD_CHECK_NAME` when a commit is tested by more than one job, so each gets 
 |----------|---------|-------------|
 | `DEVICE_CLOUD_API_URL` | `https://api.devicecloud.dev` | Override the API URL (staging/dev environments). |
 | `DCD_USE_BETA` | `false` | Set to the string `true` to use the beta DCD CLI (any other value is treated as `false`). |
-| `DCD_EAS_BUILD_URL` | — | Supply a build URL directly (mapped to `dcd cloud --app-url`) instead of downloading the artifact and passing `--app-file`. Useful when you host the binary yourself. |
+| `DCD_EAS_BUILD_URL` | — | URL of an Expo iOS simulator build (`.tar.gz`), passed to `dcd cloud --app-url` instead of downloading the artifact and passing `--app-file`. The CLI downloads and extracts it. iOS only: Android builds must use `--app-file`. Expo's signed URLs expire after about an hour. |
 
 ---
 
@@ -193,7 +193,7 @@ Anything you pass on the command line after `npx @devicecloud.dev/eas-workflow@v
 
 | Flag | Description |
 |------|-------------|
-| `--flows <path>` | Path to a flow file or directory. Default: `./.maestro/`. |
+| `--flows <path>` | Path to a flow file or directory, e.g. `./.maestro`. Required: there is no default. |
 | `--include-tags <tags>` | Only run flows with these Maestro tags (comma-separated). |
 | `--exclude-tags <tags>` | Exclude flows with these tags. |
 | `--exclude-flows <path>` | Subdirectories to exclude. |
@@ -203,14 +203,14 @@ Anything you pass on the command line after `npx @devicecloud.dev/eas-workflow@v
 
 | Flag | Description |
 |------|-------------|
-| `--android-device <model>` | `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`. |
+| `--android-device <model>` | `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`, `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl`, `pixel-10-pro-fold`, `pixel-11`, `generic-tablet`. Default `pixel-7` (`pixel-10` from 26 October 2026). |
 | `--android-api-level <n>` | `29` – `37`. Default `34` (`36` from 19 October 2026). |
-| `--ios-device <model>` | `iphone-14`, `iphone-15`, `iphone-16`, `iphone-16-pro`, `iphone-16-pro-max`, `ipad-pro-6th-gen`. |
-| `--ios-version <n>` | `17`, `18`, `26`. Default `17`. |
+| `--ios-device <model>` | `iphone-14`, `iphone-15`, `iphone-16`, `iphone-16-plus`, `iphone-16-pro`, `iphone-16-pro-max`, `ipad-pro-6th-gen`. |
+| `--ios-version <n>` | `17`, `18`, `26`, `27`. Default `17`. |
 | `--device-locale <code>` | E.g. `de_DE`. See [Device Locale](../configuration/device-locale.md). |
-| `--orientation <deg>` | Android only. `0`, `90`, `180`, `270`. |
+| `--orientation <deg>` | Android only. `0` or `90`. |
 | `--google-play` | Android only. Run on Google Play devices. |
-| `--runner-type <type>` | `default`, `m1`, `m4`. Non-default incurs premium pricing. See [Runner Types](../configuration/runner-type.md). |
+| `--runner-type <type>` | `default`, `cpu1`, `gpu1`, `m1`, `m4`. `gpu1`, `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
 
 See the [Devices & OS Versions](../getting-started/devices-configuration.md) page for the full availability matrix.
 
@@ -233,7 +233,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `--download-artifacts <mode>` | Download logs/screenshots/videos. Options: `ALL`, `FAILED`. |
 | `--disable-animations` | Disable device animations. See [Animations](../configuration/disable-animations.md). |
 | `--maestro-chrome-onboarding` | Android only. See [Chrome Onboarding](../advanced/chrome-onboarding.md). |
-| `--android-no-snapshot` | Force cold boot. Auto-enabled for API 35+. |
+| `--android-no-snapshot` | Force cold boot. Auto-enabled for API 34+. |
 | `--debug` | Verbose debug output. |
 
 Full CLI reference: [CLI: Cloud](../cli/dcd-cloud.md).
@@ -247,7 +247,7 @@ The wrapper emits these as EAS step outputs via `set-output` after the run compl
 | Output | Description |
 |--------|-------------|
 | `console_url` | URL to view the test results in the DeviceCloud console. |
-| `upload_status` | Final status: `PENDING`, `RUNNING`, `PASSED`, `FAILED`, or `CANCELLED`. |
+| `upload_status` | Overall status: `PASSED` or `FAILED` once the run has finished (a run with a cancelled flow counts as `FAILED`). `PENDING`, `QUEUED` or `RUNNING` with `--async`, or if the run hadn't finished when the status was read. `ERROR` if the wrapper couldn't read the status. |
 | `flow_results` | JSON array: `[{ "name": "...", "status": "PASSED" }]`. |
 | `app_binary_id` | ID of the uploaded binary. Reuse via `--app-binary-id` to skip re-upload. |
 

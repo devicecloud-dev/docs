@@ -39,7 +39,7 @@ These steps have been written with OKTA in mind, but are applicable to other ide
 6. Send the following to support@devicecloud.dev from an email address registered with DeviceCloud:
    1. your metadata URL (or XML)
    2. the email domain(s) you wish to protect
-7. Our support team will then verify you have purchased the required amount of credits and enforce SSO for the requested domains.
+7. Our support team will then verify your organisation is on the Max or Enterprise plan and enforce SSO for the requested domains.
 8. Once activated, DeviceCloud supports Service Provider initiated login via SSO using the SSO button on the DeviceCloud login screen:
 
 <figure><img src="../.gitbook/assets/Screenshot 2025-05-29 at 09.21.10.png" alt=""><figcaption></figcaption></figure>

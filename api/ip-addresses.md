@@ -4,7 +4,7 @@ Returns the current list of DeviceCloud test-runner egress IP addresses, so your
 
 Unlike the other REST API endpoints, this one is **public** — no API key is required — so automation can poll it without credentials. Responses are cacheable (`Cache-Control: public, max-age=3600`); polling once an hour is plenty.
 
-The same data is published in human-readable form on the [IP Addresses](../security/ip-addresses.md) security page, which is generated from this endpoint — so the two never drift.
+The same data is published in human-readable form on the [IP Addresses](../security/ip-addresses.md) security page, which is regenerated daily from this endpoint.
 
 ---
 

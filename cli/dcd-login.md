@@ -37,13 +37,17 @@ This only affects the `dcd login` session and it does not touch the environment 
 
 ## `dcd whoami`
 
-Show the user and team the CLI is currently acting as.
+Show the user and team of your stored `dcd login` session.
 
 ```bash
 dcd whoami
 ```
 
-Prints the logged-in user, the active team, and the environment. Does nothing if you're not logged in.
+Prints the logged-in user, the active team, and the environment. If you're not logged in, it prints a hint to run `dcd login` or set `DEVICE_CLOUD_API_KEY`.
+
+{% hint style="info" %}
+`dcd whoami` only reads the stored session. If you also pass `--api-key` or export `DEVICE_CLOUD_API_KEY`, every other command uses that key — and the key's team — instead of the session shown here.
+{% endhint %}
 
 ## `dcd switch-org`
 
@@ -57,13 +61,14 @@ dcd switch-org
 dcd switch-org "example@example.com's Team"
 ```
 
-Teams are matched by name (case-insensitive). Requires an active `dcd login` session and an exported `DEVICE_CLOUD_API_KEY` will not override the session.
+Teams are matched by name (case-insensitive). Requires an active `dcd login` session. It only changes the session's team: an exported `DEVICE_CLOUD_API_KEY` doesn't affect `switch-org`, but still takes precedence for every other command.
 
 ## Where credentials are stored
 
 The session from `dcd login` is written to:
 
+- `$DCD_CONFIG_DIR/config.json`, if `DCD_CONFIG_DIR` is set, or
 - `$XDG_CONFIG_HOME/dcd/config.json`, or
 - `~/.dcd/config.json` if `XDG_CONFIG_HOME` is not set
 
-The file is created with `0600` permissions (owner read/write only) and holds your session tokens and the active team. Expiring sessions are refreshed automatically, so you should rarely need to log in again.
+The file is created with `0600` permissions (owner read/write only) and holds your session tokens and the active team. When a command starts, the CLI refreshes the session if it's about to expire, so you should rarely need to log in again. A process that keeps running, such as the [MCP server](../mcp/overview.md), doesn't refresh its session, so use an API key for long-running processes.
