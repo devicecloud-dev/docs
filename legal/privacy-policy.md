@@ -89,7 +89,19 @@ The Company may use Personal Data for the following purposes:
 
 We may share Your personal information in the following situations:
 
-* **With Service Providers:** We may share Your personal information with Service Providers to monitor and analyze the use of our Service, to contact You.
+* **With Service Providers:** We may share Your personal information with Service Providers to monitor and analyze the use of our Service, to contact You, and to host, secure and operate the Service. The Service Providers We currently use are:
+  * **Supabase** — database, authentication and file storage.
+  * **Railway** — hosting for our API and web console.
+  * **Backblaze B2** — storage for app binaries, flows and test artefacts.
+  * **Cloudflare** — DNS, delivery of stored files and bot protection on sign-in.
+  * **Axiom** — application logs and diagnostics.
+  * **Resend** — sending account, test run and product update emails, and receiving support emails.
+  * **Paddle** — payment processing and billing, as our Merchant of Record.
+  * **GitHub** — posting test results to Your pull requests, if You install the DeviceCloud GitHub App.
+  * **Slack** — posting test run notifications to Your workspace if You connect it, and support via Slack Connect.
+  * **Discord** — our community and support server.
+  * **Anthropic** — summarising support requests so they reach the right member of our team.
+  * **Twilio** — text-message alerts to our support team about urgent support requests.
 * **For business transfers:** We may share or transfer Your personal information in connection with, or during negotiations of, any merger, sale of Company assets, financing, or acquisition of all or a portion of Our business to another company.
 * **With Affiliates:** We may share Your information with Our affiliates, in which case we will require those affiliates to honor this Privacy Policy. Affiliates include Our parent company and any other subsidiaries, joint venture partners or other companies that We control or that are under common control with Us.
 * **With business partners:** We may share Your information with Our business partners to offer You certain products, services or promotions.

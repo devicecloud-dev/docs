@@ -3,7 +3,7 @@
 Start an interactive cloud device session and drive it from your terminal — install a build, run individual Maestro commands or a whole flow, capture screenshots, and dump the view hierarchy. This is ideal for authoring and debugging flows against a real cloud device.
 
 {% hint style="warning" %}
-**Live is in beta** and is billed at **$0.03/min**, excluding Sales Tax. Access is limited and by request only. If you would like to try Live, please contact support to request access. `dcd live` requires a [`dcd login`](dcd-login.md) session.
+**Live is in beta** and is billed at **$0.03/min**, excluding Sales Tax. Access is limited and by request only. If you would like to try Live, please contact support to request access. `dcd live` works with a [`dcd login`](dcd-login.md) session or an [API key](../getting-started/api-keys.md).
 {% endhint %}
 
 ```bash
@@ -30,7 +30,7 @@ Start a new live device session. Prints the session name and a console URL you c
 | `--platform <android\|ios>` | Device platform (default: `android`) |
 | `--app-binary-id <id>` | Binary upload ID to install on the device at start |
 | `--device-locale <locale>` | Device locale, e.g. `de_DE` |
-| `--android-device <device>` | Android only. Device profile (`pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`) |
+| `--android-device <device>` | Android only. Device profile: `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`, `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl` or `pixel-11` |
 | `--android-api-level <level>` | Android only. API level, e.g. `34` (must be passed together with `--android-device`) |
 | `--wait` | Block until the device is ready to accept commands |
 
@@ -55,7 +55,7 @@ Execute one or more Maestro YAML commands against the session.
 | `--file <path>` | Read the Maestro YAML to execute from a file (alternative to `--yaml`) |
 | `--wait` | Wait for the device to be ready before executing |
 
-Pass either `--yaml` or `--file`, not both.
+Pass either `--yaml` or `--file`, not both. `dcd live exec` exits `0` even when the commands fail, so check the printed result.
 
 ## `dcd live run`
 
@@ -67,6 +67,8 @@ Run a whole Maestro flow file against the session. The flow's `appId:` header is
 | `--session <name>` | **Required.** Live session name |
 | `--timeout <seconds>` | Max seconds to wait for the flow to finish (default: `600`) |
 | `--wait` | Wait for the device to be ready before running |
+
+`dcd live run` exits `2` if the flow fails, or if it's still running when `--timeout` is reached (see [Exit Codes](../advanced/exit-codes.md)).
 
 ## `dcd live screenshot`
 

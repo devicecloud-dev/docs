@@ -17,6 +17,8 @@ Device Cloud uses standard exit codes to indicate the status of command executio
 2    # Test run explicitly failed
 ```
 
+A run fails if any of its tests fails or is cancelled, so a run you cancel from the console also exits `2`. With `--async`, `dcd cloud` exits `0` as soon as the run is submitted, whatever the outcome.
+
 ## JSON Output
 
 The two JSON flags behave differently around test failures:
@@ -27,3 +29,16 @@ The two JSON flags behave differently around test failures:
 {% hint style="info" %}
 Use `--json-file` when you want to inspect the result yourself rather than have a non-zero exit code fail the build. Use `--json` when you still want the exit code to gate your pipeline.
 {% endhint %}
+
+`dcd status --json` exits `0` whenever it prints a result. That includes a `FAILED` run and a failed lookup, which is also reported as `FAILED` but with an `error` field (see [dcd status](../cli/dcd-status.md#json-output)).
+
+## Superseded Runs
+
+A run superseded by a newer run through [`--cancel-previous`](cancel-previous.md) exits `0`, even if one of its tests had already failed. With `--json` or `--json-file`, its `status` is `SUPERSEDED`.
+
+## Live Sessions
+
+- **`dcd live run`** exits `2` if the flow fails, or if it's still running when `--timeout` is reached.
+- **`dcd live exec`** exits `0` even when the commands fail — check the printed result.
+
+See [dcd live](../cli/dcd-live.md) for the full reference.

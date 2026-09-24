@@ -45,7 +45,7 @@ Returns `{ status, name, createdAt, tests: [{ name, status, durationSeconds, fai
 
 ## dcd_download_artifacts <a href="#dcd-download-artifacts" id="dcd-download-artifacts"></a>
 
-Download a completed run's artifacts (the videos/logs zip) and/or a formatted report to local disk. It reads cloud state and writes local files, so it stays available in [read-only mode](overview.md#read-only-mode).
+Download a completed run's artifacts zip (videos, logs and screenshots) to local disk, plus a formatted report if you ask for one. The artifacts zip is always downloaded; `report` adds a report on top of it. It reads cloud state and writes local files, so it stays available in [read-only mode](overview.md#read-only-mode).
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -53,7 +53,7 @@ Download a completed run's artifacts (the videos/logs zip) and/or a formatted re
 | `type` | `ALL` \| `FAILED` | Which tests to include artifacts for (default `ALL`) |
 | `artifactsPath` | string | Where to write the artifacts zip (default `./artifacts.zip`) |
 | `report` | `junit` \| `allure` \| `html` | Also download a formatted report of this type |
-| `reportPath` | string | Where to write the report (defaults by type: `report.xml` for `junit`, otherwise `report.html`) |
+| `reportPath` | string | Where to write the report (defaults by type: `report.xml` for `junit`, otherwise `report.html`). The `html` report is a ZIP, so give it a `.zip` path |
 
 Returns `{ uploadId, artifactsPath, reportPath, warnings }`. A **non-empty `warnings` array means a download could not be produced** — most often because the run has no results yet. An empty array means success. See [Artifacts & Downloads](../artifacts/artifacts.md) and [Report Formats](../artifacts/report-formats.md).
 

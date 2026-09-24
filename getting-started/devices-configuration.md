@@ -4,7 +4,11 @@
 
 If you don't specify a device or OS version, then you will be allocated the default device image:
 
-**Android:** Pixel 7 (API level 34) - **from 19 October 2026 the default becomes API level 36** (still Pixel 7), and **from 26 October 2026 the default device becomes Pixel 10**. Pin `--android-api-level 34` or `--android-device pixel-7` if you need to stay on them.
+**Android:** Pixel 7 (API level 34) - **from 19 October 2026 the default becomes API level 36** (still Pixel 7), and **from 26 October 2026 the default device becomes Pixel 10**.
+
+To stay on API level 34, pin the device and the API level together, e.g. `--android-device pixel-8 --android-api-level 34` (Pixel 8 has the same screen size as Pixel 7). Pinning only `--android-api-level 34` stops working on 26 October, because Pixel 10 only runs API levels 36 and 37, and Pixel 7 itself is targeted for removal on that date.
+
+If you use [Google Play](../configuration/google-play-apis.md), pass the device and API level together, e.g. `--android-device pixel-8 --android-api-level 34`. Google Play is available on Pixel 8 (API 34), Pixel 10 (API 36 and 37) and the outgoing Pixel 7 (API 34).
 
 **iOS:** iPhone 14 (iOS 17.5) - **from 2 November 2026 the default becomes iPhone 16 running iOS 26**. Pin `--ios-device iphone-14 --ios-version 18` if you need to stay on that device; iOS 17 is being removed on the same date, so there is no way to stay on it.
 
@@ -33,14 +37,14 @@ The default version of Android is changing to API 36 on the 19th October 2026.
 | Android 10      | 29 (deprecated) |
 
 {% hint style="warning" %}
-API levels 29-31 (Android 10-12) are deprecated and we're targetting removal on **19 October 2026**. This is subject to change based on usage, see the [Android Support Policy](devices-configuration.md#android-support-policy) for more information.
+API levels 29-31 (Android 10-12) are deprecated and **will be removed on 19 October 2026**. Runs targeting them will fail after that date, so move `--android-api-level` to 32 or newer. See the [Android Support Policy](devices-configuration.md#android-support-policy) for more information.
 {% endhint %}
 
 Need Google Play? See [google-play-apis.md](../configuration/google-play-apis.md)
 
 ### Android Devices
 
-DeviceCloud will default to Pixel 7 unless you pass the `--android-device` flag:
+DeviceCloud will default to Pixel 7 (Pixel 10 from 26 October 2026) unless you pass the `--android-device` flag:
 
 ```bash
 dcd cloud app.apk test.yaml --android-device pixel-6
@@ -60,8 +64,10 @@ dcd cloud app.apk test.yaml --android-device pixel-6
 | `pixel-11`       | Pixel 11                                                                               | 1080 x 2424 | 37                                 |
 | `generic-tablet` | Generic Tablet (Note: starts in landscape by default, use orientation=90 for portrait) | 2560 x 1440 | 33, 36, 37                         |
 
+Generic Tablet and Pixel 10 Pro Fold runs are billed at the Advanced Android rate, see [pricing](../billing/test-run-billing.md).
+
 {% hint style="warning" %}
-Pixel 6 Pro, Pixel 7 and Pixel 7 Pro are deprecated and we're targetting removal on **26 October 2026**. This is subject to change based on usage, see the [Android Support Policy](devices-configuration.md#android-support-policy) for more information.
+Pixel 6 Pro, Pixel 7 and Pixel 7 Pro are deprecated and we're targeting removal on **26 October 2026**. This date is subject to change based on usage. Move `--android-device` to `pixel-10`, `pixel-11`, `pixel-8` or `pixel-6`, with an API level that device supports. See the [Android Support Policy](devices-configuration.md#android-support-policy) for more information.
 {% endhint %}
 
 {% hint style="warning" %}
@@ -196,4 +202,4 @@ We will always aim to support the latest versions of Android and additionally co
 
 It may be possible in some cases to provide support for a beta version however this will be on a case-by-case basis; please contact our Support team if you would like to request this.
 
-The default configuration will always be the latest base Pixel we support running the previous version of Android, i.e. Pixel 10 running Android 16/API 36. Before we change the default, we will always provide a minimum of 30 days notice.
+The default configuration will always be the latest even-numbered base Pixel we support running the previous version of Android, i.e. Pixel 10 running Android 16/API 36. Before we change the default, we will always provide a minimum of 30 days notice.

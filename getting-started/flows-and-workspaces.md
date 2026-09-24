@@ -4,8 +4,7 @@ There are multiple ways to execute flows from the CLI:
 
 1. a single YAML flow
 2. a directory of flows
-3. flows that match a glob
-4. flows specified in a workspace config file
+3. flows specified in a workspace config file
 
 ### 1. Executing a single flow
 
@@ -21,6 +20,7 @@ Where:
   * `.app`
   * `.zip`
   * `.apk`
+  * `.tar.gz` (an Expo iOS build)
 * `<flowFile>` is one of:
   * `.yaml`
   * `.yml`
@@ -36,21 +36,15 @@ Where `<directoryPath>` is either:
 * an absolute path, i.e. `/path/from/root`
 * a relative path, i.e. `./` or `path/from/currentDir`
 
-The CLI will inspect all YAML files in the directory (but not sub-directories) and create a test for each.
+The CLI will inspect all YAML files at the top level of the directory (sub-directories are not scanned) and create a test for each. To pick up flows in sub-directories, use `flows` glob patterns in a workspace config file (see below).
 
-### 3. Executing flows by passing a glob
+{% hint style="warning" %}
+The CLI takes a single flow path, not a glob. A quoted glob such as `"./**/*.yaml"` fails because no file has that name, and an unquoted glob is expanded by your shell into several paths, of which only the first is used. Put glob patterns in the `flows` field of a workspace config file instead.
+{% endhint %}
 
-```
-dcd cloud <appFile> <glob>
-```
+### 3. Executing flows using a Workspace Config file
 
-Where `<glob>` is a path matching string such as `./**/*.yaml`
-
-The CLI uses the [NPM glob](https://www.npmjs.com/package/glob) module. This package provides its own CLI which you can use for debugging globs.
-
-### 4. Executing flows using a Workspace Config file
-
-For complex setups, a `config.yaml` file is recommended. Place it in the top-level directory you pass to the CLI and it will be detected automatically.
+For complex setups, a `config.yaml` file is recommended. Place it in the top-level directory you pass to the CLI and it will be detected automatically. Its `flows` field accepts glob patterns such as `./**/*.yaml`, so you can select flows in sub-directories.
 
 ```
 dcd cloud <appFile> <directoryPathIncludingConfigYaml>
@@ -60,4 +54,4 @@ See [Workspace Configuration](../configuration/workspace-config.md) for more inf
 
 ### Referencing flows
 
-As of version 2.0.0, the CLI will search for all nested dependencies referenced by your YAML flows using Maestro keywords (`addMedia`, `runFlow`, `runScript`).
+As of version 2.0.0, the CLI will search for all nested dependencies referenced by your YAML flows using Maestro keywords (`addMedia`, `runFlow`, `runScript`). From version 5.6.0 it also picks up `assertScreenshot` baselines named by a literal path. Files it can't find this way, such as a path containing a variable, can be added with [`includedPaths`](../configuration/workspace-config.md#includedpaths).

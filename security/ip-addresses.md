@@ -16,7 +16,7 @@ The DeviceCloud Test Runner IP addresses are listed below. Add these to your fir
 
 ## Automate your allow-list
 
-These addresses are also published as an unauthenticated JSON endpoint, so your DevOps tooling can poll for the current list instead of tracking this page by hand. This endpoint is the source of truth for the table above, so the two never drift:
+These addresses are also published as an unauthenticated JSON endpoint, so your DevOps tooling can poll for the current list instead of tracking this page by hand. This endpoint is the source of truth for the table above, which is regenerated from it daily:
 
 ```
 GET https://api.devicecloud.dev/ip-addresses

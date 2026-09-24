@@ -2,7 +2,7 @@
 
 Device Cloud supports multiple Maestro versions to ensure compatibility with your test flows.
 
-By default, tests currently run using Maestro 2.2.0. **From 19 October 2026 the default becomes Maestro 2.10.0.** Pin `--maestro-version` if you need to stay on a specific version.
+By default, tests currently run using Maestro 2.2.0. **From 19 October 2026 the default becomes Maestro 2.10.0.** Pin `--maestro-version` if you need to stay on a specific version (2.2.0 itself is removed on the same date, see below).
 
 {% hint style="warning" %}
 The default Maestro version will change to 2.10.0 on the 19th October 2026.
@@ -28,7 +28,7 @@ We currently support the following versions of Maestro:
 * 2.10.0
 
 {% hint style="warning" %}
-Maestro 2.0.4, 2.0.9, 2.1.0, 2.2.0, 2.5.0, 2.5.1 and 2.6.0 are deprecated. The target date for removal is the 19th October 2026 but this is subject to change based on usage. See the [#maestro-support-policy](maestro-versions.md#maestro-support-policy "mention") for more information.
+Maestro 2.0.4, 2.0.9, 2.1.0, 2.2.0, 2.5.0, 2.5.1 and 2.6.0 are deprecated and **will be removed on 19 October 2026**. Runs pinned to these versions will fail after that date, so move `--maestro-version` to 2.6.1 or newer. See the [#maestro-support-policy](maestro-versions.md#maestro-support-policy "mention") for more information.
 {% endhint %}
 
 ## Version Selection
@@ -43,7 +43,7 @@ Note that Maestro 2.7.0 reorganised the per-flow debug output into a new bundle 
 
 ```bash
 # Use a specific version of Maestro
-dcd cloud ... --maestro-version 2.1.0
+dcd cloud ... --maestro-version 2.10.0
 
 # Always use the most recent version of Maestro available
 dcd cloud ... --maestro-version latest
