@@ -33,8 +33,8 @@ The context is built from three pieces of the run's metadata. Each tab under
 
 | Part | Where it comes from |
 |---|---|
-| Repository | `gh_repo` |
-| Branch or PR | `gh_pr_number` if present, otherwise `gh_branch` |
+| Repository | `gh_repo`, or `bb_repo` on Bitbucket |
+| Branch or PR | `gh_pr_number` if present, otherwise `gh_branch` (`bb_` twins on Bitbucket) |
 | Job | `gh_check_name` — the job's check name |
 
 A pull request and a push to the same branch are **different** contexts, which
@@ -56,17 +56,30 @@ one CI run are safe even before you set check names. Where the run ID comes
 from:
 
 * **CLI:** `--metadata gh_run_id=<id>`. Without it, runs have no run ID.
+* **GitHub Action:** the workflow run ID, attached for you.
+* **Bitbucket pipe:** the build number, attached for you.
+* **Bitrise:** none, so two invocations of the step in one build need distinct
+  check names.
 * **EAS Workflows:** the EAS build ID, which differs between your iOS and
   Android build jobs, so those two jobs don't count as one run. Give each its
   own `DCD_CHECK_NAME`, or set the same `DCD_GH_RUN_ID` on both.
 
 ## Usage
 
-`--cancel-previous` works with the CLI and with EAS Workflows. The GitHub
-Action, the Bitrise step and the Bitbucket pipe don't have an option for it yet;
-in those pipelines you can call the CLI directly, as below.
-
 {% tabs %}
+{% tab title="GitHub Actions" %}
+```yaml
+- uses: devicecloud-dev/device-cloud-for-maestro@v2
+  with:
+    api-key: ${{ secrets.DCD_API_KEY }}
+    app-file: build/app.apk
+    cancel-previous: true
+    check-name: Android
+```
+
+The Action attaches the repository, branch, PR and run ID for you.
+{% endtab %}
+
 {% tab title="CLI" %}
 ```bash
 dcd cloud --app-file build/app.apk --flows ./.maestro \
@@ -81,6 +94,33 @@ The CLI doesn't read your CI provider's environment, so pass the context
 yourself. `--repo-name` plus `--branch` or `--pr-number` are required; without
 them nothing is cancelled. `gh_check_name` scopes the group to this job, and
 `gh_run_id` stops jobs of the same CI run from cancelling each other.
+{% endtab %}
+
+{% tab title="Bitbucket" %}
+```yaml
+- pipe: docker://moropo/device-cloud-for-bitbucket:latest
+  variables:
+    API_KEY: $DCD_API_KEY
+    APP_FILE: build/app.apk
+    CANCEL_PREVIOUS: "true"
+    CHECK_NAME: Android
+```
+
+The pipe attaches the repository, branch, PR and build number for you.
+{% endtab %}
+
+{% tab title="Bitrise" %}
+Set the **Cancel Previous Run** input (`cancel_previous`) to `true`. The step
+doesn't attach your repository or branch, so add them to the **Metadata** input
+(`metadata`), one per line:
+
+```
+gh_repo=acme/my-app
+gh_branch=$BITRISE_GIT_BRANCH
+```
+
+Give each invocation its own **GitHub Check Name** (`check_name`) if a build
+runs the step more than once.
 {% endtab %}
 
 {% tab title="EAS Workflows" %}
