@@ -24,16 +24,16 @@ dcd cloud --app-binary-id <id> ./flows \
 
 ```bash
 dcd cloud --app-binary-id <id> ./flows \
-  --android-device-matrix pixel-7:34 \
-  --android-device-matrix pixel-6:33
+  --android-device-matrix pixel-8:34 \
+  --android-device-matrix pixel-10:36
 ```
 
-Append `:play` to run a cell against a Google Play device:
+Append `:play` to run a cell against a Google Play device. Google Play is available as `pixel-8:34`, `pixel-10:36`, `pixel-10:37` and `pixel-7:34` (see [Google Play APIs](google-play-apis.md#device-availability)):
 
 ```bash
 dcd cloud --app-binary-id <id> ./flows \
-  --android-device-matrix pixel-7:34 \
-  --android-device-matrix pixel-7:34:play
+  --android-device-matrix pixel-8:34 \
+  --android-device-matrix pixel-8:34:play
 ```
 
 Every `--ios-device-matrix` / `--android-device-matrix` names **exactly one device**. There is no
@@ -52,14 +52,14 @@ exactly what you asked for.
 A matrix runs one test per (flow x device), so a 4-device matrix over 10 flows is **40 flows**, not 10. Before submitting, the CLI prints the number of flows and what they will cost:
 
 ```
-Device matrix
-  cells       4
-  est. cost   $0.32
-  Pixel 7 - API 34   2 flows - $0.16
-  Pixel 6 - API 33   2 flows - $0.16
+⏺ Device matrix
+  ⎿ cells       4
+    est. cost   $0.36
+    Pixel 8 · API 34   2 flows · $0.18
+    Pixel 10 · API 36   2 flows · $0.18
 ```
 
-Rates are per device — iPad and Google Play flows are charged at the advanced rate, as per our [pricing](../billing/test-run-billing.md).
+Rates are per device — iPad, Generic Tablet, Pixel 10 Pro Fold and Google Play flows are charged at the advanced rate, as per our [pricing](../billing/test-run-billing.md).
 
 ## Results
 
@@ -72,8 +72,8 @@ devices is unambiguous:
 {
   "uploadId": "...",
   "tests": [
-    { "name": "login.yaml", "status": "PASSED", "device": { "name": "Pixel 7", "osVersion": "34" } },
-    { "name": "login.yaml", "status": "FAILED", "device": { "name": "Pixel 6", "osVersion": "33" } }
+    { "name": "login.yaml", "status": "PASSED", "device": { "name": "Pixel 8", "osVersion": "34", "googlePlay": false } },
+    { "name": "login.yaml", "status": "FAILED", "device": { "name": "Pixel 10", "osVersion": "36", "googlePlay": false } }
   ]
 }
 ```
@@ -82,7 +82,7 @@ Without `--async` the run waits for **every** device and exits `0` only if all o
 
 ## Rules
 
-- Every device and OS must be a supported combination, including Google Play if applicable. An unsupported one is rejected before anything runs so you never get a partial submission.
+- Every device and OS must be a supported combination, including Google Play if applicable. An unsupported one is rejected before anything runs so you never get a partial submission. Some runner types support fewer devices, see [Runner Type](runner-type.md).
 
 - One platform per upload. An upload runs one app binary, so `--ios-device-matrix` and `--android-device-matrix` cannot be combined in the same run.
 

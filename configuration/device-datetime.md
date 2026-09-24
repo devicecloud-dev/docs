@@ -19,7 +19,7 @@ env:
 ```
 
 * `DEVICECLOUD_OVERRIDE_DEVICE_DATETIME` — target date/time, ISO 8601 (e.g.  `2030-01-01T09:00:00Z`).
-* `DEVICECLOUD_OVERRIDE_DEVICE_TIMEZONE` — optional [IANA timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) (e.g. `Europe/London`). Android only.
+* `DEVICECLOUD_OVERRIDE_DEVICE_TIMEZONE` — optional [IANA timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) (e.g. `Europe/London`). Android only, and only applied together with `DEVICECLOUD_OVERRIDE_DEVICE_DATETIME`. Setting it needs a rootable image, so it isn't available on [Google Play](google-play-apis.md) images.
 
 If the value can't be parsed, it is ignored and the flow runs with the default
 (real) time.
@@ -30,7 +30,7 @@ On iOS it only changes the cosmetic status‑bar clock — the app's own `Date()
 
 ## Semantics
 
-The override sets the device's starting clock. The clock then ticks forward normally from there for the rest of the run as it is not a frozen clock. If you need time to stand still, you'll need to drive it from within your app/test instead.
+On Android, the override sets the device's starting clock. The clock then ticks forward normally from there for the rest of the run as it is not a frozen clock. If you need time to stand still, you'll need to drive it from within your app/test instead.
 
 ## Android
 
@@ -46,7 +46,8 @@ iOS simulators read the host machine's clock and there is no per‑simulator API
 
 * The app's `Date()` / `NSDate` is not changed — your app logic will still see the real time. iOS cannot time‑travel app code.
 * DeviceCloud applies a cosmetic status‑bar time only via the simulator status‑bar override.
-* Apple's tooling only accepts whole `HH:MM` times and rejects a zero minute, so a requested time on the hour (e.g. `09:00`) is shown as `09:01`, and midnight (`00:xx`) is left at the real time. You can workaround this by setting the time one minute before you need, for example if you need `09:00`, you can set `08:58` and in most cases the simulator will have been running for long enough to increment the clock.
+* The status bar shows the hour and minute of the requested time in UTC, so write the value with a `Z` suffix (e.g. `2030-01-01T09:30:00Z` shows `9:30`). `DEVICECLOUD_OVERRIDE_DEVICE_TIMEZONE` is ignored on iOS.
+* Apple's tooling only accepts whole `HH:MM` times and rejects a zero minute, so a requested time on the hour (e.g. `09:00`) is shown as `9:01`, and midnight (`00:xx` UTC) is left at the real time.
 
 If you need real time‑travel on iOS, control the date from inside your app (e.g. a debug/launch argument) rather than relying on this override.
 

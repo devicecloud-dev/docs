@@ -14,7 +14,7 @@ pipelines:
     - step:
         name: E2E tests
         script:
-          - pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
+          - pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
             variables:
               API_KEY: $DEVICE_CLOUD_API_KEY
               APP_FILE: 'build/app-release.apk'
@@ -32,12 +32,12 @@ Find your API key at [console.devicecloud.dev/settings](https://console.devicecl
 ### Android
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'build/app-release.apk'
     WORKSPACE: '.maestro'
-    ANDROID_DEVICE: 'pixel-7'
+    ANDROID_DEVICE: 'pixel-8'
     ANDROID_API_LEVEL: '34'
     REPORT: 'junit'
 ```
@@ -45,7 +45,7 @@ Find your API key at [console.devicecloud.dev/settings](https://console.devicecl
 ### iOS
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'build/MyApp.app.zip'
@@ -56,7 +56,7 @@ Find your API key at [console.devicecloud.dev/settings](https://console.devicecl
 
 ## Variables
 
-The pipe variables map 1:1 to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flags. The full list lives in the pipe's [README](https://bitbucket.org/devicecloud-dev/device-cloud-for-bitbucket/src/main/README.md). Required: `API_KEY`. Common ones:
+Most pipe variables map to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flag of the same name, e.g. `ANDROID_API_LEVEL` sets `--android-api-level`. The full list for version 1.5.0 lives in the pipe's [README](https://bitbucket.org/devicecloud-dev/device-cloud-for-bitbucket/src/v1.5.0/README.md). Required: `API_KEY`. Common ones:
 
 | Variable | Description |
 |---|---|
@@ -69,9 +69,11 @@ The pipe variables map 1:1 to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flags. 
 | `ENV_LIST` | Newline-separated `KEY=VALUE` env vars injected into flows. |
 | `INCLUDE_TAGS` / `EXCLUDE_TAGS` | Filter flows by Maestro tag. |
 | `REPORT` | `junit`, `html`, `html-detailed`, `allure`. |
+| `JUNIT_PATH` | Where to write the JUnit report (default `./report.xml`). |
 | `DOWNLOAD_ARTIFACTS` | `ALL` or `FAILED` — downloads logs/screenshots/videos. |
 | `ASYNC` | `"true"` to fire-and-forget. |
-| `RUNNER_TYPE` | `m1` or `m4` for premium runners. |
+| `RUNNER_TYPE` | `default`, `cpu1`, `gpu1`, `m1` or `m4`. `gpu1`, `m1` and `m4` are premium runners, see [Runner Type](../configuration/runner-type.md). |
+| `RENDER_ENGINE` | Android only: `lavapipe` or `swiftshader`, the software renderer the emulator boots with on the default Android runner. Leave unset to let DeviceCloud choose (`swiftshader` for apps built with Flutter, otherwise `lavapipe`). |
 
 ## Bitbucket context auto-attached
 
@@ -86,7 +88,7 @@ If your repository is mirrored on GitHub and you use [GitHub checks](github-chec
 The pipe writes a `dcd-result.env` file into the repo's working directory. Subsequent script lines in the same step can `source` it:
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'app.apk'
@@ -94,17 +96,24 @@ The pipe writes a `dcd-result.env` file into the repo's working directory. Subse
 
 - source ./dcd-result.env
 - echo "Console: $DEVICE_CLOUD_CONSOLE_URL"
-- echo "Status:  $DEVICE_CLOUD_UPLOAD_STATUS"
+- echo "Upload:  $DEVICE_CLOUD_UPLOAD_ID"
 ```
 
 Exported: `DEVICE_CLOUD_CONSOLE_URL`, `DEVICE_CLOUD_UPLOAD_STATUS`, `DEVICE_CLOUD_FLOW_RESULTS`, `DEVICE_CLOUD_APP_BINARY_ID`, `DEVICE_CLOUD_UPLOAD_ID`.
 
-The pipe exits non-zero on test failures so the build fails by default.
+- `DEVICE_CLOUD_UPLOAD_STATUS` is `PASSED` or `FAILED` once the run has finished, or `PENDING`, `QUEUED` or `RUNNING` if it hadn't (an `ASYNC` run reports whatever it had reached at submission). It's `ERROR` if the status couldn't be read.
+- `DEVICE_CLOUD_FLOW_RESULTS` is a JSON array with one entry per flow: `[{"name": "...", "status": "PASSED"}]`, plus `failReason` for a failed flow.
+
+{% hint style="info" %}
+Before pipe 1.5.0 only `DEVICE_CLOUD_CONSOLE_URL` and `DEVICE_CLOUD_UPLOAD_ID` are filled in; the other three are empty.
+{% endhint %}
+
+The pipe exits non-zero when the run fails, so the build fails by default. From 1.5.0 that holds with `JSON_FILE: 'true'` too; on earlier versions, where the CLI exits 0 in that mode, leave `JSON_FILE` unset if you rely on the pipe's result.
 
 ## Passing env vars into flows
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'app.apk'
@@ -119,20 +128,21 @@ The pipe exits non-zero on test failures so the build fails by default.
 
 ## Reports as build artifacts
 
-To expose a report as a Bitbucket artifact (and have Bitbucket pick up the test results UI), declare it on the step. For example, if you would like a JUnit report, set up your pipe like this:
+Bitbucket's **Tests** tab only reads JUnit reports from folders such as `test-results/`, so write the report there with `JUNIT_PATH`. To keep it as a downloadable Bitbucket artifact too, declare it on the step. For example:
 
 ```yaml
 - step:
     name: E2E tests
     script:
-      - pipe: docker://moropo/device-cloud-for-bitbucket:1.4.0
+      - pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
         variables:
           API_KEY: $DEVICE_CLOUD_API_KEY
           APP_FILE: 'app.apk'
           WORKSPACE: '.maestro'
           REPORT: 'junit'
+          JUNIT_PATH: 'test-results/report.xml'
     artifacts:
-      - report.xml
+      - test-results/**
 ```
 
 ## Source

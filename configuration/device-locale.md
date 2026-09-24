@@ -10,8 +10,17 @@ The default locale for Android is `en_US` . The default locale for iOS is curren
 
 `{language_code}_{COUNTRY_CODE}`
 
-* Language: ISO-639-1 (lowercase)
-* Country: ISO-3166-1 (uppercase)
+* Language: ISO-639 (two or three lowercase letters)
+* Country: ISO-3166-1 (two uppercase letters)
+
+The underscore is required: use `de_DE`, not `de-DE`.
+
+{% hint style="warning" %}
+The locale isn't checked when you submit a run, only when the device is prepared. If it doesn't match this format:
+
+* **Android:** the error is logged and the test runs in the default locale.
+* **iOS:** the device can't be prepared, so the test is retried and eventually fails.
+{% endhint %}
 
 ## Usage
 

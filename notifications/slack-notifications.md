@@ -21,23 +21,33 @@ Once a channel is selected, use **Send test** to post a sample message to that c
 
 #### Only notify on failures
 
-By default DeviceCloud posts after **every** completed run. To cut down on noise, turn on **Only notify on failures** in the Slack section — passing runs will then be skipped and you'll only get a message when a run has at least one failed flow.
+By default DeviceCloud posts after **every** completed run. To cut down on noise, turn on **Only notify on failures** in the Slack section — passing runs will then be skipped and you'll only get a message when a run has at least one failed or cancelled flow.
+
+#### Post again after retries
+
+If you retry tests after a run has already been posted, DeviceCloud doesn't post again by default. Turn on **Post again after retries** to get an updated message once the retried tests finish; its duration covers only the retry.
 
 ### What's in the message
 
 Each notification includes:
 
-- An overall **passed / failed** status.
-- The test suite (upload) name, pass/fail counts, and total duration.
+- An overall **passed / failed** status (a run with any failed or cancelled flow counts as failed).
+- The test suite (upload) name, pass/fail counts, and duration.
 - **Run environment**: app ID, device & OS (e.g. *Android · Pixel 7 · API 34*), Maestro version, and runner type.
-- A list of failed flows (with their failure reason, where available).
+- A list of failed flows with their failure reason, where available. The list shows up to 10 flows (with a count of any more), and each reason is shortened to 140 characters.
 - A **View results in DeviceCloud** link to the run in the console.
+
+#### Choosing what's shown
+
+Under **What to show** you can turn each optional part of the message on or off: App ID, Device and OS, Maestro version, Runner type, Git / PR context, the per-flow failures list, and the retry count (shown when it's above zero). All of them are on by default; the suite name, pass/fail counts and duration are always shown.
+
+**Duration shown** picks which duration appears: **Overall runtime** (the default — wall-clock time from the first test starting to the last one finishing), **Suite runtime (summed)** (every test's duration added together, which is large for parallel runs), or **Both**.
 
 #### Git / CI context
 
 When a run carries git metadata, the message also shows a line with the **repository**, **branch**, a linked **commit**, and a linked **pull request**.
 
-This is populated automatically when you run in CI, or when you pass the git flags to the CLI:
+This is filled in automatically when you use the [GitHub Action](../ci-cd/github-actions.md), and by the [EAS integration](../ci-cd/eas-workflows.md#git-context-optional) when you set its `DCD_GH_*` variables. Elsewhere, pass the git flags to the CLI — or, in other CI integrations, the matching `gh_*` metadata keys (`gh_repo`, `gh_branch`, `gh_sha`, `gh_pr_number`, `gh_pr_url`):
 
 ```bash
 dcd cloud app.apk flows/ \
