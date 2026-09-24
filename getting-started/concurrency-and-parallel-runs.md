@@ -2,15 +2,22 @@
 
 DeviceCloud supports parallel runs, also known as concurrency. This means multiple tests run simultaneously, greatly reducing the overall test suite execution time for a given CI run.
 
-In your DeviceCloud settings page, you'll see two values for each platform: minimum guaranteed concurrency (known as **Concurrency Protection**) and maximum concurrency.
+Limits are set per platform and [runner type](../configuration/runner-type.md). In the console, under **Settings → Execution**, the **Concurrency Limits** card shows two values for each: minimum guaranteed concurrency (**Concurrency Protection**) and maximum concurrency (**Surge Concurrency When Capacity Allows**).
+
+The plans come with these limits:
+
+| Plan | iOS `default` | iOS `m4` | Android `cpu1` (default) | Android `gpu1` | Android `m1` |
+|------|---------------|----------|--------------------------|----------------|--------------|
+| Pro | up to 5 | up to 5 | up to 5 | up to 2 | up to 1 |
+| Max | up to 20, with 1 protected | up to 5 | up to 20, with 1 protected | up to 2 | up to 1 |
 
 Cheaper plans typically have no Concurrency Protection, which means that during busy periods when runner capacity is stretched, you may need to wait for runner availability or experience less concurrency than your maximum.
 
-Once you reach your maximum concurrency for iOS or Android, additional tests enter a queued state and sit in a backlog until you're under your concurrency limits. At that point, they automatically move to pending and are processed by the runners.
+Once you reach your maximum concurrency for a runner type, additional tests enter a queued state and sit in a backlog until you're under your concurrency limits. At that point, they automatically move to pending and are processed by the runners.
 
-If you have a plan with Concurrency Protection, DeviceCloud will prioritise your jobs to ensure your minimum concurrency is met.
+If you have a plan with Concurrency Protection, DeviceCloud will prioritise your jobs to ensure your minimum concurrency is met. On the Max plan, Concurrency Protection covers the standard runners only: iOS `default` and Android `cpu1`.
 
-Note that concurrency guarantees only apply to standard runner types. Experimental runner types, such as Android's M1 runner, are not covered by these concurrency rules.
+Some accounts have a shared pool instead, shown in the console as **Standard — shared across iOS & Android**. Standard iOS (`default`) and Android (`cpu1`) runs then draw on one combined limit rather than a limit each.
 
 #### **Enterprise Plans**
 

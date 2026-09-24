@@ -18,7 +18,7 @@ notifications:
       - devs@example.com
 ```
 
-By default you'll only be emailed when a suite has at least one failed or cancelled flow.
+By default you'll only be emailed when a suite has at least one failed or cancelled flow. A run superseded by a newer run through [`--cancel-previous`](../advanced/cancel-previous.md) is never emailed.
 
 {% hint style="info" %}
 The `config.yaml` is picked up automatically from the directory you pass to `dcd cloud`. See [Workspace Configuration](../configuration/workspace-config.md) for where the file lives and how it's loaded.
@@ -34,6 +34,21 @@ notifications:
   email:
     enabled: true
     onSuccess: true
+    recipients:
+      - sam@example.com
+      - devs@example.com
+```
+
+#### Also notify after retries
+
+If you retry tests after a run's summary has already been emailed, no further email is sent by default. To receive an updated summary once the retried tests finish, set `onRetry` to `true`. The updated summary follows the same rule as any other: unless `onSuccess` is also `true`, it's only sent while the run still has a failed or cancelled flow.
+
+```yaml
+# config.yaml
+notifications:
+  email:
+    enabled: true
+    onRetry: true
     recipients:
       - sam@example.com
       - devs@example.com

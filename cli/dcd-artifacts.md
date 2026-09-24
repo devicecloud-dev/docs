@@ -33,7 +33,7 @@ dcd artifacts --upload-id <id> [flags]
 |------|-------------|
 | `--report <format>` | Download a test report. Options: `junit`, `html`, `html-detailed`, `allure`. Mutually exclusive with `--download-artifacts` |
 | `--allure-path <path>` | Output path for the Allure report (default: `./report.html`). Requires `--report allure` |
-| `--html-path <path>` | Output path for the HTML report (default: `./report.html`). Requires `--report html` or `html-detailed` |
+| `--html-path <path>` | Output path for the HTML report (default: `./report.html`). Requires `--report html` or `html-detailed`. The HTML report downloads as a ZIP, so use a `.zip` path such as `./report.zip` |
 | `--junit-path <path>` | Output path for the JUnit report (default: `./report.xml`). Requires `--report junit` |
 
 ### Other

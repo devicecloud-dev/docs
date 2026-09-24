@@ -33,7 +33,7 @@ env:
 appId: my.app
 env:
     DEVICECLOUD_OVERRIDE_ANDROID_DEVICE: pixel-6
-    DEVICECLOUD_OVERRIDE_ANDROID_API_LEVEL: "30"
+    DEVICECLOUD_OVERRIDE_ANDROID_API_LEVEL: "32"
 ---
 # test steps
 ```
@@ -45,12 +45,12 @@ keeps the upload's iOS version, and vice versa.
 
 1. `DEVICECLOUD_OVERRIDE_*` in the flow's YAML (per test)
 2. The upload-wide `--ios-device` / `--ios-version` / `--android-device` / `--android-api-level` flags
-3. Default: iPhone 14 on iOS 17, or Pixel 7 on API level 34
+3. Default: iPhone 14 on iOS 17, or Pixel 7 on API level 34 (the Android default changes in October 2026, see [Default Devices](../getting-started/devices-configuration.md#default-devices))
 
 ## Billing
 
 Each flow still runs once, so your total run count is unchanged. What can change is a flow's
-**rate**: iPad and Google Play flows are charged at our advanced rate as per our
+**rate**: iPad, Generic Tablet, Pixel 10 Pro Fold and Google Play flows are charged at our advanced rate as per our
 [pricing](../billing/test-run-billing.md). Targeting an iPad from one flow in an otherwise
 iPhone upload charges that one flow at the advanced rate, and the rest at the standard rate.
 
@@ -60,7 +60,7 @@ iPhone upload charges that one flow at the advanced rate, and the rest at the st
 
 - You cannot target across platforms in the same upload.
 
-- Currently not supported on `m1` runners due to device limitations.
+- On the `m1` and `gpu1` [runner types](runner-type.md), a flow's device must be on API level 34 or above (up to 37 on `m1`) and can't use Google Play. Generic Tablet isn't available on them.
 
 ## Running a suite across several devices
 

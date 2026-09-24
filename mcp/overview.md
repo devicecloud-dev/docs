@@ -12,30 +12,40 @@ Please note that we accept no liability for anything your agent(s) may read or e
 
 ## Setup
 
-Add the server to your MCP client's configuration. It runs over stdio via `npx`, so there's nothing to install separately:
+Add the server to your MCP client's configuration. It runs over stdio via `npx` (Node 22 or newer), so there's nothing to install separately:
 
 ```jsonc
 {
   "mcpServers": {
     "devicecloud": {
       "command": "npx",
-      "args": ["-y", "@devicecloud.dev/dcd", "dcd-mcp"],
+      "args": ["-y", "--package=@devicecloud.dev/dcd", "dcd-mcp"],
       "env": { "DEVICE_CLOUD_API_KEY": "<your-api-key>" }
     }
   }
 }
 ```
 
+The `--package=` form matters: it tells `npx` to run the package's `dcd-mcp` binary. Without it, `npx` runs the `dcd` CLI instead, which rejects `dcd-mcp` as an unknown command.
+
+{% hint style="info" %}
+The MCP server ships in the npm package only. The standalone `dcd` binary doesn't include it, so you need Node even if you installed the CLI with the binary installer.
+{% endhint %}
+
 ## Authentication
 
 Auth is inherited from the CLI:
 
-- Set `DEVICE_CLOUD_API_KEY` in the server's `env` (as above), **or**
+- Set `DEVICE_CLOUD_API_KEY` in the server's `env` (as above) — **recommended**, **or**
 - Run [`dcd login`](../cli/dcd-login.md) once and the server will pick up the stored session.
 
 When both are present, the environment variable wins.
 
 Credentials are resolved lazily on the first tool call, not at startup — so your client can connect and enumerate the tools before you've supplied a key, and a bad credential surfaces as a tool error rather than a server that won't start.
+
+{% hint style="warning" %}
+The server resolves credentials once and reuses them for as long as it runs. A `dcd login` session is not refreshed after that, so a long-running server starts failing once the session expires, until you restart it. Use an API key for servers that stay running.
+{% endhint %}
 
 ## Tools
 
@@ -46,7 +56,7 @@ The server exposes five tools. Four are read-only; `dcd_run_cloud_test` submits 
 | [`dcd_list_devices`](tools.md#dcd-list-devices) | Discover available devices, OS versions, and Maestro versions |
 | [`dcd_list_runs`](tools.md#dcd-list-runs) | List recent test runs (filter by name/date, paginated) |
 | [`dcd_get_status`](tools.md#dcd-get-status) | Get the status and per-test results of a run |
-| [`dcd_download_artifacts`](tools.md#dcd-download-artifacts) | Download a run's artifacts or report to disk |
+| [`dcd_download_artifacts`](tools.md#dcd-download-artifacts) | Download a run's artifacts zip, and optionally a report, to disk |
 | [`dcd_run_cloud_test`](tools.md#dcd-run-cloud-test) | Submit a flow to run on the cloud (**billable**) |
 
 See [Tools Reference](tools.md) for every parameter, default, and return shape.
@@ -65,7 +75,7 @@ The remaining tools are all read-only. A read-only server doesn't just refuse th
   "mcpServers": {
     "devicecloud": {
       "command": "npx",
-      "args": ["-y", "@devicecloud.dev/dcd", "dcd-mcp", "--read-only"],
+      "args": ["-y", "--package=@devicecloud.dev/dcd", "dcd-mcp", "--read-only"],
       "env": { "DEVICE_CLOUD_API_KEY": "<your-api-key>" }
     }
   }

@@ -21,7 +21,7 @@ dcd cloud app.apk flows/ --config ci/workspace.yaml
 
 ### `flows`
 
-Glob patterns that select which flow files to run. Accepts a list of patterns using the [NPM glob](https://www.npmjs.com/package/glob) syntax.
+Glob patterns that select which flow files to run. Accepts a list of patterns, matched relative to the directory you pass to `dcd cloud`.
 
 ```yaml
 flows:
@@ -31,7 +31,7 @@ flows:
 
 Files named `config.yaml` / `config.yml` and paths containing `.app` path segments are always excluded regardless of the pattern.
 
-If `flows` is omitted, all `.yaml` / `.yml` files in the directory (except config files) are included.
+If `flows` is omitted, all `.yaml` / `.yml` files at the top level of the directory (except config files) are included. Sub-directories are not scanned.
 
 ### `includedPaths`
 
@@ -74,19 +74,21 @@ excludeTags:
 
 ### `executionOrder`
 
-Run a subset of flows sequentially (in order) before the remaining flows run in parallel.
+Run a subset of flows one after another, in order. Each flow in `flowsOrder` starts only once the previous one has finished.
+
+Flows that aren't listed in `flowsOrder` don't wait for the sequence: they start straight away and run alongside it, and when concurrency is low some may even run before it. If a flow depends on something the sequence sets up, add it to `flowsOrder` too.
 
 ```yaml
 executionOrder:
   continueOnFailure: false
   flowsOrder:
-    - login         # matches flow with name: "login" or file login.yaml
+    - login         # matches name: login, or login.yaml if that flow has no name:
     - checkout
     - payment
 ```
 
-- `flowsOrder` — list of flow names to run in sequence. A name matches either the `name:` field inside the flow YAML or the filename without extension.
-- `continueOnFailure` — if `true`, subsequent flows in the sequence run even if an earlier one fails. Defaults to `true`. Set it to `false` when a later flow depends on an earlier one having passed.
+- `flowsOrder` — list of flow names to run in sequence. A flow's name is its `name:` field if it has one; the filename without extension is used only for flows without a `name:`. Names must match exactly, including case.
+- `continueOnFailure` — if `true`, subsequent flows in the sequence run even if an earlier one fails. Defaults to `true`. Set it to `false` when a later flow depends on an earlier one having passed: if a flow fails, the rest of the sequence is marked as failed without running.
 
 {% hint style="warning" %}
 **`executionOrder` must be a map containing `flowsOrder`.** A bare list of flow names is not valid:
@@ -124,14 +126,17 @@ notifications:
   email:
     enabled: true
     onSuccess: false   # set to true to also notify on passing runs
+    onRetry: false     # set to true to email again when retried tests finish
     recipients:
       - team@example.com
       - ci-alerts@example.com
 ```
 
+`onRetry` controls whether recipients get another summary when retried tests finish after the run has already been reported. It defaults to `false`.
+
 ### `platform`
 
-Per-platform settings. Currently supports disabling animations, which is equivalent to passing `--disable-animations` on the CLI but lets you control each platform independently. The CLI flag takes precedence if both are set.
+Per-platform settings. Currently supports disabling animations, which is equivalent to passing `--disable-animations` on the CLI but lets you control each platform independently.
 
 ```yaml
 platform:
@@ -140,6 +145,19 @@ platform:
   ios:
     disableAnimations: true   # enables Reduce Motion on the simulator
 ```
+
+{% hint style="warning" %}
+**Known limitations:**
+
+* The CLI picks `platform.ios` or `platform.android` from your device flags, not from your app. An iOS run only uses `platform.ios` when you pass `--ios-device` or `--ios-version` (or an iOS device matrix); otherwise the `platform.android` value applies.
+* `--disable-animations` can only turn animations off. It can't override `disableAnimations: true` set here.
+
+The per-flow `DEVICECLOUD_OVERRIDE_*` settings described in [Animations](disable-animations.md) aren't affected.
+{% endhint %}
+
+### `local`
+
+`local.deterministicOrder`, from Maestro's workspace config, is accepted but has no effect on DeviceCloud.
 
 ## Full example
 

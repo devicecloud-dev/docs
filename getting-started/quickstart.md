@@ -82,19 +82,27 @@ If you installed via npm:
 npm install -g @devicecloud.dev/dcd@latest
 ```
 
-**Prerelease versions** (not recommended): Occasionally, prerelease versions are available under the `alpha`, `beta`, and `rc` tags, in increasing order of stability. See [available versions on NPM](https://www.npmjs.com/package/@devicecloud.dev/dcd?activeTab=versions).
+**Prerelease versions** (not recommended): Occasionally, prerelease versions are available under the `beta` tag. See [available versions on NPM](https://www.npmjs.com/package/@devicecloud.dev/dcd?activeTab=versions).
 
 ```bash
-npm install -g @devicecloud.dev/dcd@alpha
 npm install -g @devicecloud.dev/dcd@beta
-npm install -g @devicecloud.dev/dcd@rc
+```
+
+For the standalone binary, set `DCD_BETA=1` when you run the installer:
+
+```bash
+curl -fsSL https://get.devicecloud.dev/install.sh | DCD_BETA=1 sh
+```
+
+```powershell
+$env:DCD_BETA=1; irm https://get.devicecloud.dev/install.ps1 | iex
 ```
 
 ---
 
 ### Limits
 
-Every flow has a 10-minute execution limit after which it will be automatically cancelled.
+Every flow has a 10-minute execution limit. A flow that is still running when it reaches the limit is stopped and marked as failed, with a "Test run timed out after 10 minutes" error.
 
 ---
 

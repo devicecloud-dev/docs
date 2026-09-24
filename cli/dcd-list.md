@@ -43,19 +43,22 @@ Always quote wildcard patterns to prevent your shell from expanding them before 
 
 ## Output
 
+For example, `dcd list --limit 2` prints:
+
 ```
-Recent Uploads
-════════════════════════════════════════════════════════════════════════════════
-   Showing 3 of 3 uploads
+⏺ Recent Uploads
+  showing 2 of 45
+  ⎿ Nightly regression
+    id        7e12345f-eb12-12ec-a30b-bb1234f1d12a
+    created   Sep 22, 2026, 10:30 AM
+    console   https://console.devicecloud.dev/results?upload=7e12345f-eb12-12ec-a30b-bb1234f1d12a
+  ⎿ Smoke tests
+    id        3f9c2a71-5d4e-4b8a-9c0f-1e2d3c4b5a69
+    created   Sep 22, 2026, 09:15 AM
+    console   https://console.devicecloud.dev/results?upload=3f9c2a71-5d4e-4b8a-9c0f-1e2d3c4b5a69
 
-   Nightly regression
-      ID:      7e12345f-eb12-12ec-a30b-bb1234f1d12a
-      Created: Jan 15, 2026, 10:30 AM
-      Console: https://console.devicecloud.dev/results?upload=7e12345f-...
-
-   Smoke tests
-      ID:      ...
-      ...
-
-Tip: Use dcd status --upload-id <id> for detailed test results
+Use --offset 2 to see the next 2 uploads
+ℹ Use dcd status --upload-id <id> for detailed test results
 ```
+
+Uploads without a name are listed as `(unnamed)`. With `--json`, the CLI prints the API response as-is: `{ "uploads": [{ "id", "name", "created_at", "consoleUrl" }], "total", "limit", "offset" }`.
