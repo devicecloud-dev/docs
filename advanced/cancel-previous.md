@@ -58,8 +58,8 @@ from:
 * **CLI:** `--metadata gh_run_id=<id>`. Without it, runs have no run ID.
 * **GitHub Action:** the workflow run ID, attached for you.
 * **Bitbucket pipe:** the build number, attached for you.
-* **Bitrise:** none, so two invocations of the step in one build need distinct
-  check names.
+* **Bitrise:** the pipeline ID, or the build's ID outside a pipeline, attached
+  for you by step 1.4.0 and later.
 * **EAS Workflows:** the EAS build ID, which differs between your iOS and
   Android build jobs, so those two jobs don't count as one run. Give each its
   own `DCD_CHECK_NAME`, or set the same `DCD_GH_RUN_ID` on both.
@@ -77,7 +77,8 @@ from:
     check-name: Android
 ```
 
-The Action attaches the repository, branch, PR and run ID for you.
+The Action attaches the repository, branch, PR and run ID for you. Requires
+v2.6.0 or later of the Action.
 {% endtab %}
 
 {% tab title="CLI" %}
@@ -98,7 +99,7 @@ them nothing is cancelled. `gh_check_name` scopes the group to this job, and
 
 {% tab title="Bitbucket" %}
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:latest
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
   variables:
     API_KEY: $DCD_API_KEY
     APP_FILE: build/app.apk
@@ -107,20 +108,24 @@ them nothing is cancelled. `gh_check_name` scopes the group to this job, and
 ```
 
 The pipe attaches the repository, branch, PR and build number for you.
+Requires pipe 1.5.0 or later.
 {% endtab %}
 
 {% tab title="Bitrise" %}
-Set the **Cancel Previous Run** input (`cancel_previous`) to `true`. The step
-doesn't attach your repository or branch, so add them to the **Metadata** input
-(`metadata`), one per line:
+Set the **Cancel Previous Run** input (`cancel_previous`) to `true`. Requires
+step 1.4.0 or later.
+
+For a repository on GitHub, the step attaches the repository, branch, PR and
+run ID for you. For one hosted elsewhere, add the repository and branch to the
+**Metadata** input (`metadata`), one per line:
 
 ```
 gh_repo=acme/my-app
 gh_branch=$BITRISE_GIT_BRANCH
 ```
 
-Give each invocation its own **GitHub Check Name** (`check_name`) if a build
-runs the step more than once.
+Give each invocation its own **GitHub Check Name** (`check_name`) if a
+workflow runs the step more than once.
 {% endtab %}
 
 {% tab title="EAS Workflows" %}
@@ -170,14 +175,22 @@ running have finished, then prints:
 Under `--json`, `status` is `SUPERSEDED` — a third value alongside `PASSED` and
 `FAILED`, so update any script that switches on it.
 
-That value only comes from `dcd cloud` itself: `dcd status` and
-[`GET /uploads/status`](../api/uploads.md) report a superseded run as `FAILED`,
-because its cancelled tests count against it. So whether the older CI job goes
-green depends on how you run the tests:
+`dcd status` and [`GET /uploads/status`](../api/uploads.md) still report a
+superseded run's `status` as `FAILED`, because its cancelled tests count against
+it, but add a `supersededBy` field with the newer run's upload ID. The CI
+integrations read that field, so the older job passes and its status output is
+`SUPERSEDED`:
 
-* **CLI:** the job passes, because `dcd cloud` exits `0`.
-* **EAS Workflows:** the job still fails. The wrapper checks the run's status
-  after the CLI exits, and that reports `FAILED`.
+| Integration | Older job | Status output |
+|---|---|---|
+| CLI | passes (`dcd cloud` exits `0`) | `status: SUPERSEDED` under `--json` |
+| GitHub Action v2.6.0+ | passes | `DEVICE_CLOUD_UPLOAD_STATUS=SUPERSEDED` |
+| Bitrise step 1.4.0+ | passes | `DEVICE_CLOUD_UPLOAD_STATUS=SUPERSEDED` |
+| Bitbucket pipe 1.5.0+ | passes | `DEVICE_CLOUD_UPLOAD_STATUS=SUPERSEDED` |
+| EAS Workflows 1.4.0+ | passes | `upload_status=SUPERSEDED` |
+
+Earlier versions of the integrations fail the older job, because they only see
+the `FAILED` status.
 
 Each result cancelled this way carries a `cancellation_reason` of
 `superseded_by:<upload id>` in [`GET /results/{uploadId}`](../api/results.md).

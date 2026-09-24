@@ -182,7 +182,7 @@ Add an `id` to the step to reference its outputs in later steps:
 |--------|-------------|
 | `DEVICE_CLOUD_CONSOLE_URL` | URL to view the test results in the DeviceCloud console. |
 | `DEVICE_CLOUD_FLOW_RESULTS` | JSON array with results for each flow: `[{ "name": "...", "status": "PASSED" }]`. Empty (`[]`) with `async: true`. |
-| `DEVICE_CLOUD_UPLOAD_STATUS` | Overall status of the test run: `PASSED` or `FAILED` once it has finished (a run with a cancelled flow counts as `FAILED`). `PENDING`, `QUEUED` or `RUNNING` if it hadn't finished when the status was read, and always `PENDING` with `async: true`. `ERROR` if the Action couldn't read the status. |
+| `DEVICE_CLOUD_UPLOAD_STATUS` | Overall status of the test run: `PASSED` or `FAILED` once it has finished (a run with a cancelled flow counts as `FAILED`). `PENDING`, `QUEUED` or `RUNNING` if it hadn't finished when the status was read, and always `PENDING` with `async: true`. `ERROR` if the Action couldn't read the status. `SUPERSEDED` (from v2.6.0) when a newer run replaced this one through [`cancel-previous`](../advanced/cancel-previous.md); the job passes. |
 | `DEVICE_CLOUD_APP_BINARY_ID` | ID of the uploaded app binary. Reuse this in subsequent jobs to skip re-uploading. Not set with `async: true`. |
 
 ---

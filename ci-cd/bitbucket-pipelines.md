@@ -102,7 +102,7 @@ The pipe writes a `dcd-result.env` file into the repo's working directory. Subse
 
 Exported: `DEVICE_CLOUD_CONSOLE_URL`, `DEVICE_CLOUD_UPLOAD_STATUS`, `DEVICE_CLOUD_FLOW_RESULTS`, `DEVICE_CLOUD_APP_BINARY_ID`, `DEVICE_CLOUD_UPLOAD_ID`.
 
-- `DEVICE_CLOUD_UPLOAD_STATUS` is `PASSED` or `FAILED` once the run has finished, or `PENDING`, `QUEUED` or `RUNNING` if it hadn't (an `ASYNC` run reports whatever it had reached at submission). It's `ERROR` if the status couldn't be read.
+- `DEVICE_CLOUD_UPLOAD_STATUS` is `PASSED` or `FAILED` once the run has finished, or `PENDING`, `QUEUED` or `RUNNING` if it hadn't (an `ASYNC` run reports whatever it had reached at submission). It's `ERROR` if the status couldn't be read. `SUPERSEDED` when a newer run replaced this one through [`CANCEL_PREVIOUS`](../advanced/cancel-previous.md); the pipe passes.
 - `DEVICE_CLOUD_FLOW_RESULTS` is a JSON array with one entry per flow: `[{"name": "...", "status": "PASSED"}]`, plus `failReason` for a failed flow.
 
 {% hint style="info" %}

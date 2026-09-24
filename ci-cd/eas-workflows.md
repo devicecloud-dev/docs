@@ -247,7 +247,7 @@ The wrapper emits these as EAS step outputs via `set-output` after the run compl
 | Output | Description |
 |--------|-------------|
 | `console_url` | URL to view the test results in the DeviceCloud console. |
-| `upload_status` | Overall status: `PASSED` or `FAILED` once the run has finished (a run with a cancelled flow counts as `FAILED`). `PENDING`, `QUEUED` or `RUNNING` with `--async`, or if the run hadn't finished when the status was read. `ERROR` if the wrapper couldn't read the status. |
+| `upload_status` | Overall status: `PASSED` or `FAILED` once the run has finished (a run with a cancelled flow counts as `FAILED`). `PENDING`, `QUEUED` or `RUNNING` with `--async`, or if the run hadn't finished when the status was read. `ERROR` if the wrapper couldn't read the status. `SUPERSEDED` (from 1.4.0) when a newer run replaced this one through [`--cancel-previous`](../advanced/cancel-previous.md); the job passes. |
 | `flow_results` | JSON array: `[{ "name": "...", "status": "PASSED" }]`. |
 | `app_binary_id` | ID of the uploaded binary. Reuse via `--app-binary-id` to skip re-upload. |
 
