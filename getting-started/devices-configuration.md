@@ -10,6 +10,10 @@ To stay on API level 34, pin the device and the API level together, e.g. `--andr
 
 If you use [Google Play](../configuration/google-play-apis.md), pass the device and API level together, e.g. `--android-device pixel-8 --android-api-level 34`. Google Play is available on Pixel 8 (API 34), Pixel 10 (API 36 and 37) and the outgoing Pixel 7 (API 34).
 
+To stay on API level 34, pin the device and the API level together, e.g. `--android-device pixel-8 --android-api-level 34` (Pixel 8 has the same screen size as Pixel 7). Pinning only `--android-api-level 34` stops working on 26 October, because Pixel 10 only runs API levels 36 and 37, and Pixel 7 itself is targeted for removal on that date.
+
+If you use [Google Play](../configuration/google-play-apis.md), pass the device and API level together, e.g. `--android-device pixel-8 --android-api-level 34`. Google Play is available on Pixel 8 (API 34), Pixel 10 (API 36 and 37) and the outgoing Pixel 7 (API 34).
+
 **iOS:** iPhone 14 (iOS 17.5) - **from 2 November 2026 the default becomes iPhone 16 running iOS 26**. Pin `--ios-device iphone-14 --ios-version 18` if you need to stay on that device; iOS 17 is being removed on the same date, so there is no way to stay on it.
 
 ### Android API Levels
@@ -93,12 +97,6 @@ The default version of iOS is changing to 26 on the 2nd November 2026.
 | `18` | 18.6            |
 | `17` | 17.5 (deprecated) |
 
-{% hint style="danger" %}
-**Apps built with the iOS 27 SDK must adopt the UIScene lifecycle.** Apple requires it from iOS 27 for apps built with the latest SDK: on iOS 27, UIKit terminates such an app at launch, before your first screen renders, with an `EXC_BREAKPOINT` crash and the message `UIScene life cycle is required for apps built with this SDK`. iOS 26 and earlier only warn, so a build that works on iOS 26 can still fail immediately on iOS 27. The requirement follows the SDK you build with (Xcode 27), not just the iOS version you test on.
-
-This is an Apple platform change, not a DeviceCloud one, and it affects the app you upload rather than your flows. If your iOS 27 runs fail at the first `assertVisible` with the app apparently never appearing, this is the likely cause, and our support team can confirm it from the run's crash report. Adopting `UIScene` in your app (or upgrading to a framework version that has) is the fix; see Apple's [TN3187: Migrating to the UIKit scene-based life cycle](https://developer.apple.com/documentation/technotes/tn3187-migrating-to-the-uikit-scene-based-life-cycle).
-{% endhint %}
-
 {% hint style="warning" %}
 iOS 17 is deprecated and **will be removed on 2 November 2026**. Move `--ios-version` to 18, 26 or 27. See the [iOS Support Policy](devices-configuration.md#ios-support-policy) for more information.
 {% endhint %}
@@ -140,10 +138,6 @@ The flags above set the device for the whole upload. When only one flow needs a 
 To run every flow against several devices from a single `dcd cloud` invocation use a [device matrix](../configuration/device-matrix.md).
 
 ## Device & OS Support Policy
-
-{% hint style="info" %}
-This policy is undergoing a staged rollout. The Android half is in effect now; the iOS half comes into effect on **2 November 2026**.
-{% endhint %}
 
 We aim to provide a wide range of devices and OS versions so that you can test your apps as thoroughly as you need. However, due to storage constraints we can only provide access to certain devices and OS levels. Our policy on this is written below so you know what to expect.
 
