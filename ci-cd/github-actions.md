@@ -27,8 +27,8 @@ on:
     branches: [main]
 ```
 
-{% hint style="info" %}
-If you use `pull_request_target` to run tests from forked PRs, explicitly check out the PR HEAD to ensure you're testing the changed code.
+{% hint style="warning" %}
+If you use `pull_request_target` to run tests from forked PRs, explicitly check out the PR HEAD to ensure you're testing the changed code. Be aware that `pull_request_target` runs with your repository's secrets, including your DeviceCloud API key, so anything the job runs from a fork's checkout (build scripts, and the flows themselves) runs with access to them. Only run it on PRs you've reviewed, for example by requiring approval through a GitHub environment.
 {% endhint %}
 
 ```yaml
@@ -58,7 +58,7 @@ jobs:
     app-file: app/build/outputs/apk/debug/app-debug.apk
 ```
 
-`app-file` accepts a path or a glob pattern. When using a glob, the first matched file is used.
+From v2.6.0, `app-file` also accepts a glob pattern such as `build/**/*.apk`. When a pattern matches several files, the first in sorted order is used.
 
 ### iOS
 
@@ -69,7 +69,7 @@ jobs:
     app-file: <app_name>.zip
 ```
 
-`app-file` must point to an Apple silicon compatible Simulator `.app` build, or a zipped `.zip` bundle. Glob patterns are supported; the first match is used.
+`app-file` must point to an Apple silicon compatible Simulator `.app` build, or a zipped `.zip` bundle. From v2.6.0 it can also be a glob pattern, as for Android.
 
 ### iOS with Expo
 
@@ -83,13 +83,13 @@ If you build with EAS, download the build artifact in an earlier step and pass t
 
 | Input | Required | Description |
 |-------|----------|-------------|
-| `api-key` | Yes | Your DeviceCloud API key. Can also be set via the `DEVICE_CLOUD_API_KEY` environment variable. |
+| `api-key` | Yes | Your DeviceCloud API key. Pass it from a secret, e.g. `api-key: ${{ secrets.DCD_API_KEY }}`. |
 
 ### App Configuration
 
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
-| `app-file` | No* | — | Path or glob to the app binary (APK or .app/.zip). *Either `app-file` or `app-binary-id` is required. |
+| `app-file` | No* | — | Path to the app binary (`.apk`, `.app`/`.zip`, or an Expo iOS `.tar.gz`), or from v2.6.0 a glob pattern (first match in sorted order). *Either `app-file` or `app-binary-id` is required. |
 | `app-binary-id` | No* | — | ID of a previously uploaded app binary. Skips the upload step. |
 | `ignore-sha-check` | No | `false` | Skip the SHA hash check that prevents duplicate uploads. Not recommended. |
 
@@ -108,14 +108,14 @@ If you build with EAS, download the build artifact in an earlier step and pass t
 
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
-| `android-device` | No | — | Android device model. Options: `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`, `generic-tablet`. |
+| `android-device` | No | `pixel-7` | Android device model. Options: `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`, `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl`, `pixel-10-pro-fold`, `pixel-11`, `generic-tablet`. Default becomes `pixel-10` from 26 October 2026. |
 | `android-api-level` | No | `34` | Android API level. Options: `29`, `30`, `31`, `32`, `33`, `34`, `35`, `36`, `37`. Default becomes `36` from 19 October 2026. |
-| `ios-device` | No | — | iOS device model. Options: `iphone-14`, `iphone-15`,  `iphone-16`, `iphone-16-plus`, `iphone-16-pro`, `iphone-16-pro-max`, `ipad-pro-6th-gen`. |
-| `ios-version` | No | `17` | Major iOS version. Options: `17`, `18`, `26`. |
+| `ios-device` | No | — | iOS device model. Options: `iphone-14`, `iphone-15`, `iphone-16`, `iphone-16-plus`, `iphone-16-pro`, `iphone-16-pro-max`, `iphone-17`, `iphone-air`, `iphone-18-pro`, `iphone-18-pro-max`, `ipad-pro-6th-gen`, `ipad-pro-m5-11`, `ipad-pro-m5-13`. |
+| `ios-version` | No | `17` | Major iOS version. Options: `17`, `18`, `26`, `27`. Default becomes `26` from 2 November 2026. |
 | `device-locale` | No | — | Device locale in `ISO-639-1_ISO-3166-1` format (e.g. `de_DE`). See [Device Locale](../configuration/device-locale.md). |
 | `orientation` | No | `0` | Android only. Device orientation in degrees. Options: `0`, `90`. |
 | `google-play` | No | `false` | Android only. Run flows against Google Play devices. |
-| `runner-type` | No | `default` | Runner type. Options: `default`, `m1`, `m4`. Non-default runners incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
+| `runner-type` | No | `default` | Runner type. Options: `default`, `cpu1`, `gpu1`, `m1`, `m4`. `gpu1`, `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
 
 See the [Devices & OS Versions](../getting-started/devices-configuration.md) page for the full availability matrix.
 
@@ -125,16 +125,17 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 |-------|----------|---------|-------------|
 | `maestro-version` | No | — | Maestro CLI version to run flows with. See [Maestro Versions](../configuration/maestro-versions.md). |
 | `env` | No | — | Multiline list of environment variables (`KEY=value`) to inject into flows. |
-| `name` | No | Commit message | Custom name for this test run, visible in the console. |
+| `name` | No | PR title or commit message | Custom name for this test run, visible in the console. Defaults to the pull request's title on PR events, the commit message on push events, and the commit SHA otherwise. |
 | `retry` | No | `0` | Number of retries on failure (max `2`). Retries are free — same as pressing retry in the UI. |
-| `report` | No | — | Report format. Options: `junit`, `html`. See [Report Formats](../artifacts/report-formats.md). |
+| `report` | No | — | Report format. Options: `junit`, `html`, and from v2.6.0 `html-detailed`. See [Report Formats](../artifacts/report-formats.md). |
 
 ### Android-Specific Options
 
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
 | `maestro-chrome-onboarding` | No | `false` | Force Maestro-based Chrome onboarding. Fixes browser-related crashes but slows tests. See [Chrome Onboarding](../advanced/chrome-onboarding.md). |
-| `android-no-snapshot` | No | `false` | Force cold boot instead of snapshot boot. Automatically enabled for API level 35+. |
+| `android-no-snapshot` | No | `false` | Force cold boot instead of snapshot boot. Automatically enabled for API level 34+. |
+| `render-engine` | No | — | Software renderer the emulator boots with on the default Android runner (`cpu1`). Options: `lavapipe`, `swiftshader`. Leave unset to let DeviceCloud choose: `lavapipe`, or `swiftshader` for apps built with Flutter. Try `swiftshader` if your app fails to render or the device drops offline mid-run. |
 
 ### Performance Options
 
@@ -156,9 +157,10 @@ The action automatically attaches Git and pull request metadata to each run, rea
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
 | `async` | No | `false` | Exit immediately without waiting for results. Returns exit code `0` regardless of test outcome. See [Async Execution](../advanced/async-execution.md). |
-| `quiet` | No | `false` | Reduce console output. Useful in verbose CI environments. |
+| `cancel-previous` | No | `false` | Cancel the still-queued tests of the previous run of this job on the same branch or PR (from v2.6.0). See [Cancelling superseded runs](../advanced/cancel-previous.md). |
+| `quiet` | No | `true` | Quieter output, without progress updates while the run is polled. Set to `false` to see them. Before v2.6.0 this input had no effect and the output was always quiet. |
 | `download-artifacts` | No | — | Download logs, screenshots, and videos after the run. Options: `ALL`, `FAILED`. |
-| `json-file` | No | `false` | Write test results to a JSON file (`<run_name>_dcd.json` or `<upload_id>_dcd.json`). |
+| `json-file` | No | `false` | Write test results to `<upload_id>_dcd.json` in the working directory. See [Save JSON results file](#save-json-results-file). |
 | `debug` | No | `false` | Enable verbose debug output. |
 | `use-beta` | No | `false` | Use the beta version of the DCD CLI. |
 
@@ -179,9 +181,9 @@ Add an `id` to the step to reference its outputs in later steps:
 | Output | Description |
 |--------|-------------|
 | `DEVICE_CLOUD_CONSOLE_URL` | URL to view the test results in the DeviceCloud console. |
-| `DEVICE_CLOUD_FLOW_RESULTS` | JSON array with results for each flow: `[{ "name": "...", "status": "PASSED" }]`. |
-| `DEVICE_CLOUD_UPLOAD_STATUS` | Overall status of the test run: `PENDING`, `RUNNING`, `PASSED`, `FAILED`, or `CANCELLED`. |
-| `DEVICE_CLOUD_APP_BINARY_ID` | ID of the uploaded app binary. Reuse this in subsequent jobs to skip re-uploading. |
+| `DEVICE_CLOUD_FLOW_RESULTS` | JSON array with results for each flow: `[{ "name": "...", "status": "PASSED" }]`. Empty (`[]`) with `async: true`. |
+| `DEVICE_CLOUD_UPLOAD_STATUS` | Overall status of the test run: `PASSED` or `FAILED` once it has finished (a run with a cancelled flow counts as `FAILED`). `PENDING`, `QUEUED` or `RUNNING` if it hadn't finished when the status was read, and always `PENDING` with `async: true`. `ERROR` if the Action couldn't read the status. `SUPERSEDED` (from v2.6.0) when a newer run replaced this one through [`cancel-previous`](../advanced/cancel-previous.md); the job passes. |
+| `DEVICE_CLOUD_APP_BINARY_ID` | ID of the uploaded app binary. Reuse this in subsequent jobs to skip re-uploading. Not set with `async: true`. |
 
 ---
 
@@ -225,6 +227,8 @@ Add an `id` to the step to reference its outputs in later steps:
 
 ### Reuse the uploaded binary in a later job
 
+This needs the first job to wait for its results: with `async: true`, `DEVICE_CLOUD_APP_BINARY_ID` isn't set.
+
 ```yaml
 jobs:
   upload-and-test:
@@ -255,7 +259,7 @@ jobs:
 
 ### Opt out of automatic PR context
 
-Git and PR metadata (branch, commit SHA, PR number/URL, repository, run ID) is attached automatically — see [GitHub / PR Context](#github--pr-context). To turn it off, set `include-github-context: false`:
+Git and PR metadata (branch, commit SHA, PR number/URL, repository, run ID) is attached automatically — see [GitHub / PR Context](#github-pr-context). To turn it off, set `include-github-context: false`:
 
 ```yaml
 - uses: devicecloud-dev/device-cloud-for-maestro@v2
@@ -313,29 +317,47 @@ With the [DeviceCloud GitHub App](github-checks.md) installed, an async run repo
     api-key: ${{ secrets.DCD_API_KEY }}
     app-file: app.apk
     json-file: true
-    name: my-run
 ```
 
-This creates `my-run_dcd.json`:
+This writes `<upload_id>_dcd.json` to the job's working directory, for example `3f6c1a2e-8b4d-4c1e-9a7f-2d5e6b8c9a01_dcd.json`. The file name can't be changed from the Action.
 
 ```json
 {
-  "uploadId": "abcd1234-5678-efgh-9012-ijklmnopqrst",
-  "consoleUrl": "https://console.devicecloud.dev/results?upload=abcd1234-...",
-  "appBinaryId": "app-binary-5678",
-  "status": "PASSED",
-  "flowResults": [
-    { "name": "login_test", "status": "PASSED" },
-    { "name": "checkout_flow", "status": "PASSED" }
-  ]
+  "consoleUrl": "https://console.devicecloud.dev/results?upload=3f6c1a2e-8b4d-4c1e-9a7f-2d5e6b8c9a01",
+  "status": "FAILED",
+  "tests": [
+    {
+      "device": { "name": "Pixel 7", "osVersion": "34", "googlePlay": false },
+      "durationSeconds": 48,
+      "fileName": "./login.yaml",
+      "flowName": "Login",
+      "name": "./login.yaml",
+      "status": "PASSED",
+      "tags": ["smoke"]
+    },
+    {
+      "device": { "name": "Pixel 7", "osVersion": "34", "googlePlay": false },
+      "durationSeconds": 95,
+      "failReason": "Element not found: Text matching regex: Pay now",
+      "fileName": "./checkout.yaml",
+      "flowName": "Checkout",
+      "name": "./checkout.yaml",
+      "status": "FAILED",
+      "tags": []
+    }
+  ],
+  "uploadId": "3f6c1a2e-8b4d-4c1e-9a7f-2d5e6b8c9a01",
+  "notices": []
 }
 ```
+
+`status` is `PASSED` only when every flow passed. `flowName` is the flow's `name:` (or its file name without the extension), and `notices` lists any deprecation or other notices shown for the run. With `async: true` the file is written straight away with `status` set to `PENDING`.
 
 ---
 
 ## Migrating from Maestro Cloud
 
-Switch in one line — replace the `uses` value:
+Replace the `uses` value, then check your inputs against the table below:
 
 ```yaml
 # Before
@@ -351,4 +373,16 @@ Switch in one line — replace the `uses` value:
     app-file: app.apk
 ```
 
-All other inputs are compatible. The only change needed (beyond the `uses` line) is updating your secret name from `MCLOUD_API_KEY` to `DCD_API_KEY` (or whatever name you choose when storing your DeviceCloud API key).
+Update your secret name from `MCLOUD_API_KEY` to `DCD_API_KEY` (or whatever name you choose when storing your DeviceCloud API key).
+
+These Maestro Cloud inputs work unchanged: `api-key`, `app-file`, `app-binary-id`, `workspace`, `name`, `env`, `async`, `android-api-level`, `ios-version`, `device-locale`, `include-tags` and `exclude-tags`. The ones below aren't supported. GitHub only warns about inputs an action doesn't recognise, so remove or replace them. In particular, `device-model` and `device-os` are ignored, so until you replace them your flows run on the [default device](../getting-started/devices-configuration.md#default-devices).
+
+| Maestro Cloud input | DeviceCloud equivalent |
+|---------------------|------------------------|
+| `project-id` | Not needed: runs belong to the team that owns the API key. |
+| `device-model` | `ios-device` or `android-device` |
+| `device-os` | `ios-version` or `android-api-level` |
+| `maestro-cli-version` | `maestro-version` |
+| `timeout` | None. The Action waits until the run finishes; use `async: true` to return straight away. |
+| `branch` | None. The branch is attached automatically with the rest of the [GitHub / PR context](#github-pr-context). |
+| `mapping-file` | Not supported. |

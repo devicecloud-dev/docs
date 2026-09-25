@@ -2,7 +2,7 @@
 
 The DCD CLI is the primary way to interact with DeviceCloud from your terminal or CI/CD pipeline. It is a drop-in replacement for `maestro cloud` — in most cases you can swap `maestro cloud` for `dcd cloud`.
 
-The CLI is published as `@devicecloud.dev/dcd` on npm and as a standalone binary. The same package also ships an [MCP server](../mcp/overview.md) so AI agents can drive DeviceCloud directly.
+The CLI is published as `@devicecloud.dev/dcd` on npm and as a standalone binary. The npm package also ships an [MCP server](../mcp/overview.md) (`dcd-mcp`) so AI agents can drive DeviceCloud directly. The standalone binary doesn't include the MCP server.
 
 {% hint style="info" %}
 **New in v5:** browser-based [`dcd login`](dcd-login.md) (no more passing a key on every command), a standalone binary installer with `dcd upgrade`, interactive [`dcd live`](dcd-live.md) device sessions, and an [MCP server](../mcp/overview.md). Existing API keys and `dcd cloud` usage continue to work unchanged.
@@ -90,6 +90,41 @@ When both are present, precedence is: `--api-key` flag → `DEVICE_CLOUD_API_KEY
 | [`dcd switch-org`](dcd-login.md#dcd-switch-org) | Switch the active organisation |
 | [`dcd live`](dcd-live.md) | Start and interact with a live device session (beta) |
 | `dcd upgrade` | Upgrade the standalone binary in place |
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `DEVICE_CLOUD_API_KEY` | API key to use when `--api-key` isn't passed. Takes precedence over a `dcd login` session |
+| `DCD_CONFIG_DIR` | Directory for the `dcd login` session file (default `$XDG_CONFIG_HOME/dcd`, or `~/.dcd`) |
+| `DCD_ENCRYPT` | Set to `1` to make `dcd cloud` (and the MCP server) encrypt the app binary, flows and `--env` values on your machine before upload, the same as passing `--encrypt` |
+| `DCD_TELEMETRY_DISABLED` | Set to `1` to turn off [telemetry](#telemetry) |
+| `DCD_API_URL` | MCP server only. The API base URL to use (CLI commands take `--api-url` instead) |
+| `DCD_MCP_READONLY` | MCP server only. Set to `1` for [read-only mode](../mcp/overview.md#read-only-mode) |
+
+The standalone binary installers also read these:
+
+| Variable | Description |
+|----------|-------------|
+| `DCD_VERSION` | Install a specific version instead of the latest stable release, e.g. `5.5.0` |
+| `DCD_BETA` | Set to `1` to install the latest beta |
+| `DCD_INSTALL_DIR` | Where to install the binary (default `~/.dcd/bin`, or `$env:USERPROFILE\.dcd\bin` on Windows) |
+
+```bash
+curl -fsSL https://get.devicecloud.dev/install.sh | DCD_VERSION=5.5.0 sh
+```
+
+## Telemetry
+
+The CLI sends usage and error events to DeviceCloud to help us find and fix problems. Only commands that authenticate send anything — `--help`, `--version` and `dcd whoami`, for example, don't. Events include:
+
+- the command and its arguments, with the values of `--api-key`, `--app-url` and `--env` / `-e` redacted
+- how long the command took and its exit code
+- the error message and stack trace when a command fails
+- the names, durations and errors of [MCP server](../mcp/overview.md) tool calls
+- the CLI version, install method (binary or npm), Node version, operating system and architecture, a random ID for the invocation and, with `dcd login`, your email address and team ID
+
+To opt out, set `DCD_TELEMETRY_DISABLED=1`.
 
 ## Getting Help
 

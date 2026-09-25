@@ -11,6 +11,8 @@ Control Android device orientation during test execution.
 
 > **Note**: Only `0` and `90` are supported. The legacy `180` and `270` values are no longer accepted.
 
+> **Note**: Generic Tablet starts in landscape, so on it `0` (and the default) is landscape and `90` is portrait.
+
 ## Usage
 
 ```bash

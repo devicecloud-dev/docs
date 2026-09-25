@@ -24,6 +24,15 @@ platform:
     disableAnimations: true
 ```
 
+{% hint style="warning" %}
+**Known limitations of the whole-upload settings:**
+
+* The CLI picks `platform.ios` or `platform.android` from your device flags, not from your app. An iOS run only uses `platform.ios` when you pass `--ios-device` or `--ios-version` (or an iOS device matrix); otherwise the `platform.android` value applies.
+* `--disable-animations` can only turn animations off. It can't override `disableAnimations: true` in `config.yaml`.
+
+The per-test overrides below aren't affected, so use them if you need exact control.
+{% endhint %}
+
 ### Per test (both platforms)
 
 Override the upload-wide setting for a single flow via the DeviceCloud env variable:
@@ -63,7 +72,7 @@ When more than one is set, the most specific wins:
 
 1. `DEVICECLOUD_OVERRIDE_<PLATFORM>_DISABLE_ANIMATIONS` (per test, this platform)
 2. `DEVICECLOUD_OVERRIDE_DISABLE_ANIMATIONS` (per test, both platforms)
-3. The upload-wide `--disable-animations` flag or `config.yaml`
+3. The upload-wide `--disable-animations` flag or `config.yaml` (either one turns animations off)
 4. Default: animations are **on**
 
 A `false` override is honoured the same as `true` — a test can opt out even when the

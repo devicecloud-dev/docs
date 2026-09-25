@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   sync:
-    runs-on: [self-hosted, k8s, standard]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
