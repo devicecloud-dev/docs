@@ -54,4 +54,4 @@ See [Workspace Configuration](../configuration/workspace-config.md) for more inf
 
 ### Referencing flows
 
-As of version 2.0.0, the CLI will search for all nested dependencies referenced by your YAML flows using Maestro keywords (`addMedia`, `runFlow`, `runScript`).
+As of version 2.0.0, the CLI will search for all nested dependencies referenced by your YAML flows using Maestro keywords (`addMedia`, `runFlow`, `runScript`). From version 5.6.0 it also picks up `assertScreenshot` baselines named by a literal path. Files it can't find this way, such as a path containing a variable, can be added with [`includedPaths`](../configuration/workspace-config.md#includedpaths).

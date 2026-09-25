@@ -7,7 +7,7 @@ DeviceCloud captures various artifacts during test execution that can help debug
 Each test run generates:
 
 * Logs
-* Screenshots
+* Screenshots, including the diff image from a failed [`assertScreenshot`](../advanced/visual-testing.md#reading-a-failure) comparison
 * Videos
 * Test reports
 
