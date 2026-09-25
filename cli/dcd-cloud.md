@@ -103,8 +103,9 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 | Flag | Description |
 |------|-------------|
 | `--async` | Submit tests and return immediately (exit `0`) without waiting for results (see [Async Execution](../advanced/async-execution.md)) |
+| `--cancel-previous` | Cancel the still-queued tests of the previous run from the same CI context. Needs `--repo-name` plus `--branch` or `--pr-number` (see [Cancelling superseded runs](../advanced/cancel-previous.md)) |
 | `--quiet`, `-q` | Suppress per-test progress; print only the final summary |
-| `--json` | Output results as JSON. Exits `0` on success, `2` on test failure, `1` on CLI/infrastructure errors. The output includes a `notices` array with any deprecation or other notices for the run |
+| `--json` | Output results as JSON. Exits `0` on success, `2` on test failure, `1` on CLI/infrastructure errors. The output includes a `notices` array with any deprecation or other notices for the run. A run superseded through `--cancel-previous` has `status` `SUPERSEDED` and exits `0` |
 | `--json-file` | Write JSON results to a file (`<upload_id>_dcd.json` by default). Exits `0` even if the test run fails; infrastructure errors still exit `1` |
 | `--json-file-name <name>` | Custom name (or relative path) for the JSON file. Requires `--json-file` |
 | `--dry-run` | Simulate the run without uploading or triggering a test — useful for debugging workflow issues |

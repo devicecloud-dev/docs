@@ -27,6 +27,8 @@ By default DeviceCloud posts after **every** completed run. To cut down on noise
 
 If you retry tests after a run has already been posted, DeviceCloud doesn't post again by default. Turn on **Post again after retries** to get an updated message once the retried tests finish; its duration covers only the retry.
 
+A run superseded by a newer run through [`--cancel-previous`](../advanced/cancel-previous.md) never posts, whatever this setting.
+
 ### What's in the message
 
 Each notification includes:

@@ -74,6 +74,8 @@
 ## Advanced
 
 * [Async Execution](advanced/async-execution.md)
+* [Cancelling Superseded Runs](advanced/cancel-previous.md)
+* [Visual Testing](advanced/visual-testing.md)
 * [Retry Strategies](advanced/retry-strategies.md)
 * [Chrome Onboarding](advanced/chrome-onboarding.md)
 * [Exit Codes](advanced/exit-codes.md)

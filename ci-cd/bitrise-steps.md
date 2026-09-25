@@ -43,7 +43,7 @@ The **GitHub Check Name** input (`check_name`) names the check a run posts — `
 | Output | Description |
 |--------|-------------|
 | `DEVICE_CLOUD_CONSOLE_URL` | URL to view the run in the DeviceCloud console. |
-| `DEVICE_CLOUD_UPLOAD_STATUS` | `PASSED` or `FAILED` once the run has finished, or `PENDING`, `QUEUED` or `RUNNING` if it hadn't (an async run reports whatever it had reached at submission). `ERROR` if the status couldn't be read. |
+| `DEVICE_CLOUD_UPLOAD_STATUS` | `PASSED` or `FAILED` once the run has finished, or `PENDING`, `QUEUED` or `RUNNING` if it hadn't (an async run reports whatever it had reached at submission). `ERROR` if the status couldn't be read. `SUPERSEDED` when a newer run replaced this one through [`cancel_previous`](../advanced/cancel-previous.md); the step passes. |
 | `DEVICE_CLOUD_FLOW_RESULTS` | JSON array with one entry per flow: `name`, `status` and, for a failed flow, `failReason`. |
 | `DEVICE_CLOUD_APP_BINARY_ID` | ID of the uploaded app binary, to reuse with `app_binary_id` in a later step. |
 
@@ -52,5 +52,7 @@ Before 1.4.0 the status, flow results and binary ID outputs are empty; only the 
 ### Pass or fail
 
 The step fails when the run fails. From 1.4.0 that also holds with **JSON File** (`json_file`) turned on, where the CLI itself exits `0`: the step decides from the run's status instead. On earlier versions, leave `json_file` off if the step's result gates your workflow.
+
+From 1.4.0, to cancel the previous run's still-queued tests when a new build starts, set the **Cancel Previous Run** input (`cancel_previous`) to `true` — see [Cancelling superseded runs](../advanced/cancel-previous.md). The step attaches the context this needs for a GitHub repository (see [GitHub context](#github-context)) and the pipeline's ID as the run ID, so invocations in one pipeline don't cancel each other. For a repository hosted elsewhere, add `gh_repo=<owner/repo>` and `gh_branch=$BITRISE_GIT_BRANCH` to the **Metadata** input, one per line; without them nothing is cancelled.
 
 <figure><img src="../.gitbook/assets/Screenshot 2025-01-06 at 14.45.51.png" alt=""><figcaption></figcaption></figure>

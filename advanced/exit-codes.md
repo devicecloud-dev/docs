@@ -32,6 +32,10 @@ Use `--json-file` when you want to inspect the result yourself rather than have 
 
 `dcd status --json` exits `0` whenever it prints a result. That includes a `FAILED` run and a failed lookup, which is also reported as `FAILED` but with an `error` field (see [dcd status](../cli/dcd-status.md#json-output)).
 
+## Superseded Runs
+
+A run superseded by a newer run through [`--cancel-previous`](cancel-previous.md) exits `0`, even if one of its tests had already failed. With `--json` or `--json-file`, its `status` is `SUPERSEDED`.
+
 ## Live Sessions
 
 - **`dcd live run`** exits `2` if the flow fails, or if it's still running when `--timeout` is reached.
