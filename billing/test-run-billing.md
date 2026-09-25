@@ -4,11 +4,11 @@
 All amounts exclude Sales Tax - this will be added at checkout for your country by our Merchant of Record, Paddle.
 {% endhint %}
 
-DeviceCloud debits customers account per test run.
+DeviceCloud charges your Team's account per test run. This happens as soon as you run `dcd cloud`.
 
 In billing terms, a test run is a single top-level flow executing on a single device. Multiple flows in an upload will incur multiple charges. 
 
-For example, an upload with 10 flows running on iOS (at $0.11 per test run) will incur $1.10 of debits to the customer account.
+For example, an upload with 10 flows running on iOS (at $0.11 per test run) will incur $1.10 of charges to your Team's account.
 
 Details of charges made to your account can be found on the [billing page](https://console.devicecloud.dev/billing).
 
@@ -28,6 +28,20 @@ Enterprise customers with volume discounts or grandfathered users with older pri
 New users are given $20 in free credits to test the service.
 
 Historically, DeviceCloud users purchased credits in advance and these were drawn down via usage. Credits can no longer be purchased or topped up — [subscriptions](subscriptions.md) have replaced them — but any prepaid balance you still hold doesn't expire. If you also have a subscription, your prepaid balance (including any remaining free credits) is spent first, before your plan's included usage.
+
+### Cancelled tests
+
+A test you cancel before it starts running is refunded at 75% of its cost. The 25% is used to cover our network and egress costs from preparing your test to run.
+
+Running tests can't be cancelled from the console. A running test cancelled through the API is charged in full.
+
+Each refund appears as a negative line in your usage history, alongside the original charge. Where it goes depends on how the test was paid for:
+
+* **Credit balance** - the refund is added back to your balance immediately.
+* **Your plan's included credits** - the refund restores that amount of your included allowance for the current billing period.
+* **Overage** - the refund reduces overage that hasn't been billed yet. Overage that has already been billed isn't credited back; the refund is deducted from any further overage in the same billing period instead.
+
+A run paid for from more than one of these is refunded in the same proportions. Refunds for cancelled tests are never paid back to your card.
 
 ### Retries
 
