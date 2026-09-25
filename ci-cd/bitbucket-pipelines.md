@@ -72,6 +72,7 @@ Most pipe variables map to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flag of th
 | `JUNIT_PATH` | Where to write the JUnit report (default `./report.xml`). |
 | `DOWNLOAD_ARTIFACTS` | `ALL` or `FAILED` — downloads logs/screenshots/videos. |
 | `ASYNC` | `"true"` to fire-and-forget. |
+| `CANCEL_PREVIOUS` | `"true"` to cancel the previous run's still-queued tests when this one starts (from pipe 1.5.0). See [Cancelling superseded runs](../advanced/cancel-previous.md). |
 | `RUNNER_TYPE` | `default`, `cpu1`, `gpu1`, `m1` or `m4`. `gpu1`, `m1` and `m4` are premium runners, see [Runner Type](../configuration/runner-type.md). |
 | `RENDER_ENGINE` | Android only: `lavapipe` or `swiftshader`, the software renderer the emulator boots with on the default Android runner. Leave unset to let DeviceCloud choose (`swiftshader` for apps built with Flutter, otherwise `lavapipe`). |
 
@@ -101,7 +102,7 @@ The pipe writes a `dcd-result.env` file into the repo's working directory. Subse
 
 Exported: `DEVICE_CLOUD_CONSOLE_URL`, `DEVICE_CLOUD_UPLOAD_STATUS`, `DEVICE_CLOUD_FLOW_RESULTS`, `DEVICE_CLOUD_APP_BINARY_ID`, `DEVICE_CLOUD_UPLOAD_ID`.
 
-- `DEVICE_CLOUD_UPLOAD_STATUS` is `PASSED` or `FAILED` once the run has finished, or `PENDING`, `QUEUED` or `RUNNING` if it hadn't (an `ASYNC` run reports whatever it had reached at submission). It's `ERROR` if the status couldn't be read.
+- `DEVICE_CLOUD_UPLOAD_STATUS` is `PASSED` or `FAILED` once the run has finished, or `PENDING`, `QUEUED` or `RUNNING` if it hadn't (an `ASYNC` run reports whatever it had reached at submission). It's `ERROR` if the status couldn't be read. `SUPERSEDED` when a newer run replaced this one through [`CANCEL_PREVIOUS`](../advanced/cancel-previous.md); the pipe passes.
 - `DEVICE_CLOUD_FLOW_RESULTS` is a JSON array with one entry per flow: `[{"name": "...", "status": "PASSED"}]`, plus `failReason` for a failed flow.
 
 {% hint style="info" %}

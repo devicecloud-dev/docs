@@ -47,6 +47,17 @@ curl https://api.devicecloud.dev/results/7e12345f-eb12-12ec-a30b-bb1234f1d12a \
 
 Every attempt is included: a retry appears as its own entry, with `retry_of` set to the `id` of the original attempt. Each entry also includes `config` (the run settings for that test) and `result_files` (references to its stored artifacts, plus the step log itself when it is 512 KB or smaller), which are left out of the example above. Responses for large uploads can therefore run to several megabytes; if you only need statuses, poll [`GET /uploads/status`](uploads.md#get-upload-status) instead.
 
+Each result also has a `cancellation_reason`, which is `null` unless the test
+was cancelled for a recorded reason:
+
+* `superseded_by:<upload id>` — a newer run from the same CI context replaced
+  this one. See [Cancelling superseded runs](../advanced/cancel-previous.md).
+* `Cancelled: payment for this run failed.` — the run's payment failed after
+  its tests were created.
+
+A test you cancel yourself has a `null` reason, and so does a retry of a cancelled test. Match on the `superseded_by:`
+prefix rather than comparing whole values, as more reasons may be added.
+
 ---
 
 ## Download JUnit report

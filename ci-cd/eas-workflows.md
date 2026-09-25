@@ -155,7 +155,7 @@ The build artifact itself is downloaded by `eas/download_build` and passed via `
 |----------|-------------|-----------|
 | `DCD_GH_SHA` | `${{ github.sha }}` | `gh_sha` metadata |
 | `DCD_GH_BRANCH` | `${{ github.ref_name }}` | `gh_branch` metadata |
-| `DCD_GH_RUN_ID` | `${{ workflow.id }}` | `gh_run_id` metadata — the EAS workflow run ID (EAS has no `github.run_id`) |
+| `DCD_GH_RUN_ID` | `${{ workflow.id }}` | `gh_run_id` metadata — the EAS workflow run ID, the same on every job of one workflow run (EAS has no `github.run_id`) |
 | `DCD_GH_PR_NUMBER` | `${{ github.event.pull_request.number }}` | `gh_pr_number` metadata |
 | `DCD_GH_PR_URL` | `${{ github.event.pull_request.html_url }}` | `gh_pr_url` metadata |
 | `DCD_GH_REPO` | `${{ github.repository }}` | `gh_repo` metadata |
@@ -205,8 +205,8 @@ Anything you pass on the command line after `npx @devicecloud.dev/eas-workflow@v
 |------|-------------|
 | `--android-device <model>` | `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`, `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl`, `pixel-10-pro-fold`, `pixel-11`, `generic-tablet`. Default `pixel-7` (`pixel-10` from 26 October 2026). |
 | `--android-api-level <n>` | `29` – `37`. Default `34` (`36` from 19 October 2026). |
-| `--ios-device <model>` | `iphone-14`, `iphone-15`, `iphone-16`, `iphone-16-plus`, `iphone-16-pro`, `iphone-16-pro-max`, `ipad-pro-6th-gen`. |
-| `--ios-version <n>` | `17`, `18`, `26`, `27`. Default `17`. |
+| `--ios-device <model>` | `iphone-14`, `iphone-15`, `iphone-16`, `iphone-16-plus`, `iphone-16-pro`, `iphone-16-pro-max`, `iphone-17`, `iphone-air`, `iphone-18-pro`, `iphone-18-pro-max`, `ipad-pro-6th-gen`, `ipad-pro-m5-11`, `ipad-pro-m5-13`. |
+| `--ios-version <n>` | `17`, `18`, `26`, `27`. Default `17` (`26` from 2 November 2026). |
 | `--device-locale <code>` | E.g. `de_DE`. See [Device Locale](../configuration/device-locale.md). |
 | `--orientation <deg>` | Android only. `0` or `90`. |
 | `--google-play` | Android only. Run on Google Play devices. |
@@ -229,6 +229,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | Flag | Description |
 |------|-------------|
 | `--async` | Exit immediately without waiting for results (exit code `0` regardless). See [Async Execution](../advanced/async-execution.md). |
+| `--cancel-previous` | Cancel the still-queued tests of the previous run of this job on the same branch or PR. Needs `DCD_GH_REPO` plus `DCD_GH_BRANCH` or `DCD_GH_PR_NUMBER`; set `DCD_CHECK_NAME` per job. See [Cancelling superseded runs](../advanced/cancel-previous.md). |
 | `--download-artifacts <mode>` | Download logs/screenshots/videos. Options: `ALL`, `FAILED`. |
 | `--disable-animations` | Disable device animations. See [Animations](../configuration/disable-animations.md). |
 | `--maestro-chrome-onboarding` | Android only. See [Chrome Onboarding](../advanced/chrome-onboarding.md). |
@@ -246,7 +247,7 @@ The wrapper emits these as EAS step outputs via `set-output` after the run compl
 | Output | Description |
 |--------|-------------|
 | `console_url` | URL to view the test results in the DeviceCloud console. |
-| `upload_status` | Overall status: `PASSED` or `FAILED` once the run has finished (a run with a cancelled flow counts as `FAILED`). `PENDING`, `QUEUED` or `RUNNING` with `--async`, or if the run hadn't finished when the status was read. `ERROR` if the wrapper couldn't read the status. |
+| `upload_status` | Overall status: `PASSED` or `FAILED` once the run has finished (a run with a cancelled flow counts as `FAILED`). `PENDING`, `QUEUED` or `RUNNING` with `--async`, or if the run hadn't finished when the status was read. `ERROR` if the wrapper couldn't read the status. `SUPERSEDED` (from 1.4.0) when a newer run replaced this one through [`--cancel-previous`](../advanced/cancel-previous.md); the job passes. |
 | `flow_results` | JSON array: `[{ "name": "...", "status": "PASSED" }]`. |
 | `app_binary_id` | ID of the uploaded binary. Reuse via `--app-binary-id` to skip re-upload. |
 

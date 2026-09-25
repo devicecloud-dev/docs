@@ -1,6 +1,6 @@
 # Webhook Notifications
 
-DeviceCloud can send a POST request to a URL of your choice when a set of tests completes.
+DeviceCloud can send a POST request to a URL of your choice when a set of tests completes. No request is sent for a run superseded by a newer run through [`--cancel-previous`](../advanced/cancel-previous.md).
 
 ### Enabling Webhooks
 

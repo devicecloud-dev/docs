@@ -99,3 +99,5 @@ The overall `status` is worked out from the tests:
 - `FAILED` as soon as any test has failed or been cancelled — even while other tests are still running, so check `tests` if you need to wait for every test to finish;
 - otherwise `RUNNING`, `PENDING` or `QUEUED` while tests are still in progress;
 - `PASSED` when every test has passed.
+
+If the run was superseded by a newer run through [`--cancel-previous`](../advanced/cancel-previous.md), the response also has a `supersededBy` field with the newer run's upload ID. Its `status` is still `FAILED`, because its cancelled tests count against it.

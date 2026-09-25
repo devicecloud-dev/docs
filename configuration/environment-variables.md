@@ -60,6 +60,17 @@ This is useful for feature flags, environment switching, or any value your app r
 
 Variables starting with `SIMCTL_CHILD_DYLD_` are blocked and never reach the app.
 
+## Built-in Variables
+
+DeviceCloud also sets these variables on every run, so a flow can adapt to the device it runs on:
+
+| Variable | Value |
+| --- | --- |
+| `DCD_DEVICE` | The device and OS version, lowercased and hyphenated — for example `pixel-8-api-34`, `pixel-8-api-34-play` on a Google Play device, `iphone-16-ios-18` or `ipad-pro-12-9-inch-6th-generation-ios-26`. |
+| `DCD_PLATFORM` | `android` or `ios`. |
+
+Passing your own value with `-e` overrides the built-in one. [Visual Testing](../advanced/visual-testing.md#per-device-baselines) uses `DCD_DEVICE` to pick a baseline per device.
+
 ## Maestro Settings
 
 Variables whose names start with `MAESTRO_` are also set in the environment of the Maestro process, as well as being available to your flows. Use them to pass settings that Maestro reads from its environment.
