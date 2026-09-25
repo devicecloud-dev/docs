@@ -14,6 +14,10 @@ To stay on API level 34, pin the device and the API level together, e.g. `--andr
 
 If you use [Google Play](../configuration/google-play-apis.md), pass the device and API level together, e.g. `--android-device pixel-8 --android-api-level 34`. Google Play is available on Pixel 8 (API 34), Pixel 10 (API 36 and 37) and the outgoing Pixel 7 (API 34).
 
+To stay on API level 34, pin the device and the API level together, e.g. `--android-device pixel-8 --android-api-level 34` (Pixel 8 has the same screen size as Pixel 7). Pinning only `--android-api-level 34` stops working on 26 October, because Pixel 10 only runs API levels 36 and 37, and Pixel 7 itself is targeted for removal on that date.
+
+If you use [Google Play](../configuration/google-play-apis.md), pass the device and API level together, e.g. `--android-device pixel-8 --android-api-level 34`. Google Play is available on Pixel 8 (API 34), Pixel 10 (API 36 and 37) and the outgoing Pixel 7 (API 34).
+
 **iOS:** iPhone 14 (iOS 17.5) - **from 2 November 2026 the default becomes iPhone 16 running iOS 26**. Pin `--ios-device iphone-14 --ios-version 18` if you need to stay on that device; iOS 17 is being removed on the same date, so there is no way to stay on it.
 
 ### Android API Levels
