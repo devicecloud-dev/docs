@@ -26,7 +26,9 @@ If your app or test is struggling with the default runner types, you can try the
 | `m1`        | Android  | MacOS   | M1           | 8 GB  | 8         | Very limited capacity. Used for debugging host OS issues on Android. |
 | `gpu1`      | Android  | Ubuntu  | x86          | 15 GB | 8         | Deprecated. Limited capacity. Additional GPU acceleration also provided. |
 
+{% hint style="warning" %}
 `gpu1` is deprecated and **will be removed on 9 November 2026**. From that date, runs that pass `--runner-type gpu1` will run on `cpu1` instead, at the standard Android rate, rather than failing. To move now, stop passing `--runner-type gpu1` (Android runs use `cpu1` by default) or pass `--runner-type cpu1`. See the [Runner Type Support Policy](#runner-type-support-policy) for more information.
+{% endhint %}|
 
 ### Limitations
 
