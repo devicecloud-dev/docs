@@ -152,7 +152,6 @@ We will always aim to support the latest versions of iOS and additionally contin
 * The latest generation of iPad Pro, in both screen sizes.
 * Once a device is to be no longer supported, we'll mark it as deprecated.
 * Deprecated devices are then removed after 30 days provided its total usage over seven days is less than 1%.
-* We may set a fixed removal date instead where a device is being retired as part of a scheduled policy change. The 2 November 2026 removals are one such case, and that date is not conditional on usage.
 
 #### iOS Versions
 
@@ -162,7 +161,6 @@ We will always aim to support the latest versions of iOS and additionally contin
 * Supported versions will always be the latest point release (i.e. 26.x rather than 26.0). Point releases change without notice; you target a major version such as `--ios-version 26` and we run it on the newest 26.x we hold.
 * Once a version is two major versions old, we'll mark it as deprecated.
 * Deprecated versions are then removed after 30 days provided it's total usage over seven days is less than 1%.
-* We may set a fixed removal date instead where a version is being retired as part of a scheduled policy change. The removal of iOS 17 on 2 November 2026 is one such case, and that date is not conditional on usage.
 
 It may be possible in some cases to provide support for a beta version however this will be on a case-by-case basis; please contact our Support team if you would like to request this.
 
