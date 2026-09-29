@@ -4,13 +4,19 @@
 
 If you don't specify a device or OS version, then you will be allocated the default device image:
 
-**Android:** Pixel 7 (API level 34) - **from 19 October 2026 the default becomes API level 36** (still Pixel 7), and **from 26 October 2026 the default device becomes Pixel 10**.
+**Android:** Pixel 7 (API level 34)
 
-To stay on API level 34, pin the device and the API level together, e.g. `--android-device pixel-8 --android-api-level 34` (Pixel 8 has the same screen size as Pixel 7). Pinning only `--android-api-level 34` stops working on 26 October, because Pixel 10 only runs API levels 36 and 37, and Pixel 7 itself is targeted for removal on that date.
+{% hint style="warning" %}
+On the 19th October the default is moving to Pixel 7 on API 36.&#x20;
 
-If you use [Google Play](../configuration/google-play-apis.md), pass the device and API level together, e.g. `--android-device pixel-8 --android-api-level 34`. Google Play is available on Pixel 8 (API 34), Pixel 10 (API 36 and 37) and the outgoing Pixel 7 (API 34).
+On the 26th October the default is then moving to Pixel 10 on API 36.
+{% endhint %}
 
-**iOS:** iPhone 14 (iOS 17.5) - **from 2 November 2026 the default becomes iPhone 16 running iOS 26**. Pin `--ios-device iphone-14 --ios-version 18` if you need to stay on that device; iOS 17 is being removed on the same date, so there is no way to stay on it.
+**iOS:** iPhone 14 (iOS 17)&#x20;
+
+{% hint style="warning" %}
+On the 2nd November the default is moving to iPhone 16 on iOS 26.
+{% endhint %}
 
 ### Android API Levels
 
@@ -21,7 +27,7 @@ dcd cloud app.apk test.yaml --android-api-level 37
 ```
 
 {% hint style="warning" %}
-The default version of Android is changing to API 36 on the 19th October 2026.
+The default version of Android is changing to API 36 on the 19th October.
 {% endhint %}
 
 | Android Version | API Level       |
@@ -37,7 +43,7 @@ The default version of Android is changing to API 36 on the 19th October 2026.
 | Android 10      | 29 (deprecated) |
 
 {% hint style="warning" %}
-API levels 29-31 (Android 10-12) are deprecated and **will be removed on 19 October 2026**. Runs targeting them will fail after that date, so move `--android-api-level` to 32 or newer. See the [Android Support Policy](devices-configuration.md#android-support-policy) for more information.
+API levels 29-31 (Android 10-12) are deprecated and will be removed on the 19th October.&#x20;
 {% endhint %}
 
 Need Google Play? See [google-play-apis.md](../configuration/google-play-apis.md)
@@ -50,51 +56,55 @@ DeviceCloud will default to Pixel 7 (Pixel 10 from 26 October 2026) unless you p
 dcd cloud app.apk test.yaml --android-device pixel-6
 ```
 
-| id               | Name                                                                                   | Dimensions  | Valid Android API Levels           |
-| ---------------- | -------------------------------------------------------------------------------------- | ----------- | ---------------------------------- |
-| `pixel-6`        | Pixel 6                                                                                | 1080 x 2400 | 29, 30, 31, 32, 33, 34, 35, 36, 37 |
-| `pixel-6-pro`    | Pixel 6 Pro (deprecated)                                                                            | 1440 x 3120 | 33, 35                             |
-| `pixel-7`        | Pixel 7 (deprecated)                                                                                | 1080 x 2400 | 33, 34, 35, 36, 37                 |
-| `pixel-7-pro`    | Pixel 7 Pro (deprecated)                                                                            | 1440 x 3120 | 33, 34, 35, 36, 37                 |
-| `pixel-8`        | Pixel 8                                                                                | 1080 x 2400 | 34, 35, 36, 37                     |
-| `pixel-10`       | Pixel 10                                                                               | 1080 x 2424 | 36, 37                             |
-| `pixel-10-pro`   | Pixel 10 Pro                                                                           | 1280 x 2856 | 36, 37                             |
-| `pixel-10-pro-xl` | Pixel 10 Pro XL                                                                       | 1344 x 2992 | 36, 37                             |
-| `pixel-10-pro-fold` | Pixel 10 Pro Fold (unfolded)                                                        | 2076 x 2152 | 36, 37                             |
-| `pixel-11`       | Pixel 11                                                                               | 1080 x 2424 | 37                                 |
-| `generic-tablet` | Generic Tablet (Note: starts in landscape by default, use orientation=90 for portrait) | 2560 x 1440 | 33, 36, 37                         |
+{% hint style="warning" %}
+The default device on Android is changing to Pixel 10 on the 19th October.
+{% endhint %}
+
+| id                  | Name                                                                                   | Dimensions  | Valid Android API Levels           |
+| ------------------- | -------------------------------------------------------------------------------------- | ----------- | ---------------------------------- |
+| `pixel-6`           | Pixel 6                                                                                | 1080 x 2400 | 29, 30, 31, 32, 33, 34, 35, 36, 37 |
+| `pixel-6-pro`       | Pixel 6 Pro (deprecated)                                                               | 1440 x 3120 | 33, 35                             |
+| `pixel-7`           | Pixel 7 (deprecated)                                                                   | 1080 x 2400 | 33, 34, 35, 36, 37                 |
+| `pixel-7-pro`       | Pixel 7 Pro (deprecated)                                                               | 1440 x 3120 | 33, 34, 35, 36, 37                 |
+| `pixel-8`           | Pixel 8                                                                                | 1080 x 2400 | 34, 35, 36, 37                     |
+| `pixel-10`          | Pixel 10                                                                               | 1080 x 2424 | 36, 37                             |
+| `pixel-10-pro`      | Pixel 10 Pro                                                                           | 1280 x 2856 | 36, 37                             |
+| `pixel-10-pro-xl`   | Pixel 10 Pro XL                                                                        | 1344 x 2992 | 36, 37                             |
+| `pixel-10-pro-fold` | Pixel 10 Pro Fold (unfolded)                                                           | 2076 x 2152 | 36, 37                             |
+| `pixel-11`          | Pixel 11                                                                               | 1080 x 2424 | 37                                 |
+| `generic-tablet`    | Generic Tablet (Note: starts in landscape by default, use orientation=90 for portrait) | 2560 x 1440 | 33, 36, 37                         |
 
 Generic Tablet and Pixel 10 Pro Fold runs are billed at the Advanced Android rate, see [pricing](../billing/test-run-billing.md).
 
 {% hint style="warning" %}
-Pixel 6 Pro, Pixel 7 and Pixel 7 Pro are deprecated and we're targeting removal on **26 October 2026**. This date is subject to change based on usage. Move `--android-device` to `pixel-10`, `pixel-11`, `pixel-8` or `pixel-6`, with an API level that device supports. See the [Android Support Policy](devices-configuration.md#android-support-policy) for more information.
+Pixel 6 Pro, Pixel 7 and Pixel 7 Pro are deprecated and we're targeting removal on the 26th October. This date is subject to change based on usage.
 {% endhint %}
 
 {% hint style="warning" %}
-Generic Tablet on API level 33 will be removed on **26 October 2026**. Move to API level 36 or 37, see the [Android Support Policy](devices-configuration.md#android-support-policy) for more information.
+Generic Tablet on API level 33 will be removed on the 26th October.
 {% endhint %}
 
 ### iOS Versions
 
-DeviceCloud will default to iOS 17 unless you pass the `--ios-version` flag. Pair it with an `--ios-device` that runs that version (see [iOS Devices](#ios-devices)), as the default iPhone 14 only runs iOS 17 and 18:
+DeviceCloud will default to iOS 17 unless you pass the `--ios-version` flag. Pair it with an `--ios-device` that runs that version (see [iOS Devices](devices-configuration.md#ios-devices)), as the default iPhone 14 only runs iOS 17 and 18:
 
 ```bash
 dcd cloud app.zip test.yaml --ios-device iphone-16 --ios-version 27
 ```
 
 {% hint style="warning" %}
-The default version of iOS is changing to 26 on the 2nd November 2026.
+The default version of iOS is changing to 26 on the 2nd November.
 {% endhint %}
 
-| id   | Version         |
-| ---- | --------------- |
-| `27` | 27.0            |
-| `26` | 26.5            |
-| `18` | 18.6            |
+| id   | Version           |
+| ---- | ----------------- |
+| `27` | 27.0              |
+| `26` | 26.5              |
+| `18` | 18.6              |
 | `17` | 17.5 (deprecated) |
 
 {% hint style="warning" %}
-iOS 17 is deprecated and **will be removed on 2 November 2026**. Move `--ios-version` to 18, 26 or 27. See the [iOS Support Policy](devices-configuration.md#ios-support-policy) for more information.
+iOS 17 is deprecated and we're targeting removal on the 2nd November. This date is subject to change based on usage.
 {% endhint %}
 
 ### iOS Devices
@@ -105,24 +115,24 @@ DeviceCloud will default to iPhone 14 unless you pass the `--ios-device` flag. P
 dcd cloud app.zip test.yaml --ios-device ipad-pro-m5-13 --ios-version 26
 ```
 
-| id                    | Name                                   | Dimensions  | Valid iOS versions |
-| --------------------- | -------------------------------------- | ----------- | ------------------ |
-| `iphone-18-pro-max`   | iPhone 18 Pro Max                      | 1320 x 2868         | 27                 |
-| `iphone-18-pro`       | iPhone 18 Pro                          | 1206 x 2622         | 27                 |
-| `iphone-air`          | iPhone Air                             | 1260 x 2736         | 26, 27             |
-| `iphone-17`           | iPhone 17                              | 1206 x 2622         | 26, 27             |
-| `iphone-16-pro-max`   | iPhone 16 Pro Max (deprecated)         | 1320 x 2868 | 18, 26, 27         |
-| `iphone-16-pro`       | iPhone 16 Pro (deprecated)             | 1206 x 2622 | 18, 26, 27         |
-| `iphone-16-plus`      | iPhone 16 Plus (deprecated)            | 1290 x 2796 | 26, 27             |
-| `iphone-16`           | iPhone 16                              | 1179 x 2556 | 18, 26, 27         |
-| `iphone-15`           | iPhone 15 (deprecated)                 | 1179 x 2556 | 17                 |
-| `iphone-14`           | iPhone 14                              | 1170 x 2532 | 17, 18             |
-| `ipad-pro-m5-13`      | iPad Pro 13-inch (M5)                  | 2064 x 2752         | 26, 27             |
-| `ipad-pro-m5-11`      | iPad Pro 11-inch (M5)                  | 1668 x 2420         | 26, 27             |
-| `ipad-pro-6th-gen`    | iPad Pro (6th Generation) (deprecated) | 2048 x 2732 | 18, 26, 27         |
+| id                  | Name                                   | Dimensions  | Valid iOS versions |
+| ------------------- | -------------------------------------- | ----------- | ------------------ |
+| `iphone-18-pro-max` | iPhone 18 Pro Max                      | 1320 x 2868 | 27                 |
+| `iphone-18-pro`     | iPhone 18 Pro                          | 1206 x 2622 | 27                 |
+| `iphone-air`        | iPhone Air                             | 1260 x 2736 | 26, 27             |
+| `iphone-17`         | iPhone 17                              | 1206 x 2622 | 26, 27             |
+| `iphone-16-pro-max` | iPhone 16 Pro Max (deprecated)         | 1320 x 2868 | 18, 26, 27         |
+| `iphone-16-pro`     | iPhone 16 Pro (deprecated)             | 1206 x 2622 | 18, 26, 27         |
+| `iphone-16-plus`    | iPhone 16 Plus (deprecated)            | 1290 x 2796 | 26, 27             |
+| `iphone-16`         | iPhone 16                              | 1179 x 2556 | 18, 26, 27         |
+| `iphone-15`         | iPhone 15 (deprecated)                 | 1179 x 2556 | 17                 |
+| `iphone-14`         | iPhone 14                              | 1170 x 2532 | 17, 18             |
+| `ipad-pro-m5-13`    | iPad Pro 13-inch (M5)                  | 2064 x 2752 | 26, 27             |
+| `ipad-pro-m5-11`    | iPad Pro 11-inch (M5)                  | 1668 x 2420 | 26, 27             |
+| `ipad-pro-6th-gen`  | iPad Pro (6th Generation) (deprecated) | 2048 x 2732 | 18, 26, 27         |
 
 {% hint style="warning" %}
-iPhone 15, iPhone 16 Plus, iPhone 16 Pro, iPhone 16 Pro Max and iPad Pro (6th Generation) are deprecated and **will be removed on 2 November 2026**. Move `--ios-device` to `iphone-16` (the new default), `iphone-17`, `iphone-18-pro`, `iphone-18-pro-max`, `iphone-air`, `ipad-pro-m5-11` or `ipad-pro-m5-13`. See the [iOS Support Policy](devices-configuration.md#ios-support-policy) for more information.
+iPhone 15, iPhone 16 Plus, iPhone 16 Pro, iPhone 16 Pro Max and iPad Pro (6th Generation) are deprecated and we're targeting removal on the 2nd November. This date is subject to change based on usage.
 {% endhint %}
 
 ### Targeting a single flow
@@ -146,7 +156,7 @@ If you need a device or OS that we don't currently offer, please feel free to re
 We will always aim to support the latest versions of iOS and additionally continue to provide support for previous versions. Our policy for this is as follows:
 
 * The latest even-numbered iPhone model & its variations, i.e. iPhone 18, 18e, 18 Pro & 18 Pro Max. We support the ones Apple has actually released; at the time of writing that is the iPhone 18 Pro and 18 Pro Max.
-* The previous two supported (i.e. even-numbered) generations of **base-model** iPhones, i.e. iPhone 16 & iPhone 14. Variations such as Plus, Pro and Pro Max are covered only for the latest even-numbered generation, so they fall out of support when a new even-numbered generation arrives.
+* The previous two supported (i.e. even-numbered) generations of base-model iPhones, i.e. iPhone 16 & iPhone 14. Variations such as Plus, Pro and Pro Max are covered only for the latest even-numbered generation, so they fall out of support when a new even-numbered generation arrives.
 * The latest "un-numbered" iPhones provided their screen dimensions are noticeably different from currently supported devices, i.e. iPhone Air.
 * The latest odd-numbered, base-model iPhone, i.e. iPhone 17.
 * The latest generation of iPad Pro, in both screen sizes.
