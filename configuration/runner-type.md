@@ -50,8 +50,7 @@ dcd cloud ... --runner-type=m4
 
 ## Runner Type Support Policy
 
-We occasionally retire a runner type that overlaps with others, so that capacity isn't split across pools that do the same job. Our policy for this is as follows:
+We may occasionally need to retire a runner type from our platform. This may be that it overlaps with other runner types or due to a lack of usage. Our policy for this is as follows:
 
 * Once a runner type is to be no longer offered, we'll mark it as deprecated.
 * Deprecated runner types are then removed after at least 30 days provided their total usage over seven days is less than 1%.
-* The removal date, and what happens to runs that still ask for the runner type after it, are announced when the runner type is deprecated.
