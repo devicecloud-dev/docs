@@ -210,7 +210,7 @@ Anything you pass on the command line after `npx @devicecloud.dev/eas-workflow@v
 | `--device-locale <code>` | E.g. `de_DE`. See [Device Locale](../configuration/device-locale.md). |
 | `--orientation <deg>` | Android only. `0` or `90`. |
 | `--google-play` | Android only. Run on Google Play devices. |
-| `--runner-type <type>` | `default`, `cpu1`, `gpu1` (deprecated, removed 9 November 2026), `m1`, `m4`. `gpu1`, `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
+| `--runner-type <type>` | `default`, `cpu1`, `gpu1` (deprecated), `m1`, `m4`. `gpu1`, `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
 
 See the [Devices & OS Versions](../getting-started/devices-configuration.md) page for the full availability matrix.
 
