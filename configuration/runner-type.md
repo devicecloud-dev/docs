@@ -24,7 +24,9 @@ If your app or test is struggling with the default runner types, you can try the
 | ----------- | -------- | ------- | ------------ | ----- | --------- | ----- |
 | `m4`        | iOS      | MacOS   | M4           | 16 GB | 10        | |
 | `m1`        | Android  | MacOS   | M1           | 8 GB  | 8         | Very limited capacity. Used for debugging host OS issues on Android. |
-| `gpu1`      | Android  | Ubuntu  | x86          | 15 GB | 8         | Limited capacity. Additional GPU acceleration also provided. |
+| `gpu1`      | Android  | Ubuntu  | x86          | 15 GB | 8         | Deprecated. Limited capacity. Additional GPU acceleration also provided. |
+
+`gpu1` is deprecated and **will be removed on 9 November 2026**. From that date, runs that pass `--runner-type gpu1` will run on `cpu1` instead, at the standard Android rate, rather than failing. To move now, stop passing `--runner-type gpu1` (Android runs use `cpu1` by default) or pass `--runner-type cpu1`. See the [Runner Type Support Policy](#runner-type-support-policy) for more information.
 
 ### Limitations
 
@@ -43,3 +45,11 @@ dcd cloud ... --runner-type=<type>
 # For example, to use the m4 runner:
 dcd cloud ... --runner-type=m4
 ```
+
+## Runner Type Support Policy
+
+We occasionally retire a runner type that overlaps with others, so that capacity isn't split across pools that do the same job. Our policy for this is as follows:
+
+* Once a runner type is to be no longer offered, we'll mark it as deprecated.
+* Deprecated runner types are then removed after at least 30 days provided their total usage over seven days is less than 1%.
+* The removal date, and what happens to runs that still ask for the runner type after it, are announced when the runner type is deprecated.

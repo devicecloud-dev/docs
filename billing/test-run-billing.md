@@ -17,7 +17,7 @@ Details of charges made to your account can be found on the [billing page](https
 | Standard iOS     | Any iPhone device on our default [runner type](../configuration/runner-type.md)                   | $0.11      |
 | Advanced iOS     | Any runs on our `m4` [runner type](../configuration/runner-type.md) and any iPad runs (on either runner). | $0.15 |
 | Standard Android | Any non-Play Pixel phone (except the Pixel 10 Pro Fold) on our cpu1 [runner type](../configuration/runner-type.md) | $0.09 |
-| Advanced Android | Any runs on our `gpu1` and `m1` [runner types](../configuration/runner-type.md), and any Tablet, Pixel 10 Pro Fold or Play device runs | $0.15 |
+| Advanced Android | Any runs on our `m1` and `gpu1` (deprecated) [runner types](../configuration/runner-type.md), and any Tablet, Pixel 10 Pro Fold or Play device runs | $0.15 |
 
 {% hint style="info" %}
 Enterprise customers with volume discounts or grandfathered users with older pricing may have different pricing. You can view your account's test run cost in the [billing page](https://console.devicecloud.dev/billing)

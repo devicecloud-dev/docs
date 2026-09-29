@@ -67,7 +67,7 @@ For most projects, yes. The CLI mimics the Maestro Cloud API, so you change `mae
 
 ### How much does it cost?
 
-DeviceCloud bills per test run i.e. a single top-level flow on a single device and are charged at $0.11 for standard iOS and $0.09 for standard Android. iPad, Pixel 10 Pro Fold, Google Play, tablet and `m4`/`m1`/`gpu1` runner flows are charged at the advanced rate of $0.15. New accounts get $20 of free credits. See [Test Run Billing](billing/test-run-billing.md).
+DeviceCloud bills per test run i.e. a single top-level flow on a single device and are charged at $0.11 for standard iOS and $0.09 for standard Android. iPad, Pixel 10 Pro Fold, Google Play, tablet and `m4`, `m1` and `gpu1` (deprecated) runner flows are charged at the advanced rate of $0.15. New accounts get $20 of free credits. See [Test Run Billing](billing/test-run-billing.md).
 
 ### How many tests can I run in parallel?
 
