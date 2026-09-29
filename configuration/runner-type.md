@@ -23,7 +23,7 @@ If your app or test is struggling with the default runner types, you can try the
 | Runner Type | Platform | Host OS | Architecture | RAM   | CPU Cores | Notes |
 | ----------- | -------- | ------- | ------------ | ----- | --------- | ----- |
 | `m4`        | iOS      | MacOS   | M4           | 16 GB | 10        | |
-| `m1`        | Android  | MacOS   | M1           | 8 GB  | 8         | Very limited capacity. Used for debugging host OS issues on Android. |
+| `m1`        | Android  | MacOS   | M1           | 8 GB  | 8         | Limited capacity. Used for debugging host OS issues on Android. |
 | `gpu1`      | Android  | Ubuntu  | x86          | 15 GB | 8         | Deprecated. Limited capacity. Additional GPU acceleration also provided. |
 
 {% hint style="warning" %}
