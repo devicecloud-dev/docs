@@ -73,7 +73,7 @@ Most pipe variables map to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flag of th
 | `DOWNLOAD_ARTIFACTS` | `ALL` or `FAILED` — downloads logs/screenshots/videos. |
 | `ASYNC` | `"true"` to fire-and-forget. |
 | `CANCEL_PREVIOUS` | `"true"` to cancel the previous run's still-queued tests when this one starts (from pipe 1.5.0). See [Cancelling superseded runs](../advanced/cancel-previous.md). |
-| `RUNNER_TYPE` | `default`, `cpu1`, `gpu1` (deprecated, removed 9 November 2026), `m1` or `m4`. `gpu1`, `m1` and `m4` are premium runners, see [Runner Type](../configuration/runner-type.md). |
+| `RUNNER_TYPE` | `default`, `cpu1`, `gpu1` (deprecated), `m1` or `m4`. `gpu1`, `m1` and `m4` are premium runners, see [Runner Type](../configuration/runner-type.md). |
 | `RENDER_ENGINE` | Android only: `lavapipe` or `swiftshader`, the software renderer the emulator boots with on the default Android runner. Leave unset to let DeviceCloud choose (`swiftshader` for apps built with Flutter, otherwise `lavapipe`). |
 
 ## Bitbucket context auto-attached
