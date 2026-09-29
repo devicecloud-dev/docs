@@ -82,7 +82,7 @@ This tool consumes test credits. It's annotated as destructive so clients can pr
 | `excludeFlows` | string[] | Flow paths/patterns to exclude |
 | `maestroVersion` | string | Pin a specific [Maestro version](../configuration/maestro-versions.md) |
 | `retry` | integer | Auto-[retry](../advanced/retry-strategies.md) failed tests, 0–2 |
-| `runnerType` | `default` \| `m4` \| `m1` \| `gpu1` \| `cpu1` | [Runner type](../configuration/runner-type.md) (default `default`). `gpu1` is deprecated and will be removed on 9 November 2026. |
+| `runnerType` | `default` \| `m4` \| `m1` \| `gpu1` (deprecated) \| `cpu1` | [Runner type](../configuration/runner-type.md) (default `default`). |
 | `configFile` | string | Path to a [workspace config](../configuration/workspace-config.md) |
 | `ignoreShaCheck` | boolean | Force re-upload of the binary even if an identical one already exists |
 | `dryRun` | boolean | Preview which flows would run, without submitting |
