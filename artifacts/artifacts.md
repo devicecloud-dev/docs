@@ -74,6 +74,8 @@ artifacts.zip
 
 Files are named after the flow file (without its extension), e.g. `login-maestro.log` for `login.yaml`. The `logs/` folder also holds stdout/stderr, the device log (`-logcat.zip` on Android, `-ios-device-log.zip` on iOS) and any per-flow reports. With `--download-artifacts FAILED`, only failed tests get a folder, but `report.xml` is always included and still covers every test.
 
+When `--retry` reruns a flow, every attempt gets its own result-ID folder, so the failed attempt's screenshots and video are in the zip even if a retry passed. `report.xml` covers only the final attempt of each flow.
+
 ## Retention
 
 App binaries and workspaces are deleted 1 month after they were last used. Test results and their artifacts (logs, screenshots and videos) are kept for 6 months.
