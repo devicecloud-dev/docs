@@ -115,7 +115,7 @@ If you build with EAS, download the build artifact in an earlier step and pass t
 | `device-locale` | No | — | Device locale in `ISO-639-1_ISO-3166-1` format (e.g. `de_DE`). See [Device Locale](../configuration/device-locale.md). |
 | `orientation` | No | `0` | Android only. Device orientation in degrees. Options: `0`, `90`. |
 | `google-play` | No | `false` | Android only. Run flows against Google Play devices. |
-| `runner-type` | No | `default` | Runner type. Options: `default`, `cpu1`, `gpu1`, `m1`, `m4`. `gpu1`, `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
+| `runner-type` | No | `default` | Runner type. Options: `default`, `cpu1`, `gpu1` (deprecated), `m1`, `m4`. `gpu1`, `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
 
 See the [Devices & OS Versions](../getting-started/devices-configuration.md) page for the full availability matrix.
 
