@@ -76,4 +76,4 @@ Files are named after the flow file (without its extension), e.g. `login-maestro
 
 ## Retention
 
-App binaries and workspaces are deleted 1 month after they were last used. Test results and their artifacts (logs, screenshots and videos) are kept for 6 months.
+App binaries and workspaces are deleted 1 month after they were last used. Test results, their artifacts (logs, screenshots and videos) and the environment variables passed with `--env` are kept for 6 months.
