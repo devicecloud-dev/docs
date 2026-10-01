@@ -20,7 +20,7 @@ For end-to-end protection of your uploads, run `dcd cloud` with `--encrypt` (or 
 
 ### Data Retention <a href="#data-retention" id="data-retention"></a>
 
-Uploads (both binaries and workflow files) are automatically deleted 1 month after last use; result data including maestro logs, screenshots and videos are retained for 6 months.
+Uploads (both binaries and workflow files) are automatically deleted 1 month after last use; result data including maestro logs, screenshots, videos and the environment variables passed with `--env` are retained for 6 months. Our database backups are kept for at most 6 months, so a backup copy of this data is gone at most 6 months after it is deleted.
 
 You can delete your account through the console UI or by contacting support. Deleting an account removes its records: any team where you are the only member is deleted along with its test runs, and you are removed from teams you share with others. Deleting a team from the console hides it and removes everyone's access immediately. To have a deleted team's data, or the stored files of a deleted account or team (app binaries, flows, screenshots and videos), permanently removed, email support@devicecloud.dev and our support team will purge them.
 
