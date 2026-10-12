@@ -57,7 +57,7 @@ dcd cloud app.apk test.yaml --android-device pixel-6
 ```
 
 {% hint style="warning" %}
-The default device on Android is changing to Pixel 10 on the 19th October.
+The default device on Android is changing to Pixel 10 on the 26th October.
 {% endhint %}
 
 | id                  | Name                                                                                   | Dimensions  | Valid Android API Levels           |
