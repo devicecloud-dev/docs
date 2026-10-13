@@ -134,13 +134,14 @@ dcd cloud app.zip test.yaml --ios-device ipad-pro-m5-13 --ios-version 26
 
 iPad and iPhone Duo runs are billed at the Advanced iOS rate, see [pricing](../billing/test-run-billing.md).
 
-{% hint style="info" %}
-The iPhone Duo stays folded for the whole run. Your app runs on its 1398 x 2034 cover screen, and screenshots and recordings capture that screen. A run can't unfold the device.
-{% endhint %}
-
 {% hint style="warning" %}
 iPhone 15, iPhone 16 Plus, iPhone 16 Pro, iPhone 16 Pro Max and iPad Pro (6th Generation) are deprecated and we're targeting removal on the 2nd November. This date is subject to change based on usage.
 {% endhint %}
+
+#### iPhone Duo limitations
+
+* The iPhone Duo stays folded for the whole run. Your app runs on its 1398 x 2034 cover screen, and screenshots and recordings capture that screen.
+* Maestro doesn't support foldable iPhones yet, so a flow can't unfold the Duo or test your app on its inner screen. You can follow Maestro's progress in [this issue](https://github.com/mobile-dev-inc/maestro/issues/3617).
 
 ### Targeting a single flow
 
