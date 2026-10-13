@@ -98,7 +98,7 @@ The default version of iOS is changing to 26 on the 2nd November.
 
 | id   | Version           |
 | ---- | ----------------- |
-| `27` | 27.1              |
+| `27` | 27.0 (27.1 on the iPhone Duo) |
 | `26` | 26.5              |
 | `18` | 18.6              |
 | `17` | 17.5 (deprecated) |
