@@ -59,7 +59,7 @@ A matrix runs one test per (flow x device), so a 4-device matrix over 10 flows i
     Pixel 10 · API 36   2 flows · $0.18
 ```
 
-Rates are per device — iPad, Generic Tablet, Pixel 10 Pro Fold and Google Play flows are charged at the advanced rate, as per our [pricing](../billing/test-run-billing.md).
+Rates are per device — iPad, iPhone Duo, Generic Tablet, Pixel 10 Pro Fold and Google Play flows are charged at the advanced rate, as per our [pricing](../billing/test-run-billing.md).
 
 ## Results
 
