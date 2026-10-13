@@ -98,7 +98,7 @@ The default version of iOS is changing to 26 on the 2nd November.
 
 | id   | Version           |
 | ---- | ----------------- |
-| `27` | 27.0              |
+| `27` | 27.1              |
 | `26` | 26.5              |
 | `18` | 18.6              |
 | `17` | 17.5 (deprecated) |
@@ -117,6 +117,7 @@ dcd cloud app.zip test.yaml --ios-device ipad-pro-m5-13 --ios-version 26
 
 | id                  | Name                                   | Dimensions  | Valid iOS versions |
 | ------------------- | -------------------------------------- | ----------- | ------------------ |
+| `iphone-duo`        | iPhone Duo (folded)                    | 1398 x 2034 | 27                 |
 | `iphone-18-pro-max` | iPhone 18 Pro Max                      | 1320 x 2868 | 27                 |
 | `iphone-18-pro`     | iPhone 18 Pro                          | 1206 x 2622 | 27                 |
 | `iphone-air`        | iPhone Air                             | 1260 x 2736 | 26, 27             |
@@ -130,6 +131,12 @@ dcd cloud app.zip test.yaml --ios-device ipad-pro-m5-13 --ios-version 26
 | `ipad-pro-m5-13`    | iPad Pro 13-inch (M5)                  | 2064 x 2752 | 26, 27             |
 | `ipad-pro-m5-11`    | iPad Pro 11-inch (M5)                  | 1668 x 2420 | 26, 27             |
 | `ipad-pro-6th-gen`  | iPad Pro (6th Generation) (deprecated) | 2048 x 2732 | 18, 26, 27         |
+
+iPad and iPhone Duo runs are billed at the Advanced iOS rate, see [pricing](../billing/test-run-billing.md).
+
+{% hint style="info" %}
+The iPhone Duo stays folded for the whole run. Your app runs on its 1398 x 2034 cover screen, and screenshots and recordings capture that screen. A run can't unfold the device.
+{% endhint %}
 
 {% hint style="warning" %}
 iPhone 15, iPhone 16 Plus, iPhone 16 Pro, iPhone 16 Pro Max and iPad Pro (6th Generation) are deprecated and we're targeting removal on the 2nd November. This date is subject to change based on usage.
@@ -157,7 +164,7 @@ We will always aim to support the latest versions of iOS and additionally contin
 
 * The latest even-numbered iPhone model & its variations, i.e. iPhone 18, 18e, 18 Pro & 18 Pro Max. We support the ones Apple has actually released; at the time of writing that is the iPhone 18 Pro and 18 Pro Max.
 * The previous two supported (i.e. even-numbered) generations of base-model iPhones, i.e. iPhone 16 & iPhone 14. Variations such as Plus, Pro and Pro Max are covered only for the latest even-numbered generation, so they fall out of support when a new even-numbered generation arrives.
-* The latest "un-numbered" iPhones provided their screen dimensions are noticeably different from currently supported devices, i.e. iPhone Air.
+* The latest "un-numbered" iPhones provided their screen dimensions are noticeably different from currently supported devices, i.e. iPhone Air and iPhone Duo.
 * The latest odd-numbered, base-model iPhone, i.e. iPhone 17.
 * The latest generation of iPad Pro, in both screen sizes.
 * Once a device is to be no longer supported, we'll mark it as deprecated.
