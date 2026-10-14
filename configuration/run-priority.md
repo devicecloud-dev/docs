@@ -22,14 +22,14 @@ The priority applies to the whole run: every flow in that `dcd cloud` run gets t
 
 Once you reach your maximum concurrency, extra tests are queued until you're back under your limit (see [Concurrency & Parallel Runs](../getting-started/concurrency-and-parallel-runs.md)). Each time a slot frees up, your queued `high` tests start first, then `normal`, then `low`.
 
-* **Only your own runs are reordered.** Your organisation keeps exactly the same place in the shared queue that it would have had anyway. Priority only decides which of your runs uses each place, so a `high` run never starts earlier relative to other customers' runs. Every organisation gets the same flag, at no cost.
+* **Only your own runs are reordered.** On each device, your organisation keeps exactly the same place in the queue that it would have had anyway. Priority only decides which of your runs uses each place, so a `high` run never starts earlier relative to other customers' runs. Every organisation gets the same flag, at no cost.
 * **It only matters while you're at your limit.** Priority takes effect when your organisation is at its maximum concurrency and runs are waiting in the queue. Under the limit, nothing is held back, so there is nothing to reorder.
-* **It applies across your concurrency pool.** If your organisation has a shared pool, shown in the console as **Standard — shared across iOS & Android**, iOS and Android runs draw on the same limit. A `high` iOS run can then start before your queued Android runs.
+* **Across devices, a `high` run keeps its own place.** A `high` run on a different device from your queued runs still starts before them. That includes a different model, or the other platform if your organisation has a shared pool (shown in the console as **Standard — shared across iOS & Android**). In the queue for its own device, it waits from the time it was submitted. The runs it passed re-queue from that moment. Moving work between devices never puts you ahead of other customers on either device.
 * **Retries keep the run's priority.** This covers both automatic retries from [`--retry`](../advanced/retry-strategies.md) and retries you queue from the console.
 
 ## What it doesn't do
 
-* **It doesn't move you ahead of other customers.** Your place in the shared queue is the same at every priority.
+* **It doesn't move you ahead of other customers.** On every device, your runs never start earlier relative to other customers' runs than they would without priority.
 * **It doesn't add concurrency.** Priority changes the order your queued runs start in, not how many run at once. To run more tests at the same time, increase your concurrency (see [Concurrency & Parallel Runs](../getting-started/concurrency-and-parallel-runs.md)).
 * **It doesn't change billing.** A run costs the same at every priority.
 * **It doesn't reorder tests already waiting for a device.** Priority applies while tests are held back by your own concurrency limit. A test that has already moved to pending, waiting for a free device, keeps its place.
