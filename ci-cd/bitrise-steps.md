@@ -19,6 +19,8 @@ DeviceCloud includes a BitRise step to allow automatic triggering of tests via y
 
 **Render Engine** (`render_engine`, from 1.3.0) picks the software renderer the Android emulator boots with on the default Android runner: `lavapipe` or `swiftshader`. Leave it empty to let DeviceCloud choose (`swiftshader` for apps built with Flutter, otherwise `lavapipe`).
 
+The `priority` input sets the run's [priority](../configuration/run-priority.md): `low`, `normal` (the default) or `high`. It reorders only your organisation's own queued runs.
+
 ### GitHub context
 
 From 1.4.0, when your app's repository is on GitHub the step attaches the build's GitHub context to the run as metadata, read from Bitrise's environment: the repository (`gh_repo`), commit (`gh_sha`), branch (`gh_branch`) and, for pull request builds, the PR number and URL (`gh_pr_number`, `gh_pr_url`). That is what [GitHub checks](github-checks.md) need, so there's nothing to add. Keys you set yourself in the **Metadata** input take precedence, and **Include GitHub Context** (`include_github_context`) set to `false` turns this off.

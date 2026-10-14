@@ -17,7 +17,7 @@ The `gpu1` runner type is deprecated and will be removed on 9 November 2026, aft
 
 Cheaper plans typically have no Concurrency Protection, which means that during busy periods when runner capacity is stretched, you may need to wait for runner availability or experience less concurrency than your maximum.
 
-Once you reach your maximum concurrency for a runner type, additional tests enter a queued state and sit in a backlog until you're under your concurrency limits. At that point, they automatically move to pending and are processed by the runners.
+Once you reach your maximum concurrency for a runner type, additional tests enter a queued state and sit in a backlog until you're under your concurrency limits. At that point, they automatically move to pending and are processed by the runners. To choose which of your own queued runs starts first, see [Run Priority](../configuration/run-priority.md).
 
 If you have a plan with Concurrency Protection, DeviceCloud will prioritise your jobs to ensure your minimum concurrency is met. On the Max plan, Concurrency Protection covers the standard runners only: iOS `default` and Android `cpu1`.
 
