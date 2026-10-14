@@ -83,6 +83,7 @@ This tool consumes test credits. It's annotated as destructive so clients can pr
 | `maestroVersion` | string | Pin a specific [Maestro version](../configuration/maestro-versions.md) |
 | `retry` | integer | Auto-[retry](../advanced/retry-strategies.md) failed tests, 0–2 |
 | `runnerType` | `default` \| `m4` \| `m1` \| `gpu1` (deprecated) \| `cpu1` | [Runner type](../configuration/runner-type.md) (default `default`). |
+| `priority` | `low` \| `normal` \| `high` | [Run priority](../configuration/run-priority.md) (default `normal`). Reorders only your organisation's own queued runs. |
 | `configFile` | string | Path to a [workspace config](../configuration/workspace-config.md) |
 | `ignoreShaCheck` | boolean | Force re-upload of the binary even if an identical one already exists |
 | `dryRun` | boolean | Preview which flows would run, without submitting |
