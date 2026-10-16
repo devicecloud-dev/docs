@@ -4,12 +4,10 @@
 
 If you don't specify a device or OS version, then you will be allocated the default device image:
 
-**Android:** Pixel 7 (API level 34)
+**Android:** Pixel 7 (API level 36)
 
 {% hint style="warning" %}
-On the 19th October the default is moving to Pixel 7 on API 36.&#x20;
-
-On the 26th October the default is then moving to Pixel 10 on API 36.
+On the 26th October the default is moving to Pixel 10 on API 36.
 {% endhint %}
 
 **iOS:** iPhone 14 (iOS 17)&#x20;
@@ -20,15 +18,11 @@ On the 2nd November the default is moving to iPhone 16 on iOS 26.
 
 ### Android API Levels
 
-DeviceCloud will default to API level 34 unless you pass the `--android-api-level` flag:
+DeviceCloud will default to API level 36 unless you pass the `--android-api-level` flag:
 
 ```bash
 dcd cloud app.apk test.yaml --android-api-level 37
 ```
-
-{% hint style="warning" %}
-The default version of Android is changing to API 36 on the 19th October.
-{% endhint %}
 
 | Android Version | API Level       |
 | --------------- | --------------- |
