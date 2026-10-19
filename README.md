@@ -79,7 +79,7 @@ Android runs cover a range of Google Pixel phones plus a generic tablet, and iOS
 
 ### Which Maestro versions are supported?
 
-We always support the latest version of Maestro with backwards compatibility up to v2.0.4. Runs default to v2.2.0, and you can use `--maestro-version latest` to always use the most up to date version. We periodically remove support for older versions, and these will be announced with plenty of warning. See [Maestro Versions](configuration/maestro-versions.md).
+We always support the latest version of Maestro with backwards compatibility up to v2.0.4. Runs default to v2.10.0, and you can use `--maestro-version latest` to always use the most up to date version. We periodically remove support for older versions, and these will be announced with plenty of warning. See [Maestro Versions](configuration/maestro-versions.md).
 
 ### Do I need an API key, or can I just log in?
 
