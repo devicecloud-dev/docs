@@ -48,6 +48,25 @@ dcd cloud ... --runner-type=<type>
 dcd cloud ... --runner-type=m4
 ```
 
+### Overriding the runner type for a single flow
+
+To run just one flow on a different runner type, set `DEVICECLOUD_OVERRIDE_RUNNER_TYPE` in that flow's `env:` block. It overrides `--runner-type` for that flow only. The other flows in the upload keep the upload's runner type.
+
+```yaml
+# in your test.yaml
+appId: my.app
+env:
+    DEVICECLOUD_OVERRIDE_RUNNER_TYPE: m4
+---
+# test steps
+```
+
+* The same [limitations](#limitations) apply as for `--runner-type`. The one difference: on iOS, `m1` becomes `default` without a warning. On Android, `default` becomes `cpu1`.
+* A value that isn't a runner type, or one that the platform doesn't support, rejects the whole upload before anything runs. The flow is never quietly run on the upload's runner type instead.
+* The flow is charged at its own runner type's rate. For example, an `m4` flow in a `default` upload is charged the advanced rate, and the other flows are charged the standard rate.
+* In a [device matrix](device-matrix.md), the flow still runs on every device in the matrix, each time on its own runner type.
+* Like all `DEVICECLOUD_OVERRIDE_*` settings, this only works in the flow's `env:` block, not with `-e`.
+
 ## Runner Type Support Policy
 
 We may occasionally need to retire a runner type from our platform. This may be that it overlaps with other runner types or due to a lack of usage. Our policy for this is as follows:
