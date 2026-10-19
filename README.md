@@ -49,6 +49,7 @@ Start with the [Quick Start](getting-started/quickstart.md) to install the CLI a
 
 ### Automate with AI & code
 
+* [Agent Devices](mcp/agent-devices.md) - give your AI agent a cloud iOS or Android device to drive, with a person on hand when it gets stuck (beta)
 * [MCP Server](mcp/overview.md) - let Claude, Cursor and other MCP clients run your tests
 * [CLI Reference](cli/overview.md) - every `dcd` command and flag
 * [REST API](api/overview.md) - uploads, results and flows over HTTP

@@ -71,7 +71,7 @@ User-Agent: DeviceCloud-Webhooks/1.0
 
 | Field | Description |
 | --- | --- |
-| `event` | Always `upload.completed`. |
+| `event` | `upload.completed` for a finished run. Device sessions add [`device.needs_human`](#device-needs-human). |
 | `status` | Overall run outcome: `PASSED` only when every test passed, otherwise `FAILED`. Use this to gate a deploy or set a commit status. |
 | `device` | Device and runner context for the run: `name`, `osVersion`, `runnerType`, and `maestroVersion`. Individual fields are omitted when unavailable — `name` and `osVersion` are left out when the run's flows used more than one device. |
 | `summary` | Aggregate counts (`totalTests`, `passed`, `failed`, and optional `cancelled`/`queued`/`pending`/`running`) plus `durationSeconds`, `wallClockDurationSeconds`, and `retryCount`. |
@@ -120,6 +120,29 @@ If tests are retried after a run has already been reported — for example when 
 This is on by default, so automations always see the latest outcome. To be called only once per run, turn off **Re-deliver after retries** in the Webhooks section of the console.
 
 Your endpoint should therefore treat `upload_id` as the key for a run and keep the delivery with the latest `timestamp`, rather than assuming one request per run.
+
+### Device needs human
+
+When an [Agent Devices](../mcp/agent-devices.md) session asks for a person's help, your webhook receives a `device.needs_human` event. It's sent once each time a session starts waiting, with the same headers and delivery as `upload.completed`:
+
+```json
+{
+  "event": "device.needs_human",
+  "timestamp": "2026-10-19T10:00:00.000Z",
+  "session": {
+    "id": "brave-teal-otter",
+    "platform": "ios",
+    "model": "iPhone 16",
+    "client_label": "claude-code"
+  },
+  "reason": "Enter the 2FA code sent to the test phone",
+  "since": "2026-10-19T10:00:00.000Z",
+  "expires_at": "2026-10-19T10:30:00.000Z",
+  "console_url": "https://console.devicecloud.dev/device/brave-teal-otter"
+}
+```
+
+`reason` is what the agent asked for. `expires_at` is when the session ends unless someone hands it back. `console_url` opens the session in the console, where you can take control and hand it back.
 
 ### Webhook Secrets
 
