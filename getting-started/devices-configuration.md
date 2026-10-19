@@ -32,13 +32,8 @@ dcd cloud app.apk test.yaml --android-api-level 37
 | Android 14      | 34              |
 | Android 13      | 33              |
 | Android 12L     | 32              |
-| Android 12      | 31 (deprecated) |
-| Android 11      | 30 (deprecated) |
-| Android 10      | 29 (deprecated) |
 
-{% hint style="warning" %}
-API levels 29-31 (Android 10-12) are deprecated and will be removed on the 19th October.&#x20;
-{% endhint %}
+API levels 29-31 (Android 10-12) were removed on 19 October 2026.
 
 Need Google Play? See [google-play-apis.md](../configuration/google-play-apis.md)
 
@@ -56,7 +51,7 @@ The default device on Android is changing to Pixel 10 on the 26th October.
 
 | id                  | Name                                                                                   | Dimensions  | Valid Android API Levels           |
 | ------------------- | -------------------------------------------------------------------------------------- | ----------- | ---------------------------------- |
-| `pixel-6`           | Pixel 6                                                                                | 1080 x 2400 | 29, 30, 31, 32, 33, 34, 35, 36, 37 |
+| `pixel-6`           | Pixel 6                                                                                | 1080 x 2400 | 32, 33, 34, 35, 36, 37             |
 | `pixel-6-pro`       | Pixel 6 Pro (deprecated)                                                               | 1440 x 3120 | 33, 35                             |
 | `pixel-7`           | Pixel 7 (deprecated)                                                                   | 1080 x 2400 | 33, 34, 35, 36, 37                 |
 | `pixel-7-pro`       | Pixel 7 Pro (deprecated)                                                               | 1440 x 3120 | 33, 34, 35, 36, 37                 |
