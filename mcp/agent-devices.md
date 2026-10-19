@@ -79,7 +79,7 @@ Every client you sign in shows up under **Settings → Account → Connected app
 
 Every response carries a short **session** block: the session's state, how long it has left, its cost so far, and plain-English warnings, such as an upcoming idle timeout or the app having crashed. The agent never needs a separate call to stay oriented.
 
-The full list of tools is in the [tool reference](agent-devices-tools.md).
+The full list of tools is in the [tool reference](agent-devices-tools.md). To teach your agent this loop, add the [agent instructions](agent-devices-skill.md) to your project.
 
 ## When the agent needs a person
 

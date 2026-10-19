@@ -72,6 +72,7 @@
 
 * [Agent Devices](mcp/agent-devices.md)
 * [Agent Devices Tools](mcp/agent-devices-tools.md)
+* [Agent Instructions](mcp/agent-devices-skill.md)
 * [MCP Server](mcp/overview.md)
 * [Tools Reference](mcp/tools.md)
 
