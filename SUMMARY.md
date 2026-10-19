@@ -56,6 +56,7 @@
 * [Status](cli/dcd-status.md)
 * [List](cli/dcd-list.md)
 * [Login & Accounts](cli/dcd-login.md)
+* [Devices](cli/dcd-device.md)
 * [Live Sessions](cli/dcd-live.md)
 
 ## REST API

@@ -21,11 +21,22 @@ A session is named by its `id` (for example `brave-teal-otter`) in every path. E
 | `POST /device/sessions/:id/install` | Install a build: `{ "binaryUploadId": "..." }`, or `{ "url": "https://..." }` for an `.apk` or a zipped simulator `.app` at a link (up to 500 MB) |
 | `POST /device/sessions/:id/launch` | Launch an app: `{ "appId"?: "...", "clearState"?: true }`. Without `appId`, the installed build |
 | `POST /device/sessions/:id/actions` | One action: `tap` (`x`/`y` percent, `text` or `id`), `type` (`text`, and `sensitive: true` to keep it secret), `swipe` (`direction`, or `from`/`to`), `press_key` (`key`) |
-| `POST /device/sessions/:id/run` | Run Maestro: `{ "yaml": "..." }` for one flow, or `{ "flowUploadId": "...", "flow"?: "..." }` for an uploaded bundle. `env` passes secrets and variables (see below). Waits about 110 s, then answers `running` |
+| `POST /device/sessions/:id/run` | Run Maestro: `{ "yaml": "..." }` for one flow, or `{ "flowUploadId": "...", "flow"?: "..." }` for a [flow bundle](#flow-bundles). `env` passes secrets and variables (see below). Waits about 110 s, then answers `running` |
 | `GET /device/sessions/:id/commands/:commandId` | The status and result of a `run` that answered `running` |
 | `GET /device/sessions/:id/inspect` | The screen as compact JSON |
 | `GET /device/sessions/:id/screenshot` | The latest screenshot, as a data URL |
 | `GET /device/sessions/:id/logs?lines=200` | The installed app's recent device log lines |
+
+## Flow bundles
+
+To run several flows, or a flow that runs others, upload them as a zip, then pass its id to `run` as `flowUploadId`. `flow` names the entry file inside the zip; without it, every flow runs. [`dcd device run <directory>`](../cli/dcd-device.md) does this for you.
+
+| Method and path | What it does |
+|---|---|
+| `POST /device/bundles/upload-url` | `{ "bytes"?: 1234 }`. Returns the bundle's `id`, and signed URLs to `PUT` the zip to: `upload` and `mirror` (either may be `null`). Upload to each one given |
+| `POST /device/bundles` | Register it: `{ "id", "sha", "bytes", "supabase": true, "backblaze": true }`, where `sha` is the SHA-256 of the zip in hex, and `supabase` and `backblaze` say which URLs you uploaded to. Returns `{ "bundle" }` |
+
+A bundle can be up to 50 MB. Bundles are deleted a day after they're uploaded, once no command needs them.
 
 ## Asking a person
 

@@ -55,6 +55,16 @@ claude mcp add --transport http devicecloud https://api.devicecloud.dev/mcp \
 When you create a key for an agent, choose **Device sessions only** under **Access**. Such a key can start and drive devices and upload builds, but it can't start test runs or read results.
 {% endhint %}
 
+### Through the CLI, with local files
+
+The [DeviceCloud CLI](../cli/overview.md) runs the same tools as a local MCP server over stdio, `dcd mcp`. It uses the CLI's sign-in ([`dcd login`](../cli/dcd-login.md), or `DEVICE_CLOUD_API_KEY`), and it can use files on your machine: `install_app` takes `app_path`, a build to upload, and `run` takes `path`, a flow file or a directory of flows. It also serves the `dcd_*` tools for cloud test runs.
+
+```bash
+claude mcp add devicecloud -- dcd mcp
+```
+
+Add `--read-only` to offer only the tools that change nothing.
+
 ## Connected apps
 
 Every client you sign in shows up under **Settings → Account → Connected apps**, with the organization it uses and when it was last used. **Disconnect** stops it working at once. Sessions it starts run as you, and the timeline shows which app sent each command.

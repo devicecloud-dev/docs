@@ -98,7 +98,7 @@ Run Maestro on the device: `yaml` is one flow (a header naming the app, `---`, t
 |-------|------|----------|-------------|
 | `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
 | `yaml` | string | No | One Maestro flow, e.g. "appId: com.example\n---\n- tapOn: \"Log in\"". |
-| `flow_upload_id` | string | No | An uploaded flow bundle (zip). |
+| `flow_upload_id` | string | No | The id of a flow bundle (a zip of flows) registered at POST /device/bundles. The local `dcd mcp` server uploads a directory for you. |
 | `flow` | string | No | The entry flow inside the bundle, e.g. "flows/login.yaml". |
 | `env` | object of strings | No | Secrets and variables for the flow, used in the YAML as ${NAME}, e.g. {"PASSWORD": "..."} with inputText: ${PASSWORD}. Stored encrypted, never shown, and masked in the output. Names starting with DCD_ are reserved. |
 
