@@ -119,7 +119,7 @@ Each session is recorded on video by default (`record: false` on `start_device` 
 | Limit | Default |
 |-------|---------|
 | Sessions open at once, per organization | 2 |
-| Maximum session length | 120 minutes |
+| Maximum session length | 60 minutes |
 | Idle timeout (no commands) | 5 minutes |
 | Waiting for a person | 30 minutes |
 | Waiting in the queue | 15 minutes |
