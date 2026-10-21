@@ -88,7 +88,9 @@ When both are present, precedence is: `--api-key` flag → `DEVICE_CLOUD_API_KEY
 | [`dcd logout`](dcd-login.md#dcd-logout) | Clear the stored session |
 | [`dcd whoami`](dcd-login.md#dcd-whoami) | Show the logged-in user and active organisation |
 | [`dcd switch-org`](dcd-login.md#dcd-switch-org) | Switch the active organisation |
-| [`dcd live`](dcd-live.md) | Start and interact with a live device session (beta) |
+| [`dcd device`](dcd-device.md) | Lease a cloud device, drive it and release it (beta) |
+| [`dcd mcp`](../mcp/agent-devices.md#through-the-cli-with-local-files) | Run the DeviceCloud MCP server on stdio |
+| [`dcd live`](dcd-live.md) | Deprecated: use `dcd device` |
 | `dcd upgrade` | Upgrade the standalone binary in place |
 
 ## Environment Variables
@@ -131,5 +133,5 @@ To opt out, set `DCD_TELEMETRY_DISABLED=1`.
 ```bash
 dcd --help
 dcd cloud --help
-dcd live --help
+dcd device --help
 ```

@@ -1,5 +1,9 @@
 # dcd live
 
+{% hint style="info" %}
+**`dcd live` is deprecated.** Use [`dcd device`](dcd-device.md), which drives the same sessions with a session id argument, directory runs, `--json` on every command and meaningful exit codes. `dcd live` keeps working for now.
+{% endhint %}
+
 Start an interactive cloud device session and drive it from your terminal — install a build, run individual Maestro commands or a whole flow, capture screenshots, and dump the view hierarchy. This is ideal for authoring and debugging flows against a real cloud device.
 
 {% hint style="warning" %}
