@@ -34,7 +34,7 @@ See [Authentication](../getting-started/api-keys.md) for the full picture.
 | `--app-url <url>` | Signed URL to an Expo iOS build (`.tar.gz`). The archive is downloaded and extracted automatically. Expo signed URLs expire after ~1 hour. Mutually exclusive with `--app-file` |
 | `--app-file <path>` | Path to the app binary (alternative to the positional `<app-file>` argument) |
 | `--ignore-sha-check` | Force re-upload even if a binary with the same SHA already exists |
-| `--encrypt` | Encrypt the app binary, flow files and `--env` values on your machine before upload, each with its own key. An unchanged binary is still deduplicated, so it isn't uploaded again. Can also be enabled with `DCD_ENCRYPT=1` |
+| `--encrypt` / `--no-encrypt` | Encryption is on by default (CLI 5.7.0 and later): the app binary, flow files and `--env` values are encrypted on your machine before upload, each with its own key. Pass `--no-encrypt` (or set `DCD_ENCRYPT=0`) to upload them unencrypted. An unchanged binary is still deduplicated, so it isn't uploaded again. See [Data Encryption](../security/security-overview.md#data-encryption) |
 
 ### Device
 
