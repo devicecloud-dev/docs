@@ -2,7 +2,7 @@
 
 Upload an app binary to DeviceCloud and get back a binary ID. Use the binary ID in subsequent `dcd cloud` runs to skip re-uploading the same binary.
 
-DeviceCloud deduplicates binaries by SHA checksum — if you upload the same binary twice, the existing ID is returned and no upload occurs.
+DeviceCloud deduplicates binaries by SHA checksum — if you upload the same binary twice, the existing ID is returned and no upload occurs. Encrypted uploads are only matched against your earlier encrypted uploads, so a binary you previously uploaded unencrypted is uploaded once more the first time it's encrypted.
 
 ```bash
 dcd upload <app-file> [flags]
@@ -21,7 +21,7 @@ dcd upload <app-file> [flags]
 | `--api-key <key>` | Your DeviceCloud API key. Defaults to `DEVICE_CLOUD_API_KEY` env var |
 | `--app-url <url>` | Signed URL to an Expo iOS build (`.tar.gz`), used instead of `<app-file>`. The archive is downloaded and extracted automatically |
 | `--ignore-sha-check` | Force re-upload even if a binary with the same SHA already exists |
-| `--encrypt` | Encrypt the binary on your machine before upload |
+| `--encrypt` / `--no-encrypt` | Encryption is on by default (CLI 5.7.0 and later): the binary is encrypted on your machine before upload. Pass `--no-encrypt` (or set `DCD_ENCRYPT=0`) to upload it unencrypted |
 | `--json` | Output the binary ID as JSON |
 | `--debug` | Enable verbose debug logging |
 
