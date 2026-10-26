@@ -203,7 +203,7 @@ Anything you pass on the command line after `npx @devicecloud.dev/eas-workflow@v
 
 | Flag | Description |
 |------|-------------|
-| `--android-device <model>` | `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`, `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl`, `pixel-10-pro-fold`, `pixel-11`, `generic-tablet`. Default `pixel-7` (`pixel-10` from 26 October 2026). |
+| `--android-device <model>` | `pixel-6`, `pixel-7` (deprecated), `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl`, `pixel-10-pro-fold`, `pixel-11`, `generic-tablet`. Default `pixel-10`. |
 | `--android-api-level <n>` | `32` – `37`. Default `36`. |
 | `--ios-device <model>` | `iphone-14`, `iphone-15`, `iphone-16`, `iphone-16-plus`, `iphone-16-pro`, `iphone-16-pro-max`, `iphone-17`, `iphone-air`, `iphone-18-pro`, `iphone-18-pro-max`, `ipad-pro-6th-gen`, `ipad-pro-m5-11`, `ipad-pro-m5-13`. |
 | `--ios-version <n>` | `17`, `18`, `26`, `27`. Default `17` (`26` from 2 November 2026). |
