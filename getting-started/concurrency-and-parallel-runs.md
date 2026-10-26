@@ -8,11 +8,15 @@ The plans come with these limits:
 
 | Plan | iOS `default` | iOS `m4` | Android `cpu1` (default) | Android `gpu1` (deprecated) | Android `m1` |
 |------|---------------|----------|--------------------------|----------------|--------------|
-| Pro | up to 5 | up to 5 | up to 5 | up to 2 | up to 1 |
-| Max | up to 20, with 1 protected | up to 5 | up to 20, with 1 protected | up to 2 | up to 1 |
+| Pro | up to 5 | up to 5 | up to 5 | up to 2 | up to 5 |
+| Max | up to 20, with 1 protected | up to 5 | up to 20, with 1 protected | up to 2 | up to 20 |
 
 {% hint style="warning" %}
 The `gpu1` runner type is deprecated and will be removed on 9 November 2026, after which its runs use `cpu1` and count towards the `cpu1` limit. See [Runner Type](../configuration/runner-type.md).
+{% endhint %}
+
+{% hint style="info" %}
+Google Play runs move to `m1` on 14 December 2026, after which they count towards the `m1` limit rather than `cpu1`. Runs you move there early with `--runner-type m1` count towards `m1` already. See [Google Play APIs](../configuration/google-play-apis.md#moving-to-apple-silicon-m1).
 {% endhint %}
 
 Cheaper plans typically have no Concurrency Protection, which means that during busy periods when runner capacity is stretched, you may need to wait for runner availability or experience less concurrency than your maximum.

@@ -28,7 +28,7 @@ dcd cloud --app-binary-id <id> ./flows \
   --android-device-matrix pixel-10:36
 ```
 
-Append `:play` to run a cell against a Google Play device. Google Play is available as `pixel-8:34`, `pixel-10:36`, `pixel-10:37` and `pixel-7:34` (deprecated) (see [Google Play APIs](google-play-apis.md#device-availability)):
+Append `:play` to run a cell against a Google Play device. Google Play is available as `pixel-8:34`, `pixel-10:36`, `pixel-10:37` and `pixel-7:34` (deprecated, and not on the `m1` runner type) (see [Google Play APIs](google-play-apis.md#device-availability)):
 
 ```bash
 dcd cloud --app-binary-id <id> ./flows \
