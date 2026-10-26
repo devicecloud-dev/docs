@@ -104,6 +104,8 @@ $env:DCD_BETA=1; irm https://get.devicecloud.dev/install.ps1 | iex
 
 Every flow has a 10-minute execution limit. A flow that is still running when it reaches the limit is stopped and marked as failed, with a "Test run timed out after 10 minutes" error.
 
+A flow that needs longer can opt into [extended runtime](../configuration/extended-runtime.md), which gives it up to 20 minutes and is charged at 2×.
+
 ---
 
 ### Next steps

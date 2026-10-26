@@ -23,6 +23,10 @@ Details of charges made to your account can be found on the [billing page](https
 Enterprise customers with volume discounts or grandfathered users with older pricing may have different pricing. You can view your account's test run cost in the [billing page](https://console.devicecloud.dev/billing)
 {% endhint %}
 
+### Extended runtime
+
+A flow that opts into [extended runtime](../configuration/extended-runtime.md) (up to 20 minutes instead of 10) is charged at 2× its rate above, whether or not it uses the extra time. Flows that don't opt in are charged at the normal rate.
+
 ### Credits
 
 New users are given $20 in free credits to test the service.
