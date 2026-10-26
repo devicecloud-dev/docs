@@ -45,7 +45,7 @@ keeps the upload's iOS version, and vice versa.
 
 1. `DEVICECLOUD_OVERRIDE_*` in the flow's YAML (per test)
 2. The upload-wide `--ios-device` / `--ios-version` / `--android-device` / `--android-api-level` flags
-3. Default: iPhone 14 on iOS 17, or Pixel 7 on API level 36 (Pixel 10 from 26 October 2026, see [Default Devices](../getting-started/devices-configuration.md#default-devices))
+3. Default: iPhone 14 on iOS 17, or Pixel 10 on API level 36 (see [Default Devices](../getting-started/devices-configuration.md#default-devices))
 
 ## Billing
 

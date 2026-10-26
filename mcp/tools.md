@@ -73,7 +73,7 @@ This tool consumes test credits. It's annotated as destructive so clients can pr
 | `iosVersion` | string | iOS version, e.g. `17` |
 | `iosDevice` | string | iOS device, e.g. `iphone-14` |
 | `androidApiLevel` | string | Android API level, e.g. `34` |
-| `androidDevice` | string | Android device, e.g. `pixel-7` |
+| `androidDevice` | string | Android device, e.g. `pixel-10` |
 | `googlePlay` | boolean | Use a [Google Play-enabled](../configuration/google-play-apis.md) Android image |
 | `name` | string | A name for this run |
 | `env` | string[] | [Environment variables](../configuration/environment-variables.md) as `KEY=VALUE` strings |
