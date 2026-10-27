@@ -17,6 +17,7 @@ We currently support the following versions of Maestro:
 * 2.9.0
 * 2.10.0
 * 2.11.0
+* 2.12.0
 
 {% hint style="warning" %}
 Maestro 2.2.0 is deprecated and we're targeting removal on 9 November 2026. This date is subject to change based on usage. If you pin `--maestro-version` to 2.2.0, move it to 2.6.1 or newer (the default is 2.10.0). See the [#maestro-support-policy](maestro-versions.md#maestro-support-policy "mention") for more information.
@@ -28,7 +29,7 @@ Maestro 2.0.4, 2.0.9, 2.1.0, 2.5.0, 2.5.1 and 2.6.0 were removed on 19 October 2
 
 You can specify a version using `--maestro-version <version>`.
 
-We additionally support the use of `--maestro-version latest` which will default to the most up-to-date version we support. This currently resolves to 2.11.0.
+We additionally support the use of `--maestro-version latest` which will default to the most up-to-date version we support. This currently resolves to 2.12.0.
 
 Note that Maestro 2.7.0 reorganised the per-flow debug output into a new bundle layout, with screenshots named `step-<number>-<command>.png`. If you download and process test artifacts programmatically, check your tooling against a 2.7.0 or later run before switching.
 
