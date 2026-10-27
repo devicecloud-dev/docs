@@ -50,7 +50,7 @@ keeps the upload's iOS version, and vice versa.
 ## Billing
 
 Each flow still runs once, so your total run count is unchanged. What can change is a flow's
-**rate**: iPad, Generic Tablet, Pixel 10 Pro Fold and Google Play flows are charged at our advanced rate as per our
+**rate**: iPad, iPhone Duo, Generic Tablet, Pixel 10 Pro Fold and Google Play flows are charged at our advanced rate as per our
 [pricing](../billing/test-run-billing.md). Targeting an iPad from one flow in an otherwise
 iPhone upload charges that one flow at the advanced rate, and the rest at the standard rate.
 
