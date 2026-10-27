@@ -53,11 +53,13 @@ Pixel 10 runs API levels 36 and 37 only. To run on API level 32-35, pass `--andr
 | `pixel-10`          | Pixel 10                                                                               | 1080 x 2424 | 36, 37                             |
 | `pixel-10-pro`      | Pixel 10 Pro                                                                           | 1280 x 2856 | 36, 37                             |
 | `pixel-10-pro-xl`   | Pixel 10 Pro XL                                                                        | 1344 x 2992 | 36, 37                             |
-| `pixel-10-pro-fold` | Pixel 10 Pro Fold (unfolded)                                                           | 2076 x 2152 | 36, 37                             |
+| `pixel-10-pro-fold` | Pixel 10 Pro Fold (starts unfolded)                                                    | 2076 x 2152 | 36, 37                             |
 | `pixel-11`          | Pixel 11                                                                               | 1080 x 2424 | 37                                 |
 | `generic-tablet`    | Generic Tablet (Note: starts in landscape by default, use orientation=90 for portrait) | 2560 x 1440 | 36, 37                             |
 
 Generic Tablet and Pixel 10 Pro Fold runs are billed at the Advanced Android rate, see [pricing](../billing/test-run-billing.md).
+
+The Pixel 10 Pro Fold starts unfolded; a flow can fold it, see [Foldable Devices](../configuration/foldable-devices.md).
 
 {% hint style="warning" %}
 Pixel 7 is deprecated and we're targeting removal on the 9th November. This date is subject to change based on usage.
@@ -98,7 +100,7 @@ dcd cloud app.zip test.yaml --ios-device ipad-pro-m5-13 --ios-version 26
 
 | id                  | Name                                   | Dimensions  | Valid iOS versions |
 | ------------------- | -------------------------------------- | ----------- | ------------------ |
-| `iphone-duo`        | iPhone Duo (folded)                    | 1398 x 2034 | 27                 |
+| `iphone-duo`        | iPhone Duo (starts folded)             | 1398 x 2034 | 27                 |
 | `iphone-18-pro-max` | iPhone 18 Pro Max                      | 1320 x 2868 | 27                 |
 | `iphone-18-pro`     | iPhone 18 Pro                          | 1206 x 2622 | 27                 |
 | `iphone-air`        | iPhone Air                             | 1260 x 2736 | 26, 27             |
@@ -119,10 +121,9 @@ iPad and iPhone Duo runs are billed at the Advanced iOS rate, see [pricing](../b
 iPhone 15, iPhone 16 Plus, iPhone 16 Pro, iPhone 16 Pro Max and iPad Pro (6th Generation) are deprecated and we're targeting removal on the 2nd November. This date is subject to change based on usage.
 {% endhint %}
 
-#### iPhone Duo limitations
+#### Foldables
 
-* The iPhone Duo stays folded for the whole run. Your app runs on its 1398 x 2034 cover screen, and screenshots and recordings capture that screen.
-* Maestro doesn't support foldable iPhones yet, so a flow can't unfold the Duo or test your app on its inner screen. You can follow Maestro's progress in [this issue](https://github.com/mobile-dev-inc/maestro/issues/3617).
+The iPhone Duo starts folded, on its cover screen, and the Pixel 10 Pro Fold starts unfolded. A flow can fold or unfold either part-way through a run, and tap or take screenshots on whichever screen is active. See [Foldable Devices](../configuration/foldable-devices.md).
 
 ### Targeting a single flow
 

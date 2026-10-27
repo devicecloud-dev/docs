@@ -110,7 +110,7 @@ If you build with EAS, download the build artifact in an earlier step and pass t
 |-------|----------|---------|-------------|
 | `android-device` | No | `pixel-10` | Android device model. Options: `pixel-6`, `pixel-7` (deprecated), `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl`, `pixel-10-pro-fold`, `pixel-11`, `generic-tablet`. |
 | `android-api-level` | No | `36` | Android API level. Options: `32`, `33`, `34`, `35`, `36`, `37`. |
-| `ios-device` | No | — | iOS device model. Options: `iphone-14`, `iphone-15`, `iphone-16`, `iphone-16-plus`, `iphone-16-pro`, `iphone-16-pro-max`, `iphone-17`, `iphone-air`, `iphone-18-pro`, `iphone-18-pro-max`, `ipad-pro-6th-gen`, `ipad-pro-m5-11`, `ipad-pro-m5-13`. |
+| `ios-device` | No | — | iOS device model. Options: `iphone-14`, `iphone-15`, `iphone-16`, `iphone-16-plus`, `iphone-16-pro`, `iphone-16-pro-max`, `iphone-17`, `iphone-air`, `iphone-18-pro`, `iphone-18-pro-max`, `iphone-duo`, `ipad-pro-6th-gen`, `ipad-pro-m5-11`, `ipad-pro-m5-13`. |
 | `ios-version` | No | `17` | Major iOS version. Options: `17`, `18`, `26`, `27`. Default becomes `26` from 2 November 2026. |
 | `device-locale` | No | — | Device locale in `ISO-639-1_ISO-3166-1` format (e.g. `de_DE`). See [Device Locale](../configuration/device-locale.md). |
 | `orientation` | No | `0` | Android only. Device orientation in degrees. Options: `0`, `90`. |
