@@ -95,7 +95,7 @@ Pass `--download-artifacts ALL` (or `FAILED`) to a `dcd cloud` run, or fetch the
 
 ### Is there a time limit on a test?
 
-Yes. Every flow has a 10-minute execution limit. A flow that is still running when it reaches the limit is stopped and marked as failed, with a "Test run timed out after 10 minutes" error. Failed tests can be retried up to twice, giving a maximum of three total runs, free of charge. See [Quick Start](getting-started/quickstart.md#limits) and [Retry Strategies](advanced/retry-strategies.md).
+Yes. Every flow has a 10-minute execution limit. A flow that is still running when it reaches the limit is stopped and marked as failed, with a "Test run timed out after 10 minutes" error. A flow that needs longer can opt into [extended runtime](configuration/extended-runtime.md), which gives it up to 20 minutes and is charged at 2×. Failed tests can be retried up to twice, giving a maximum of three total runs, free of charge. See [Quick Start](getting-started/quickstart.md#limits) and [Retry Strategies](advanced/retry-strategies.md).
 
 ### Can I allow-list DeviceCloud in our firewall?
 

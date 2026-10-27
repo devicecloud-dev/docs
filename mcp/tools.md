@@ -89,7 +89,7 @@ This tool consumes test credits. It's annotated as destructive so clients can pr
 | `encrypt` | boolean | Encrypt the binary, flows and `env` values on your machine before upload. Omit it to follow `DCD_ENCRYPT`, then the default, which is on; pass `false` to upload them unencrypted. See [Data Encryption](../security/security-overview.md#data-encryption) |
 | `dryRun` | boolean | Preview which flows would run, without submitting |
 | `wait` | boolean | Block until the run completes instead of returning immediately (default `false`) |
-| `waitTimeoutSeconds` | integer | Max seconds to wait when `wait` is true, 30–3600 (default `600`) |
+| `waitTimeoutSeconds` | integer | Max seconds to wait when `wait` is true, 30–3600 (default `600`). A flow with [extended runtime](../configuration/extended-runtime.md) can run for up to 20 minutes, so raise this when the run includes one |
 
 You must provide either `appFile` or `appBinaryId` — not both, and not neither. Use [`dcd upload`](../cli/dcd-upload.md) or a previous run to get a reusable `appBinaryId`.
 

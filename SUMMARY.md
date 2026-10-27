@@ -34,6 +34,7 @@
 * [Device Orientation](configuration/orientation.md)
 * [Google Play APIs](configuration/google-play-apis.md)
 * [Runner Types](configuration/runner-type.md)
+* [Extended Runtime](configuration/extended-runtime.md)
 * [Run Priority](configuration/run-priority.md)
 
 ## Test Artifacts & Reports
