@@ -40,7 +40,7 @@ dcd cloud app.apk flows/ -e USERNAME=${CI_USERNAME} \
           -e PASSWORD=${CI_PASSWORD}
 ```
 
-Add `--encrypt` (or set `DCD_ENCRYPT=1`) to encrypt the `--env` values on your machine before they're uploaded. This also encrypts the app binary and your flow files.
+The CLI encrypts `--env` values on your machine before they're uploaded, along with the app binary and your flow files. This is on by default (CLI 5.7.0 and later); `--no-encrypt` or `DCD_ENCRYPT=0` turns it off. Because the values are encrypted, the console doesn't list them on the test result.
 
 ## iOS: SIMCTL Variable Passthrough
 
