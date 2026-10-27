@@ -28,7 +28,7 @@ dcd cloud --app-binary-id <id> ./flows \
   --android-device-matrix pixel-10:36
 ```
 
-Append `:play` to run a cell against a Google Play device. Google Play is available as `pixel-8:34`, `pixel-10:36`, `pixel-10:37` and `pixel-7:34` (see [Google Play APIs](google-play-apis.md#device-availability)):
+Append `:play` to run a cell against a Google Play device. Google Play is available as `pixel-8:34`, `pixel-10:36`, `pixel-10:37` and `pixel-7:34` (deprecated, and not on the `m1` runner type) (see [Google Play APIs](google-play-apis.md#device-availability)):
 
 ```bash
 dcd cloud --app-binary-id <id> ./flows \
@@ -87,3 +87,5 @@ Without `--async` the run waits for **every** device and exits `0` only if all o
 - One platform per upload. An upload runs one app binary, so `--ios-device-matrix` and `--android-device-matrix` cannot be combined in the same run.
 
 - A flow that names its own device wins. If a flow targets a device in its YAML via [per-flow devices](per-flow-devices.md), it runs once on that device and is excluded from the matrix. Ten flows across four devices with one targeted flow is 37 runs, not 40.
+
+- A flow that sets its own [runner type](runner-type.md#overriding-the-runner-type-for-a-single-flow) is not excluded. It still runs on every device in the matrix, on that runner type.

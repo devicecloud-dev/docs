@@ -10,7 +10,7 @@ Authenticate with DeviceCloud via your browser. Run it once and the CLI stores y
 dcd login
 ```
 
-This opens your browser to complete sign-in (email OTP or Enterprise SSO). After you authorise the CLI, if you belong to more than one team you'll be prompted to pick the one to use. Your session is then saved locally (see [Where credentials are stored](#where-credentials-are-stored)).
+This opens your browser to complete sign-in (email OTP or Enterprise SSO). After you authorise the CLI, if you belong to more than one team you'll be prompted to pick the one to use. The picker starts on the team from your last login, so pressing Enter keeps it. Your session is then saved locally (see [Where credentials are stored](#where-credentials-are-stored)).
 
 ### Flags
 
@@ -18,12 +18,23 @@ This opens your browser to complete sign-in (email OTP or Enterprise SSO). After
 |------|-------------|
 | `--no-browser` | Print the login URL instead of opening a browser. Useful over SSH or on machines without a browser. |
 | `--frontend-url <url>` | Override the frontend URL used to complete login |
+| `--org <name\|id>` | Use this team instead of picking one. Teams are matched by name (case-insensitive) or ID, and login fails if you're not a member. |
 
 {% hint style="info" %}
 `dcd login` uses a PKCE browser flow with no local server, so it works over SSH and when you open the URL on a different device. A leaked login URL is inert and can't be used to claim your session.
 {% endhint %}
 
 If you're already logged in, `dcd login` asks for confirmation before replacing the existing session.
+
+### Without a terminal
+
+When `dcd login` runs where nobody can answer a prompt, such as in a script or a shell that an AI agent runs, it doesn't prompt:
+
+- If you're already logged in, it replaces the session without asking. Your existing session stays until the new login completes.
+- If you belong to more than one team, it uses `--org` if you pass it. Otherwise it uses the team from your last login to the same environment and prints which one it used.
+- If there's no previous team (for example, after `dcd logout`), it exits with an error that lists your teams, so you can run it again with `--org`.
+
+You still complete sign-in in a browser. Pass `--no-browser` to print the URL instead of opening it.
 
 ## `dcd logout`
 
@@ -61,7 +72,7 @@ dcd switch-org
 dcd switch-org "example@example.com's Team"
 ```
 
-Teams are matched by name (case-insensitive). Requires an active `dcd login` session. It only changes the session's team: an exported `DEVICE_CLOUD_API_KEY` doesn't affect `switch-org`, but still takes precedence for every other command.
+Teams are matched by name (case-insensitive). Without a terminal, such as in a script, pass the team name, because the picker needs a keypress. Requires an active `dcd login` session. It only changes the session's team: an exported `DEVICE_CLOUD_API_KEY` doesn't affect `switch-org`, but still takes precedence for every other command.
 
 ## Where credentials are stored
 

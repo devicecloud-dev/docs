@@ -4,13 +4,7 @@
 
 If you don't specify a device or OS version, then you will be allocated the default device image:
 
-**Android:** Pixel 7 (API level 34)
-
-{% hint style="warning" %}
-On the 19th October the default is moving to Pixel 7 on API 36.&#x20;
-
-On the 26th October the default is then moving to Pixel 10 on API 36.
-{% endhint %}
+**Android:** Pixel 10 (API level 36)
 
 **iOS:** iPhone 14 (iOS 17)&#x20;
 
@@ -20,15 +14,11 @@ On the 2nd November the default is moving to iPhone 16 on iOS 26.
 
 ### Android API Levels
 
-DeviceCloud will default to API level 34 unless you pass the `--android-api-level` flag:
+DeviceCloud will default to API level 36 unless you pass the `--android-api-level` flag:
 
 ```bash
 dcd cloud app.apk test.yaml --android-api-level 37
 ```
-
-{% hint style="warning" %}
-The default version of Android is changing to API 36 on the 19th October.
-{% endhint %}
 
 | Android Version | API Level       |
 | --------------- | --------------- |
@@ -38,51 +28,42 @@ The default version of Android is changing to API 36 on the 19th October.
 | Android 14      | 34              |
 | Android 13      | 33              |
 | Android 12L     | 32              |
-| Android 12      | 31 (deprecated) |
-| Android 11      | 30 (deprecated) |
-| Android 10      | 29 (deprecated) |
 
-{% hint style="warning" %}
-API levels 29-31 (Android 10-12) are deprecated and will be removed on the 19th October.&#x20;
-{% endhint %}
+API levels 29-31 (Android 10-12) were removed on 19 October 2026.
 
 Need Google Play? See [google-play-apis.md](../configuration/google-play-apis.md)
 
 ### Android Devices
 
-DeviceCloud will default to Pixel 7 (Pixel 10 from 26 October 2026) unless you pass the `--android-device` flag:
+DeviceCloud will default to Pixel 10 unless you pass the `--android-device` flag:
 
 ```bash
 dcd cloud app.apk test.yaml --android-device pixel-6
 ```
 
-{% hint style="warning" %}
-The default device on Android is changing to Pixel 10 on the 26th October.
+{% hint style="info" %}
+Pixel 10 runs API levels 36 and 37 only. To run on API level 32-35, pass `--android-device` as well as `--android-api-level`, for example `--android-device pixel-8 --android-api-level 34`. A run that sets only the API level is checked against Pixel 10 and rejected.
 {% endhint %}
 
 | id                  | Name                                                                                   | Dimensions  | Valid Android API Levels           |
 | ------------------- | -------------------------------------------------------------------------------------- | ----------- | ---------------------------------- |
-| `pixel-6`           | Pixel 6                                                                                | 1080 x 2400 | 29, 30, 31, 32, 33, 34, 35, 36, 37 |
-| `pixel-6-pro`       | Pixel 6 Pro (deprecated)                                                               | 1440 x 3120 | 33, 35                             |
+| `pixel-6`           | Pixel 6                                                                                | 1080 x 2400 | 32, 33, 34, 35, 36, 37             |
 | `pixel-7`           | Pixel 7 (deprecated)                                                                   | 1080 x 2400 | 33, 34, 35, 36, 37                 |
-| `pixel-7-pro`       | Pixel 7 Pro (deprecated)                                                               | 1440 x 3120 | 33, 34, 35, 36, 37                 |
 | `pixel-8`           | Pixel 8                                                                                | 1080 x 2400 | 34, 35, 36, 37                     |
 | `pixel-10`          | Pixel 10                                                                               | 1080 x 2424 | 36, 37                             |
 | `pixel-10-pro`      | Pixel 10 Pro                                                                           | 1280 x 2856 | 36, 37                             |
 | `pixel-10-pro-xl`   | Pixel 10 Pro XL                                                                        | 1344 x 2992 | 36, 37                             |
 | `pixel-10-pro-fold` | Pixel 10 Pro Fold (unfolded)                                                           | 2076 x 2152 | 36, 37                             |
 | `pixel-11`          | Pixel 11                                                                               | 1080 x 2424 | 37                                 |
-| `generic-tablet`    | Generic Tablet (Note: starts in landscape by default, use orientation=90 for portrait) | 2560 x 1440 | 33, 36, 37                         |
+| `generic-tablet`    | Generic Tablet (Note: starts in landscape by default, use orientation=90 for portrait) | 2560 x 1440 | 36, 37                             |
 
 Generic Tablet and Pixel 10 Pro Fold runs are billed at the Advanced Android rate, see [pricing](../billing/test-run-billing.md).
 
 {% hint style="warning" %}
-Pixel 6 Pro, Pixel 7 and Pixel 7 Pro are deprecated and we're targeting removal on the 26th October. This date is subject to change based on usage.
+Pixel 7 is deprecated and we're targeting removal on the 9th November. This date is subject to change based on usage.
 {% endhint %}
 
-{% hint style="warning" %}
-Generic Tablet on API level 33 will be removed on the 26th October.
-{% endhint %}
+Pixel 6 Pro, Pixel 7 Pro and Generic Tablet on API level 33 were removed on 26 October 2026.
 
 ### iOS Versions
 

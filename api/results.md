@@ -45,7 +45,7 @@ curl https://api.devicecloud.dev/results/7e12345f-eb12-12ec-a30b-bb1234f1d12a \
 }
 ```
 
-Every attempt is included: a retry appears as its own entry, with `retry_of` set to the `id` of the original attempt. Each entry also includes `config` (the run settings for that test) and `result_files` (references to its stored artifacts, plus the step log itself when it is 512 KB or smaller), which are left out of the example above. Responses for large uploads can therefore run to several megabytes; if you only need statuses, poll [`GET /uploads/status`](uploads.md#get-upload-status) instead.
+Every attempt is included: a retry appears as its own entry, with `retry_of` set to the `id` of the original attempt. Each entry also includes `config` (the run settings for that test) and `result_files` (references to its stored artifacts, plus the step log itself when it is 512 KB or smaller), which are left out of the example above. Responses for large uploads can therefore run to several megabytes. To poll a run's progress, use the [summary view](#summary-view), or [`GET /uploads/status`](uploads.md#get-upload-status) if you only need the latest attempt of each test.
 
 Each result also has a `cancellation_reason`, which is `null` unless the test
 was cancelled for a recorded reason:
@@ -57,6 +57,49 @@ was cancelled for a recorded reason:
 
 A test you cancel yourself has a `null` reason, and so does a retry of a cancelled test. Match on the `superseded_by:`
 prefix rather than comparing whole values, as more reasons may be added.
+
+### Summary view
+
+Add `?view=summary` to get only the fields you need to follow a run's progress. Each entry then has `id`, `test_file_name`, `status`, `fail_reason`, `duration_seconds`, `retry_of`, `cancellation_reason` and `simulator_name`, plus a `config` that holds only `deviceName` and `osVersion`. `result_files` is left out, so the response stays small however long the step logs get. Every attempt is still included.
+
+```bash
+curl "https://api.devicecloud.dev/results/7e12345f-eb12-12ec-a30b-bb1234f1d12a?view=summary" \
+  -H "x-app-api-key: <key>"
+```
+
+```json
+{
+  "statusCode": 200,
+  "results": [
+    {
+      "id": 4500,
+      "test_file_name": "./login-test/onboarding.yaml",
+      "status": "FAILED",
+      "retry_of": null,
+      "duration_seconds": 32,
+      "fail_reason": "Element not found: Text matching regex next.* not found",
+      "cancellation_reason": null,
+      "simulator_name": "pixel-7-api-34",
+      "config": { "deviceName": "Pixel 7", "osVersion": "34" }
+    }
+  ]
+}
+```
+
+### Polling efficiently
+
+Responses carry an `ETag` header. Send it back in `If-None-Match` on your next request. If nothing has changed since then, the API answers `304 Not Modified` with an empty body.
+
+```bash
+curl -i "https://api.devicecloud.dev/results/7e12345f-eb12-12ec-a30b-bb1234f1d12a?view=summary" \
+  -H "x-app-api-key: <key>" \
+  -H 'If-None-Match: W/"2f1-Xb3kq0x8wYc8pXK9z1l3m6V2c4A"' \
+  -H "Cache-Control: max-age=0"
+```
+
+Also send `Cache-Control: max-age=0`. Fetch-based clients, including Node's built-in `fetch`, add `Cache-Control: no-cache` to any request that carries `If-None-Match`, and the API then always sends the full response.
+
+The API also compresses responses when the request includes an `Accept-Encoding` header (`br` or `gzip`). Most HTTP clients send it by default; with curl, pass `--compressed`.
 
 ---
 

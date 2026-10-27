@@ -97,7 +97,7 @@ When both are present, precedence is: `--api-key` flag → `DEVICE_CLOUD_API_KEY
 |----------|-------------|
 | `DEVICE_CLOUD_API_KEY` | API key to use when `--api-key` isn't passed. Takes precedence over a `dcd login` session |
 | `DCD_CONFIG_DIR` | Directory for the `dcd login` session file (default `$XDG_CONFIG_HOME/dcd`, or `~/.dcd`) |
-| `DCD_ENCRYPT` | Set to `1` to make `dcd cloud` (and the MCP server) encrypt the app binary, flows and `--env` values on your machine before upload, the same as passing `--encrypt` |
+| `DCD_ENCRYPT` | `dcd cloud`, `dcd upload` and the MCP server encrypt the app binary, flows and `--env` values on your machine before upload by default. Set to `0` to turn this off, the same as passing `--no-encrypt`. A flag on the command line takes precedence |
 | `DCD_TELEMETRY_DISABLED` | Set to `1` to turn off [telemetry](#telemetry) |
 | `DCD_API_URL` | MCP server only. The API base URL to use (CLI commands take `--api-url` instead) |
 | `DCD_MCP_READONLY` | MCP server only. Set to `1` for [read-only mode](../mcp/overview.md#read-only-mode) |

@@ -30,7 +30,7 @@ Start a new live device session. Prints the session name and a console URL you c
 | `--platform <android\|ios>` | Device platform (default: `android`) |
 | `--app-binary-id <id>` | Binary upload ID to install on the device at start |
 | `--device-locale <locale>` | Device locale, e.g. `de_DE` |
-| `--android-device <device>` | Android only. Device profile: `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`, `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl` or `pixel-11` |
+| `--android-device <device>` | Android only. Device profile: `pixel-6`, `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl` or `pixel-11` |
 | `--android-api-level <level>` | Android only. API level, e.g. `34` (must be passed together with `--android-device`) |
 | `--wait` | Block until the device is ready to accept commands |
 

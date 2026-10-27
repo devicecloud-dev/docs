@@ -16,7 +16,7 @@ DeviceCloud stores customer data and performs processing using Supabase and Rail
 
 Data held by our database and file storage providers is encrypted at rest with AES-256, and data sent over the internet is encrypted in transit via TLS. Credentials get additional protection at the application level: API keys are stored only as a one-way hash, and access tokens for connected services (such as Slack) are encrypted before being stored in the database.
 
-For end-to-end protection of your uploads, run `dcd cloud` with `--encrypt` (or set `DCD_ENCRYPT=1`). The CLI then encrypts your app binary, flows and environment variables on your machine before they are uploaded, so the copies held in our storage and caches are encrypted.
+Your uploads are also encrypted end to end by default. The CLI (5.7.0 and later) encrypts your app binary, flows and environment variables on your machine before they are uploaded, each with its own key, so the copies held in our storage and caches are encrypted. Only our API holds the key needed to decrypt them. To upload without this encryption, pass `--no-encrypt` or set `DCD_ENCRYPT=0`. Older CLI versions encrypt only when you pass `--encrypt` or set `DCD_ENCRYPT=1`.
 
 ### Data Retention <a href="#data-retention" id="data-retention"></a>
 
@@ -24,7 +24,7 @@ Uploads (both binaries and workflow files) are automatically deleted 1 month aft
 
 You can delete your account through the console UI or by contacting support. Deleting an account removes its records: any team where you are the only member is deleted along with its test runs, and you are removed from teams you share with others. Deleting a team from the console hides it and removes everyone's access immediately. To have a deleted team's data, or the stored files of a deleted account or team (app binaries, flows, screenshots and videos), permanently removed, email support@devicecloud.dev and our support team will purge them.
 
-Android emulators are instantiated into a clean operating system instance for every test run. iOS simulators undertake an extensive teardown process to remove all cached data, but the underlying operating system persists due to Apple licensing requirements. Test artefacts are removed from the test runner as soon as the test is finished. To speed up repeat runs, each Mac runner keeps a small cache of recently used app binaries (the last 7), and our on-premises storage cache keeps recently used app binaries too; both evict older binaries automatically as new ones arrive. Binaries uploaded with `--encrypt` are only ever cached in encrypted form.
+Android emulators are instantiated into a clean operating system instance for every test run. iOS simulators undertake an extensive teardown process to remove all cached data, but the underlying operating system persists due to Apple licensing requirements. Test artefacts are removed from the test runner as soon as the test is finished. To speed up repeat runs, each Mac runner keeps a small cache of recently used app binaries (the last 7), and our on-premises storage cache keeps recently used app binaries too; both evict older binaries automatically as new ones arrive. Encrypted binaries are only ever cached in encrypted form.
 
 ### Payments <a href="#payments" id="payments"></a>
 

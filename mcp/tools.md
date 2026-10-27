@@ -73,7 +73,7 @@ This tool consumes test credits. It's annotated as destructive so clients can pr
 | `iosVersion` | string | iOS version, e.g. `17` |
 | `iosDevice` | string | iOS device, e.g. `iphone-14` |
 | `androidApiLevel` | string | Android API level, e.g. `34` |
-| `androidDevice` | string | Android device, e.g. `pixel-7` |
+| `androidDevice` | string | Android device, e.g. `pixel-10` |
 | `googlePlay` | boolean | Use a [Google Play-enabled](../configuration/google-play-apis.md) Android image |
 | `name` | string | A name for this run |
 | `env` | string[] | [Environment variables](../configuration/environment-variables.md) as `KEY=VALUE` strings |
@@ -83,11 +83,13 @@ This tool consumes test credits. It's annotated as destructive so clients can pr
 | `maestroVersion` | string | Pin a specific [Maestro version](../configuration/maestro-versions.md) |
 | `retry` | integer | Auto-[retry](../advanced/retry-strategies.md) failed tests, 0–2 |
 | `runnerType` | `default` \| `m4` \| `m1` \| `gpu1` (deprecated) \| `cpu1` | [Runner type](../configuration/runner-type.md) (default `default`). |
+| `priority` | `low` \| `normal` \| `high` | [Run priority](../configuration/run-priority.md) (default `normal`). Reorders only your organisation's own queued runs. |
 | `configFile` | string | Path to a [workspace config](../configuration/workspace-config.md) |
 | `ignoreShaCheck` | boolean | Force re-upload of the binary even if an identical one already exists |
+| `encrypt` | boolean | Encrypt the binary, flows and `env` values on your machine before upload. Omit it to follow `DCD_ENCRYPT`, then the default, which is on; pass `false` to upload them unencrypted. See [Data Encryption](../security/security-overview.md#data-encryption) |
 | `dryRun` | boolean | Preview which flows would run, without submitting |
 | `wait` | boolean | Block until the run completes instead of returning immediately (default `false`) |
-| `waitTimeoutSeconds` | integer | Max seconds to wait when `wait` is true, 30–3600 (default `600`) |
+| `waitTimeoutSeconds` | integer | Max seconds to wait when `wait` is true, 30–3600 (default `600`). A flow with [extended runtime](../configuration/extended-runtime.md) can run for up to 20 minutes, so raise this when the run includes one |
 
 You must provide either `appFile` or `appBinaryId` — not both, and not neither. Use [`dcd upload`](../cli/dcd-upload.md) or a previous run to get a reusable `appBinaryId`.
 

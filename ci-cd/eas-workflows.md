@@ -203,9 +203,9 @@ Anything you pass on the command line after `npx @devicecloud.dev/eas-workflow@v
 
 | Flag | Description |
 |------|-------------|
-| `--android-device <model>` | `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`, `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl`, `pixel-10-pro-fold`, `pixel-11`, `generic-tablet`. Default `pixel-7` (`pixel-10` from 26 October 2026). |
-| `--android-api-level <n>` | `29` – `37`. Default `34` (`36` from 19 October 2026). |
-| `--ios-device <model>` | `iphone-14`, `iphone-15`, `iphone-16`, `iphone-16-plus`, `iphone-16-pro`, `iphone-16-pro-max`, `iphone-17`, `iphone-air`, `iphone-18-pro`, `iphone-18-pro-max`, `iphone-duo`, `ipad-pro-6th-gen`, `ipad-pro-m5-11`, `ipad-pro-m5-13`. |
+| `--android-device <model>` | `pixel-6`, `pixel-7` (deprecated), `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl`, `pixel-10-pro-fold`, `pixel-11`, `generic-tablet`. Default `pixel-10`. |
+| `--android-api-level <n>` | `32` – `37`. Default `36`. |
+| `--ios-device <model>` | `iphone-14`, `iphone-15`, `iphone-16`, `iphone-16-plus`, `iphone-16-pro`, `iphone-16-pro-max`, `iphone-17`, `iphone-air`, `iphone-18-pro`, `iphone-18-pro-max`, `ipad-pro-6th-gen`, `ipad-pro-m5-11`, `ipad-pro-m5-13`. |
 | `--ios-version <n>` | `17`, `18`, `26`, `27`. Default `17` (`26` from 2 November 2026). |
 | `--device-locale <code>` | E.g. `de_DE`. See [Device Locale](../configuration/device-locale.md). |
 | `--orientation <deg>` | Android only. `0` or `90`. |
@@ -230,6 +230,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 |------|-------------|
 | `--async` | Exit immediately without waiting for results (exit code `0` regardless). See [Async Execution](../advanced/async-execution.md). |
 | `--cancel-previous` | Cancel the still-queued tests of the previous run of this job on the same branch or PR. Needs `DCD_GH_REPO` plus `DCD_GH_BRANCH` or `DCD_GH_PR_NUMBER`; set `DCD_CHECK_NAME` per job. See [Cancelling superseded runs](../advanced/cancel-previous.md). |
+| `--priority <level>` | `low`, `normal` (default) or `high`. Reorders only your organisation's own queued runs. See [Run Priority](../configuration/run-priority.md). |
 | `--download-artifacts <mode>` | Download logs/screenshots/videos. Options: `ALL`, `FAILED`. |
 | `--disable-animations` | Disable device animations. See [Animations](../configuration/disable-animations.md). |
 | `--maestro-chrome-onboarding` | Android only. See [Chrome Onboarding](../advanced/chrome-onboarding.md). |

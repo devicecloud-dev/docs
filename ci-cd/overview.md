@@ -14,6 +14,7 @@ DeviceCloud supports a wide range of CI/CD options. If you don't see your provid
 
 * [Async Execution](../advanced/async-execution.md) - Fire-and-forget tests without blocking your pipeline
 * [Cancelling Superseded Runs](../advanced/cancel-previous.md) - Drop the previous run's queued tests when a newer commit arrives
+* [Run Priority](../configuration/run-priority.md) - Choose which of your own queued runs starts first
 * [dcd status](../cli/dcd-status.md) - Poll for results after an async run
 * [Report Formats](../artifacts/report-formats.md) - Generate JUnit/HTML reports for your CI system
 * [Artifacts & Downloads](../artifacts/artifacts.md) - Access logs, screenshots, and videos
