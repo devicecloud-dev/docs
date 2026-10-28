@@ -78,6 +78,8 @@ Maestro's assertions keep working on the inner screen, but Maestro's own taps an
 
 A control tap is not a Maestro command, so nothing waits for your app to be ready before it. Put an `assertVisible` on the element you are about to tap first.
 
+Write the coordinates into `ARGS` as literals. Maestro evaluates a `${...}` expression in an `env:` value up to the last `}` of that value, so an expression inside the JSON body takes the body's closing brace with it and the step fails. For coordinates worked out at run time, build the body in a script of your own with `JSON.stringify` and post it to `DCD_CONTROL_URL + '/tap'`, the way `dcd.js` does.
+
 ## Screenshots and video
 
 A `screenshot` captures the active screen and appears on the result page with the flow's other screenshots, named after the flow and the name you gave, `<flow>-dcd-<name>`. A name is 1 to 40 letters, digits, `-` or `_`, starting with a letter or digit.
@@ -86,7 +88,7 @@ The video follows your app. Each posture change that moves it to the other scree
 
 ## Using the commands on other devices
 
-Any iPhone or iPad run can have the control server too. Set `DEVICECLOUD_OVERRIDE_DEVICE_CONTROL` in the flow's `env:` block:
+Any iPhone, iPad or Android run can have the control server too. Set `DEVICECLOUD_OVERRIDE_DEVICE_CONTROL` in the flow's `env:` block:
 
 ```yaml
 appId: my.app
@@ -98,7 +100,7 @@ env:
 - runScript: { file: dcd.js, env: { CMD: tap, ARGS: '{"x":30,"y":92}' } }
 ```
 
-`tap`, `longPress`, `swipe` and `screenshot` work as above, `state` reports an empty `postures` list, and `posture` is refused because the device doesn't fold. Like all `DEVICECLOUD_OVERRIDE_*` settings, this only works in the flow's `env:` block, not with `-e`.
+`tap`, `longPress`, `swipe` and `screenshot` work as above, in points on iOS and pixels on Android, `state` reports an empty `postures` list, and `posture` is refused because the device doesn't fold. Like all `DEVICECLOUD_OVERRIDE_*` settings, this only works in the flow's `env:` block, not with `-e`.
 
 ## Errors and limits
 
