@@ -2,14 +2,6 @@
 
 As experienced engineers, we take security seriously and adopt industry standards wherever possible. If you have specific questions not covered by this document, please contact us via email - support@devicecloud.dev - we are happy to answer your security questionnaires.
 
-### Security Leadership <a href="#security-leadership" id="security-leadership"></a>
-
-Security at DeviceCloud is led by **Tom Riglar, co-founder**. He is accountable for our security programme, including vulnerability management, security testing of our own platform, and incident response.
-
-### Reporting a Vulnerability <a href="#reporting-a-vulnerability" id="reporting-a-vulnerability"></a>
-
-If you think you have found a security issue in DeviceCloud, please email support@devicecloud.dev with "Security" in the subject line. Include enough detail for us to reproduce it. Please give us a reasonable chance to fix the issue before you share it with anyone else. Our contact details are also published at [devicecloud.dev/.well-known/security.txt](https://devicecloud.dev/.well-known/security.txt).
-
 ### SOC2 Compliance Timeline
 
 DeviceCloud has begun preparing and organising policies and controls that align with the SOC2 Type 1 compliance framework. The target compliance date is currently Q1 2027.
