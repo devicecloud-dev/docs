@@ -50,7 +50,7 @@ Find your API key at [console.devicecloud.dev/settings](https://console.devicecl
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'build/MyApp.app.zip'
     WORKSPACE: '.maestro'
-    IOS_DEVICE: 'iphone-16-pro'
+    IOS_DEVICE: 'iphone-16'
     IOS_VERSION: '18'
 ```
 

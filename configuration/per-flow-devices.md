@@ -20,7 +20,7 @@ Set the device in the flow's `env:` block. You can find a list of supported devi
 # checkout-tablet.yaml
 appId: my.app
 env:
-    DEVICECLOUD_OVERRIDE_IOS_DEVICE: ipad-pro-6th-gen
+    DEVICECLOUD_OVERRIDE_IOS_DEVICE: ipad-pro-m5-13
     DEVICECLOUD_OVERRIDE_IOS_VERSION: "26"
 ---
 # test steps
@@ -45,7 +45,7 @@ keeps the upload's iOS version, and vice versa.
 
 1. `DEVICECLOUD_OVERRIDE_*` in the flow's YAML (per test)
 2. The upload-wide `--ios-device` / `--ios-version` / `--android-device` / `--android-api-level` flags
-3. Default: iPhone 14 on iOS 17, or Pixel 10 on API level 36 (see [Default Devices](../getting-started/devices-configuration.md#default-devices))
+3. Default: iPhone 16 on iOS 26, or Pixel 10 on API level 36 (see [Default Devices](../getting-started/devices-configuration.md#default-devices))
 
 ## Billing
 

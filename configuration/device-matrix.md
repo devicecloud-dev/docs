@@ -14,9 +14,9 @@ Pass `--ios-device-matrix <device>:<version>` (or `--android-device-matrix <devi
 
 ```bash
 dcd cloud --app-binary-id <id> ./flows \
-  --ios-device-matrix iphone-16-pro:18 \
-  --ios-device-matrix iphone-16-pro:26 \
-  --ios-device-matrix iphone-16-pro-max:26
+  --ios-device-matrix iphone-16:18 \
+  --ios-device-matrix iphone-17:26 \
+  --ios-device-matrix iphone-18-pro:27
 # one upload, 3 devices x N flows
 ```
 
@@ -41,7 +41,7 @@ cross-product: the flags are not combined with each other, or with `--ios-device
 
 ```bash
 # runs exactly these two, and nothing else
-dcd cloud [...] --ios-device-matrix iphone-15:17 --ios-device-matrix iphone-16-plus:26
+dcd cloud [...] --ios-device-matrix iphone-14:18 --ios-device-matrix iphone-air:26
 ```
 
 This is deliberate as not every device supports every OS. Naming each device explicitly means you always get

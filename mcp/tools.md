@@ -70,8 +70,8 @@ This tool consumes test credits. It's annotated as destructive so clients can pr
 | `flowFile` | string | **Required.** Path to a Maestro `.yaml`/`.yml` flow, or a directory of flows |
 | `appFile` | string | Path to a local app binary — `.apk`, `.app`, or `.zip`. Mutually exclusive with `appBinaryId` |
 | `appBinaryId` | string | ID of a previously uploaded binary. Mutually exclusive with `appFile` |
-| `iosVersion` | string | iOS version, e.g. `17` |
-| `iosDevice` | string | iOS device, e.g. `iphone-14` |
+| `iosVersion` | string | iOS version, e.g. `26` |
+| `iosDevice` | string | iOS device, e.g. `iphone-16` |
 | `androidApiLevel` | string | Android API level, e.g. `34` |
 | `androidDevice` | string | Android device, e.g. `pixel-10` |
 | `googlePlay` | boolean | Use a [Google Play-enabled](../configuration/google-play-apis.md) Android image |

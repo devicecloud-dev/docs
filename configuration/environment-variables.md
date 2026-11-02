@@ -66,7 +66,7 @@ DeviceCloud also sets these variables on every run, so a flow can adapt to the d
 
 | Variable | Value |
 | --- | --- |
-| `DCD_DEVICE` | The device and OS version, lowercased and hyphenated — for example `pixel-8-api-34`, `pixel-8-api-34-play` on a Google Play device, `iphone-16-ios-18` or `ipad-pro-12-9-inch-6th-generation-ios-26`. |
+| `DCD_DEVICE` | The device and OS version, lowercased and hyphenated — for example `pixel-8-api-34`, `pixel-8-api-34-play` on a Google Play device, `iphone-16-ios-18` or `iphone-17-ios-26`. |
 | `DCD_PLATFORM` | `android` or `ios`. |
 
 Passing your own value with `-e` overrides the built-in one. [Visual Testing](../advanced/visual-testing.md#per-device-baselines) uses `DCD_DEVICE` to pick a baseline per device.
