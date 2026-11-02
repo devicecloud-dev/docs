@@ -18,11 +18,15 @@ for (const f of files) {
   pages.set(urlOf(f), {
     ids: new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1])),
     links: [...main.matchAll(/<a [^>]*href="([^"]+)"/g)].map((m) => m[1].replace(/&amp;/g, '&')),
+    // GitBook "mention" links ([page.md](page.md "mention")) show the raw file
+    // name here, so link text that looks like a file name or anchor is a bug.
+    rawText: [...main.matchAll(/<a [^>]*>([^<]*(?:\.md|^#[\w-]+))<\/a>/g)].map((m) => m[1]),
   });
 }
 
 let bad = 0;
-for (const [url, { links }] of pages) {
+for (const [url, { links, rawText }] of pages) {
+  for (const text of rawText) { console.log(`${url}: link text "${text}" is a file name; use the page title`); bad++; }
   for (const href of links) {
     if (/^[a-z]+:|^\/\//.test(href) || href.startsWith('/assets/')) continue;
     const [path, hash] = href.split('#');

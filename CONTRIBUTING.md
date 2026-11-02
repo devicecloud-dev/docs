@@ -51,3 +51,22 @@ Content for the second tab.
 
 `::: tip` and `::: danger` also work. Put images in `assets/` and link them
 with a relative path and alt text: `![What it shows](../assets/name.png)`.
+
+## Search results and AI agents
+
+Each page's search-result description is its first paragraph, shortened. If
+that paragraph is a weak summary (for example, it just leads into a list), set
+one in front matter. Quote it, because a colon inside breaks the YAML:
+
+```md
+---
+description: "One or two sentences about what this page covers."
+---
+```
+
+The build also writes plain-Markdown copies for AI tools: `/llms.txt` (an
+index), `/llms-full.txt` (everything), and a `.md` copy of every page, such as
+`/cli-reference/cloud.md`. You don't need to do anything for these.
+
+Link to pages with real link text. `[Device Matrix](../configuration/device-matrix.md)`
+is right, while `[device-matrix.md](...)` is caught by `npm run check`.

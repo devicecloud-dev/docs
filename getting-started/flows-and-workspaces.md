@@ -1,3 +1,7 @@
+---
+description: "Run a single Maestro flow, a directory of flows, or the flows listed in a workspace config file with dcd cloud."
+---
+
 # Executing & Referencing Flows
 
 There are multiple ways to execute flows from the CLI:

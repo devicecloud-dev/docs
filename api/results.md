@@ -1,3 +1,7 @@
+---
+description: "REST API endpoints for one upload's test results: statuses and failure reasons, JUnit and HTML reports, and artifact downloads."
+---
+
 # Results
 
 All results endpoints operate on a specific upload identified by its UUID.
