@@ -2,9 +2,9 @@
 
 Start an interactive cloud device session and drive it from your terminal — install a build, run individual Maestro commands or a whole flow, capture screenshots, and dump the view hierarchy. This is ideal for authoring and debugging flows against a real cloud device.
 
-{% hint style="warning" %}
+::: warning
 **Live is in beta** and is billed at **$0.03/min**, excluding Sales Tax. Access is limited and by request only. If you would like to try Live, please contact support to request access. `dcd live` works with a [`dcd login`](dcd-login.md) session or an [API key](../getting-started/api-keys.md).
-{% endhint %}
+:::
 
 ```bash
 dcd live <subcommand> [flags]

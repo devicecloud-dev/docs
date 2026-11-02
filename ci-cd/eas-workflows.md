@@ -38,9 +38,9 @@ eas env:create --scope project --environment production --environment preview --
 You can find your API key in the [DeviceCloud console settings](https://console.devicecloud.dev/settings).
 
 
-{% hint style="info" %}
+::: info
 EAS Workflow custom jobs run on EAS-hosted runners. `linux-medium` is sufficient — the wrapper just hands off to DeviceCloud, which runs your tests on its own device fleet.
-{% endhint %}
+:::
 
 ## Platform Examples
 
@@ -120,9 +120,9 @@ jobs:
             --ios-version 18
 ```
 
-{% hint style="info" %}
+::: info
 You don't need a macOS runner for iOS — DeviceCloud runs iOS simulators on its own Mac fleet.
-{% endhint %}
+:::
 
 ---
 
@@ -163,9 +163,9 @@ The build artifact itself is downloaded by `eas/download_build` and passed via `
 
 Set `DCD_CHECK_NAME` when a commit is tested by more than one job, so each gets a check of its own that can be required separately in branch protection. Keep it fixed per job — GitHub matches required checks by name.
 
-{% hint style="warning" %}
+::: warning
 `${{ github.event.pull_request.number }}`, `${{ github.event.pull_request.html_url }}` and `${{ github.repository }}` resolve to `null` on manual triggers and EAS rejects them as invalid env values. Only set the PR and repo variables inside an `if:` guard that limits the job to PR events, or omit them. `github.sha` and `github.ref_name` coerce to empty strings safely.
-{% endhint %}
+:::
 
 ### Advanced
 

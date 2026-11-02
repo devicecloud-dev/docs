@@ -4,9 +4,9 @@ description: SAML-based authentication for larger companies
 
 # Enterprise SSO
 
-{% hint style="info" %}
+::: info
 This feature is currently available to orgs who have the Max subscription or above.
-{% endhint %}
+:::
 
 Single sign-on solutions (such as OKTA) allow organisations to centrally manage user access to DeviceCloud.
 
@@ -42,4 +42,4 @@ These steps have been written with OKTA in mind, but are applicable to other ide
 7. Our support team will then verify your organisation is on the Max or Enterprise plan and enforce SSO for the requested domains.
 8. Once activated, DeviceCloud supports Service Provider initiated login via SSO using the SSO button on the DeviceCloud login screen:
 
-<figure><img src="../.gitbook/assets/Screenshot 2025-05-29 at 09.21.10.png" alt=""><figcaption></figcaption></figure>
+![The DeviceCloud sign-in page with the SAML SSO option](../assets/sso-sign-in.png)

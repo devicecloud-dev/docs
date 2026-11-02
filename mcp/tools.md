@@ -4,9 +4,9 @@ Every tool the [MCP server](overview.md) exposes, with its parameters and return
 
 All tools return pretty-printed JSON as their text payload. Failures come back as an error result the agent can read and react to — a failing tool never tears down the server, so an agent can recover and retry.
 
-{% hint style="warning" %}
+::: warning
 The MCP server is a new, beta capability. The tool surface may change.
-{% endhint %}
+:::
 
 ## dcd_list_devices <a href="#dcd-list-devices" id="dcd-list-devices"></a>
 
@@ -61,9 +61,9 @@ Returns `{ uploadId, artifactsPath, reportPath, warnings }`. A **non-empty `warn
 
 Submit a Maestro flow, or a directory of flows, to run on DeviceCloud.
 
-{% hint style="warning" %}
+::: warning
 This tool consumes test credits. It's annotated as destructive so clients can prompt before calling it, and it's hidden entirely in [read-only mode](overview.md#read-only-mode).
-{% endhint %}
+:::
 
 | Parameter | Type | Description |
 |-----------|------|-------------|

@@ -19,9 +19,9 @@ The CLI will automatically download the report to your working directory for you
 - `--html-path <path>` (default `./report.html`, applies to `html` and `html-detailed`)
 - `--allure-path <path>` (default `./report.html`)
 
-{% hint style="info" %}
+::: info
 The `html` and `html-detailed` reports are downloaded as a ZIP archive (the report plus its screenshots, videos and logs), even though the default file name is `report.html`. Pass `--html-path ./report.zip` so the file has the right extension, then unzip it to view the report.
-{% endhint %}
+:::
 
 (`--artifacts-path` is a separate flag that sets the download path for the artifacts zip and requires `--download-artifacts`.)
 

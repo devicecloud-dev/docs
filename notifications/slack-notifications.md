@@ -11,9 +11,9 @@ Slack is configured once per organization from the DeviceCloud console — there
 3. After you approve, you'll be returned to the console.
 4. Pick the **channel** you want notifications posted to and click **Save**.
 
-{% hint style="info" %}
+::: info
 DeviceCloud requests only the permissions it needs to list your channels and post messages. It cannot read your messages.
-{% endhint %}
+:::
 
 #### Sending a test message
 

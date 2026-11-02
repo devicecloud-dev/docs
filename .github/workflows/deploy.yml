@@ -1,0 +1,47 @@
+name: Deploy docs
+
+# Builds the VitePress site, checks every internal link and anchor, and deploys
+# it to the devicecloud-docs Worker on Cloudflare. Pull requests build and check
+# only, so a broken link fails the PR instead of reaching the live site.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  # The IP sync commits with GITHUB_TOKEN, and GitHub doesn't let those pushes
+  # trigger workflows. So redeploy after each sync run instead. (This runs on
+  # main. If nothing changed, wrangler uploads nothing.)
+  workflow_run:
+    workflows: ['Sync IP addresses']
+    types: [completed]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # full history, for "last updated" dates on pages
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm run check
+
+      - name: Deploy to Cloudflare
+        if: github.ref == 'refs/heads/main'
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 825e34660eb273af8c29cde6527688f6

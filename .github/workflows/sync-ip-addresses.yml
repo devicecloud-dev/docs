@@ -1,7 +1,7 @@
 name: Sync IP addresses
 
 # Regenerates security/ip-addresses.md from the DeviceCloud IP-addresses API
-# (the single source of truth) and commits it if it changed. GitBook republishes
+# (the single source of truth) and commits it if it changed. Cloudflare redeploys
 # the page on push. Runs daily and on demand — never on push, so a commit made
 # here can't re-trigger the workflow.
 on:
