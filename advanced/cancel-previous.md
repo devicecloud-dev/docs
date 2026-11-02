@@ -97,7 +97,7 @@ them nothing is cancelled. `gh_check_name` scopes the group to this job, and
 
 == Bitbucket
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.6.1
   variables:
     API_KEY: $DCD_API_KEY
     APP_FILE: build/app.apk

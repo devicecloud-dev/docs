@@ -52,7 +52,7 @@ See the [`priority` input](../ci-cd/github-actions.md#execution-options).
 
 == Bitbucket
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.6.1
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'build/app.apk'
