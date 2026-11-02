@@ -106,9 +106,9 @@ Exported: `DEVICE_CLOUD_CONSOLE_URL`, `DEVICE_CLOUD_UPLOAD_STATUS`, `DEVICE_CLOU
 - `DEVICE_CLOUD_UPLOAD_STATUS` is `PASSED` or `FAILED` once the run has finished, or `PENDING`, `QUEUED` or `RUNNING` if it hadn't (an `ASYNC` run reports whatever it had reached at submission). It's `ERROR` if the status couldn't be read. `SUPERSEDED` when a newer run replaced this one through [`CANCEL_PREVIOUS`](../advanced/cancel-previous.md); the pipe passes.
 - `DEVICE_CLOUD_FLOW_RESULTS` is a JSON array with one entry per flow: `[{"name": "...", "status": "PASSED"}]`, plus `failReason` for a failed flow.
 
-{% hint style="info" %}
+::: info
 Before pipe 1.5.0 only `DEVICE_CLOUD_CONSOLE_URL` and `DEVICE_CLOUD_UPLOAD_ID` are filled in; the other three are empty.
-{% endhint %}
+:::
 
 The pipe exits non-zero when the run fails, so the build fails by default. From 1.5.0 that holds with `JSON_FILE: 'true'` too; on earlier versions, where the CLI exits 0 in that mode, leave `JSON_FILE` unset if you rely on the pipe's result.
 

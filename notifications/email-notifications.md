@@ -20,9 +20,9 @@ notifications:
 
 By default you'll only be emailed when a suite has at least one failed or cancelled flow. A run superseded by a newer run through [`--cancel-previous`](../advanced/cancel-previous.md) is never emailed.
 
-{% hint style="info" %}
+::: info
 The `config.yaml` is picked up automatically from the directory you pass to `dcd cloud`. See [Workspace Configuration](../configuration/workspace-config.md) for where the file lives and how it's loaded.
-{% endhint %}
+:::
 
 #### Also notify on passing runs
 
@@ -63,9 +63,9 @@ The email is sent from **DeviceCloud &lt;hello@devicecloud.dev&gt;** and include
 - A grouped list of all flows by status.
 - Links to view the suite or individual flows on the console.
 
-{% hint style="info" %}
+::: info
 If you are not receiving emails for your test runs, try adding **hello@devicecloud.dev** to your safe senders list.
-{% endhint %}
+:::
 
 ### Disabling emails
 

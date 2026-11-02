@@ -9,11 +9,11 @@ DeviceCloud includes a BitRise step to allow automatic triggering of tests via y
 1. Edit your workflow in BitRise to add a new step.
 2. Search for 'Device Cloud for Maestro' and select the step.
 
-<figure><img src="../.gitbook/assets/Screenshot 2025-01-06 at 14.45.27.png" alt=""><figcaption></figcaption></figure>
+![Searching for the Device Cloud for Maestro step in Bitrise](../assets/bitrise-add-step.png)
 
 3. The step will now appear in your workflow
 
-<figure><img src="../.gitbook/assets/Screenshot 2025-01-06 at 14.45.32.png" alt=""><figcaption></figcaption></figure>
+![The Device Cloud for Maestro step added to a Bitrise workflow](../assets/bitrise-workflow-step.png)
 
 4. Populate the API key using a BitRise secret and set any variables. Most inputs correspond to a [`dcd cloud`](../cli/dcd-cloud.md) flag — see that reference for accepted values. Not every flag has an input: device matrices, for example, aren't available in the step.
 
@@ -57,4 +57,4 @@ The step fails when the run fails. From 1.4.0 that also holds with **JSON File**
 
 From 1.4.0, to cancel the previous run's still-queued tests when a new build starts, set the **Cancel Previous Run** input (`cancel_previous`) to `true` — see [Cancelling superseded runs](../advanced/cancel-previous.md). The step attaches the context this needs for a GitHub repository (see [GitHub context](#github-context)) and the pipeline's ID as the run ID, so invocations in one pipeline don't cancel each other. For a repository hosted elsewhere, add `gh_repo=<owner/repo>` and `gh_branch=$BITRISE_GIT_BRANCH` to the **Metadata** input, one per line; without them nothing is cancelled.
 
-<figure><img src="../.gitbook/assets/Screenshot 2025-01-06 at 14.45.51.png" alt=""><figcaption></figcaption></figure>
+![The Device Cloud for Maestro step inputs in Bitrise](../assets/bitrise-step-config.png)

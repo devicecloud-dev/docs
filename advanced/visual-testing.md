@@ -8,11 +8,11 @@ Maestro's `assertScreenshot` command compares the current screen against a refer
 
 DeviceCloud runs these assertions like any other command. The one thing you need to set up is getting your baseline images onto the device.
 
-{% hint style="warning" %}
+::: warning
 **Requires DeviceCloud CLI 5.6.0 or later**, the first version that uploads your baselines.
 
 **Use Maestro 2.10.0**, the default version. Maestro 2.2.0 resolves the baseline path against a different working directory and reports `Screenshot file not found` no matter where you put the file, so don't pin `--maestro-version` to it — see [Maestro Versions](../configuration/maestro-versions.md).
-{% endhint %}
+:::
 
 ## Uploading your baselines
 
@@ -65,9 +65,9 @@ Maestro has no "record" mode, so you have to capture the first baseline yourself
 
 3. Swap the command to `assertScreenshot`. A literal path needs nothing else; a path with a variable also needs `includedPaths` in your config.
 
-{% hint style="warning" %}
+::: warning
 **Don't use `--download-artifacts` to create a baseline.** Screenshots and videos from a run are downscaled and re-encoded for the console — a 1080x2400 screen comes back as a 486x1080 JPEG — so they will never match at full size. They are for looking at, not for asserting against.
-{% endhint %}
+:::
 
 If the dimensions are wrong you will see a size mismatch naming both sizes, which tells you exactly what to capture at:
 
@@ -88,9 +88,9 @@ Screenshots must have the same dimensions to compare.
 
 A non-numeric value fails the step rather than falling back to the default.
 
-{% hint style="warning" %}
+::: warning
 **A size mismatch always fails, whatever the threshold.** Baselines are locked to the resolution they were captured at, so a baseline taken on one device will never pass on a device with a different screen size. If you use `cropOn`, the baseline must have been captured with the same `cropOn`.
-{% endhint %}
+:::
 
 ## Per-device baselines
 
@@ -126,9 +126,9 @@ iPads use their full model name (`--ios-device ipad-pro-m5-13 --ios-version 26` 
 
 `DCD_PLATFORM` (`android` or `ios`) is available too. Passing either yourself with `--env` overrides the built-in value. See [Built-in Variables](../configuration/environment-variables.md#built-in-variables).
 
-{% hint style="info" %}
+::: info
 A variable in the path means the CLI cannot work out which file is needed ahead of the run, so `includedPaths` is required here — the automatic pickup only handles literal paths.
-{% endhint %}
+:::
 
 ## Reading a failure
 
@@ -143,6 +143,6 @@ Maestro also writes a diff image highlighting the changed regions. DeviceCloud c
 
 The diff is only produced for a pixel mismatch. A size mismatch fails before any comparison happens, and reports the expected and actual dimensions in the step error instead.
 
-{% hint style="warning" %}
+::: warning
 When you run locally, Maestro writes that diff next to the baseline **in your working directory**, named after it: `screenshots/home_diff.png` for `screenshots/home.png`. Delete these before you run `dcd cloud` from the same folder. An `includedPaths` pattern such as `screenshots/**` uploads them, and DeviceCloud shows every `*_diff.png` it finds as a diff from the run. Add `**/*_diff.png` to your `.gitignore` too, so they never reach your repository.
-{% endhint %}
+:::

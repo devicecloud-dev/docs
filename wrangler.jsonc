@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Static docs site (VitePress), served by Workers static assets. No Worker
+  // code: redirects come from public/_redirects (copied into the build).
+  "name": "devicecloud-docs",
+  "compatibility_date": "2026-11-02",
+  "routes": [{ "pattern": "docs.devicecloud.dev", "custom_domain": true }],
+  "assets": {
+    "directory": ".vitepress/dist",
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

@@ -18,9 +18,9 @@ This opens your browser, where you sign in (email OTP or Enterprise SSO) and aut
 
 The file is written with `0600` permissions (owner read/write only). When a command starts, the CLI refreshes the session if it's about to expire — you generally only log in again if you log out or switch machines. Long-running processes such as the [MCP server](../mcp/overview.md) don't refresh their session, so use an API key for those.
 
-{% hint style="info" %}
+::: info
 No browser on the box (e.g. over SSH)? Run `dcd login --no-browser` and the CLI prints a URL to open elsewhere.
-{% endhint %}
+:::
 
 See [Login & Accounts](../cli/dcd-login.md) for `logout`, `whoami`, and `switch-org`.
 
@@ -49,9 +49,9 @@ Or pass it explicitly with `--api-key` on any command:
 dcd cloud --api-key your-api-key-here <appFile> <flowFile>
 ```
 
-{% hint style="info" %}
+::: info
 Store your API keys as a secret in your CI provider (e.g. a GitHub Actions secret) — never commit it to your repository.
-{% endhint %}
+:::
 
 ## Precedence
 

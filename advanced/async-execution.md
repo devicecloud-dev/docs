@@ -56,9 +56,9 @@ jobs:
         run: echo "View results at: ${{ steps.dcd.outputs.DEVICE_CLOUD_CONSOLE_URL }}"
 ```
 
-{% hint style="info" %}
+::: info
 In async mode the Action doesn't wait for the run, so `DEVICE_CLOUD_UPLOAD_STATUS` is always `PENDING`, `DEVICE_CLOUD_FLOW_RESULTS` is `[]` and `DEVICE_CLOUD_APP_BINARY_ID` isn't set. For a pass/fail verdict, poll [`dcd status`](../cli/dcd-status.md#polling-an-async-run) or use the [DeviceCloud GitHub App](../ci-cd/github-checks.md) check.
-{% endhint %}
+:::
 
 ## Considerations
 

@@ -1,8 +1,8 @@
 # Test Run Billing
 
-{% hint style="info" %}
+::: info
 All amounts exclude Sales Tax - this will be added at checkout for your country by our Merchant of Record, Paddle.
-{% endhint %}
+:::
 
 DeviceCloud charges your Team's account per test run. This happens as soon as you run `dcd cloud`.
 
@@ -19,9 +19,9 @@ Details of charges made to your account can be found on the [billing page](https
 | Standard Android | Any non-Play Pixel phone (except the Pixel 10 Pro Fold) on our cpu1 [runner type](../configuration/runner-type.md) | $0.09 |
 | Advanced Android | Any runs on our `m1` and `gpu1` (deprecated) [runner types](../configuration/runner-type.md), and any Tablet, Pixel 10 Pro Fold or Play device runs | $0.15 |
 
-{% hint style="info" %}
+::: info
 Enterprise customers with volume discounts or grandfathered users with older pricing may have different pricing. You can view your account's test run cost in the [billing page](https://console.devicecloud.dev/billing)
-{% endhint %}
+:::
 
 ### Extended runtime
 

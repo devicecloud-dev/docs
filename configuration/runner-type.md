@@ -11,9 +11,9 @@ Android runs use `cpu1` unless you choose another runner type. Default iOS runs 
 
 As modern simulators and emulators are becoming more resource intensive, we're gradually rolling out additional runner types to support more advanced/intensive test scenarios.
 
-{% hint style="info" %}
+::: info
 Additional runner types are currently in beta as we work to increase capacity.
-{% endhint %}
+:::
 
 If your app or test is struggling with the default runner types, you can try the options below. Please note that non-default runner types are charged at the advanced run fee as per our [pricing](../billing/test-run-billing.md).
 
@@ -26,13 +26,13 @@ If your app or test is struggling with the default runner types, you can try the
 | `m1`        | Android  | MacOS   | M1           | 8 GB  | 8         | Apple Silicon (arm64). Runs Google Play from 14 December 2026. |
 | `gpu1`      | Android  | Ubuntu  | x86          | 15 GB | 8         | Deprecated. Limited capacity. Additional GPU acceleration also provided. |
 
-{% hint style="warning" %}
+::: warning
 `gpu1` is deprecated and **will be removed on 9 November 2026**. From that date, runs that pass `--runner-type gpu1` will run on `cpu1` instead, at the standard Android rate, rather than failing. To move now, stop passing `--runner-type gpu1` (Android runs use `cpu1` by default) or pass `--runner-type cpu1`. See the [Runner Type Support Policy](#runner-type-support-policy) for more information.
-{% endhint %}|
+:::|
 
-{% hint style="info" %}
+::: info
 **Google Play runs move to `m1` on 14 December 2026.** From that date every Google Play run uses `m1` rather than `cpu1`, at the same price. To test your app on `m1` now, add `--runner-type m1` to your Google Play runs. See [Moving to Apple Silicon](google-play-apis.md#moving-to-apple-silicon-m1).
-{% endhint %}
+:::
 
 ### Limitations
 

@@ -27,9 +27,9 @@ on:
     branches: [main]
 ```
 
-{% hint style="warning" %}
+::: warning
 If you use `pull_request_target` to run tests from forked PRs, explicitly check out the PR HEAD to ensure you're testing the changed code. Be aware that `pull_request_target` runs with your repository's secrets, including your DeviceCloud API key, so anything the job runs from a fork's checkout (build scripts, and the flows themselves) runs with access to them. Only run it on PRs you've reviewed, for example by requiring approval through a GitHub environment.
-{% endhint %}
+:::
 
 ```yaml
 on:
@@ -283,9 +283,9 @@ Use `async: true` to start tests without blocking your pipeline. Then use [`dcd 
     name: ${{ github.sha }}
 ```
 
-{% hint style="info" %}
+::: info
 With the [DeviceCloud GitHub App](github-checks.md) installed, an async run reports back as a pass/fail check on the pull request, so you can gate merges without keeping a runner alive to wait for results.
-{% endhint %}
+:::
 
 ### Filter tests by tag
 
