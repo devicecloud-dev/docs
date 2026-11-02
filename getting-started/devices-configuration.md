@@ -8,9 +8,9 @@ If you don't specify a device or OS version, then you will be allocated the defa
 
 **iOS:** iPhone 14 (iOS 17)&#x20;
 
-{% hint style="warning" %}
+::: warning
 On the 2nd November the default is moving to iPhone 16 on iOS 26.
-{% endhint %}
+:::
 
 ### Android API Levels
 
@@ -41,9 +41,9 @@ DeviceCloud will default to Pixel 10 unless you pass the `--android-device` flag
 dcd cloud app.apk test.yaml --android-device pixel-6
 ```
 
-{% hint style="info" %}
+::: info
 Pixel 10 runs API levels 36 and 37 only. To run on API level 32-35, pass `--android-device` as well as `--android-api-level`, for example `--android-device pixel-8 --android-api-level 34`. A run that sets only the API level is checked against Pixel 10 and rejected.
-{% endhint %}
+:::
 
 | id                  | Name                                                                                   | Dimensions  | Valid Android API Levels           |
 | ------------------- | -------------------------------------------------------------------------------------- | ----------- | ---------------------------------- |
@@ -61,9 +61,9 @@ Generic Tablet and Pixel 10 Pro Fold runs are billed at the Advanced Android rat
 
 The Pixel 10 Pro Fold starts unfolded; a flow can fold it, see [Foldable Devices](../configuration/foldable-devices.md).
 
-{% hint style="warning" %}
+::: warning
 Pixel 7 is deprecated and we're targeting removal on the 9th November. This date is subject to change based on usage.
-{% endhint %}
+:::
 
 Pixel 6 Pro, Pixel 7 Pro and Generic Tablet on API level 33 were removed on 26 October 2026.
 
@@ -75,9 +75,9 @@ DeviceCloud will default to iOS 17 unless you pass the `--ios-version` flag. Pai
 dcd cloud app.zip test.yaml --ios-device iphone-16 --ios-version 27
 ```
 
-{% hint style="warning" %}
+::: warning
 The default version of iOS is changing to 26 on the 2nd November.
-{% endhint %}
+:::
 
 | id   | Version           |
 | ---- | ----------------- |
@@ -86,9 +86,9 @@ The default version of iOS is changing to 26 on the 2nd November.
 | `18` | 18.6              |
 | `17` | 17.5 (deprecated) |
 
-{% hint style="warning" %}
+::: warning
 iOS 17 is deprecated and we're targeting removal on the 2nd November. This date is subject to change based on usage.
-{% endhint %}
+:::
 
 ### iOS Devices
 
@@ -117,9 +117,9 @@ dcd cloud app.zip test.yaml --ios-device ipad-pro-m5-13 --ios-version 26
 
 iPad and iPhone Duo runs are billed at the Advanced iOS rate, see [pricing](../billing/test-run-billing.md).
 
-{% hint style="warning" %}
+::: warning
 iPhone 15, iPhone 16 Plus, iPhone 16 Pro, iPhone 16 Pro Max and iPad Pro (6th Generation) are deprecated and we're targeting removal on the 2nd November. This date is subject to change based on usage.
-{% endhint %}
+:::
 
 #### Foldables
 

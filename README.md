@@ -109,6 +109,6 @@ Yes. The `@devicecloud.dev/dcd` package ships `dcd-mcp`, a Model Context Protoco
 
 Every account gets community and team support via [Discord](https://discord.gg/gm3mJwcNw8), and you can also email [support@devicecloud.dev](mailto:support@devicecloud.dev). We aim to respond within four hours for urgent queries and three days for non-urgent. Max and Enterprise customers both receive priority email support and Enterprise customers have direct access to the team via Slack Connect. Support hours are 8am–8pm UK time, Monday to Friday. See [Service Level Agreements](legal/service-level-agreements.md).
 
-{% hint style="info" %}
+::: info
 Question not answered here? Ask in our [Discord](https://discord.gg/gm3mJwcNw8) or email [support@devicecloud.dev](mailto:support@devicecloud.dev) and we'll be happy to help.
-{% endhint %}
+:::

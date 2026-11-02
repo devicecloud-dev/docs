@@ -38,8 +38,8 @@ A run that has been queued for more than 6 hours is started first, no matter it'
 
 ## CI integrations
 
-{% tabs %}
-{% tab title="GitHub Actions" %}
+::::tabs
+== GitHub Actions
 ```yaml
 - uses: devicecloud-dev/device-cloud-for-maestro@v2
   with:
@@ -49,9 +49,8 @@ A run that has been queued for more than 6 hours is started first, no matter it'
 ```
 
 See the [`priority` input](../ci-cd/github-actions.md#execution-options).
-{% endtab %}
 
-{% tab title="Bitbucket" %}
+== Bitbucket
 ```yaml
 - pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
   variables:
@@ -62,9 +61,8 @@ See the [`priority` input](../ci-cd/github-actions.md#execution-options).
 ```
 
 See the [pipe variables](../ci-cd/bitbucket-pipelines.md#variables).
-{% endtab %}
 
-{% tab title="Bitrise" %}
+== Bitrise
 Set the step's `priority` input:
 
 ```yaml
@@ -75,9 +73,8 @@ Set the step's `priority` input:
     - workspace: .maestro
     - priority: high
 ```
-{% endtab %}
 
-{% tab title="EAS Workflows" %}
+== EAS Workflows
 The wrapper forwards CLI flags to `dcd cloud`, so add `--priority`:
 
 ```yaml
@@ -89,16 +86,14 @@ The wrapper forwards CLI flags to `dcd cloud`, so add `--priority`:
 ```
 
 The same goes for any other wrapper that passes extra flags through to the CLI.
-{% endtab %}
 
-{% tab title="Any CI" %}
+== Any CI
 ```bash
 npx --yes @devicecloud.dev/dcd@latest cloud app.apk .maestro --priority high --api-key "$DEVICE_CLOUD_API_KEY"
 ```
 
 See [Any CI](../ci-cd/any-ci.md).
-{% endtab %}
-{% endtabs %}
+::::
 
 ## AI agents
 

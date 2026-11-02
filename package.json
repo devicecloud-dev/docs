@@ -1,0 +1,28 @@
+{
+  "name": "devicecloud-docs",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "npm run build && wrangler dev",
+    "check": "node scripts/check-links.mjs",
+    "deploy": "npm run build && npm run check && wrangler deploy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devicecloud-dev/docs.git"
+  },
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/devicecloud-dev/docs/issues"
+  },
+  "homepage": "https://github.com/devicecloud-dev/docs#readme",
+  "devDependencies": {
+    "vitepress": "^1.6.4",
+    "vitepress-plugin-tabs": "^0.9.1",
+    "wrangler": "^4.156.1"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  }
+}

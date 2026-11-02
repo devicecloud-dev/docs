@@ -4,35 +4,32 @@ The DCD CLI is the primary way to interact with DeviceCloud from your terminal o
 
 The CLI is published as `@devicecloud.dev/dcd` on npm and as a standalone binary. The npm package also ships an [MCP server](../mcp/overview.md) (`dcd-mcp`) so AI agents can drive DeviceCloud directly. The standalone binary doesn't include the MCP server.
 
-{% hint style="info" %}
+::: info
 **New in v5:** browser-based [`dcd login`](dcd-login.md) (no more passing a key on every command), a standalone binary installer with `dcd upgrade`, interactive [`dcd live`](dcd-live.md) device sessions, and an [MCP server](../mcp/overview.md). Existing API keys and `dcd cloud` usage continue to work unchanged.
-{% endhint %}
+:::
 
 ## Installation
 
 The recommended install is the standalone binary — it has no dependencies and doesn't require Node.
 
-{% tabs %}
-{% tab title="macOS / Linux" %}
+::::tabs
+== macOS / Linux
 ```bash
 curl -fsSL https://get.devicecloud.dev/install.sh | sh
 ```
-{% endtab %}
 
-{% tab title="Windows" %}
+== Windows
 ```powershell
 irm https://get.devicecloud.dev/install.ps1 | iex
 ```
-{% endtab %}
 
-{% tab title="npm" %}
+== npm
 Requires Node 22 or newer.
 
 ```bash
 npm install -g @devicecloud.dev/dcd
 ```
-{% endtab %}
-{% endtabs %}
+::::
 
 In CI, you can skip a separate install step and run the CLI directly with `npx`:
 
@@ -54,9 +51,9 @@ If you installed via npm, upgrade with npm instead:
 npm install -g @devicecloud.dev/dcd@latest
 ```
 
-{% hint style="info" %}
+::: info
 `dcd upgrade` is only for binary installs. Automatic upgrade is not yet supported on Windows — re-run the PowerShell installer to update.
-{% endhint %}
+:::
 
 ## Authentication
 

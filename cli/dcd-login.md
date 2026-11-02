@@ -20,9 +20,9 @@ This opens your browser to complete sign-in (email OTP or Enterprise SSO). After
 | `--frontend-url <url>` | Override the frontend URL used to complete login |
 | `--org <name\|id>` | Use this team instead of picking one. Teams are matched by name (case-insensitive) or ID, and login fails if you're not a member. |
 
-{% hint style="info" %}
+::: info
 `dcd login` uses a PKCE browser flow with no local server, so it works over SSH and when you open the URL on a different device. A leaked login URL is inert and can't be used to claim your session.
-{% endhint %}
+:::
 
 If you're already logged in, `dcd login` asks for confirmation before replacing the existing session.
 
@@ -56,9 +56,9 @@ dcd whoami
 
 Prints the logged-in user, the active team, and the environment. If you're not logged in, it prints a hint to run `dcd login` or set `DEVICE_CLOUD_API_KEY`.
 
-{% hint style="info" %}
+::: info
 `dcd whoami` only reads the stored session. If you also pass `--api-key` or export `DEVICE_CLOUD_API_KEY`, every other command uses that key — and the key's team — instead of the session shown here.
-{% endhint %}
+:::
 
 ## `dcd switch-org`
 

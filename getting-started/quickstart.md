@@ -12,27 +12,24 @@ dcd cloud <appFile> <flowFile>
 
 The recommended install is the standalone binary — no Node required.
 
-{% tabs %}
-{% tab title="macOS / Linux" %}
+::::tabs
+== macOS / Linux
 ```bash
 curl -fsSL https://get.devicecloud.dev/install.sh | sh
 ```
-{% endtab %}
 
-{% tab title="Windows" %}
+== Windows
 ```powershell
 irm https://get.devicecloud.dev/install.ps1 | iex
 ```
-{% endtab %}
 
-{% tab title="npm" %}
+== npm
 Install [Node 22+](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm), then run:
 
 ```bash
 npm install -g @devicecloud.dev/dcd
 ```
-{% endtab %}
-{% endtabs %}
+::::
 
 ### 2. Authenticate
 
