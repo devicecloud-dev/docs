@@ -76,8 +76,13 @@ dcd cloud app.zip test.yaml --ios-device iphone-17 --ios-version 27
 | `27` | 27.0 (27.1 on the iPhone Duo) |
 | `26` | 26.5                          |
 | `18` | 18.6                          |
+| `17` | 17.5 (deprecated)             |
 
-iOS 17 was removed on 2 November 2026.
+iOS 17 runs only on iPhone 14, so pass `--ios-device iphone-14` with `--ios-version 17`.
+
+{% hint style="warning" %}
+iOS 17 is deprecated and we're targeting removal on the 9th November. This date is subject to change based on usage.
+{% endhint %}
 
 ### iOS Devices
 
@@ -88,24 +93,30 @@ dcd cloud app.zip test.yaml --ios-device ipad-pro-m5-13 --ios-version 26
 ```
 
 {% hint style="info" %}
-A run that sets only the device runs on iOS 26, so a device that doesn't offer iOS 26 needs `--ios-version` as well, for example `--ios-device iphone-14 --ios-version 18` or `--ios-device iphone-18-pro --ios-version 27`. Without it, the run is rejected.
+A run that sets only the device runs on iOS 26, so a device that doesn't offer iOS 26 needs `--ios-version` as well, for example `--ios-device iphone-14` with `--ios-version 17` or `18`, or `--ios-device iphone-18-pro --ios-version 27`. Without it, the run is rejected.
 {% endhint %}
 
-| id                  | Name                       | Dimensions  | Valid iOS versions |
-| ------------------- | -------------------------- | ----------- | ------------------ |
-| `iphone-duo`        | iPhone Duo (starts folded) | 1398 x 2034 | 27                 |
-| `iphone-18-pro-max` | iPhone 18 Pro Max          | 1320 x 2868 | 27                 |
-| `iphone-18-pro`     | iPhone 18 Pro              | 1206 x 2622 | 27                 |
-| `iphone-air`        | iPhone Air                 | 1260 x 2736 | 26, 27             |
-| `iphone-17`         | iPhone 17                  | 1206 x 2622 | 26, 27             |
-| `iphone-16`         | iPhone 16                  | 1179 x 2556 | 18, 26, 27         |
-| `iphone-14`         | iPhone 14                  | 1170 x 2532 | 18                 |
-| `ipad-pro-m5-13`    | iPad Pro 13-inch (M5)      | 2064 x 2752 | 26, 27             |
-| `ipad-pro-m5-11`    | iPad Pro 11-inch (M5)      | 1668 x 2420 | 26, 27             |
+| id                  | Name                           | Dimensions  | Valid iOS versions |
+| ------------------- | ------------------------------ | ----------- | ------------------ |
+| `iphone-duo`        | iPhone Duo (starts folded)     | 1398 x 2034 | 27                 |
+| `iphone-18-pro-max` | iPhone 18 Pro Max              | 1320 x 2868 | 27                 |
+| `iphone-18-pro`     | iPhone 18 Pro                  | 1206 x 2622 | 27                 |
+| `iphone-air`        | iPhone Air                     | 1260 x 2736 | 26, 27             |
+| `iphone-17`         | iPhone 17                      | 1206 x 2622 | 26, 27             |
+| `iphone-16-pro-max` | iPhone 16 Pro Max (deprecated) | 1320 x 2868 | 18, 26, 27         |
+| `iphone-16-pro`     | iPhone 16 Pro (deprecated)     | 1206 x 2622 | 18, 26, 27         |
+| `iphone-16`         | iPhone 16                      | 1179 x 2556 | 18, 26, 27         |
+| `iphone-14`         | iPhone 14                      | 1170 x 2532 | 17, 18             |
+| `ipad-pro-m5-13`    | iPad Pro 13-inch (M5)          | 2064 x 2752 | 26, 27             |
+| `ipad-pro-m5-11`    | iPad Pro 11-inch (M5)          | 1668 x 2420 | 26, 27             |
 
 iPad and iPhone Duo runs are billed at the Advanced iOS rate, see [pricing](../billing/test-run-billing.md).
 
-iPhone 15, iPhone 16 Plus, iPhone 16 Pro, iPhone 16 Pro Max and iPad Pro (6th generation) were removed on 2 November 2026.
+{% hint style="warning" %}
+iPhone 16 Pro and iPhone 16 Pro Max are deprecated and we're targeting removal on the 9th November. This date is subject to change based on usage.
+{% endhint %}
+
+iPhone 15, iPhone 16 Plus and iPad Pro (6th Generation) were removed on 2 November 2026.
 
 #### Foldables
 
