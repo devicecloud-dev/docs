@@ -8,4 +8,4 @@ site:
       path: devicecloud.dev
       default: true
       content:
-        directory: ./devicecloud.dev
+        directory: ./
