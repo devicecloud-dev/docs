@@ -1,0 +1,109 @@
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+
+jobs:
+  claude-review:
+    # Skip PRs we can't review: Dependabot and forks don't get
+    # CLAUDE_CODE_OAUTH_TOKEN, so the action would fail. Bot-opened PRs are
+    # rejected by the action too ("Workflow initiated by non-human actor").
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && !endsWith(github.actor, '[bot]') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # write so the review agent can post its inline comments — with read it
+      # reviews successfully but every posting attempt is denied and the PR
+      # gets nothing (the action still exits 0).
+      pull-requests: write
+      issues: read
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - name: Record start time
+        run: echo "REVIEW_STARTED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
+
+      - name: Run Claude Code Review
+        id: claude-review
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
+          plugins: 'code-review@claude-code-plugins'
+          # --comment is required for the review to be posted to the PR: the
+          # code-review plugin's spec says "If --comment was NOT provided,
+          # stop here. Do not post any GitHub comments." Without it the review
+          # runs and is discarded (the log doesn't even show it unless
+          # show_full_output is enabled).
+          prompt: '/code-review:code-review ${{ github.repository }}/pull/${{ github.event.pull_request.number }} --comment'
+          show_full_output: true
+          # Explicitly allow the posting and reading tools. In headless mode the
+          # plugin's allowed-tools frontmatter doesn't reach them: PR #9's review
+          # hit 46 permission denials and posted nothing despite finding issues.
+          #
+          # The appended prompt keeps the review in the foreground. Headless runs
+          # often backgrounded the reviewer subagents and ended the turn to
+          # "wait" for them, which ends the session: PR #223's review stopped
+          # after 10 turns and posted nothing. Same fix as dcd's workflow.
+          #
+          # Copied from devicecloud-dev/cli. Keep the two in step when fixing either.
+          claude_args: '--model claude-opus-5-5 --allowedTools "mcp__github_comment__update_claude_comment,mcp__github_inline_comment__create_inline_comment,Read,Glob,Grep,WebFetch,Bash(gh:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*)" --append-system-prompt "You are running non-interactively. Never run subagents in the background and never schedule wakeups: ending your turn ends the session. Wait for every reviewer to finish, then post the review comment before you stop. If you stop early because the PR is trivial or needs no review, still post one short PR comment that says so and why. Do not post anything if you stop because you already commented on this PR."'
+          # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
+          # or https://code.claude.com/docs/en/cli-reference for available options
+
+      # The action exits green even when Claude ends its turn before posting
+      # anything. Fail loudly instead of leaving a silent green check.
+      #
+      # The code-review plugin also skips, on purpose, any PR Claude has already
+      # commented on. So a push after the first review posts nothing, and that
+      # is not a failure. Only fail when Claude has never posted on the PR.
+      #
+      # The plugin also stops early on PRs it judges trivial. The prompt above
+      # tells Claude to post a one-line note in that case, so a deliberate skip
+      # leaves a comment and only a real failure trips this check.
+      #
+      # Nor is a PR that edits THIS file: the action refuses to run unless the
+      # workflow is identical to the default branch's ("Workflow validation
+      # failed"), a deliberate guard against a PR rewriting its own reviewer. It
+      # exits green having posted nothing, so pass with a notice instead.
+      - name: Check a review comment was posted
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          SELF: ${{ github.workflow_ref }}
+        run: |
+          # workflow_ref is "owner/repo/.github/workflows/<file>@<ref>".
+          self_path="${SELF#"$REPO"/}"
+          self_path="${self_path%@*}"
+          if gh api "repos/$REPO/pulls/$PR/files" --paginate --jq '.[].filename' | grep -qxF "$self_path"; then
+            echo "::notice::This PR edits $self_path, so the review action skipped it by design (it only runs the default branch's version of its own workflow). No review on this PR."
+            exit 0
+          fi
+
+          # Prints the time of every claude[bot] comment, inline comment and review.
+          claude_posts() {
+            gh api "repos/$REPO/issues/$PR/comments" --paginate \
+              --jq '.[] | select(.user.login == "claude[bot]") | .created_at'
+            gh api "repos/$REPO/pulls/$PR/comments" --paginate \
+              --jq '.[] | select(.user.login == "claude[bot]") | .created_at'
+            gh api "repos/$REPO/pulls/$PR/reviews" --paginate \
+              --jq '.[] | select(.user.login == "claude[bot]") | .submitted_at'
+          }
+          posts=$(claude_posts)
+          new=$(printf '%s\n' "$posts" | awk -v since="$REVIEW_STARTED_AT" 'NF && $0 >= since' | wc -l | tr -d ' ')
+          total=$(printf '%s\n' "$posts" | awk 'NF' | wc -l | tr -d ' ')
+          if [ "$new" -gt 0 ]; then
+            echo "Claude posted $new comment(s)."
+          elif [ "$total" -gt 0 ]; then
+            echo "::notice::No new comment. Claude already reviewed this PR, and the code-review plugin reviews each PR once."
+          else
+            echo "::error::Claude finished without posting a review comment on this PR."
+            exit 1
+          fi
