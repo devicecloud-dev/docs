@@ -10,11 +10,11 @@ Subscriptions have replaced one-off credit purchases. Reach out to support if yo
 
 ### Pro Plan
 
-This subscription costs $25 per month and comes with $25 of usage included which can be used as per [test-run-billing.md](test-run-billing.md "mention").
+This subscription costs $25 per month and comes with $25 of usage included which can be used as per [Test Run Billing](test-run-billing.md).
 
 Additional usage beyond $25 will be billed as overage and charged in your next monthly payment.
 
-This plan lets you run up to 5 iOS and 5 Android tests in parallel. Read about [concurrency-and-parallel-runs.md](../getting-started/concurrency-and-parallel-runs.md "mention") to understand how this may be reduced at peak times.
+This plan lets you run up to 5 iOS and 5 Android tests in parallel. Read about [Concurrency & Parallel Runs](../getting-started/concurrency-and-parallel-runs.md) to understand how this may be reduced at peak times.
 
 If you require support when using this plan, you can contact our team and community via [Discord](https://discord.gg/gm3mJwcNw8).\
 \
@@ -22,15 +22,15 @@ This plan supports unlimited users and unlimited apps. Results are retained for 
 
 ### Max Plan
 
-This subscription costs $200 per month and comes with $200 of usage included which can be used as per [test-run-billing.md](test-run-billing.md "mention").
+This subscription costs $200 per month and comes with $200 of usage included which can be used as per [Test Run Billing](test-run-billing.md).
 
 Additional usage beyond $200 will be billed as overage and charged in your next monthly payment.
 
 This plan lets you run up to 20 iOS and 20 Android tests in parallel.
 
-In addition, it offers **Concurrency Protection** to ensure you always have at least 1 test running even at very busy times. Read more [concurrency-and-parallel-runs.md](../getting-started/concurrency-and-parallel-runs.md "mention") to understand how this works.
+In addition, it offers **Concurrency Protection** to ensure you always have at least 1 test running even at very busy times. Read more [Concurrency & Parallel Runs](../getting-started/concurrency-and-parallel-runs.md) to understand how this works.
 
-This plan supports [enterprise-single-sign-on.md](../security/enterprise-single-sign-on.md "mention") and priority support via email.
+This plan supports [Enterprise SSO](../security/enterprise-single-sign-on.md) and priority support via email.
 
 This plan supports unlimited users and unlimited apps. Results are retained for 6 months.
 

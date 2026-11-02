@@ -2,17 +2,21 @@ import { appendFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { defineConfig } from 'vitepress';
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs';
+import { writeLlmsFiles } from './llms';
+import { SITE, describe, headFor } from './seo';
 import { ROOT, readSummary, repoPathRedirects, sourceRelativeLinks } from './summary';
 
 const { sections, rewrites } = readSummary();
+const title = 'DeviceCloud';
+const description = 'Documentation for DeviceCloud, the fast and affordable Maestro Cloud alternative.';
 
 export default defineConfig({
-  title: 'DeviceCloud',
-  description: 'Documentation for DeviceCloud, the fast and affordable Maestro Cloud alternative.',
+  title,
+  description,
   lang: 'en',
   cleanUrls: true,
   lastUpdated: true,
-  sitemap: { hostname: 'https://docs.devicecloud.dev' },
+  sitemap: { hostname: SITE },
 
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
@@ -28,7 +32,26 @@ export default defineConfig({
     ['meta', { property: 'og:site_name', content: 'DeviceCloud Docs' }],
     ['meta', { property: 'og:image', content: 'https://docs.devicecloud.dev/og-image.png' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    // Cloudflare Web Analytics: no cookies, so no consent banner needed.
+    // The token is public by design. Dashboard: Cloudflare → Analytics & Logs → Web Analytics.
+    [
+      'script',
+      {
+        defer: '',
+        src: 'https://static.cloudflareinsights.com/beacon.min.js',
+        'data-cf-beacon': '{"token": "4ff5256222644de58b626f5701863f1d"}',
+      },
+    ],
   ],
+
+  // A description for each page (its first paragraph, unless front matter sets
+  // one), plus canonical and social tags. See .vitepress/seo.ts.
+  transformPageData(pageData) {
+    describe(pageData, ROOT);
+  },
+  transformHead({ pageData }) {
+    return headFor(pageData, title);
+  },
 
   // Pages live where they always have; SUMMARY.md maps them to their public URLs.
   srcDir: '.',
@@ -39,6 +62,8 @@ export default defineConfig({
   // keep those working too. public/_redirects holds the hand-written ones.
   buildEnd({ outDir }) {
     appendFileSync(join(outDir, '_redirects'), '\n# Generated from SUMMARY.md\n' + repoPathRedirects(rewrites));
+    // /llms.txt, /llms-full.txt and a .md copy of every page. See .vitepress/llms.ts.
+    writeLlmsFiles({ outDir, srcDir: ROOT, rewrites, sections, siteTitle: title, siteDescription: description });
   },
 
   markdown: {

@@ -1,3 +1,7 @@
+---
+description: "The hardware each DeviceCloud test runs on, and the larger runner types, such as M4 for iOS, you can choose for resource-heavy apps and tests."
+---
+
 # Runner Type
 
 By default each test run uses the following underlying hardware specifications:

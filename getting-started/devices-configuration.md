@@ -1,3 +1,7 @@
+---
+description: "Every device, Android API level and iOS version DeviceCloud supports, the defaults you get without flags, and the support policy for adding and removing them."
+---
+
 # Devices & OS Versions
 
 ### Default Devices
@@ -31,7 +35,7 @@ dcd cloud app.apk test.yaml --android-api-level 37
 
 API levels 29-31 (Android 10-12) were removed on 19 October 2026.
 
-Need Google Play? See [google-play-apis.md](../configuration/google-play-apis.md)
+Need Google Play? See [Google Play APIs](../configuration/google-play-apis.md)
 
 ### Android Devices
 
@@ -127,7 +131,7 @@ The iPhone Duo starts folded, on its cover screen, and the Pixel 10 Pro Fold sta
 
 ### Targeting a single flow
 
-The flags above set the device for the whole upload. When only one flow needs a particular device then that flow can name its own device in its YAML instead. See [per-flow-devices.md](../configuration/per-flow-devices.md).
+The flags above set the device for the whole upload. When only one flow needs a particular device then that flow can name its own device in its YAML instead. See [Per-flow Devices](../configuration/per-flow-devices.md).
 
 ### Running your suite across several devices
 

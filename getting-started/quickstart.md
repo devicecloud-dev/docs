@@ -1,3 +1,7 @@
+---
+description: "Install the dcd CLI, log in, and run your first Maestro flow on DeviceCloud. Switching from Maestro Cloud is usually a one-line change."
+---
+
 # Quickstart
 
 The dcd command line is intentionally designed to mimic the Maestro Cloud API. In most cases, you can just change `maestro cloud` to `dcd cloud`:
