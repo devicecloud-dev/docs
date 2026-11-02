@@ -10,11 +10,7 @@ If you don't specify a device or OS version, then you will be allocated the defa
 
 **Android:** Pixel 10 (API level 36)
 
-**iOS:** iPhone 14 (iOS 17)&#x20;
-
-::: warning
-On the 2nd November the default is moving to iPhone 16 on iOS 26.
-:::
+**iOS:** iPhone 16 (iOS 26)
 
 ### Android API Levels
 
@@ -73,57 +69,58 @@ Pixel 6 Pro, Pixel 7 Pro and Generic Tablet on API level 33 were removed on 26 O
 
 ### iOS Versions
 
-DeviceCloud will default to iOS 17 unless you pass the `--ios-version` flag. Pair it with an `--ios-device` that runs that version (see [iOS Devices](devices-configuration.md#ios-devices)), as the default iPhone 14 only runs iOS 17 and 18:
+DeviceCloud will default to iOS 26 unless you pass the `--ios-version` flag. The default iPhone 16 runs iOS 18, 26 and 27, so a run that sets only the version runs on iPhone 16. To run that version on another device, pass an `--ios-device` that runs it as well (see [iOS Devices](devices-configuration.md#ios-devices)):
 
 ```bash
-dcd cloud app.zip test.yaml --ios-device iphone-16 --ios-version 27
+dcd cloud app.zip test.yaml --ios-device iphone-17 --ios-version 27
 ```
 
-::: warning
-The default version of iOS is changing to 26 on the 2nd November.
-:::
-
-| id   | Version           |
-| ---- | ----------------- |
+| id   | Version                       |
+| ---- | ----------------------------- |
 | `27` | 27.0 (27.1 on the iPhone Duo) |
-| `26` | 26.5              |
-| `18` | 18.6              |
-| `17` | 17.5 (deprecated) |
+| `26` | 26.5                          |
+| `18` | 18.6                          |
+| `17` | 17.5 (deprecated)             |
+
+iOS 17 runs only on iPhone 14, so pass `--ios-device iphone-14` with `--ios-version 17`.
 
 ::: warning
-iOS 17 is deprecated and we're targeting removal on the 2nd November. This date is subject to change based on usage.
+iOS 17 is deprecated and we're targeting removal on the 9th November. This date is subject to change based on usage.
 :::
 
 ### iOS Devices
 
-DeviceCloud will default to iPhone 14 unless you pass the `--ios-device` flag. Pass `--ios-version` with it, choosing one of the versions in the device's row:
+DeviceCloud will default to iPhone 16 unless you pass the `--ios-device` flag. Pass `--ios-version` with it, choosing one of the versions in the device's row:
 
 ```bash
 dcd cloud app.zip test.yaml --ios-device ipad-pro-m5-13 --ios-version 26
 ```
 
-| id                  | Name                                   | Dimensions  | Valid iOS versions |
-| ------------------- | -------------------------------------- | ----------- | ------------------ |
-| `iphone-duo`        | iPhone Duo (starts folded)             | 1398 x 2034 | 27                 |
-| `iphone-18-pro-max` | iPhone 18 Pro Max                      | 1320 x 2868 | 27                 |
-| `iphone-18-pro`     | iPhone 18 Pro                          | 1206 x 2622 | 27                 |
-| `iphone-air`        | iPhone Air                             | 1260 x 2736 | 26, 27             |
-| `iphone-17`         | iPhone 17                              | 1206 x 2622 | 26, 27             |
-| `iphone-16-pro-max` | iPhone 16 Pro Max (deprecated)         | 1320 x 2868 | 18, 26, 27         |
-| `iphone-16-pro`     | iPhone 16 Pro (deprecated)             | 1206 x 2622 | 18, 26, 27         |
-| `iphone-16-plus`    | iPhone 16 Plus (deprecated)            | 1290 x 2796 | 26, 27             |
-| `iphone-16`         | iPhone 16                              | 1179 x 2556 | 18, 26, 27         |
-| `iphone-15`         | iPhone 15 (deprecated)                 | 1179 x 2556 | 17                 |
-| `iphone-14`         | iPhone 14                              | 1170 x 2532 | 17, 18             |
-| `ipad-pro-m5-13`    | iPad Pro 13-inch (M5)                  | 2064 x 2752 | 26, 27             |
-| `ipad-pro-m5-11`    | iPad Pro 11-inch (M5)                  | 1668 x 2420 | 26, 27             |
-| `ipad-pro-6th-gen`  | iPad Pro (6th Generation) (deprecated) | 2048 x 2732 | 18, 26, 27         |
+::: info
+A run that sets only the device runs on iOS 26, so a device that doesn't offer iOS 26 needs `--ios-version` as well, for example `--ios-device iphone-14` with `--ios-version 17` or `18`, or `--ios-device iphone-18-pro --ios-version 27`. Without it, the run is rejected.
+:::
+
+| id                  | Name                           | Dimensions  | Valid iOS versions |
+| ------------------- | ------------------------------ | ----------- | ------------------ |
+| `iphone-duo`        | iPhone Duo (starts folded)     | 1398 x 2034 | 27                 |
+| `iphone-18-pro-max` | iPhone 18 Pro Max              | 1320 x 2868 | 27                 |
+| `iphone-18-pro`     | iPhone 18 Pro                  | 1206 x 2622 | 27                 |
+| `iphone-air`        | iPhone Air                     | 1260 x 2736 | 26, 27             |
+| `iphone-17`         | iPhone 17                      | 1206 x 2622 | 26, 27             |
+| `iphone-16-pro-max` | iPhone 16 Pro Max (deprecated) | 1320 x 2868 | 18, 26, 27         |
+| `iphone-16-pro`     | iPhone 16 Pro (deprecated)     | 1206 x 2622 | 18, 26, 27         |
+| `iphone-16`         | iPhone 16                      | 1179 x 2556 | 18, 26, 27         |
+| `iphone-14`         | iPhone 14                      | 1170 x 2532 | 17, 18             |
+| `ipad-pro-m5-13`    | iPad Pro 13-inch (M5)          | 2064 x 2752 | 26, 27             |
+| `ipad-pro-m5-11`    | iPad Pro 11-inch (M5)          | 1668 x 2420 | 26, 27             |
 
 iPad and iPhone Duo runs are billed at the Advanced iOS rate, see [pricing](../billing/test-run-billing.md).
 
 ::: warning
-iPhone 15, iPhone 16 Plus, iPhone 16 Pro, iPhone 16 Pro Max and iPad Pro (6th Generation) are deprecated and we're targeting removal on the 2nd November. This date is subject to change based on usage.
+iPhone 16 Pro and iPhone 16 Pro Max are deprecated and we're targeting removal on the 9th November. This date is subject to change based on usage.
 :::
+
+iPhone 15, iPhone 16 Plus and iPad Pro (6th Generation) were removed on 2 November 2026.
 
 #### Foldables
 
@@ -168,7 +165,7 @@ We will always aim to support the latest versions of iOS and additionally contin
 
 It may be possible in some cases to provide support for a beta version however this will be on a case-by-case basis; please contact our Support team if you would like to request this.
 
-The default configuration will always be the latest even-numbered base iPhone we support running the previous version of iOS, i.e. iPhone 16 running iOS 26. Before we change the default, we will always provide a minimum of 30 days notice. The default becomes iPhone 16 / iOS 26 on 2 November 2026.
+The default configuration will always be the latest even-numbered base iPhone we support running the previous version of iOS, i.e. iPhone 16 running iOS 26. Before we change the default, we will always provide a minimum of 30 days notice. The default has been iPhone 16 / iOS 26 since 2 November 2026.
 
 ### Android Support Policy
 
