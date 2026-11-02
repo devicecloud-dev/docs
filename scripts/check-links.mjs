@@ -20,7 +20,7 @@ for (const f of files) {
     links: [...main.matchAll(/<a [^>]*href="([^"]+)"/g)].map((m) => m[1].replace(/&amp;/g, '&')),
     // GitBook "mention" links ([page.md](page.md "mention")) show the raw file
     // name here, so link text that looks like a file name or anchor is a bug.
-    rawText: [...main.matchAll(/<a [^>]*>([^<]*(?:\.md|^#[\w-]+))<\/a>/g)].map((m) => m[1]),
+    rawText: [...main.matchAll(/<a [^>]*>([^<]*\.md|#[\w-]+)<\/a>/g)].map((m) => m[1]),
   });
 }
 
