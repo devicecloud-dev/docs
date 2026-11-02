@@ -1,2 +1,0 @@
-# Foldable Devices
-
