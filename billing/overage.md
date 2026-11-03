@@ -76,7 +76,6 @@ The full message also gives your usage so far, the cost of the upload, your limi
 
 To start testing again, raise your Overage Limit or wait for your next billing period to start.
 
-Very rarely, two runs submitted at the same moment both pass this check but together go over the limit. The run charged second then fails, and its tests are cancelled with the reason `Cancelled: payment for this run failed.` (see [Results](../api/results.md)).
 
 ## Warnings
 
