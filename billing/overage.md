@@ -81,7 +81,6 @@ To start testing again, raise your Overage Limit or wait for your next billing p
 
 The billing page shows a warning once you've used 80% of your Overage Limit, and another when you reach it. With a limit of `0`, both are based on your included credits instead.
 
-These warnings only appear on the billing page. We don't currently email you about overage, so set a limit your pipelines can safely stop at.
 
 ## Refunds
 
