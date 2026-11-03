@@ -17,6 +17,8 @@ Device Cloud uses standard exit codes to indicate the status of command executio
 2    # Test run explicitly failed
 ```
 
+A run the API refuses to start also exits `1`. That includes HTTP `402` refusals, when a run would take you over your [Overage Limit](../billing/overage.md#when-a-run-would-go-over-the-limit) or a subscription payment is [overdue](../billing/test-run-billing.md#overdue-payments).
+
 A run fails if any of its tests fails or is cancelled, so a run you cancel from the console also exits `2`. With `--async`, `dcd cloud` exits `0` as soon as the run is submitted, whatever the outcome.
 
 ## JSON Output
