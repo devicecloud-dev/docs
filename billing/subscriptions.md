@@ -12,7 +12,7 @@ Subscriptions have replaced one-off credit purchases. Reach out to support if yo
 
 This subscription costs $25 per month and comes with $25 of usage included which can be used as per [Test Run Billing](test-run-billing.md).
 
-Additional usage beyond $25 will be billed as overage and charged in your next monthly payment.
+Additional usage beyond $25 is billed as [overage](overage.md) on your next monthly invoice.
 
 This plan lets you run up to 5 iOS and 5 Android tests in parallel. Read about [Concurrency & Parallel Runs](../getting-started/concurrency-and-parallel-runs.md) to understand how this may be reduced at peak times.
 
@@ -24,7 +24,7 @@ This plan supports unlimited users and unlimited apps. Results are retained for 
 
 This subscription costs $200 per month and comes with $200 of usage included which can be used as per [Test Run Billing](test-run-billing.md).
 
-Additional usage beyond $200 will be billed as overage and charged in your next monthly payment.
+Additional usage beyond $200 is billed as [overage](overage.md) on your next monthly invoice.
 
 This plan lets you run up to 20 iOS and 20 Android tests in parallel.
 
@@ -36,9 +36,9 @@ This plan supports unlimited users and unlimited apps. Results are retained for 
 
 ### Overage Limit
 
-On the Pro and Max plans, overage is capped each billing period so a runaway pipeline can't produce an unexpected bill. By default the **Overage Limit** is 8× your plan's included usage — $200 on Pro and $1,600 on Max — and it applies on top of the usage included in your plan. You can view and change it on the [billing page](https://console.devicecloud.dev/billing), which shows a warning once you've used 80% of it. If you change plan and haven't customised the limit, it moves to the new plan's default.
+On the Pro and Max plans, overage is capped each billing period so a runaway pipeline can't produce an unexpected bill. By default the **Overage Limit** is 8× your plan's included usage: $200 on Pro and $1,600 on Max, on top of the usage included in your plan. Owners and admins can change it on the [billing page](https://console.devicecloud.dev/billing).
 
-Once the limit is reached, new test runs are refused with HTTP `402` (`USAGE_LIMIT_EXCEEDED`) until your next billing period starts or you raise the limit.
+A run that would take you over the limit is refused. See [Overage](overage.md#overage-limit) for how the limit works and what happens when you reach it.
 
 ### Enterprise Plan
 

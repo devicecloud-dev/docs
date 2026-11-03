@@ -93,6 +93,7 @@
 ## Billing
 
 * [Subscriptions](billing/subscriptions.md)
+* [Overage](billing/overage.md)
 * [Test Run Billing](billing/test-run-billing.md)
 
 ## Legal

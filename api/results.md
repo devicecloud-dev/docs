@@ -57,7 +57,9 @@ was cancelled for a recorded reason:
 * `superseded_by:<upload id>` — a newer run from the same CI context replaced
   this one. See [Cancelling superseded runs](../advanced/cancel-previous.md).
 * `Cancelled: payment for this run failed.` — the run's payment failed after
-  its tests were created.
+  its tests were created, for example because it was submitted at the same
+  moment as another run and together they went over your
+  [Overage Limit](../billing/overage.md#when-a-run-would-go-over-the-limit).
 
 A test you cancel yourself has a `null` reason, and so does a retry of a cancelled test. Match on the `superseded_by:`
 prefix rather than comparing whole values, as more reasons may be added.

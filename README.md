@@ -57,6 +57,7 @@ Start with the [Quick Start](getting-started/quickstart.md) to install the CLI a
 
 * [Test Run Billing](billing/test-run-billing.md) - what a single test run costs
 * [Subscriptions](billing/subscriptions.md) - the Pro, Max and Enterprise plans
+* [Overage](billing/overage.md) - usage beyond your plan's included credits, and the Overage Limit
 * [Concurrency & Parallel Runs](getting-started/concurrency-and-parallel-runs.md) - how many of your tests run at once
 
 ## FAQ
@@ -67,7 +68,7 @@ For most projects, yes. The CLI mimics the Maestro Cloud API, so you change `mae
 
 ### How much does it cost?
 
-DeviceCloud bills per test run i.e. a single top-level flow on a single device and are charged at $0.11 for standard iOS and $0.09 for standard Android. iPad, iPhone Duo, Pixel 10 Pro Fold, Google Play, tablet and `m4`, `m1` and `gpu1` (deprecated) runner flows are charged at the advanced rate of $0.15. New accounts get $20 of free credits. See [Test Run Billing](billing/test-run-billing.md).
+DeviceCloud bills per test run i.e. a single top-level flow on a single device and are charged at $0.11 for standard iOS and $0.09 for standard Android. iPad, iPhone Duo, Pixel 10 Pro Fold, Google Play, tablet and `m4`, `m1` and `gpu1` (deprecated) runner flows are charged at the advanced rate of $0.15. New accounts get $20 of free credits. The Pro and Max plans include a set amount of usage each month, and usage beyond that is billed as [overage](billing/overage.md), up to a limit you control. See [Test Run Billing](billing/test-run-billing.md).
 
 ### How many tests can I run in parallel?
 
