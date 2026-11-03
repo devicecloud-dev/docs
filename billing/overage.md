@@ -90,7 +90,7 @@ Tests you cancel before they start are refunded at 75% of their cost. A refund f
 
 ## Other plans
 
-* **Enterprise.** Your agreement sets your overage terms. Contact your account team for details.
+* **Enterprise.** Your agreement sets your overage terms. Contact support for details.
 * **No subscription.** If you only have a prepaid credit balance, there's no overage. Runs are refused once the balance runs out.
 
 If a renewal payment fails, including one with overage on it, see [Overdue payments](test-run-billing.md#overdue-payments).
