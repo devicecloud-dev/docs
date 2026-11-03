@@ -24,7 +24,7 @@ The [billing page](https://console.devicecloud.dev/billing) shows your included 
 
 ## When overage is billed
 
-Overage is billed in arrears. It isn't charged to your card as you go. About once a day, any new overage is added to your next subscription invoice. Each renewal invoice therefore holds two things:
+Overage is billed in arrears. It isn't charged to your card as you go. Overage is calculated daily and added to your next subscription invoice. Each renewal invoice therefore holds two things:
 
 * the plan fee for the billing period that's starting
 * the overage from the billing period that's ending
@@ -84,7 +84,7 @@ The billing page shows a warning once you've used 80% of your Overage Limit, and
 
 ## Refunds
 
-Tests you cancel before they start are refunded at 75% of their cost. A refund for a test paid from overage reduces overage that hasn't been added to an invoice yet. Overage is added about once a day, so the refund usually lands before the overage it cancels is invoiced. If that overage is already on your next invoice, the refund comes off any further overage in the same billing period instead. See [Cancelled tests](test-run-billing.md#cancelled-tests).
+Tests you cancel before they start are refunded at 75% of their cost. A refund for a test paid from overage reduces overage that hasn't been added to an invoice yet. Overage is calculated daily, so the refund usually lands before the overage it cancels is invoiced. If that overage is already on your next invoice, the refund comes off any further overage in the same billing period instead. See [Cancelled tests](test-run-billing.md#cancelled-tests).
 
 ## Other plans
 
