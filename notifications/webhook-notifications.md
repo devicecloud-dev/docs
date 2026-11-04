@@ -7,7 +7,7 @@ DeviceCloud can send a POST request to a URL of your choice when a set of tests 
 Head to the [console settings](https://console.devicecloud.dev/settings?section=notifications) page, open the **Notifications** section and find **Webhooks**. Enter your webhook URL there.
 
 ::: info
-Only HTTPS URLs are supported.
+Only HTTPS URLs are supported. The hostname must resolve to a public IP address. Redirects aren't followed, so use the final URL: a `3xx` response counts as a failed delivery.
 :::
 
 You can also send a test request from the console to verify that your endpoint processes webhooks correctly. The test payload will contain information from your most recent job (or sample data if there isn't one yet), is marked with `"test": true`, and uses an `upload_id` prefixed with `test_` and a webhook ID prefixed with `wh_test_`.
