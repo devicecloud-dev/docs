@@ -5,7 +5,6 @@ nobody is waiting on their verdict, but they still sit in the queue and still
 cost you. `--cancel-previous` cancels them when the newer run is submitted.
 
 It is opt-in and off by default. Without it, nothing about your runs changes.
-Requires DeviceCloud CLI 5.6.0 or later.
 
 ## What it does
 

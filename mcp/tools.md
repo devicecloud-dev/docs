@@ -86,7 +86,7 @@ This tool consumes test credits. It's annotated as destructive so clients can pr
 | `priority` | `low` \| `normal` \| `high` | [Run priority](../configuration/run-priority.md) (default `normal`). Reorders only your organisation's own queued runs. |
 | `configFile` | string | Path to a [workspace config](../configuration/workspace-config.md) |
 | `ignoreShaCheck` | boolean | Force re-upload of the binary even if an identical one already exists |
-| `encrypt` | boolean | Encrypt the binary, flows and `env` values on your machine before upload. Omit it to follow `DCD_ENCRYPT`, then the default, which is on; pass `false` to upload them unencrypted. See [Data Encryption](../security/security-overview.md#data-encryption) |
+| `encrypt` | boolean | Apply envelope encryption to the binary, flows and `env` values on your machine before upload. Omit it to follow `DCD_ENCRYPT`, then the default, which is on; pass `false` to turn it off (the upload is still encrypted in transit). See [Data Encryption](../security/security-overview.md#data-encryption) |
 | `dryRun` | boolean | Preview which flows would run, without submitting |
 | `wait` | boolean | Block until the run completes instead of returning immediately (default `false`) |
 | `waitTimeoutSeconds` | integer | Max seconds to wait when `wait` is true, 30–3600 (default `600`). A flow with [extended runtime](../configuration/extended-runtime.md) can run for up to 20 minutes, so raise this when the run includes one |

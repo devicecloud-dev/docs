@@ -9,8 +9,6 @@ Maestro's `assertScreenshot` command compares the current screen against a refer
 DeviceCloud runs these assertions like any other command. The one thing you need to set up is getting your baseline images onto the device.
 
 ::: warning
-**Requires DeviceCloud CLI 5.6.0 or later**, the first version that uploads your baselines.
-
 **Use Maestro 2.10.0**, the default version. Maestro 2.2.0 resolves the baseline path against a different working directory and reports `Screenshot file not found` no matter where you put the file, so don't pin `--maestro-version` to it — see [Maestro Versions](../configuration/maestro-versions.md).
 :::
 
