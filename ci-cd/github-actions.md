@@ -127,7 +127,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `env` | No | — | Multiline list of environment variables (`KEY=value`) to inject into flows. |
 | `name` | No | PR title or commit message | Custom name for this test run, visible in the console. Defaults to the pull request's title on PR events, the commit message on push events, and the commit SHA otherwise. |
 | `retry` | No | `0` | Number of retries on failure (max `2`). Retries are free — same as pressing retry in the UI. |
-| `report` | No | — | Report format. Options: `junit`, `html`, and from v2.6.0 `html-detailed`. See [Report Formats](../artifacts/report-formats.md). |
+| `report` | No | — | Report format. Options: `junit`, `html`, and from v2.6.0 `html-detailed`. `html-detailed` is deprecated and will be removed on 7 December 2026. See [Report Formats](../artifacts/report-formats.md). |
 
 ### Android-Specific Options
 

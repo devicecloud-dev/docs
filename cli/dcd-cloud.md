@@ -110,10 +110,10 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 | `--json-file` | Write JSON results to a file (`<upload_id>_dcd.json` by default). Exits `0` even if the test run fails; infrastructure errors still exit `1` |
 | `--json-file-name <name>` | Custom name (or relative path) for the JSON file. Requires `--json-file` |
 | `--dry-run` | Simulate the run without uploading or triggering a test — useful for debugging workflow issues |
-| `--report <format>`, `--format` | Generate and download a report. Options: `junit`, `html`, `html-detailed`, `allure` (see [Report Formats](../artifacts/report-formats.md)) |
+| `--report <format>`, `--format` | Generate and download a report. Options: `junit`, `html`, `html-detailed`, `allure`. `html-detailed` and `allure` are deprecated and will be removed on 7 December 2026 (see [Report Formats](../artifacts/report-formats.md)) |
 | `--junit-path <path>` | Output path for the JUnit report (requires `--report junit`) |
 | `--html-path <path>` | Output path for the HTML report (requires `--report html` or `html-detailed`). The HTML report downloads as a ZIP, so use a `.zip` path such as `./report.zip` |
-| `--allure-path <path>` | Output path for the Allure report (requires `--report allure`) |
+| `--allure-path <path>` | Output path for the Allure report (requires `--report allure`). Deprecated, removed on 7 December 2026 |
 | `--download-artifacts <ALL\|FAILED>` | Download test artifacts after completion (see [Artifacts](../artifacts/artifacts.md)) |
 | `--artifacts-path <path>` | Output path for the artifacts zip (default `./artifacts.zip`). Requires `--download-artifacts` |
 | `--debug` | Enable verbose debug logging |

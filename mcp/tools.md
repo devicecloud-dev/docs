@@ -52,8 +52,8 @@ Download a completed run's artifacts zip (videos, logs and screenshots) to local
 | `uploadId` | string | **Required.** UUID of the upload to download artifacts for |
 | `type` | `ALL` \| `FAILED` | Which tests to include artifacts for (default `ALL`) |
 | `artifactsPath` | string | Where to write the artifacts zip (default `./artifacts.zip`) |
-| `report` | `junit` \| `allure` \| `html` | Also download a formatted report of this type |
-| `reportPath` | string | Where to write the report (defaults by type: `report.xml` for `junit`, otherwise `report.html`). The `html` report is a ZIP, so give it a `.zip` path |
+| `report` | `junit` \| `allure` \| `html` | Also download a formatted report of this type. `allure` is deprecated and will be removed on 7 December 2026 |
+| `reportPath` | string | Where to write the report (defaults by type: `report.xml` for `junit`, `report.zip` for `html`, `report.html` for `allure`). The `html` report is a ZIP |
 
 Returns `{ uploadId, artifactsPath, reportPath, warnings }`. A **non-empty `warnings` array means a download could not be produced** — most often because the run has no results yet. An empty array means success. See [Artifacts & Downloads](../artifacts/artifacts.md) and [Report Formats](../artifacts/report-formats.md).
 

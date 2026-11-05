@@ -41,15 +41,15 @@ dcd artifacts --upload-id <uuid> --download-artifacts ALL
 # Download a JUnit report
 dcd artifacts --upload-id <uuid> --report junit
 
-# Download an Allure report
-dcd artifacts --upload-id <uuid> --report allure --allure-path ./allure-report.html
+# Download the HTML report
+dcd artifacts --upload-id <uuid> --report html --html-path ./report.zip
 ```
 
 See the [`dcd artifacts` reference](../cli/dcd-artifacts.md) for the full flag list.
 
 ### From the Console
 
-Each test result in the [DeviceCloud console](https://console.devicecloud.dev) has a download menu with the files for that result: `commands.json`, the Maestro log, Maestro stdout and stderr, the logcat (Android), the HTML, JUnit and Allure reports (when the run generated them), the app binary (APK or APP build) and the workspace. Videos and screenshots are shown on the result page; to download them in bulk, use `--download-artifacts` or `dcd artifacts`.
+Each test result in the [DeviceCloud console](https://console.devicecloud.dev) has a download menu with the files for that result: `commands.json`, the Maestro log, Maestro stdout and stderr, the logcat (Android), the HTML, JUnit and Allure reports (when the run generated them; Allure is deprecated and will be removed on 7 December 2026), the app binary (APK or APP build) and the workspace. Videos and screenshots are shown on the result page; to download them in bulk, use `--download-artifacts` or `dcd artifacts`.
 
 ## Artifact Archive Structure
 
