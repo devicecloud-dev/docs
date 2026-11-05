@@ -31,9 +31,9 @@ dcd artifacts --upload-id <id> [flags]
 
 | Flag | Description |
 |------|-------------|
-| `--report <format>` | Download a test report. Options: `junit`, `html`, `html-detailed`, `allure`. Mutually exclusive with `--download-artifacts` |
-| `--allure-path <path>` | Output path for the Allure report (default: `./report.html`). Requires `--report allure` |
-| `--html-path <path>` | Output path for the HTML report (default: `./report.html`). Requires `--report html` or `html-detailed`. The HTML report downloads as a ZIP, so use a `.zip` path such as `./report.zip` |
+| `--report <format>` | Download a test report. Options: `junit`, `html`, `html-detailed`, `allure`. `html-detailed` and `allure` are deprecated and will be removed on 7 December 2026. Mutually exclusive with `--download-artifacts` |
+| `--allure-path <path>` | Output path for the Allure report (default: `./report.html`). Requires `--report allure`. Deprecated, removed on 7 December 2026 |
+| `--html-path <path>` | Output path for the HTML report (default: `./report.zip`). Requires `--report html` or `html-detailed`. The HTML report downloads as a ZIP, so use a `.zip` path |
 | `--junit-path <path>` | Output path for the JUnit report (default: `./report.xml`). Requires `--report junit` |
 
 ### Other
@@ -59,9 +59,9 @@ dcd artifacts --upload-id 123e4567-e89b-12d3-a456-426614174000 --download-artifa
 dcd artifacts --upload-id 123e4567-e89b-12d3-a456-426614174000 --report junit
 ```
 
-**Download an Allure report to a custom path:**
+**Download the HTML report to a custom path:**
 ```bash
-dcd artifacts --upload-id 123e4567-e89b-12d3-a456-426614174000 --report allure --allure-path ./allure-report.html
+dcd artifacts --upload-id 123e4567-e89b-12d3-a456-426614174000 --report html --html-path ./html-report.zip
 ```
 
 ## Using with Async Runs

@@ -68,7 +68,7 @@ Most pipe variables map to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flag of th
 | `IOS_DEVICE`, `IOS_VERSION` | iOS device + version. |
 | `ENV_LIST` | Newline-separated `KEY=VALUE` env vars injected into flows. |
 | `INCLUDE_TAGS` / `EXCLUDE_TAGS` | Filter flows by Maestro tag. |
-| `REPORT` | `junit`, `html`, `html-detailed`, `allure`. |
+| `REPORT` | `junit`, `html`, `html-detailed`, `allure`. `html-detailed` and `allure` are deprecated and will be removed on 7 December 2026. See [Report Formats](../artifacts/report-formats.md). |
 | `JUNIT_PATH` | Where to write the JUnit report (default `./report.xml`). |
 | `DOWNLOAD_ARTIFACTS` | `ALL` or `FAILED` — downloads logs/screenshots/videos. |
 | `ASYNC` | `"true"` to fire-and-forget. |

@@ -92,7 +92,7 @@ There are first-class integrations for GitHub Actions, Bitrise, Bitbucket Pipeli
 
 ### How do I get videos, logs and test reports?
 
-Pass `--download-artifacts ALL` (or `FAILED`) to a `dcd cloud` run, or fetch them after the fact with `dcd artifacts --upload-id <uuid> --download-artifacts ALL`. Each result in the console also has a download menu for its logs, reports, app binary and workspace. Reports are available as `junit`, `html`, `html-detailed` and `allure` via `--report`. See [Artifacts & Downloads](artifacts/artifacts.md) and [Report Formats](artifacts/report-formats.md).
+Pass `--download-artifacts ALL` (or `FAILED`) to a `dcd cloud` run, or fetch them after the fact with `dcd artifacts --upload-id <uuid> --download-artifacts ALL`. Each result in the console also has a download menu for its logs, reports, app binary and workspace. Reports are available as `junit` and `html` via `--report`. `html-detailed` and `allure` are deprecated and will be removed on 7 December 2026. See [Artifacts & Downloads](artifacts/artifacts.md) and [Report Formats](artifacts/report-formats.md).
 
 ### Is there a time limit on a test?
 
