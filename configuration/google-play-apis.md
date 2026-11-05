@@ -65,7 +65,7 @@ Pass the device and API level together on Google Play runs:
 dcd cloud ... --google-play --android-device pixel-8 --android-api-level 34
 ```
 
-If you pass only one of them, DeviceCloud picks the other so the pair has a Google Play image: a device runs on its Google Play API level, and an API level runs on a Google Play device that offers it. If you pass neither, the run uses the default Android device, Pixel 10 on API 36, which has a Google Play image. A device with no Google Play image, or an API level no Google Play device offers, is rejected. Older CLI versions check a single value against an older default device instead, so update the CLI if one of these is refused.
+If you pass only one of them, DeviceCloud picks the other so the pair has a Google Play image: a device runs on its Google Play API level, and an API level runs on a Google Play device that offers it. If you pass neither, the run uses the default Android device, Pixel 10 on API 36, which has a Google Play image. A device with no Google Play image, or an API level no Google Play device offers, is rejected.
 
 If only some flows opt in with `DEVICECLOUD_OVERRIDE_GOOGLE_PLAY`, those flows are resolved the same way, from the device and API level the flow names, then the ones the upload names. A flow that opts in and names neither runs on Pixel 10 on API 36. To choose the device, pin it on the upload, or on those flows with [per-flow devices](per-flow-devices.md).
 
