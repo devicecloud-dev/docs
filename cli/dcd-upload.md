@@ -21,7 +21,7 @@ dcd upload <app-file> [flags]
 | `--api-key <key>` | Your DeviceCloud API key. Defaults to `DEVICE_CLOUD_API_KEY` env var |
 | `--app-url <url>` | Signed URL to an Expo iOS build (`.tar.gz`), used instead of `<app-file>`. The archive is downloaded and extracted automatically |
 | `--ignore-sha-check` | Force re-upload even if a binary with the same SHA already exists |
-| `--encrypt` / `--no-encrypt` | Encryption is on by default (CLI 5.7.0 and later): the binary is encrypted on your machine before upload. Pass `--no-encrypt` (or set `DCD_ENCRYPT=0`) to upload it unencrypted |
+| `--encrypt` / `--no-encrypt` | Encryption is on by default: the binary is encrypted on your machine before upload. Pass `--no-encrypt` (or set `DCD_ENCRYPT=0`) to upload it unencrypted |
 | `--json` | Output the binary ID as JSON |
 | `--debug` | Enable verbose debug logging |
 

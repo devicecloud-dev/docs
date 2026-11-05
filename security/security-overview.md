@@ -24,7 +24,7 @@ DeviceCloud stores customer data and performs processing using Supabase and Rail
 
 Data held by our database and file storage providers is encrypted at rest with AES-256, and data sent over the internet is encrypted in transit via TLS. Credentials get additional protection at the application level: API keys are stored only as a one-way hash, and access tokens for connected services (such as Slack) are encrypted before being stored in the database.
 
-Your uploads are also encrypted end to end by default. The CLI (5.7.0 and later) encrypts your app binary, flows and environment variables on your machine before they are uploaded, each with its own key, so the copies held in our storage and caches are encrypted. Only our API holds the key needed to decrypt them. To upload without this encryption, pass `--no-encrypt` or set `DCD_ENCRYPT=0`. Older CLI versions encrypt only when you pass `--encrypt` or set `DCD_ENCRYPT=1`.
+Your uploads are also encrypted end to end by default. The CLI encrypts your app binary, flows and environment variables on your machine before they are uploaded, each with its own key, so the copies held in our storage and caches are encrypted. Only our API holds the key needed to decrypt them. To upload without this encryption, pass `--no-encrypt` or set `DCD_ENCRYPT=0`. Older CLI versions encrypt only when you pass `--encrypt` or set `DCD_ENCRYPT=1`.
 
 ### Data Retention <a href="#data-retention" id="data-retention"></a>
 

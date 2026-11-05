@@ -103,12 +103,12 @@ The standalone binary installers also read these:
 
 | Variable | Description |
 |----------|-------------|
-| `DCD_VERSION` | Install a specific version instead of the latest stable release, e.g. `5.5.0` |
+| `DCD_VERSION` | Install a specific version instead of the latest stable release, e.g. `5.11.1` |
 | `DCD_BETA` | Set to `1` to install the latest beta |
 | `DCD_INSTALL_DIR` | Where to install the binary (default `~/.dcd/bin`, or `$env:USERPROFILE\.dcd\bin` on Windows) |
 
 ```bash
-curl -fsSL https://get.devicecloud.dev/install.sh | DCD_VERSION=5.5.0 sh
+curl -fsSL https://get.devicecloud.dev/install.sh | DCD_VERSION=5.11.1 sh
 ```
 
 ## Telemetry

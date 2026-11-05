@@ -35,7 +35,7 @@ If `flows` is omitted, all `.yaml` / `.yml` files at the top level of the direct
 
 ### `includedPaths`
 
-Glob patterns selecting extra **non-flow** files to upload alongside your flows. Requires DeviceCloud CLI 5.6.0 or later; older versions warn that the key is unknown and upload nothing extra.
+Glob patterns selecting extra **non-flow** files to upload alongside your flows.
 
 The CLI works out what to upload by reading your flows, so it only picks up files a command actually references by a literal path — `addMedia`, `assertScreenshot`, `runFlow` and `runScript` arguments. A path that contains a variable (`screenshots/${DCD_DEVICE}/home.png`), and anything else your test needs on the device, is invisible to it and silently absent from the run. `includedPaths` is how you declare those files.
 
