@@ -60,7 +60,7 @@ iPhone upload charges that one flow at the advanced rate, and the rest at the st
 
 - You cannot target across platforms in the same upload.
 
-- On the `m1` and `gpu1` [runner types](runner-type.md), a flow's device must be on API level 34 or above (up to 37 on `m1`). Google Play is available on `m1` only, on `pixel-8` (API 34) and `pixel-10` (API 36, 37). Generic Tablet isn't available on them.
+- On the `m1` [runner type](runner-type.md), a flow's device must be on API level 34 to 37. Google Play is available only on `pixel-8` (API 34) and `pixel-10` (API 36, 37), and Generic Tablet isn't available.
 
 ## Running a suite across several devices
 

@@ -110,12 +110,12 @@ If you build with EAS, download the build artifact in an earlier step and pass t
 |-------|----------|---------|-------------|
 | `android-device` | No | `pixel-10` | Android device model. Options: `pixel-6`, `pixel-7` (deprecated), `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl`, `pixel-10-pro-fold`, `pixel-11`, `generic-tablet`. |
 | `android-api-level` | No | `36` | Android API level. Options: `32`, `33`, `34`, `35`, `36`, `37`. |
-| `ios-device` | No | — | iOS device model. Options: `iphone-14`, `iphone-16`, `iphone-16-pro` (deprecated), `iphone-16-pro-max` (deprecated), `iphone-17`, `iphone-air`, `iphone-18-pro`, `iphone-18-pro-max`, `iphone-duo`, `ipad-pro-m5-11`, `ipad-pro-m5-13`. |
+| `ios-device` | No | — | iOS device model. Options: `iphone-14`, `iphone-16`, `iphone-16-pro` (deprecated), `iphone-17`, `iphone-air`, `iphone-18-pro`, `iphone-18-pro-max`, `iphone-duo`, `ipad-pro-m5-11`, `ipad-pro-m5-13`. |
 | `ios-version` | No | `26` | Major iOS version. Options: `17` (deprecated), `18`, `26`, `27`. |
 | `device-locale` | No | — | Device locale in `ISO-639-1_ISO-3166-1` format (e.g. `de_DE`). See [Device Locale](../configuration/device-locale.md). |
 | `orientation` | No | `0` | Android only. Device orientation in degrees. Options: `0`, `90`. |
 | `google-play` | No | `false` | Android only. Run flows against Google Play devices. |
-| `runner-type` | No | `default` | Runner type. Options: `default`, `cpu1`, `gpu1` (deprecated), `m1`, `m4`. `gpu1`, `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
+| `runner-type` | No | `default` | Runner type. Options: `default`, `cpu1`, `m1`, `m4`. `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
 
 See the [Devices & OS Versions](../getting-started/devices-configuration.md) page for the full availability matrix.
 

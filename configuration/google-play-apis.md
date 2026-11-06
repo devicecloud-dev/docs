@@ -57,7 +57,7 @@ Google Play APIs are available on these devices:
 
 Pixel 7 is targeted for removal on 9 November 2026, subject to change based on usage, so move Google Play runs to `pixel-8` (to stay on API 34) or `pixel-10`.
 
-On the `m1` [runner type](runner-type.md), Google Play is available on `pixel-8` (API `34`) and `pixel-10` (API `36`, `37`). It isn't available on `gpu1`.
+On the `m1` [runner type](runner-type.md), Google Play is available on `pixel-8` (API `34`) and `pixel-10` (API `36`, `37`).
 
 Pass the device and API level together on Google Play runs:
 
