@@ -1,7 +1,7 @@
 # MCP Server
 
 ::: info
-This page covers `dcd-mcp`, the older server. For new setups, use `dcd mcp` from the CLI or the hosted server: see [Connect an AI Agent](connect.md).
+This page covers `dcd-mcp`, the older server. For new setups, use `dcd mcp` from the CLI: see [Connect an AI Agent](connect.md).
 :::
 
 The `@devicecloud.dev/dcd` package ships a second binary, `dcd-mcp` — a [Model Context Protocol](https://modelcontextprotocol.io) server that lets AI agents (Claude, Cursor, VS Code, and other MCP clients) drive DeviceCloud directly: list devices, submit cloud test runs, check status, and download artifacts.

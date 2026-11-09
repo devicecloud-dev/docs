@@ -34,15 +34,6 @@ In CI and other non-interactive environments, use an API key.
 2. Open **Settings → API Keys**
 3. Copy the key
 
-### Access
-
-When you create a key, **Access** sets what it can do:
-
-- **Full access**: everything an API key can do.
-- **Device sessions only**: for [AI agents](../mcp/connect.md). The key starts and drives device sessions and uploads builds and flows, but it can't start test runs or read their results.
-
-A key's access can't be changed after it's created.
-
 ### Using an API key
 
 Set it as an environment variable so you don't have to pass it on every command:
