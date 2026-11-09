@@ -27,25 +27,24 @@ on:
     branches: [main]
 ```
 
-::: warning
-If you use `pull_request_target` to run tests from forked PRs, explicitly check out the PR HEAD to ensure you're testing the changed code. Be aware that `pull_request_target` runs with your repository's secrets, including your DeviceCloud API key, so anything the job runs from a fork's checkout (build scripts, and the flows themselves) runs with access to them. Only run it on PRs you've reviewed, for example by requiring approval through a GitHub environment.
-:::
+### Pull requests from forks
+
+GitHub doesn't pass secrets to `pull_request` runs from a fork, so `DCD_API_KEY` is empty and the DeviceCloud step fails. To skip the job on fork PRs instead of failing it, add a condition to the job:
 
 ```yaml
-on:
-  push:
-    branches: [main]
-  pull_request_target:
-    branches: [main]
 jobs:
   run-maestro-on-dcd:
     name: Run Flows on DeviceCloud
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
 ```
+
+We don't recommend switching to `pull_request_target` to test forks. It runs with your repository's secrets, including your DeviceCloud API key, so a fork's build scripts and flows would run with access to them. GitHub also restricts it now:
+
+- Since 20 July 2026, `actions/checkout` refuses to check out a fork's code in a `pull_request_target` run unless you set its `allow-unsafe-pr-checkout` input.
+- From 2 December 2026, GitHub blocks `pull_request_target` in public repositories unless an Actions policy (**Settings** > **Actions** > **Policies**) allows it.
+
+If you still need it, allow the event for that workflow in an Actions policy, set `allow-unsafe-pr-checkout: true` on the checkout step, and only run it on PRs you've reviewed, for example by requiring approval through a GitHub environment.
 
 ## Platform Examples
 
