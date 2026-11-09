@@ -1,5 +1,9 @@
 # MCP Server
 
+::: info
+This page covers `dcd-mcp`, the older server. For new setups, use `dcd mcp` from the CLI or the hosted server: see [Connect an AI Agent](connect.md).
+:::
+
 The `@devicecloud.dev/dcd` package ships a second binary, `dcd-mcp` — a [Model Context Protocol](https://modelcontextprotocol.io) server that lets AI agents (Claude, Cursor, VS Code, and other MCP clients) drive DeviceCloud directly: list devices, submit cloud test runs, check status, and download artifacts.
 
 ::: warning
@@ -29,7 +33,7 @@ Add the server to your MCP client's configuration. It runs over stdio via `npx` 
 The `--package=` form matters: it tells `npx` to run the package's `dcd-mcp` binary. Without it, `npx` runs the `dcd` CLI instead, which rejects `dcd-mcp` as an unknown command.
 
 ::: info
-The MCP server ships in the npm package only. The standalone `dcd` binary doesn't include it, so you need Node even if you installed the CLI with the binary installer.
+`dcd-mcp` ships in the npm package only, so it needs Node even if you installed the CLI with the binary installer. The standalone binary has [`dcd mcp`](connect.md) instead, which serves the same tools.
 :::
 
 ## Authentication
@@ -43,8 +47,8 @@ When both are present, the environment variable wins.
 
 Credentials are resolved lazily on the first tool call, not at startup — so your client can connect and enumerate the tools before you've supplied a key, and a bad credential surfaces as a tool error rather than a server that won't start.
 
-::: warning
-The server resolves credentials once and reuses them for as long as it runs. A `dcd login` session is not refreshed after that, so a long-running server starts failing once the session expires, until you restart it. Use an API key for servers that stay running.
+::: info
+The server renews a `dcd login` session as it runs. If the session ends, for example after `dcd logout`, run `dcd login` again. You don't need to restart the server. For an agent that runs unattended, such as in CI, use an API key.
 :::
 
 ## Tools

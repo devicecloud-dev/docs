@@ -106,7 +106,7 @@ claude mcp add --scope user --transport http devicecloud https://api.devicecloud
   --header "Authorization: Bearer <your-api-key>"
 ```
 
-When you create a key for an agent, choose **Device sessions only** under **Access**. That key can start and drive devices, but it can't start test runs or read their results.
+When you create a key for an agent, choose **Device sessions only** under [Access](../getting-started/api-keys.md#access). That key can start and drive devices, but it can't start test runs or read their results.
 
 ## Through the CLI: `dcd mcp`
 
@@ -120,7 +120,7 @@ When you create a key for an agent, choose **Device sessions only** under **Acce
 dcd mcp install claude-code    # or claude-desktop, codex, cursor, vscode
 ```
 
-Leave out the client to pick from a list. Add `--read-only` for a server that offers only the tools that change nothing, or `--print` to see what it would add without changing anything. For Claude Code, Codex and VS Code it runs their own `mcp add` command. For Claude Desktop and Cursor it adds an entry to their config file and keeps everything else in it. Restart the app afterwards.
+If your dcd has no `dcd mcp`, or `dcd mcp install` doesn't list your client, update the CLI first (`dcd upgrade`, or `npm install -g @devicecloud.dev/dcd` for the npm package). Leave out the client to pick from a list. Add `--read-only` for a server that offers only the tools that change nothing, or `--print` to see what it would add without changing anything. For Claude Code, Codex and VS Code it runs their own `mcp add` command. For Claude Desktop and Cursor it adds an entry to their config file and keeps everything else in it. Restart the app afterwards.
 
 ### Setting it up by hand
 
@@ -170,7 +170,7 @@ codex mcp add devicecloud -- dcd mcp
 
 To run the npm package instead of an installed dcd, use `npx` as the command, with the arguments `-y`, `@devicecloud.dev/dcd` and `mcp`. That needs Node 22 or later.
 
-`dcd mcp` signs in like the CLI: with your `dcd login` session, or with `DEVICE_CLOUD_API_KEY` set in the server's `env`. For read-only, add `--read-only` after `mcp` in the arguments, or set `DCD_MCP_READONLY=1`.
+`dcd mcp` signs in like the CLI: with your `dcd login` session, which it renews as it runs, or with `DEVICE_CLOUD_API_KEY` set in the server's `env`. For an agent that runs unattended, such as in CI, use an API key. For read-only, add `--read-only` after `mcp` in the arguments, or set `DCD_MCP_READONLY=1`.
 
 ## Connected apps
 

@@ -82,4 +82,4 @@ The session from `dcd login` is written to:
 - `$XDG_CONFIG_HOME/dcd/config.json`, or
 - `~/.dcd/config.json` if `XDG_CONFIG_HOME` is not set
 
-The file is created with `0600` permissions (owner read/write only) and holds your session tokens and the active team. When a command starts, the CLI refreshes the session if it's about to expire, so you should rarely need to log in again. A process that keeps running, such as the [MCP server](../mcp/overview.md), doesn't refresh its session, so use an API key for long-running processes.
+The file is created with `0600` permissions (owner read/write only) and holds your session tokens and the active team. The CLI refreshes the session when it's about to expire, both when a command starts and while a process keeps running, such as the [MCP server](../mcp/connect.md), so you should rarely need to log in again.

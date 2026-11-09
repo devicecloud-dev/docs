@@ -16,7 +16,7 @@ This opens your browser, where you sign in (email OTP or Enterprise SSO) and aut
 - `$XDG_CONFIG_HOME/dcd/config.json`, or
 - `~/.dcd/config.json` if `XDG_CONFIG_HOME` is not set
 
-The file is written with `0600` permissions (owner read/write only). When a command starts, the CLI refreshes the session if it's about to expire — you generally only log in again if you log out or switch machines. Long-running processes such as the [MCP server](../mcp/overview.md) don't refresh their session, so use an API key for those.
+The file is written with `0600` permissions (owner read/write only). The CLI refreshes the session when it's about to expire, both when a command starts and while a process keeps running, such as the [MCP server](../mcp/connect.md). You generally only log in again if you log out or switch machines.
 
 ::: info
 No browser on the box (e.g. over SSH)? Run `dcd login --no-browser` and the CLI prints a URL to open elsewhere.
@@ -33,6 +33,15 @@ In CI and other non-interactive environments, use an API key.
 1. Log in to the [console](https://console.devicecloud.dev/settings)
 2. Open **Settings → API Keys**
 3. Copy the key
+
+### Access
+
+When you create a key, **Access** sets what it can do:
+
+- **Full access**: everything an API key can do.
+- **Device sessions only**: for [AI agents](../mcp/connect.md). The key starts and drives device sessions and uploads builds and flows, but it can't start test runs or read their results.
+
+A key's access can't be changed after it's created.
 
 ### Using an API key
 
