@@ -71,6 +71,7 @@
 
 ## AI Agents & MCP
 
+* [Connect an AI Agent](mcp/connect.md)
 * [MCP Server](mcp/overview.md)
 * [Tools Reference](mcp/tools.md)
 
