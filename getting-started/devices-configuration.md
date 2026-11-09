@@ -62,7 +62,7 @@ Generic Tablet and Pixel 10 Pro Fold runs are billed at the Advanced Android rat
 The Pixel 10 Pro Fold starts unfolded; a flow can fold it, see [Foldable Devices](../configuration/foldable-devices.md).
 
 ::: warning
-Pixel 7 is deprecated and we're targeting removal on the 9th November. This date is subject to change based on usage.
+Pixel 7 is deprecated and we're targeting removal on 23 November 2026. This date is subject to change based on usage.
 :::
 
 Pixel 6 Pro, Pixel 7 Pro and Generic Tablet on API level 33 were removed on 26 October 2026.
@@ -85,7 +85,7 @@ dcd cloud app.zip test.yaml --ios-device iphone-17 --ios-version 27
 iOS 17 runs only on iPhone 14, so pass `--ios-device iphone-14` with `--ios-version 17`.
 
 ::: warning
-iOS 17 is deprecated and we're targeting removal on the 9th November. This date is subject to change based on usage.
+iOS 17 is deprecated and we're targeting removal on 23 November 2026. This date is subject to change based on usage.
 :::
 
 ### iOS Devices
