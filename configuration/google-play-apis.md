@@ -55,9 +55,9 @@ Google Play APIs are available on these devices:
 | `pixel-10` | `36`, `37` |
 | `pixel-7` (deprecated) | `34` |
 
-Pixel 7 is targeted for removal on 9 November 2026, subject to change based on usage, so move Google Play runs to `pixel-8` (to stay on API 34) or `pixel-10`.
+Pixel 7 is targeted for removal on 23 November 2026, subject to change based on usage, so move Google Play runs to `pixel-8` (to stay on API 34) or `pixel-10`.
 
-On the `m1` [runner type](runner-type.md), Google Play is available on `pixel-8` (API `34`) and `pixel-10` (API `36`, `37`). It isn't available on `gpu1`.
+On the `m1` [runner type](runner-type.md), Google Play is available on `pixel-8` (API `34`) and `pixel-10` (API `36`, `37`).
 
 Pass the device and API level together on Google Play runs:
 
@@ -95,7 +95,7 @@ env:
 ### What to check
 
 * **arm64-v8a native code.** The `m1` emulators run arm64-v8a code only. If your APK ships native libraries, it must include arm64-v8a ones. A build cut down to `x86_64` for emulators won't install, so DeviceCloud rejects `m1` runs for it with an error saying so. Builds with no native code run as they are.
-* **Devices.** Google Play on `m1` runs on `pixel-8` (API `34`) and `pixel-10` (API `36`, `37`). Pixel 7 isn't offered on `m1`, because it is removed on 9 November 2026.
+* **Devices.** Google Play on `m1` runs on `pixel-8` (API `34`) and `pixel-10` (API `36`, `37`). Pixel 7 isn't offered on `m1`, because its removal is targeted for 23 November 2026.
 * **Concurrency.** Google Play runs on `m1` count towards your `m1` limit, not your `cpu1` limit. [Concurrency Protection](../getting-started/concurrency-and-parallel-runs.md) doesn't cover `m1`.
 
 Google Play images work the same way on both runner types: they come with Google Play Services and the Play Store, the price is the same, and they can't be rooted, so the [device date and time override](device-datetime.md) isn't applied.

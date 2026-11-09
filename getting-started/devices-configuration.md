@@ -62,7 +62,7 @@ Generic Tablet and Pixel 10 Pro Fold runs are billed at the Advanced Android rat
 The Pixel 10 Pro Fold starts unfolded; a flow can fold it, see [Foldable Devices](../configuration/foldable-devices.md).
 
 ::: warning
-Pixel 7 is deprecated and we're targeting removal on the 9th November. This date is subject to change based on usage.
+Pixel 7 is deprecated and we're targeting removal on 23 November 2026. This date is subject to change based on usage.
 :::
 
 Pixel 6 Pro, Pixel 7 Pro and Generic Tablet on API level 33 were removed on 26 October 2026.
@@ -85,7 +85,7 @@ dcd cloud app.zip test.yaml --ios-device iphone-17 --ios-version 27
 iOS 17 runs only on iPhone 14, so pass `--ios-device iphone-14` with `--ios-version 17`.
 
 ::: warning
-iOS 17 is deprecated and we're targeting removal on the 9th November. This date is subject to change based on usage.
+iOS 17 is deprecated and we're targeting removal on 23 November 2026. This date is subject to change based on usage.
 :::
 
 ### iOS Devices
@@ -100,25 +100,26 @@ dcd cloud app.zip test.yaml --ios-device ipad-pro-m5-13 --ios-version 26
 A run that sets only the device runs on iOS 26, so a device that doesn't offer iOS 26 needs `--ios-version` as well, for example `--ios-device iphone-14` with `--ios-version 17` or `18`, or `--ios-device iphone-18-pro --ios-version 27`. Without it, the run is rejected.
 :::
 
-| id                  | Name                           | Dimensions  | Valid iOS versions |
-| ------------------- | ------------------------------ | ----------- | ------------------ |
-| `iphone-duo`        | iPhone Duo (starts folded)     | 1398 x 2034 | 27                 |
-| `iphone-18-pro-max` | iPhone 18 Pro Max              | 1320 x 2868 | 27                 |
-| `iphone-18-pro`     | iPhone 18 Pro                  | 1206 x 2622 | 27                 |
-| `iphone-air`        | iPhone Air                     | 1260 x 2736 | 26, 27             |
-| `iphone-17`         | iPhone 17                      | 1206 x 2622 | 26, 27             |
-| `iphone-16-pro-max` | iPhone 16 Pro Max (deprecated) | 1320 x 2868 | 18, 26, 27         |
-| `iphone-16-pro`     | iPhone 16 Pro (deprecated)     | 1206 x 2622 | 18, 26, 27         |
-| `iphone-16`         | iPhone 16                      | 1179 x 2556 | 18, 26, 27         |
-| `iphone-14`         | iPhone 14                      | 1170 x 2532 | 17, 18             |
-| `ipad-pro-m5-13`    | iPad Pro 13-inch (M5)          | 2064 x 2752 | 26, 27             |
-| `ipad-pro-m5-11`    | iPad Pro 11-inch (M5)          | 1668 x 2420 | 26, 27             |
+| id                  | Name                       | Dimensions  | Valid iOS versions |
+| ------------------- | -------------------------- | ----------- | ------------------ |
+| `iphone-duo`        | iPhone Duo (starts folded) | 1398 x 2034 | 27                 |
+| `iphone-18-pro-max` | iPhone 18 Pro Max          | 1320 x 2868 | 27                 |
+| `iphone-18-pro`     | iPhone 18 Pro              | 1206 x 2622 | 27                 |
+| `iphone-air`        | iPhone Air                 | 1260 x 2736 | 26, 27             |
+| `iphone-17`         | iPhone 17                  | 1206 x 2622 | 26, 27             |
+| `iphone-16-pro`     | iPhone 16 Pro (deprecated) | 1206 x 2622 | 18, 26, 27         |
+| `iphone-16`         | iPhone 16                  | 1179 x 2556 | 18, 26, 27         |
+| `iphone-14`         | iPhone 14                  | 1170 x 2532 | 17, 18             |
+| `ipad-pro-m5-13`    | iPad Pro 13-inch (M5)      | 2064 x 2752 | 26, 27             |
+| `ipad-pro-m5-11`    | iPad Pro 11-inch (M5)      | 1668 x 2420 | 26, 27             |
 
 iPad and iPhone Duo runs are billed at the Advanced iOS rate, see [pricing](../billing/test-run-billing.md).
 
 ::: warning
-iPhone 16 Pro and iPhone 16 Pro Max are deprecated and we're targeting removal on the 9th November. This date is subject to change based on usage.
+iPhone 16 Pro is deprecated and we're targeting removal on 7 December 2026; this is subject to change based on usage. Runs that target it will be rejected once it's removed, so move them to `iphone-16` (the default), `iphone-17`, `iphone-air`, `iphone-18-pro` or `iphone-18-pro-max`.
 :::
+
+iPhone 16 Pro Max was removed on 9 November 2026, and runs that target it are rejected. Move them to `iphone-16` (the default), `iphone-17`, `iphone-air`, `iphone-18-pro` or `iphone-18-pro-max`. `iphone-18-pro` and `iphone-18-pro-max` run iOS 27 only, so pass `--ios-version 27` with them.
 
 iPhone 15, iPhone 16 Plus and iPad Pro (6th Generation) were removed on 2 November 2026.
 

@@ -6,13 +6,13 @@ Limits are set per platform and [runner type](../configuration/runner-type.md). 
 
 The plans come with these limits:
 
-| Plan | iOS `default` | iOS `m4` | Android `cpu1` (default) | Android `gpu1` (deprecated) | Android `m1` |
-|------|---------------|----------|--------------------------|----------------|--------------|
-| Pro | up to 5 | up to 5 | up to 5 | up to 2 | up to 5 |
-| Max | up to 20, with 1 protected | up to 5 | up to 20, with 1 protected | up to 2 | up to 20 |
+| Plan | iOS `default` | iOS `m4` | Android `cpu1` (default) | Android `m1` |
+|------|---------------|----------|--------------------------|--------------|
+| Pro | up to 5 | up to 5 | up to 5 | up to 5 |
+| Max | up to 20, with 1 protected | up to 5 | up to 20, with 1 protected | up to 20 |
 
 ::: warning
-The `gpu1` runner type is deprecated and will be removed on 9 November 2026, after which its runs use `cpu1` and count towards the `cpu1` limit. See [Runner Type](../configuration/runner-type.md).
+The `gpu1` runner type was removed on 9 November 2026. Runs that still pass it run on `cpu1` and count towards the `cpu1` limit. See [Runner Type](../configuration/runner-type.md).
 :::
 
 ::: info
