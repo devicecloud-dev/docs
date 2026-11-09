@@ -4,7 +4,7 @@ description: "Connect Claude Code, Cursor, VS Code, Claude Desktop, Codex or ano
 
 # Connect an AI Agent
 
-DeviceCloud's [MCP](https://modelcontextprotocol.io) server gives an AI agent such as Claude Code, Cursor, VS Code, Claude Desktop or Codex the tools to drive cloud devices and run cloud tests. You connect it in one of two ways:
+DeviceCloud's [MCP](https://modelcontextprotocol.io) server lets an AI agent, such as Claude Code, Cursor, VS Code, Claude Desktop or Codex, drive cloud devices and run cloud tests. You connect it in one of two ways:
 
 | | Install | Tools | Use it when |
 | --- | --- | --- | --- |
