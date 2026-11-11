@@ -2,7 +2,7 @@
 
 The REST API behind [Agent Devices](../mcp/agent-devices.md). The MCP tools call these same endpoints. Authenticate with an [API key](../getting-started/api-keys.md) in `x-app-api-key`, as for the rest of the [REST API](overview.md#authentication). A key limited to **Device sessions only** can reach these endpoints, the hosted MCP server and the build upload endpoints, but nothing else.
 
-A session is named by its `id` (for example `brave-teal-otter`) in every path. Every response includes a `session` block: its state, time and idle time left, cost so far, warnings and console link. [The tool reference](../mcp/agent-devices-tools.md#the-session-block) lists its fields.
+A session is named by its `id` (for example `brave-teal-otter`) in every path. Every successful response about a session includes a `session` block: its state, time and idle time left, cost so far, warnings and console link. [The tool reference](../mcp/agent-devices-tools.md#the-session-block) lists its fields.
 
 ## Sessions
 
@@ -67,15 +67,15 @@ These endpoints have their own limits instead of the API's general one:
 
 | What | Limit |
 |---|---|
-| Commands (install, launch, actions, run, asking a person) | 60 a minute, per session |
-| Reads (status, inspect, screenshot, logs, timeline, artifacts) | 240 a minute, per session |
+| Commands (install, launch, actions, run, asking a person, handing back) | 60 a minute, per session |
+| Reads (status, inspect, screenshot, logs, a command's status, whether a person is needed, timeline, artifacts) | 240 a minute, per session |
 | Session lists, device models and bundle uploads | 120 a minute, per organization |
 
-Over a limit, the API answers `LIVE_RATE_LIMITED` with how long to wait. Stopping an open session is never refused.
+Over a limit, the API answers HTTP `429` with `LIVE_RATE_LIMITED`, and `retry_after_s` in the body is how many seconds to wait. Stopping an open session is never refused. Starting a session has no per-minute limit, but your organization can only have so many sessions open at once (`LIVE_CONCURRENCY_LIMIT`).
 
 ## Errors
 
-Errors are JSON with a `message` and a stable `error` code:
+Errors are JSON with a `message`. Most also have a stable `error` code, listed below. A few have only the `message`, such as a malformed request to start a session.
 
 | Code | Meaning |
 |---|---|

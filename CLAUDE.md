@@ -19,6 +19,10 @@ CONTRIBUTING.md for how to run, write and add pages.
 - **`security/ip-addresses.md` is generated** from the IP-addresses API by
   `.github/scripts/render-ip-addresses.mjs`. Never edit it by hand. Change the
   script instead.
+- **`public/openapi.yaml` describes the REST API section** and is served at
+  https://docs.devicecloud.dev/openapi.yaml. A change to a page under `api/`
+  changes the spec in the same PR. CI lints it with Redocly
+  (`npx @redocly/cli@2.71.2 lint public/openapi.yaml`).
 - **Callouts and tabs use VitePress syntax** (`::: info`, `::: warning`,
   `::::tabs` with `== Tab name`). GitBook syntax (`{% hint %}`, `{% tabs %}`)
   no longer renders.

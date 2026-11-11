@@ -38,6 +38,8 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm run check
+      - name: Lint the OpenAPI spec
+        run: npx --yes @redocly/cli@2.71.2 lint public/openapi.yaml
 
       - name: Deploy to Cloudflare
         if: github.ref == 'refs/heads/main'

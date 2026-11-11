@@ -1,0 +1,4817 @@
+# DeviceCloud REST API: OpenAPI 3.1 description of the endpoints in the
+# docs' REST API section, served at https://docs.devicecloud.dev/openapi.yaml.
+# Written by hand from dcd/api (the code wins over the pages) and checked
+# against real responses. Change it with any page under api/. Lint:
+#   npx @redocly/cli@2.71.2 lint public/openapi.yaml
+openapi: 3.1.0
+info:
+  title: DeviceCloud REST API
+  version: 1.0.0
+  summary: Test results, run status, flow analytics and device sessions for DeviceCloud.
+  description: |
+    The DeviceCloud REST API gives you programmatic access to the same data as the
+    console: test runs and their results, reports and artifacts, flow analytics,
+    and device sessions for AI agents.
+
+    To start test runs, use the [`dcd` CLI](https://docs.devicecloud.dev/cli-reference/cloud)
+    or one of the CI integrations. This API reads their results.
+
+    ## Authentication
+
+    Send an API key in the `x-app-api-key` header. Create keys in the console under
+    **Settings → API Keys**. A missing or invalid key answers `403`.
+
+    A DeviceCloud login session also works, which is how the CLI authenticates after
+    `dcd login`: send `Authorization: Bearer <access-token>` together with
+    `x-dcd-org: <team-id>`. For scripts and CI, use an API key.
+
+    A key limited to **Device sessions only** reaches the `/device/*` endpoints and
+    nothing else in this API. Other endpoints answer it with `403` and
+    `"error": "API_KEY_SCOPE"`.
+
+    ## Rate limits
+
+    The API accepts up to 60 requests a minute. Over the limit it answers `429`
+    with a `Retry-After` header. These endpoints aren't rate limited, so they're
+    safe to poll: `GET /results/{uploadId}`, `GET /uploads/status` and
+    `GET /ip-addresses`. The device session endpoints have their own limits,
+    described on each one.
+
+    ## Errors
+
+    Errors are JSON. Most have the shape of `ErrorEnvelope`: the HTTP status in
+    `statusCode`, a human-readable `message`, and sometimes a machine-readable
+    `error` code. Match on `error` codes, never on `message` text.
+
+    `GET /results/{uploadId}`, `GET /flows` and `GET /flows/runs` are the exception.
+    They answer HTTP `200` and report a client error in the body as
+    `{ "statusCode": 400, "message": "..." }`, so check `statusCode` in the body
+    as well as the HTTP status.
+
+    ## Compatibility
+
+    Fields may be added to any response at any time. Ignore fields you don't know.
+    Existing fields aren't renamed, removed or re-typed.
+  termsOfService: https://docs.devicecloud.dev/legal/terms-and-conditions
+  contact:
+    name: DeviceCloud support
+    email: support@devicecloud.dev
+    url: https://docs.devicecloud.dev
+externalDocs:
+  description: REST API guide
+  url: https://docs.devicecloud.dev/rest-api/overview
+servers:
+  - url: https://api.devicecloud.dev
+security:
+  - apiKey: []
+  - bearerAuth: []
+    orgHeader: []
+tags:
+  - name: Uploads
+    description: |
+      An upload is one test run: the flows and app binary sent by `dcd cloud`, and
+      the tests they produced. List uploads and poll a run's status.
+    externalDocs:
+      url: https://docs.devicecloud.dev/rest-api/uploads
+  - name: Results
+    description: |
+      One upload's test results, its JUnit and HTML reports, and its artifacts
+      (logs, screenshots and videos).
+    externalDocs:
+      url: https://docs.devicecloud.dev/rest-api/results
+  - name: Flows
+    description: |
+      Analytics across every run of each flow file: pass rates, run counts,
+      durations and run history. Pass rates are `passed / (passed + failed)`,
+      leaving out cancelled and unfinished runs.
+    externalDocs:
+      url: https://docs.devicecloud.dev/rest-api/flows
+  - name: Device sessions
+    description: >-
+      Start, list, read and stop device sessions (cloud iOS simulators and Android emulators), and list the
+      devices you can start. A session is named by its id, such as `brave-teal-otter`, in every path.
+  - name: Device control
+    description: >-
+      Drive a session's device: install and launch apps, send one action, run Maestro flows, and read the
+      screen and the app's device logs.
+  - name: Flow bundles
+    description: >-
+      Upload a zip of Maestro flows, then run it with `run` as `flowUploadId`. A bundle can be up to 50 MB.
+  - name: Human handoff
+    description: >-
+      Ask a person to do something on the device that an agent can't, such as entering a 2FA code, and find
+      out when they hand the session back.
+  - name: Session artifacts
+    description: >-
+      What a session leaves behind: the timeline of its commands, its video, its device log, and the screen
+      after each action.
+  - name: IP addresses
+    description: |
+      The test runners' egress IP addresses, for firewall allow-lists. No API key
+      needed.
+    externalDocs:
+      url: https://docs.devicecloud.dev/rest-api/ip-addresses
+paths:
+  /uploads/list:
+    get:
+      operationId: listUploads
+      tags: [Uploads]
+      summary: List uploads
+      description: |
+        Your organization's uploads, newest first.
+      parameters:
+        - name: name
+          in: query
+          description: |
+            Only uploads with this name. `*` is a wildcard, and a name with a
+            wildcard matches without regard to case. Without one, the match is exact.
+          schema:
+            type: string
+          example: Nightly*
+        - name: from
+          in: query
+          description: |
+            Only uploads created at or after this time. ISO 8601: a date
+            (`2026-01-01`) or a date and time (`2026-01-01T00:00:00Z`).
+          schema:
+            type: string
+          example: '2026-01-01'
+        - name: to
+          in: query
+          description: |
+            Only uploads created at or before this time. A date without a time
+            means midnight at the start of that day (UTC), so `to=2026-01-31`
+            leaves out uploads made on 31 January. Use `2026-02-01` or
+            `2026-01-31T23:59:59Z` to include them.
+          schema:
+            type: string
+          example: '2026-02-01'
+        - name: limit
+          in: query
+          description: How many uploads to return. At most 1,000 come back per request.
+          schema:
+            type: integer
+            minimum: 1
+            default: 20
+        - name: offset
+          in: query
+          description: How many uploads to skip, for paging.
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: A page of uploads.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadList'
+        '400':
+          description: '`from` or `to` isn''t ISO 8601, `from` is after `to`, or `limit` or `offset` isn''t a valid number.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+              example:
+                statusCode: 400
+                message: '"from" date must be before or equal to "to" date'
+                error: '"from" date must be before or equal to "to" date'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/KeyCheckUnavailable'
+  /uploads/status:
+    get:
+      operationId: getUploadStatus
+      tags: [Uploads]
+      summary: Get upload status
+      description: |
+        The overall status of a run and the latest attempt of each of its tests.
+        Made for polling: this endpoint isn't rate limited.
+
+        The overall `status` is worked out from the tests:
+
+        - `FAILED` as soon as any test has failed or been cancelled, even while
+          others still run. Check `tests` if you need every test to finish.
+        - Otherwise `RUNNING`, `PENDING` or `QUEUED` while tests are in progress.
+        - `PASSED` when every test has passed.
+
+        Pass `uploadId` or `name`. With both, `uploadId` is tried first.
+      parameters:
+        - name: uploadId
+          in: query
+          description: The upload's ID.
+          schema:
+            type: string
+            format: uuid
+        - name: name
+          in: query
+          description: The upload's name. When several uploads share it, the most recent one.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The run's status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadStatus'
+        '400':
+          description: Neither `uploadId` nor `name` was given, or `uploadId` isn't a UUID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+              examples:
+                missing:
+                  summary: Neither parameter
+                  value:
+                    statusCode: 400
+                    message: Either uploadId or name must be provided
+                    error: Either uploadId or name must be provided
+                notUuid:
+                  summary: Malformed upload ID
+                  value:
+                    statusCode: 400
+                    message: Validation failed (uuid is expected)
+                    error: Bad Request
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: No upload in your organization matches.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+              example:
+                statusCode: 404
+                message: Upload not found
+                error: Upload not found
+        '503':
+          $ref: '#/components/responses/KeyCheckUnavailable'
+  /results/{uploadId}:
+    get:
+      operationId: getResults
+      tags: [Results]
+      summary: Get results
+      description: |
+        Every test result for an upload, including each retry as its own entry.
+        Made for polling: this endpoint isn't rate limited.
+
+        The full view includes each test's run settings (`config`) and stored files
+        (`result_files`, with the step log inlined when it is 512 KB or smaller), so
+        large uploads can run to several megabytes. To follow a run's progress, use
+        `view=summary`, or `GET /uploads/status` if you only need the latest
+        attempt of each test.
+
+        Responses carry an `ETag`. Send it back in `If-None-Match`, with
+        `Cache-Control: max-age=0`, and the API answers `304` with no body when
+        nothing has changed. (Fetch-based clients add `Cache-Control: no-cache`
+        to a request with `If-None-Match`, and the API then always sends the full
+        response.)
+
+        An upload ID with no results in your organization answers an empty
+        `results` list, not `404`.
+      parameters:
+        - $ref: '#/components/parameters/UploadId'
+        - name: view
+          in: query
+          description: |
+            `summary` returns only the fields needed to follow a run's progress:
+            `id`, `test_file_name`, `status`, `fail_reason`, `duration_seconds`,
+            `retry_of`, `cancellation_reason`, `simulator_name`, and a `config`
+            holding only `deviceName` and `osVersion`. Any other value, or none,
+            returns the full view.
+          schema:
+            type: string
+            enum: [summary]
+        - $ref: '#/components/parameters/IfNoneMatch'
+      responses:
+        '200':
+          description: |
+            The results, or an error reported in the body (`statusCode: 400`).
+          headers:
+            ETag:
+              $ref: '#/components/headers/ETag'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ResultsResponse'
+                  - $ref: '#/components/schemas/InBodyError'
+              examples:
+                summary:
+                  summary: view=summary
+                  value:
+                    statusCode: 200
+                    results:
+                      - id: 4500
+                        test_file_name: ./login-test/onboarding.yaml
+                        status: FAILED
+                        retry_of: null
+                        duration_seconds: 32
+                        fail_reason: 'Element not found: Text matching regex next.* not found'
+                        cancellation_reason: null
+                        simulator_name: pixel-7-api-34
+                        config:
+                          deviceName: Pixel 7
+                          osVersion: '34'
+                full:
+                  summary: Full view (config and result_files shortened)
+                  value:
+                    statusCode: 200
+                    results:
+                      - id: 4500
+                        test_file_name: ./login-test/onboarding.yaml
+                        test_name: Onboarding
+                        status: FAILED
+                        retry_of: null
+                        created_at: '2026-01-15T10:30:04.512+00:00'
+                        duration_seconds: 32
+                        fail_reason: 'Element not found: Text matching regex next.* not found'
+                        cancellation_reason: null
+                        simulator_name: pixel-7-api-34
+                        platform: android
+                        config:
+                          deviceName: Pixel 7
+                          osVersion: '34'
+                          maestroVersion: 2.10.0
+                        result_files:
+                          id: 9120
+                          result_id: 4500
+                          main_log: '...'
+        '304':
+          $ref: '#/components/responses/NotModified'
+        '400':
+          $ref: '#/components/responses/InvalidUploadId'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '503':
+          $ref: '#/components/responses/KeyCheckUnavailable'
+  /results/{uploadId}/report:
+    get:
+      operationId: getJunitReport
+      tags: [Results]
+      summary: Download JUnit report
+      description: |
+        One JUnit XML report covering the latest attempt of every test in the
+        upload. A test without a report of its own gets a generated test case, so
+        every test appears.
+      parameters:
+        - $ref: '#/components/parameters/UploadId'
+      responses:
+        '200':
+          description: The JUnit XML report.
+          headers:
+            Content-Disposition:
+              description: '`attachment; filename="report-<uploadId>.xml"`'
+              schema:
+                type: string
+          content:
+            application/xml:
+              schema:
+                type: string
+              example: |
+                <?xml version="1.0" encoding="UTF-8"?>
+                <testsuites tests="1" failures="0" time="11">
+                  <testsuite name="Test Suite" device="pixel-7-api-34" tests="1" failures="0" time="11">
+                    <testcase id="Onboarding" name="Onboarding" classname="Onboarding" time="11"/>
+                  </testsuite>
+                </testsuites>
+        '400':
+          $ref: '#/components/responses/InvalidUploadId'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NoResults'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/MessageOnlyServerError'
+        '503':
+          $ref: '#/components/responses/KeyCheckUnavailable'
+  /results/{uploadId}/html-report:
+    get:
+      operationId: getHtmlReport
+      tags: [Results]
+      summary: Download HTML report
+      description: |
+        A ZIP holding the HTML report (`report.html`) with the screenshots, videos
+        and logs of the latest attempt of every test in the upload.
+      parameters:
+        - $ref: '#/components/parameters/UploadId'
+      responses:
+        '200':
+          description: The report as a ZIP, streamed as it is built.
+          headers:
+            Content-Disposition:
+              description: '`attachment; filename="report-<uploadId>.zip"`'
+              schema:
+                type: string
+          content:
+            application/zip:
+              schema:
+                type: string
+                contentMediaType: application/zip
+        '400':
+          $ref: '#/components/responses/InvalidUploadId'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NoResults'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/MessageOnlyServerError'
+        '503':
+          $ref: '#/components/responses/KeyCheckUnavailable'
+  /results/{uploadId}/download:
+    post:
+      operationId: downloadArtifacts
+      tags: [Results]
+      summary: Download artifacts
+      description: |
+        A ZIP of the upload's logs, screenshots and videos. Each test's files sit in
+        a folder named after its result ID (`<resultId>/logs/`,
+        `<resultId>/screenshots/`, `<resultId>/videos/`), and a JUnit `report.xml`
+        for the whole upload is at the root. Every attempt's files are included,
+        so a retried test's failed attempt can still be debugged.
+
+        The ZIP is streamed as it is built. An error after streaming starts ends
+        the download early, leaving a truncated ZIP.
+      parameters:
+        - $ref: '#/components/parameters/UploadId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DownloadArtifactsRequest'
+            example:
+              results: FAILED
+      responses:
+        '201':
+          description: The artifacts as a ZIP. (The status is `201`, not `200`.)
+          headers:
+            Content-Disposition:
+              description: '`attachment; filename="artifacts.zip"`'
+              schema:
+                type: string
+          content:
+            application/zip:
+              schema:
+                type: string
+                contentMediaType: application/zip
+        '400':
+          description: |
+            `uploadId` isn't a UUID (JSON), or the ZIP couldn't be assembled (the
+            message as plain text).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+              example:
+                statusCode: 400
+                message: Validation failed (uuid is expected)
+                error: Bad Request
+            text/plain:
+              schema:
+                type: string
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NoResults'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/KeyCheckUnavailable'
+  /flows:
+    get:
+      operationId: getFlowSummaries
+      tags: [Flows]
+      summary: Get flow summaries
+      description: |
+        Pass rates, run counts, average durations and a daily status breakdown for
+        every flow in your organization: the data on the console's Flows page.
+      parameters:
+        - $ref: '#/components/parameters/PlatformFilter'
+        - $ref: '#/components/parameters/AppIdFilter'
+        - name: days
+          in: query
+          description: How many days to look back. Ignored when `startDate` is set.
+          schema:
+            type: integer
+            minimum: 1
+            default: 14
+        - name: startDate
+          in: query
+          description: |
+            Start of the range, ISO 8601. Overrides `days`. A date without a time
+            means the start of that day (UTC).
+          schema:
+            type: string
+          example: '2026-01-01'
+        - name: endDate
+          in: query
+          description: |
+            End of the range, ISO 8601. A date without a time means the end of that
+            day (UTC). Defaults to now when `startDate` is set.
+          schema:
+            type: string
+          example: '2026-01-31'
+        - name: tags
+          in: query
+          description: Comma-separated tags. Returns flows that have any of them.
+          schema:
+            type: string
+          example: smoke,critical
+      responses:
+        '200':
+          description: |
+            The flow summaries, or an error reported in the body (`statusCode: 400`),
+            for example for a date that can't be read.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/FlowSummaries'
+                  - $ref: '#/components/schemas/InBodyError'
+              examples:
+                flows:
+                  summary: Flow summaries
+                  value:
+                    statusCode: 200
+                    flows:
+                      - flow_name: Login flow
+                        file_name: ./auth/login.yaml
+                        pass_rate: 94
+                        passed_runs: 47
+                        failed_runs: 3
+                        total_runs: 50
+                        avg_duration: 38
+                        last_run_at: '2026-01-31T14:22:00+00:00'
+                        tags: [smoke, critical]
+                        daily_data:
+                          '2026-01-31': passed
+                          '2026-01-30': mixed
+                          '2026-01-29': null
+                error:
+                  summary: Error in the body
+                  value:
+                    statusCode: 400
+                    message: Invalid time value
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        '503':
+          $ref: '#/components/responses/KeyCheckUnavailable'
+  /flows/runs:
+    get:
+      operationId: getFlowRuns
+      tags: [Flows]
+      summary: Get runs for a flow
+      description: Every run of one flow file, newest first.
+      parameters:
+        - name: fileName
+          in: query
+          required: true
+          description: |
+            The flow's path exactly as `GET /flows` returns it in `file_name`:
+            relative to the flows folder that was run, starting with `./`.
+          schema:
+            type: string
+          example: ./auth/login.yaml
+        - $ref: '#/components/parameters/PlatformFilter'
+        - $ref: '#/components/parameters/AppIdFilter'
+        - name: limit
+          in: query
+          description: How many runs to return.
+          schema:
+            type: integer
+            minimum: 1
+            default: 100
+        - name: startDate
+          in: query
+          description: Start of the range, ISO 8601. A date without a time means the start of that day (UTC).
+          schema:
+            type: string
+        - name: endDate
+          in: query
+          description: End of the range, ISO 8601. A date without a time means the end of that day (UTC).
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            The runs, or an error reported in the body (`statusCode: 400`), for
+            example when `fileName` is missing.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/FlowRuns'
+                  - $ref: '#/components/schemas/InBodyError'
+              examples:
+                runs:
+                  summary: Runs
+                  value:
+                    statusCode: 200
+                    runs:
+                      - id: 4500
+                        status: PASSED
+                        createdAt: '2026-01-31T14:22:00+00:00'
+                        durationSeconds: 35
+                        failReason: null
+                        testUploadId: 7e12345f-eb12-12ec-a30b-bb1234f1d12a
+                        uploadName: Nightly regression
+                missing:
+                  summary: Missing fileName
+                  value:
+                    statusCode: 400
+                    message: fileName query parameter is required.
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        '503':
+          $ref: '#/components/responses/KeyCheckUnavailable'
+  /device/models:
+    get:
+      tags: [Device sessions]
+      operationId: listDeviceModels
+      summary: List the devices you can start
+      description: >-
+        The iOS simulators and Android emulators a session can ask for, with their OS versions and defaults.
+        `model`, `os` and `googlePlay` on POST /device/sessions take these values. The list follows the fleet,
+        so a device or OS version the fleet drops disappears here too.
+      responses:
+        '200':
+          description: The devices, by platform.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceCatalogue'
+              example:
+                ios:
+                  - model: iphone-16
+                    name: iPhone 16
+                    os: ['18', '26', '27']
+                    default_os: '26'
+                    google_play: false
+                    default: true
+                  - model: iphone-17
+                    name: iPhone 17
+                    os: ['26', '27']
+                    default_os: '26'
+                    google_play: false
+                    default: false
+                  - model: ipad-pro-m5-11
+                    name: iPad Pro 11-inch (M5)
+                    os: ['26']
+                    default_os: '26'
+                    google_play: false
+                    default: false
+                android:
+                  - model: pixel-10
+                    name: Pixel 10
+                    os: ['36', '37']
+                    default_os: '36'
+                    google_play: false
+                    default: true
+                  - model: pixel-8
+                    name: Pixel 8
+                    os: ['34', '35', '36']
+                    default_os: '36'
+                    google_play: false
+                    default: false
+                  - model: pixel-6
+                    name: Pixel 6
+                    os: ['32', '35']
+                    default_os: '35'
+                    google_play: false
+                    default: false
+                  - model: pixel-10
+                    name: Pixel 10
+                    os: ['36']
+                    default_os: '36'
+                    google_play: true
+                    default: false
+                  - model: pixel-8
+                    name: Pixel 8
+                    os: ['34']
+                    default_os: '34'
+                    google_play: true
+                    default: false
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+
+  /device/sessions:
+    post:
+      tags: [Device sessions]
+      operationId: startDeviceSession
+      summary: Start a device session
+      description: >-
+        Asks for a device. A new session is `queued` until a device is free, then moves through `provisioning`
+        to `ready` on its own: poll GET /device/sessions/{id} until it is `ready`. Billing starts when a device
+        is assigned. The session ends after 5 idle minutes, at its maximum duration, or when you stop it.
+        This endpoint has no per-minute rate limit, but your organization can only have so many sessions
+        open at once.
+      parameters:
+        - name: x-dcd-source
+          in: header
+          required: false
+          description: >-
+            Which interface sent the request: `cli`, `mcp`, `web` or `api`, in any case. Here it is recorded
+            only on the timeline entry for the build named in `binaryUploadId`. Any other value, or none,
+            counts as `api`. It is a label, not a credential.
+          schema:
+            type: string
+            enum: [cli, mcp, web, api]
+            default: api
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartSessionRequest'
+            example:
+              platform: android
+              model: pixel-10
+              os: '36'
+              binaryUploadId: 3f1c9a52-7d4e-4b8a-9c21-6e0f5a2b7d13
+              clientLabel: claude-code
+              maxDurationMin: 30
+      responses:
+        '201':
+          description: The session was created. It is usually still `queued`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionResponse'
+              example:
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: queued
+                  release_reason: null
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: null
+                  released_at: null
+                  expires_at: null
+                  queue:
+                    position: 1
+                    eta_s: 25
+                    waited_s: 0
+                    reason: waiting_for_device
+                  time_remaining_s: null
+                  idle_remaining_s: null
+                  cost_so_far_usd: 0
+                  last_crash: null
+                  install:
+                    binary_upload_id: 3f1c9a52-7d4e-4b8a-9c21-6e0f5a2b7d13
+                    status: installing
+                    error: null
+                  warnings:
+                    - 'Queued at position 1 for 0s, roughly 25s more to a device (an estimate). All devices are busy; this is not an error. The session starts on its own. Once it is ready it is billed per minute and stops after 5 idle minutes, even if no command has been sent, so keep checking its status until it is ready (over MCP, get_device_status with wait: true) instead of leaving it.'
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+        '400':
+          description: >-
+            The request is invalid. These errors carry no `error` code, only a `message`: a missing or unknown
+            `platform`, an unknown `model`, an `os` the model doesn't offer, `googlePlay` on iOS, a bad
+            `deviceLocale`, `clientLabel` or
+            `maxDurationMin`, a build that isn't your organization's or is for the other platform, or
+            `model`/`os`/`googlePlay` mixed with `androidDevice`/`androidApiLevel`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              examples:
+                platform:
+                  summary: A missing or unknown platform
+                  value:
+                    statusCode: 400
+                    message: platform must be ios or android.
+                unknownOs:
+                  summary: An OS version the model doesn't offer
+                  value:
+                    statusCode: 400
+                    message: 'Pixel 10 does not offer API level 34. Options: 36, 37.'
+                badLocale:
+                  summary: A malformed locale
+                  value:
+                    statusCode: 400
+                    message: Invalid deviceLocale format (expected e.g. "de_DE").
+                wrongBuild:
+                  summary: A build for the other platform
+                  value:
+                    statusCode: 400
+                    message: Binary platform (ios) does not match session platform (android)
+        '402':
+          description: >-
+            `LIVE_SPEND_CAP`: your organization reached its monthly spend cap on device sessions (the body adds
+            `limit` and `spent`, in USD). A payment problem (an overdue subscription, or not enough credits)
+            also answers 402, with no `error` code.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              examples:
+                spendCap:
+                  summary: Monthly spend cap reached
+                  value:
+                    statusCode: 402
+                    message: Your organization's live session spend cap of $50.00 for this month has been reached ($50.12 spent). Ask an admin to raise it, or wait for next month.
+                    error: LIVE_SPEND_CAP
+                    limit: 50
+                    spent: 50.12
+                noCredits:
+                  summary: Not enough credits
+                  value:
+                    statusCode: 402
+                    message: Not enough credits to start a live session.
+        '403':
+          description: >-
+            `LIVE_NOT_ENABLED`: device sessions aren't enabled for your organization. A missing or invalid API
+            key also answers 403 (see the shared `Forbidden` response).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 403
+                message: Live testing is in beta and not enabled for your organization. Contact support to request access.
+                error: LIVE_NOT_ENABLED
+        '409':
+          description: >-
+            `LIVE_CONCURRENCY_LIMIT`: your organization has as many sessions open as it may. `limit` is that
+            number. Stop a session first.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 409
+                message: Maximum of 2 concurrent live sessions reached. Stop an existing session before starting another.
+                error: LIVE_CONCURRENCY_LIMIT
+                limit: 2
+        '500':
+          description: The session could not be created because of a problem on DeviceCloud's side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 500
+                message: Failed to create live session
+        '503':
+          description: >-
+            Your organization has a spend cap and the spend so far could not be read. No `error` code. Retry.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 503
+                message: Could not check your live spend cap right now (a temporary problem on our side). Please retry.
+
+    get:
+      tags: [Device sessions]
+      operationId: listDeviceSessions
+      summary: List your organization's sessions
+      description: >-
+        Your organization's open sessions (`queued` through `needs_human`), newest first, at most 100.
+        With `all=true`, sessions that ended in the last 24 hours are included too.
+      parameters:
+        - name: all
+          in: query
+          required: false
+          description: Also list sessions that ended in the last 24 hours. `1` works as well as `true`.
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: The sessions' blocks, newest first.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionListResponse'
+              example:
+                sessions:
+                  - id: brave-teal-otter
+                    live_id: 4182
+                    state: active
+                    release_reason: null
+                    platform: android
+                    model: pixel-10-api-36
+                    client_label: claude-code
+                    created_at: '2026-11-10T14:00:00.000Z'
+                    started_at: '2026-11-10T14:00:21.000Z'
+                    released_at: null
+                    expires_at: '2026-11-10T15:00:21.000Z'
+                    queue: null
+                    time_remaining_s: 3021
+                    idle_remaining_s: 291
+                    cost_so_far_usd: 0.3
+                    last_crash: null
+                    install:
+                      binary_upload_id: 3f1c9a52-7d4e-4b8a-9c21-6e0f5a2b7d13
+                      status: installed
+                      error: null
+                    warnings: []
+                    monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+                  - id: calm-blue-heron
+                    live_id: 4177
+                    state: released
+                    release_reason: idle_timeout
+                    platform: ios
+                    model: iphone-16-ios-26.4
+                    client_label: cursor
+                    created_at: '2026-11-10T11:30:00.000Z'
+                    started_at: '2026-11-10T11:30:40.000Z'
+                    released_at: '2026-11-10T11:52:10.000Z'
+                    expires_at: null
+                    queue: null
+                    time_remaining_s: null
+                    idle_remaining_s: null
+                    cost_so_far_usd: 0.66
+                    last_crash: null
+                    install: null
+                    warnings: []
+                    monitor_url: https://console.devicecloud.dev/device/calm-blue-heron
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+
+  /device/sessions/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The session id, such as `brave-teal-otter`. The numeric `live_id` works too.
+        schema:
+          type: string
+        example: brave-teal-otter
+    get:
+      tags: [Device sessions]
+      operationId: getDeviceSession
+      summary: Get one session
+      description: >-
+        One session's block: its state, time and idle time left, cost so far, install status and warnings.
+        Works on ended sessions too. If the device has stopped reporting for over a minute, the session is
+        ended (`heartbeat_lost`) when you read it.
+      responses:
+        '200':
+          description: The session's block.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionResponse'
+              example:
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: active
+                  release_reason: null
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: '2026-11-10T14:00:21.000Z'
+                  released_at: null
+                  expires_at: '2026-11-10T15:00:21.000Z'
+                  queue: null
+                  time_remaining_s: 3021
+                  idle_remaining_s: 291
+                  cost_so_far_usd: 0.3
+                  last_crash: null
+                  install:
+                    binary_upload_id: 3f1c9a52-7d4e-4b8a-9c21-6e0f5a2b7d13
+                    status: installed
+                    error: null
+                  warnings: []
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/LiveNotFound'
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+    delete:
+      tags: [Device sessions]
+      operationId: stopDeviceSession
+      summary: Stop a session
+      description: >-
+        Stops the session and releases the device. Billing stops. Stopping an open session is never refused
+        for the rate limit. Stopping a session that has already ended changes nothing: it returns the session
+        as it is, and counts as a read.
+      parameters:
+        - name: x-dcd-source
+          in: header
+          required: false
+          description: >-
+            Which interface sent the request: `cli`, `mcp`, `web` or `api`, in any case. It is recorded on the
+            stop's timeline entry. Any other value, or none, counts as `api`. It is a label, not a credential.
+          schema:
+            type: string
+            enum: [cli, mcp, web, api]
+            default: api
+      responses:
+        '200':
+          description: The session after the stop. `state` is usually `released` with `release_reason` `user_stop`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionResponse'
+              example:
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: released
+                  release_reason: user_stop
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: '2026-11-10T14:00:21.000Z'
+                  released_at: '2026-11-10T14:20:05.000Z'
+                  expires_at: null
+                  queue: null
+                  time_remaining_s: null
+                  idle_remaining_s: null
+                  cost_so_far_usd: 0.6
+                  last_crash: null
+                  install:
+                    binary_upload_id: 3f1c9a52-7d4e-4b8a-9c21-6e0f5a2b7d13
+                    status: installed
+                    error: null
+                  warnings: []
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/LiveNotFound'
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+
+  /device/sessions/{id}/install:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The session id, such as `brave-teal-otter`. The numeric `live_id` works too.
+        schema:
+          type: string
+        example: brave-teal-otter
+    post:
+      tags: [Device control]
+      operationId: installApp
+      summary: Install a build
+      description: >-
+        Installs an uploaded build (`binaryUploadId`), or a build downloaded from an https URL (`url`, up to
+        500 MB). Android takes an `.apk`; iOS takes a zipped simulator `.app`, not an `.ipa`. The request
+        returns once the build is checked; the device installs it in the background. Watch `session.install`
+        until its `status` is `installed`. A command sent meanwhile waits up to 45 s for the install, then
+        answers `LIVE_NOT_READY`.
+      parameters:
+        - name: x-dcd-source
+          in: header
+          required: false
+          description: >-
+            Which interface sent the request: `cli`, `mcp`, `web` or `api`, in any case. It is recorded as the
+            command's `source` on the timeline. Any other value, or none, counts as `api`. It is a label, not a
+            credential.
+          schema:
+            type: string
+            enum: [cli, mcp, web, api]
+            default: api
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstallRequest'
+            examples:
+              upload:
+                summary: An uploaded build
+                value:
+                  binaryUploadId: 3f1c9a52-7d4e-4b8a-9c21-6e0f5a2b7d13
+              url:
+                summary: A build at a URL
+                value:
+                  url: https://ci.example.com/artifacts/app-release.apk
+      responses:
+        '201':
+          description: The build is on its way to the device.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstallResponse'
+              example:
+                app:
+                  binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                  app_id: com.example.app
+                  reused: false
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: active
+                  release_reason: null
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: '2026-11-10T14:00:21.000Z'
+                  released_at: null
+                  expires_at: '2026-11-10T15:00:21.000Z'
+                  queue: null
+                  time_remaining_s: 2981
+                  idle_remaining_s: 300
+                  cost_so_far_usd: 0.33
+                  last_crash: null
+                  install:
+                    binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                    status: installing
+                    error: null
+                  warnings:
+                    - 'The app is still installing. The session says "ready" because the device is up, but commands wait for the install (up to 45s) and then answer LIVE_NOT_READY. Over MCP, get_device_status with wait: true waits for it.'
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+        '400':
+          description: >-
+            `LIVE_INVALID_APP`: neither or both of `binaryUploadId` and `url` were given, or the build isn't
+            your organization's, is for the other platform, or isn't an app this device can install.
+            `LIVE_APP_DOWNLOAD_FAILED`: the build at `url` couldn't be downloaded (not https, not a public host,
+            an error status, too large, or too slow).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              examples:
+                invalidApp:
+                  summary: A build for the other platform
+                  value:
+                    statusCode: 400
+                    message: Binary platform (ios) does not match session platform (android)
+                    error: LIVE_INVALID_APP
+                downloadFailed:
+                  summary: The URL couldn't be downloaded
+                  value:
+                    statusCode: 400
+                    message: 'Downloading the app failed: the server answered 404.'
+                    error: LIVE_APP_DOWNLOAD_FAILED
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/LiveNotFound'
+        '409':
+          description: >-
+            `LIVE_SESSION_ENDED`: the session has ended (the body includes its `session` block).
+            `LIVE_HUMAN_IN_CONTROL`: a person has taken control in the console; wait for the hand-back.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              examples:
+                humanInControl:
+                  summary: A person has control
+                  value:
+                    statusCode: 409
+                    message: 'A person has taken control of this device. Wait for them to hand it back: poll get_human_status (MCP), run `dcd device human --wait`, or poll GET /device/sessions/:id/human until handed_back is true.'
+                    error: LIVE_HUMAN_IN_CONTROL
+                sessionEnded:
+                  summary: The session has ended
+                  value:
+                    statusCode: 409
+                    message: Device session "brave-teal-otter" has ended (idle_timeout). Start a new one.
+                    error: LIVE_SESSION_ENDED
+                    session:
+                      id: brave-teal-otter
+                      live_id: 4182
+                      state: expired
+                      release_reason: idle_timeout
+                      platform: android
+                      model: pixel-10-api-36
+                      client_label: claude-code
+                      created_at: '2026-11-10T14:00:00.000Z'
+                      started_at: '2026-11-10T14:00:21.000Z'
+                      released_at: '2026-11-10T14:31:02.000Z'
+                      expires_at: null
+                      queue: null
+                      time_remaining_s: null
+                      idle_remaining_s: null
+                      cost_so_far_usd: 0.93
+                      last_crash: null
+                      install:
+                        binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                        status: installed
+                        error: null
+                      warnings: []
+                      monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+        '429':
+          description: >-
+            `LIVE_RATE_LIMITED`: over the per-session command limit (60 a minute; the body has `limit` and
+            `retry_after_s`), or too many installs from a URL are running on the API at once (no
+            `retry_after_s`; retry in a minute). No `Retry-After` header is sent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              examples:
+                commandLimit:
+                  summary: Over the command limit
+                  value:
+                    statusCode: 429
+                    message: 'Too many commands for this session: at most 60 a minute. Retry in 23s.'
+                    error: LIVE_RATE_LIMITED
+                    limit: 60
+                    retry_after_s: 23
+                urlInstalls:
+                  summary: Too many installs from a URL at once
+                  value:
+                    statusCode: 429
+                    message: Too many installs from URL are running. Retry in a minute.
+                    error: LIVE_RATE_LIMITED
+        '503':
+          description: The downloaded build could not be stored. No `error` code. Retry.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 503
+                message: The build could not be stored (a problem on our side). Please retry.
+
+  /device/sessions/{id}/launch:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The session id, such as `brave-teal-otter`. The numeric `live_id` works too.
+        schema:
+          type: string
+        example: brave-teal-otter
+    post:
+      tags: [Device control]
+      operationId: launchApp
+      summary: Launch an app
+      description: >-
+        Launches the installed build, or any app by `appId` (such as `com.apple.Preferences`). `clearState`
+        wipes the app's data first. The request waits for the command to finish, up to 120 s, after waiting up
+        to 45 s for a device that is still starting or installing. A launch that fails on the device still
+        answers 201, with `result.success` false.
+      parameters:
+        - name: x-dcd-source
+          in: header
+          required: false
+          description: >-
+            Which interface sent the request: `cli`, `mcp`, `web` or `api`, in any case. It is recorded as the
+            command's `source` on the timeline. Any other value, or none, counts as `api`. It is a label, not a
+            credential.
+          schema:
+            type: string
+            enum: [cli, mcp, web, api]
+            default: api
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LaunchRequest'
+            example:
+              clearState: true
+      responses:
+        '201':
+          description: The command ran. `result.success` says whether it worked.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandResponse'
+              example:
+                result:
+                  success: true
+                  output: '{"success":true,"commands_executed":1}'
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: active
+                  release_reason: null
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: '2026-11-10T14:00:21.000Z'
+                  released_at: null
+                  expires_at: '2026-11-10T15:00:21.000Z'
+                  queue: null
+                  time_remaining_s: 2941
+                  idle_remaining_s: 300
+                  cost_so_far_usd: 0.33
+                  last_crash: null
+                  install:
+                    binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                    status: installed
+                    error: null
+                  warnings: []
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+        '400':
+          description: >-
+            `LIVE_INVALID_ACTION`: `appId` isn't a bundle id or package name, or `clearState` isn't a boolean.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 400
+                message: appId must be a bundle id or package name (letters, digits, . _ -).
+                error: LIVE_INVALID_ACTION
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/LiveNotFound'
+        '409':
+          description: >-
+            `LIVE_SESSION_ENDED`: the session has ended (the body includes its `session` block).
+            `LIVE_HUMAN_IN_CONTROL`: a person has taken control in the console; wait for the hand-back.
+            `LIVE_NO_APP`: no `appId` was given and no app is installed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              examples:
+                noApp:
+                  summary: No app installed or named
+                  value:
+                    statusCode: 409
+                    message: No app is installed in this session. Install one, or pass appId.
+                    error: LIVE_NO_APP
+                humanInControl:
+                  summary: A person has control
+                  value:
+                    statusCode: 409
+                    message: 'A person has taken control of this device. Wait for them to hand it back: poll get_human_status (MCP), run `dcd device human --wait`, or poll GET /device/sessions/:id/human until handed_back is true.'
+                    error: LIVE_HUMAN_IN_CONTROL
+                sessionEnded:
+                  summary: The session has ended
+                  value:
+                    statusCode: 409
+                    message: Device session "brave-teal-otter" has ended (idle_timeout). Start a new one.
+                    error: LIVE_SESSION_ENDED
+                    session:
+                      id: brave-teal-otter
+                      live_id: 4182
+                      state: expired
+                      release_reason: idle_timeout
+                      platform: android
+                      model: pixel-10-api-36
+                      client_label: claude-code
+                      created_at: '2026-11-10T14:00:00.000Z'
+                      started_at: '2026-11-10T14:00:21.000Z'
+                      released_at: '2026-11-10T14:31:02.000Z'
+                      expires_at: null
+                      queue: null
+                      time_remaining_s: null
+                      idle_remaining_s: null
+                      cost_so_far_usd: 0.93
+                      last_crash: null
+                      install:
+                        binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                        status: installed
+                        error: null
+                      warnings: []
+                      monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+        '425':
+          $ref: '#/components/responses/LiveNotReady'
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+
+  /device/sessions/{id}/actions:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The session id, such as `brave-teal-otter`. The numeric `live_id` works too.
+        schema:
+          type: string
+        example: brave-teal-otter
+    post:
+      tags: [Device control]
+      operationId: performAction
+      summary: Perform one action
+      description: >-
+        Sends one action to the device: `tap`, `type`, `swipe` or `press_key`. Each becomes one Maestro
+        command. The request waits for it to finish, up to 120 s, after waiting up to 45 s for a device that
+        is still starting or installing. An action that fails on the device still answers 201, with
+        `result.success` false. A `type` action with `sensitive: true` sends its text as a secret: it never
+        appears in the timeline and is masked in `inspect`.
+      parameters:
+        - name: x-dcd-source
+          in: header
+          required: false
+          description: >-
+            Which interface sent the request: `cli`, `mcp`, `web` or `api`, in any case. It is recorded as the
+            command's `source` on the timeline. Any other value, or none, counts as `api`. It is a label, not a
+            credential.
+          schema:
+            type: string
+            enum: [cli, mcp, web, api]
+            default: api
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceAction'
+            examples:
+              tapText:
+                summary: Tap an element by its text
+                value:
+                  type: tap
+                  text: Log in
+              tapPoint:
+                summary: Tap a point, in percent of the screen
+                value:
+                  type: tap
+                  x: 50
+                  y: 82
+              typeSecret:
+                summary: Type a password without recording it
+                value:
+                  type: type
+                  text: correct-horse-battery
+                  sensitive: true
+              swipe:
+                summary: Swipe up
+                value:
+                  type: swipe
+                  direction: up
+              pressKey:
+                summary: Press back
+                value:
+                  type: press_key
+                  key: back
+      responses:
+        '201':
+          description: The action ran. `result.success` says whether it worked.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandResponse'
+              example:
+                result:
+                  success: true
+                  output: '{"success":true,"commands_executed":1}'
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: active
+                  release_reason: null
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: '2026-11-10T14:00:21.000Z'
+                  released_at: null
+                  expires_at: '2026-11-10T15:00:21.000Z'
+                  queue: null
+                  time_remaining_s: 2925
+                  idle_remaining_s: 300
+                  cost_so_far_usd: 0.33
+                  last_crash: null
+                  install:
+                    binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                    status: installed
+                    error: null
+                  warnings: []
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+        '400':
+          description: '`LIVE_INVALID_ACTION`: the action is malformed. The message says how.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              examples:
+                tapTargets:
+                  summary: A tap with no target, or more than one
+                  value:
+                    statusCode: 400
+                    message: 'tap takes exactly one target: x and y (percentages), text, or id.'
+                    error: LIVE_INVALID_ACTION
+                badKey:
+                  summary: An unknown key
+                  value:
+                    statusCode: 400
+                    message: key must be one of back, home, enter, backspace, tab, volume_up, volume_down, lock, power.
+                    error: LIVE_INVALID_ACTION
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/LiveNotFound'
+        '409':
+          description: >-
+            `LIVE_SESSION_ENDED`: the session has ended (the body includes its `session` block).
+            `LIVE_HUMAN_IN_CONTROL`: a person has taken control in the console; wait for the hand-back.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              examples:
+                humanInControl:
+                  summary: A person has control
+                  value:
+                    statusCode: 409
+                    message: 'A person has taken control of this device. Wait for them to hand it back: poll get_human_status (MCP), run `dcd device human --wait`, or poll GET /device/sessions/:id/human until handed_back is true.'
+                    error: LIVE_HUMAN_IN_CONTROL
+                sessionEnded:
+                  summary: The session has ended
+                  value:
+                    statusCode: 409
+                    message: Device session "brave-teal-otter" has ended (idle_timeout). Start a new one.
+                    error: LIVE_SESSION_ENDED
+                    session:
+                      id: brave-teal-otter
+                      live_id: 4182
+                      state: expired
+                      release_reason: idle_timeout
+                      platform: android
+                      model: pixel-10-api-36
+                      client_label: claude-code
+                      created_at: '2026-11-10T14:00:00.000Z'
+                      started_at: '2026-11-10T14:00:21.000Z'
+                      released_at: '2026-11-10T14:31:02.000Z'
+                      expires_at: null
+                      queue: null
+                      time_remaining_s: null
+                      idle_remaining_s: null
+                      cost_so_far_usd: 0.93
+                      last_crash: null
+                      install:
+                        binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                        status: installed
+                        error: null
+                      warnings: []
+                      monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+        '425':
+          $ref: '#/components/responses/LiveNotReady'
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+        '503':
+          $ref: '#/components/responses/LiveSecretsUnavailable'
+
+  /device/sessions/{id}/run:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The session id, such as `brave-teal-otter`. The numeric `live_id` works too.
+        schema:
+          type: string
+        example: brave-teal-otter
+    post:
+      tags: [Device control]
+      operationId: runFlow
+      summary: Run a Maestro flow
+      description: >-
+        Runs Maestro on the device: `yaml` for one flow, or `flowUploadId` for a flow bundle (`flow` names
+        the entry file; without it, every flow in the bundle runs). `env` passes secrets and variables. The
+        request waits for the flow up to 110 s, or `waitSeconds`. A flow that takes longer answers `running`
+        with a `command_id`: follow it with GET /device/sessions/{id}/commands/{commandId}. A failed run
+        answers 201 with `status` `failed`; its result says where it failed and lists the app's visible text
+        just after.
+      parameters:
+        - name: x-dcd-source
+          in: header
+          required: false
+          description: >-
+            Which interface sent the request: `cli`, `mcp`, `web` or `api`, in any case. It is recorded as the
+            command's `source` on the timeline. Any other value, or none, counts as `api`. It is a label, not a
+            credential.
+          schema:
+            type: string
+            enum: [cli, mcp, web, api]
+            default: api
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RunRequest'
+            examples:
+              inline:
+                summary: One flow, inline, with a secret
+                value:
+                  yaml: "appId: com.example.app\n---\n- tapOn: \"Email\"\n- inputText: \"qa@example.com\"\n- tapOn: \"Password\"\n- inputText: ${PASSWORD}\n- tapOn: \"Log in\"\n- assertVisible: \"Welcome\""
+                  env:
+                    PASSWORD: correct-horse-battery
+              bundle:
+                summary: One flow from a bundle, waiting longer
+                value:
+                  flowUploadId: 0b6f2d1e-8a3c-4f5b-9e7d-1c2a3b4c5d6e
+                  flow: flows/login.yaml
+                  waitSeconds: 240
+      responses:
+        '201':
+          description: >-
+            The flow passed, failed, or is still `running` (then `result` is null).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunResponse'
+              examples:
+                failed:
+                  summary: A failed inline flow
+                  value:
+                    command_id: 9d1b6f3e-4c1a-4f7e-9a51-2b8f0c6d7e21
+                    status: failed
+                    result:
+                      success: false
+                      error: 'Assertion is false: "Star at the center" is visible (at flow.yaml:3)'
+                      output: '{"success":false,"message":"Assertion is false: \"Star at the center\" is visible","failed_at":{"file":"flow.yaml","line":3,"command":"assertVisible: \"Star at the center\"","call_chain":[]}}'
+                      failed_at:
+                        file: flow.yaml
+                        line: 3
+                        command: 'assertVisible: "Star at the center"'
+                        call_chain: []
+                      screen_text:
+                        - Star at the centre
+                        - Next
+                    session:
+                      id: brave-teal-otter
+                      live_id: 4182
+                      state: active
+                      release_reason: null
+                      platform: android
+                      model: pixel-10-api-36
+                      client_label: claude-code
+                      created_at: '2026-11-10T14:00:00.000Z'
+                      started_at: '2026-11-10T14:00:21.000Z'
+                      released_at: null
+                      expires_at: '2026-11-10T15:00:21.000Z'
+                      queue: null
+                      time_remaining_s: 2869
+                      idle_remaining_s: 300
+                      cost_so_far_usd: 0.36
+                      last_crash: null
+                      install:
+                        binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                        status: installed
+                        error: null
+                      warnings: []
+                      monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+                passedBundle:
+                  summary: A bundle whose flows all passed
+                  value:
+                    command_id: 2c7e9a40-5b1d-4e8f-a3c6-7d9e0f1a2b3c
+                    status: passed
+                    result:
+                      success: true
+                      output: '{"success":true,"device_id":"emulator-5554","total_flows":2,"total_commands_executed":14,"results":[{"file":"flows/login.yaml","success":true,"message":"ok"},{"file":"flows/search.yaml","success":true,"message":"ok"}],"message":"ok"}'
+                      flows:
+                        - file: flows/login.yaml
+                          success: true
+                          error: null
+                        - file: flows/search.yaml
+                          success: true
+                          error: null
+                    session:
+                      id: brave-teal-otter
+                      live_id: 4182
+                      state: active
+                      release_reason: null
+                      platform: android
+                      model: pixel-10-api-36
+                      client_label: claude-code
+                      created_at: '2026-11-10T14:00:00.000Z'
+                      started_at: '2026-11-10T14:00:21.000Z'
+                      released_at: null
+                      expires_at: '2026-11-10T15:00:21.000Z'
+                      queue: null
+                      time_remaining_s: 2650
+                      idle_remaining_s: 300
+                      cost_so_far_usd: 0.48
+                      last_crash: null
+                      install:
+                        binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                        status: installed
+                        error: null
+                      warnings: []
+                      monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+                running:
+                  summary: A flow that outlasted the wait
+                  value:
+                    command_id: 5e8f1a2b-3c4d-4e5f-8a9b-0c1d2e3f4a5b
+                    status: running
+                    result: null
+                    session:
+                      id: brave-teal-otter
+                      live_id: 4182
+                      state: active
+                      release_reason: null
+                      platform: android
+                      model: pixel-10-api-36
+                      client_label: claude-code
+                      created_at: '2026-11-10T14:00:00.000Z'
+                      started_at: '2026-11-10T14:00:21.000Z'
+                      released_at: null
+                      expires_at: '2026-11-10T15:00:21.000Z'
+                      queue: null
+                      time_remaining_s: 2420
+                      idle_remaining_s: 300
+                      cost_so_far_usd: 0.6
+                      last_crash: null
+                      install:
+                        binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                        status: installed
+                        error: null
+                      warnings: []
+                      monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+        '400':
+          description: >-
+            `LIVE_INVALID_ACTION`: neither or both of `yaml` and `flowUploadId`, a `flow` without a bundle or
+            with an unsafe path, `waitSeconds` out of range, a malformed `env`, or a `flowUploadId` that isn't a
+            bundle of your organization's.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              examples:
+                neither:
+                  summary: Neither yaml nor flowUploadId
+                  value:
+                    statusCode: 400
+                    message: Pass either yaml (one flow) or flowUploadId (a bundle of flows), not both and not neither.
+                    error: LIVE_INVALID_ACTION
+                reservedEnv:
+                  summary: A reserved env name
+                  value:
+                    statusCode: 400
+                    message: env names starting with DCD_ are reserved ("DCD_TOKEN").
+                    error: LIVE_INVALID_ACTION
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/LiveNotFound'
+        '409':
+          description: >-
+            `LIVE_SESSION_ENDED`: the session has ended (the body includes its `session` block).
+            `LIVE_HUMAN_IN_CONTROL`: a person has taken control in the console; wait for the hand-back.
+            `LIVE_NO_APP`: the inline flow has no header, uses the header's app (a bare `launchApp`), and no
+            app is installed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              examples:
+                humanInControl:
+                  summary: A person has control
+                  value:
+                    statusCode: 409
+                    message: 'A person has taken control of this device. Wait for them to hand it back: poll get_human_status (MCP), run `dcd device human --wait`, or poll GET /device/sessions/:id/human until handed_back is true.'
+                    error: LIVE_HUMAN_IN_CONTROL
+                noApp:
+                  summary: No app installed or named
+                  value:
+                    statusCode: 409
+                    message: No app is installed in this session. Install one, or pass appId.
+                    error: LIVE_NO_APP
+                sessionEnded:
+                  summary: The session has ended
+                  value:
+                    statusCode: 409
+                    message: Device session "brave-teal-otter" has ended (idle_timeout). Start a new one.
+                    error: LIVE_SESSION_ENDED
+                    session:
+                      id: brave-teal-otter
+                      live_id: 4182
+                      state: expired
+                      release_reason: idle_timeout
+                      platform: android
+                      model: pixel-10-api-36
+                      client_label: claude-code
+                      created_at: '2026-11-10T14:00:00.000Z'
+                      started_at: '2026-11-10T14:00:21.000Z'
+                      released_at: '2026-11-10T14:31:02.000Z'
+                      expires_at: null
+                      queue: null
+                      time_remaining_s: null
+                      idle_remaining_s: null
+                      cost_so_far_usd: 0.93
+                      last_crash: null
+                      install:
+                        binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                        status: installed
+                        error: null
+                      warnings: []
+                      monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+        '425':
+          $ref: '#/components/responses/LiveNotReady'
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+        '503':
+          $ref: '#/components/responses/LiveSecretsUnavailable'
+
+  /device/sessions/{id}/commands/{commandId}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The session id, such as `brave-teal-otter`. The numeric `live_id` works too.
+        schema:
+          type: string
+        example: brave-teal-otter
+      - name: commandId
+        in: path
+        required: true
+        description: The `command_id` that `run` returned. Any command id from this session's timeline works.
+        schema:
+          type: string
+          format: uuid
+        example: 5e8f1a2b-3c4d-4e5f-8a9b-0c1d2e3f4a5b
+    get:
+      tags: [Device control]
+      operationId: getCommand
+      summary: Get a command's status and result
+      description: >-
+        The status and result of a command, for a `run` that answered `running`. By default it answers at
+        once. With `waitSeconds`, it waits for a running command to finish. Works on ended sessions too. A
+        failed result gets `screen_text` (the app's visible text now) while the session is open.
+      parameters:
+        - name: waitSeconds
+          in: query
+          required: false
+          description: How long to wait for a running command to finish, in seconds.
+          schema:
+            type: number
+            minimum: 0
+            maximum: 300
+            default: 0
+      responses:
+        '200':
+          description: The command's status, and its result once it has finished.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunResponse'
+              example:
+                command_id: 5e8f1a2b-3c4d-4e5f-8a9b-0c1d2e3f4a5b
+                status: passed
+                result:
+                  success: true
+                  output: '{"success":true,"commands_executed":42}'
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: active
+                  release_reason: null
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: '2026-11-10T14:00:21.000Z'
+                  released_at: null
+                  expires_at: '2026-11-10T15:00:21.000Z'
+                  queue: null
+                  time_remaining_s: 2300
+                  idle_remaining_s: 280
+                  cost_so_far_usd: 0.66
+                  last_crash: null
+                  install:
+                    binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                    status: installed
+                    error: null
+                  warnings: []
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+        '400':
+          description: '`LIVE_INVALID_ACTION`: `waitSeconds` isn''t a number from 0 to 300.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 400
+                message: waitSeconds is a number of seconds from 0 to 300.
+                error: LIVE_INVALID_ACTION
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: >-
+            `LIVE_NOT_FOUND`: no such session in your organization. `LIVE_COMMAND_NOT_FOUND`: no such command
+            in this session.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              examples:
+                commandNotFound:
+                  summary: No such command
+                  value:
+                    statusCode: 404
+                    message: No command "5e8f1a2b-3c4d-4e5f-8a9b-0c1d2e3f4a5b" in this session.
+                    error: LIVE_COMMAND_NOT_FOUND
+                sessionNotFound:
+                  summary: No such session
+                  value:
+                    statusCode: 404
+                    message: No device session "brave-teal-otter" in your organization.
+                    error: LIVE_NOT_FOUND
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+
+  /device/sessions/{id}/inspect:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The session id, such as `brave-teal-otter`. The numeric `live_id` works too.
+        schema:
+          type: string
+        example: brave-teal-otter
+    get:
+      tags: [Device control]
+      operationId: inspectScreen
+      summary: Read the screen as compact JSON
+      description: >-
+        The screen as a flat list of elements with text, an id, a label or a hint, using Maestro's short key
+        names. It waits up to 5 s for a screen read taken after your last command. On Android, the on-screen
+        keyboard and the System UI are left out and counted in `hidden`, unless `all` is set. This session's
+        secret values are masked.
+      parameters:
+        - name: all
+          in: query
+          required: false
+          description: Also list the keyboard's keys and the System UI. `1` works as well as `true`.
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: The screen, and the session's block.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InspectResponse'
+              example:
+                screen:
+                  width: 1080
+                  height: 2400
+                  keys:
+                    b: bounds [left,top][right,bottom]
+                    txt: text (use as tapOn text)
+                    rid: resource id (use as tapOn id)
+                    a11y: accessibility label (use as tapOn text)
+                    hint: hint / placeholder text
+                    checked: 'checked (only when true; assert with checked: true)'
+                    selected: 'selected (only when true; assert with selected: true)'
+                    focused: has focus (only when true)
+                    enabled: false when disabled (only shown then)
+                  elements:
+                    - b: '[63,412][1017,566]'
+                      rid: com.example.app:id/email
+                      hint: Email
+                    - b: '[63,602][1017,756]'
+                      rid: com.example.app:id/password
+                      hint: Password
+                    - b: '[63,792][540,868]'
+                      txt: Remember me
+                      checked: true
+                    - b: '[63,904][1017,1052]'
+                      txt: Log in
+                      rid: com.example.app:id/login
+                  hidden:
+                    keyboard: 0
+                    system: 5
+                  fresh: true
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: active
+                  release_reason: null
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: '2026-11-10T14:00:21.000Z'
+                  released_at: null
+                  expires_at: '2026-11-10T15:00:21.000Z'
+                  queue: null
+                  time_remaining_s: 2930
+                  idle_remaining_s: 296
+                  cost_so_far_usd: 0.33
+                  last_crash: null
+                  install:
+                    binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                    status: installed
+                    error: null
+                  warnings: []
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/LiveNotFound'
+        '409':
+          $ref: '#/components/responses/LiveSessionEnded'
+        '425':
+          $ref: '#/components/responses/LiveNotReady'
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+
+  /device/sessions/{id}/screenshot:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The session id, such as `brave-teal-otter`. The numeric `live_id` works too.
+        schema:
+          type: string
+        example: brave-teal-otter
+    get:
+      tags: [Device control]
+      operationId: takeScreenshot
+      summary: Take a screenshot
+      description: >-
+        The screen as a JPEG data URL. It waits up to 3 s for a frame taken after the request arrived, so it
+        shows the result of your last command. `fresh` is false when no new frame came in time; the
+        screenshot is then the latest there is.
+      responses:
+        '200':
+          description: The screenshot, and the session's block.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScreenshotResponse'
+              example:
+                screenshot:
+                  data_url: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8U...
+                  captured_at: '2026-11-10T14:10:31.402Z'
+                  fresh: true
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: active
+                  release_reason: null
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: '2026-11-10T14:00:21.000Z'
+                  released_at: null
+                  expires_at: '2026-11-10T15:00:21.000Z'
+                  queue: null
+                  time_remaining_s: 2930
+                  idle_remaining_s: 296
+                  cost_so_far_usd: 0.33
+                  last_crash: null
+                  install:
+                    binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                    status: installed
+                    error: null
+                  warnings: []
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/LiveNotFound'
+        '409':
+          $ref: '#/components/responses/LiveSessionEnded'
+        '425':
+          $ref: '#/components/responses/LiveNotReady'
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+
+  /device/sessions/{id}/logs:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The session id, such as `brave-teal-otter`. The numeric `live_id` works too.
+        schema:
+          type: string
+        example: brave-teal-otter
+    get:
+      tags: [Device control]
+      operationId: getDeviceLogs
+      summary: Read the app's device logs
+      description: >-
+        The installed app's recent device log lines: its logcat lines on Android, its unified log on iOS.
+        `level` and `grep` narrow them; with either, the newest 2000 lines are searched and the newest `lines`
+        matches come back. The answer stops at 24 KB, keeping the newest lines, with `truncated: true` when
+        older ones were left out. Read from the device on request, so it waits up to 45 s for a device that is
+        still starting.
+      parameters:
+        - name: x-dcd-source
+          in: header
+          required: false
+          description: >-
+            Which interface sent the request: `cli`, `mcp`, `web` or `api`, in any case. It is recorded as the
+            command's `source` on the timeline. Any other value, or none, counts as `api`. It is a label, not a
+            credential.
+          schema:
+            type: string
+            enum: [cli, mcp, web, api]
+            default: api
+        - name: lines
+          in: query
+          required: false
+          description: How many lines to return. Values out of range are clamped; a value that isn't a number reads as 200.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 2000
+            default: 200
+        - name: level
+          in: query
+          required: false
+          description: >-
+            Only lines at this level and above. iOS's unified log has no warning level, so `warning` gives its
+            errors and faults.
+          schema:
+            type: string
+            enum: [warning, error]
+        - name: grep
+          in: query
+          required: false
+          description: Only lines containing this text, ignoring case.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The log lines, oldest first, and the session's block.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogsResponse'
+              example:
+                logs:
+                  lines:
+                    - '11-10 14:09:30.512  4021  4021 E AuthRepository: Login failed: HTTP 401'
+                    - '11-10 14:09:31.087  4021  4058 E AuthRepository: Login failed again: HTTP 401'
+                  source: logcat
+                  app_id: com.example.app
+                  scanned: 2000
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: active
+                  release_reason: null
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: '2026-11-10T14:00:21.000Z'
+                  released_at: null
+                  expires_at: '2026-11-10T15:00:21.000Z'
+                  queue: null
+                  time_remaining_s: 2860
+                  idle_remaining_s: 300
+                  cost_so_far_usd: 0.36
+                  last_crash: null
+                  install:
+                    binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                    status: installed
+                    error: null
+                  warnings: []
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+        '400':
+          description: '`LIVE_INVALID_ACTION`: `level` isn''t `warning` or `error`.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 400
+                message: level must be one of warning, error.
+                error: LIVE_INVALID_ACTION
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/LiveNotFound'
+        '409':
+          $ref: '#/components/responses/LiveSessionEnded'
+        '425':
+          $ref: '#/components/responses/LiveNotReady'
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+        '502':
+          description: >-
+            `LIVE_LOGS_UNAVAILABLE`: the device logs couldn't be read, for example on an older runner. The body
+            includes the `session` block. Retry later.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 502
+                message: 'Could not read the device logs: Invalid Command. The runner may be too old to support logs; retry later.'
+                error: LIVE_LOGS_UNAVAILABLE
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: active
+                  release_reason: null
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: '2026-11-10T14:00:21.000Z'
+                  released_at: null
+                  expires_at: '2026-11-10T15:00:21.000Z'
+                  queue: null
+                  time_remaining_s: 2860
+                  idle_remaining_s: 300
+                  cost_so_far_usd: 0.36
+                  last_crash: null
+                  install:
+                    binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                    status: installed
+                    error: null
+                  warnings: []
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+
+  /device/sessions/{id}/timeline:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The session id, such as `brave-teal-otter`. The numeric `live_id` works too.
+        schema:
+          type: string
+        example: brave-teal-otter
+    get:
+      tags: [Session artifacts]
+      operationId: getTimeline
+      summary: List the session's timeline
+      description: >-
+        Every command and event in the session, newest first: who sent it, its status and result, and a link
+        to the screenshot taken after it. Long inputs and outputs are cut to 2000 characters. Secrets are never
+        shown. Page with `limit` and `before`. Works on ended sessions too.
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: Entries per page. Values out of range are clamped.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+            default: 50
+        - name: before
+          in: query
+          required: false
+          description: Only entries older than this. Pass the last page's `next_before`.
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: One page of the timeline, and the session's block.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimelineResponse'
+              example:
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: active
+                  release_reason: null
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: '2026-11-10T14:00:21.000Z'
+                  released_at: null
+                  expires_at: '2026-11-10T15:00:21.000Z'
+                  queue: null
+                  time_remaining_s: 2860
+                  idle_remaining_s: 290
+                  cost_so_far_usd: 0.36
+                  last_crash: null
+                  install:
+                    binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                    status: installed
+                    error: null
+                  warnings: []
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+                timeline:
+                  - command_id: 9d1b6f3e-4c1a-4f7e-9a51-2b8f0c6d7e21
+                    kind: run
+                    source: mcp
+                    client_label: claude-code
+                    actor: api_key
+                    actor_email: null
+                    status: failed
+                    created_at: '2026-11-10T14:09:12.418Z'
+                    completed_at: '2026-11-10T14:09:31.902Z'
+                    input: "appId: com.example.app\n---\n- tapOn: \"Next\"\n- assertVisible: \"Star at the center\""
+                    output: null
+                    error: '{"success":false,"message":"Assertion is false: \"Star at the center\" is visible","failed_at":{"file":"flow.yaml","line":3,"command":"assertVisible: \"Star at the center\"","call_chain":[]}}'
+                    redacted: false
+                    screenshot:
+                      url: https://cdn.devicecloud.dev/organizations/7/device-sessions/4182/screenshot/9d1b6f3e-4c1a-4f7e-9a51-2b8f0c6d7e21.jpg?exp=1794323400&sig=Vb2y0pQ8xJ3kM1nR5tW7zA9cE4fH6iL0oS2uX8dG1qY
+                      content_type: image/jpeg
+                      bytes: 84213
+                      created_at: '2026-11-10T14:09:32.104Z'
+                  - command_id: 1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d
+                    kind: tap
+                    source: web
+                    client_label: claude-code
+                    actor: user
+                    actor_email: ann@example.com
+                    status: passed
+                    created_at: '2026-11-10T14:08:40.020Z'
+                    completed_at: '2026-11-10T14:08:41.377Z'
+                    input: "---\n- tapOn:\n    point: \"50%,82%\""
+                    output: '{"success":true,"commands_executed":1}'
+                    error: null
+                    redacted: false
+                    screenshot: null
+                next_before: '2026-11-10T14:08:40.020Z'
+        '400':
+          description: '`LIVE_INVALID_ACTION`: `before` isn''t a timestamp.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 400
+                message: before must be a timestamp (next_before from the last page).
+                error: LIVE_INVALID_ACTION
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/LiveNotFound'
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+
+  /device/sessions/{id}/artifacts:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The session id, such as `brave-teal-otter`. The numeric `live_id` works too.
+        schema:
+          type: string
+        example: brave-teal-otter
+    get:
+      tags: [Session artifacts]
+      operationId: listSessionArtifacts
+      summary: List the session's files
+      description: >-
+        Download links to the session's video, its device log, and the screenshot and screen dump taken after
+        each action, newest first. Links work for about an hour. The video and log arrive up to a minute or
+        so after the session ends; `pending` lists what is still on its way. Page the actions with `limit`
+        and `before`. Works on ended sessions until the files are cleaned up.
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          description: Actions per page. Values out of range are clamped.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+            default: 50
+        - name: before
+          in: query
+          required: false
+          description: Only actions older than this. Pass the last page's `next_before`.
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: The session's files, and its block.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtifactsResponse'
+              example:
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: released
+                  release_reason: user_stop
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: '2026-11-10T14:00:21.000Z'
+                  released_at: '2026-11-10T14:20:05.000Z'
+                  expires_at: null
+                  queue: null
+                  time_remaining_s: null
+                  idle_remaining_s: null
+                  cost_so_far_usd: 0.6
+                  last_crash: null
+                  install:
+                    binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                    status: installed
+                    error: null
+                  warnings: []
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+                recording:
+                  url: https://cdn.devicecloud.dev/organizations/7/device-sessions/4182/video/session.mp4?exp=1794324060&sig=Qm4r8Tz1kP6wX0bN3vY5cJ7hL9dF2sA8eG1uI4oK6nM
+                  content_type: video/mp4
+                  bytes: 48211763
+                  created_at: '2026-11-10T14:20:51.330Z'
+                logs:
+                  url: https://cdn.devicecloud.dev/organizations/7/device-sessions/4182/logs/device.log?exp=1794324060&sig=Hc7nP2xR9wK4mT1yB6vZ3qL8dJ5fA0sE2gU7iO4kN1c
+                  content_type: text/plain
+                  bytes: 1203344
+                  created_at: '2026-11-10T14:20:49.012Z'
+                actions:
+                  - command_id: 9d1b6f3e-4c1a-4f7e-9a51-2b8f0c6d7e21
+                    created_at: '2026-11-10T14:09:32.104Z'
+                    screenshot:
+                      url: https://cdn.devicecloud.dev/organizations/7/device-sessions/4182/screenshot/9d1b6f3e-4c1a-4f7e-9a51-2b8f0c6d7e21.jpg?exp=1794324060&sig=Vb2y0pQ8xJ3kM1nR5tW7zA9cE4fH6iL0oS2uX8dG1qY
+                      content_type: image/jpeg
+                      bytes: 84213
+                      created_at: '2026-11-10T14:09:32.104Z'
+                    hierarchy:
+                      url: https://cdn.devicecloud.dev/organizations/7/device-sessions/4182/hierarchy/9d1b6f3e-4c1a-4f7e-9a51-2b8f0c6d7e21.json?exp=1794324060&sig=Ld3kR7nW1xP9mZ5tB2vQ8yF4cJ6hA0sE3gU1iO7kN2b
+                      content_type: application/json
+                      bytes: 23110
+                      created_at: '2026-11-10T14:09:32.388Z'
+                next_before: '2026-11-10T14:09:32.104Z'
+                pending: []
+        '400':
+          description: >-
+            `before` isn't a timestamp. Unlike the timeline, this error carries no `error` code.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 400
+                message: before must be a timestamp (next_before from the last page).
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/LiveNotFound'
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+
+  /device/sessions/{id}/request-human:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The session id, such as `brave-teal-otter`. The numeric `live_id` works too.
+        schema:
+          type: string
+        example: brave-teal-otter
+    post:
+      tags: [Human handoff]
+      operationId: requestHuman
+      summary: Ask a person for help
+      description: >-
+        Asks a person to do something on the device, such as entering a 2FA code. The session moves to
+        `needs_human` and its idle timer pauses, for up to your organization's limit (30 minutes by default),
+        and never past the session's maximum duration. When the session starts waiting, your organization's
+        webhook gets a `device.needs_human` event. Asking again while it waits updates the reason. Poll GET
+        /device/sessions/{id}/human until `handed_back` is true. Allowed while a person has control.
+      parameters:
+        - name: x-dcd-source
+          in: header
+          required: false
+          description: >-
+            Which interface sent the request: `cli`, `mcp`, `web` or `api`, in any case. It is recorded on the
+            timeline entry. Any other value, or none, counts as `api`. It is a label, not a credential.
+          schema:
+            type: string
+            enum: [cli, mcp, web, api]
+            default: api
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestHumanRequest'
+            example:
+              reason: Enter the 2FA code sent to the test phone, then hand back
+      responses:
+        '201':
+          description: The session is waiting for a person.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumanResponse'
+              example:
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: needs_human
+                  release_reason: null
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: '2026-11-10T14:00:21.000Z'
+                  released_at: null
+                  expires_at: '2026-11-10T15:00:21.000Z'
+                  queue: null
+                  time_remaining_s: 2901
+                  idle_remaining_s: null
+                  cost_so_far_usd: 0.36
+                  last_crash: null
+                  install:
+                    binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                    status: installed
+                    error: null
+                  warnings:
+                    - 'Waiting for a human: Enter the 2FA code sent to the test phone, then hand back. The session ends in 1800s unless they hand it back. Poll get_human_status (MCP) or run `dcd device human --wait`; the idle timer is paused meanwhile.'
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+                human:
+                  waiting: true
+                  reason: Enter the 2FA code sent to the test phone, then hand back
+                  since: '2026-11-10T14:12:00.000Z'
+                  expires_at: '2026-11-10T14:42:00.000Z'
+                  handed_back: false
+                  note: null
+                  handed_back_at: null
+                  human_in_control: false
+                  controller_user_id: null
+        '400':
+          description: '`LIVE_INVALID_ACTION`: `reason` is missing, blank, or over 500 characters.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 400
+                message: 'reason is required (up to 500 characters): what the human should do, e.g. "Enter the 2FA code sent to the test phone".'
+                error: LIVE_INVALID_ACTION
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/LiveNotFound'
+        '409':
+          $ref: '#/components/responses/LiveSessionEnded'
+        '425':
+          description: >-
+            `LIVE_NOT_READY`: the session isn't `ready`, `active` or `needs_human` yet (it is still queued or
+            provisioning). The body includes the `session` block.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 425
+                message: The device is not ready yet; ask for a human once the session is ready.
+                error: LIVE_NOT_READY
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: provisioning
+                  release_reason: null
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: '2026-11-10T14:00:21.000Z'
+                  released_at: null
+                  expires_at: '2026-11-10T15:00:21.000Z'
+                  queue: null
+                  time_remaining_s: 3591
+                  idle_remaining_s: null
+                  cost_so_far_usd: 0.01
+                  last_crash: null
+                  install: null
+                  warnings: []
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+
+  /device/sessions/{id}/human:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The session id, such as `brave-teal-otter`. The numeric `live_id` works too.
+        schema:
+          type: string
+        example: brave-teal-otter
+    get:
+      tags: [Human handoff]
+      operationId: getHumanStatus
+      summary: Check whether a person has handed back
+      description: >-
+        Whether the session is still waiting for a person (`waiting`, `reason`, `expires_at`), or was handed
+        back (`handed_back`, with the person's `note`). Also says whether a person has taken control in the
+        console. Works on ended sessions too.
+      responses:
+        '200':
+          description: The human status, and the session's block.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumanResponse'
+              example:
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: active
+                  release_reason: null
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: '2026-11-10T14:00:21.000Z'
+                  released_at: null
+                  expires_at: '2026-11-10T15:00:21.000Z'
+                  queue: null
+                  time_remaining_s: 2675
+                  idle_remaining_s: 286
+                  cost_so_far_usd: 0.48
+                  last_crash: null
+                  install:
+                    binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                    status: installed
+                    error: null
+                  warnings: []
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+                human:
+                  waiting: false
+                  reason: null
+                  since: null
+                  expires_at: null
+                  handed_back: true
+                  note: Code entered, you're on the home screen
+                  handed_back_at: '2026-11-10T14:15:40.000Z'
+                  human_in_control: false
+                  controller_user_id: null
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/LiveNotFound'
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+
+  /device/sessions/{id}/hand-back:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: The session id, such as `brave-teal-otter`. The numeric `live_id` works too.
+        schema:
+          type: string
+        example: brave-teal-otter
+    post:
+      tags: [Human handoff]
+      operationId: handBack
+      summary: Hand the session back to the agent
+      description: >-
+        Ends the wait for a person. The session is `active` again, with a fresh idle window, and anyone in
+        control is released. `note` is passed on to the agent, such as "Code entered, you're on the home
+        screen".
+      parameters:
+        - name: x-dcd-source
+          in: header
+          required: false
+          description: >-
+            Which interface sent the request: `cli`, `mcp`, `web` or `api`, in any case. It is recorded on the
+            timeline entry. Any other value, or none, counts as `api`. It is a label, not a credential.
+          schema:
+            type: string
+            enum: [cli, mcp, web, api]
+            default: api
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HandBackRequest'
+            example:
+              note: Code entered, you're on the home screen
+      responses:
+        '201':
+          description: The session is back with the agent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumanResponse'
+              example:
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: active
+                  release_reason: null
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: '2026-11-10T14:00:21.000Z'
+                  released_at: null
+                  expires_at: '2026-11-10T15:00:21.000Z'
+                  queue: null
+                  time_remaining_s: 2681
+                  idle_remaining_s: 300
+                  cost_so_far_usd: 0.48
+                  last_crash: null
+                  install:
+                    binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                    status: installed
+                    error: null
+                  warnings: []
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+                human:
+                  waiting: false
+                  reason: null
+                  since: null
+                  expires_at: null
+                  handed_back: true
+                  note: Code entered, you're on the home screen
+                  handed_back_at: '2026-11-10T14:15:40.000Z'
+                  human_in_control: false
+                  controller_user_id: null
+        '400':
+          description: '`LIVE_INVALID_ACTION`: `note` is over 2000 characters.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 400
+                message: note is at most 2000 characters.
+                error: LIVE_INVALID_ACTION
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/LiveNotFound'
+        '409':
+          description: >-
+            `LIVE_NOT_WAITING_FOR_HUMAN`: the session isn't waiting for a person. `LIVE_SESSION_ENDED`: the
+            session has ended. Both include the `session` block.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              examples:
+                notWaiting:
+                  summary: Nobody was asked
+                  value:
+                    statusCode: 409
+                    message: The session is not waiting for a human.
+                    error: LIVE_NOT_WAITING_FOR_HUMAN
+                    session:
+                      id: brave-teal-otter
+                      live_id: 4182
+                      state: active
+                      release_reason: null
+                      platform: android
+                      model: pixel-10-api-36
+                      client_label: claude-code
+                      created_at: '2026-11-10T14:00:00.000Z'
+                      started_at: '2026-11-10T14:00:21.000Z'
+                      released_at: null
+                      expires_at: '2026-11-10T15:00:21.000Z'
+                      queue: null
+                      time_remaining_s: 2681
+                      idle_remaining_s: 241
+                      cost_so_far_usd: 0.48
+                      last_crash: null
+                      install:
+                        binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                        status: installed
+                        error: null
+                      warnings: []
+                      monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+                sessionEnded:
+                  summary: The session has ended
+                  value:
+                    statusCode: 409
+                    message: Device session "brave-teal-otter" has ended (idle_timeout). Start a new one.
+                    error: LIVE_SESSION_ENDED
+                    session:
+                      id: brave-teal-otter
+                      live_id: 4182
+                      state: expired
+                      release_reason: idle_timeout
+                      platform: android
+                      model: pixel-10-api-36
+                      client_label: claude-code
+                      created_at: '2026-11-10T14:00:00.000Z'
+                      started_at: '2026-11-10T14:00:21.000Z'
+                      released_at: '2026-11-10T14:31:02.000Z'
+                      expires_at: null
+                      queue: null
+                      time_remaining_s: null
+                      idle_remaining_s: null
+                      cost_so_far_usd: 0.93
+                      last_crash: null
+                      install:
+                        binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                        status: installed
+                        error: null
+                      warnings: []
+                      monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+
+  /device/bundles/upload-url:
+    post:
+      tags: [Flow bundles]
+      operationId: createBundleUploadUrl
+      summary: Get URLs to upload a flow bundle to
+      description: >-
+        Returns a new bundle id and signed URLs to `PUT` the zip to: `upload` and `mirror`. Either may be
+        null. Upload to each one given, then register the bundle with POST /device/bundles.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BundleUploadUrlRequest'
+            example:
+              bytes: 18342
+      responses:
+        '201':
+          description: The bundle id and where to upload it.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BundleUploadUrls'
+              example:
+                id: 0b6f2d1e-8a3c-4f5b-9e7d-1c2a3b4c5d6e
+                upload:
+                  path: 7/device-bundles/0b6f2d1e-8a3c-4f5b-9e7d-1c2a3b4c5d6e.zip
+                  signedUrl: https://xyzcompany.supabase.co/storage/v1/object/upload/sign/organizations/7/device-bundles/0b6f2d1e-8a3c-4f5b-9e7d-1c2a3b4c5d6e.zip?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJvcmdhbml6YXRpb25zLzcifQ.sig
+                mirror:
+                  path: organizations/7/device-bundles/0b6f2d1e-8a3c-4f5b-9e7d-1c2a3b4c5d6e.zip
+                  signedUrl: https://s3.us-west-004.backblazeb2.com/example-bucket/organizations/7/device-bundles/0b6f2d1e-8a3c-4f5b-9e7d-1c2a3b4c5d6e.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Expires=3600&X-Amz-Signature=3b1f
+        '400':
+          description: '`LIVE_INVALID_ACTION`: `bytes` isn''t a whole number from 1 to 50 MB.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 400
+                message: bytes is the zip's size, at most 50 MB.
+                error: LIVE_INVALID_ACTION
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+        '503':
+          description: Neither upload URL could be signed. No `error` code. Retry.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 503
+                message: Could not prepare the bundle upload. Please retry.
+
+  /device/bundles:
+    post:
+      tags: [Flow bundles]
+      operationId: registerBundle
+      summary: Register an uploaded flow bundle
+      description: >-
+        Records a bundle you uploaded, after checking that the zip is in storage. Say which URLs you uploaded
+        to with `supabase` and `backblaze`. Registering the same bundle again returns it unchanged, so it is
+        safe to retry. Pass its `id` to `run` as `flowUploadId`. Bundles are deleted a day after upload, once
+        no command needs them.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterBundleRequest'
+            example:
+              id: 0b6f2d1e-8a3c-4f5b-9e7d-1c2a3b4c5d6e
+              sha: 9f2c4a1b7e3d5f6a8b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a
+              bytes: 18342
+              supabase: true
+              backblaze: true
+      responses:
+        '201':
+          description: The registered bundle.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BundleResponse'
+              example:
+                bundle:
+                  id: 0b6f2d1e-8a3c-4f5b-9e7d-1c2a3b4c5d6e
+                  sha: 9f2c4a1b7e3d5f6a8b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a
+                  bytes: 18342
+                  encrypted: false
+                  created_at: '2026-11-10T14:05:12.881Z'
+        '400':
+          description: >-
+            `LIVE_INVALID_ACTION`: `id`, `sha`, `bytes` or `enc` is malformed, or the zip isn't in storage at the
+            places named.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              examples:
+                notUploaded:
+                  summary: The zip isn't in storage
+                  value:
+                    statusCode: 400
+                    message: The bundle was not found in storage. Upload the zip to the URLs from upload-url first, then register it.
+                    error: LIVE_INVALID_ACTION
+                badSha:
+                  summary: A malformed hash
+                  value:
+                    statusCode: 400
+                    message: sha is the SHA-256 of the uploaded zip, in hex.
+                    error: LIVE_INVALID_ACTION
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
+  /ip-addresses:
+    get:
+      operationId: getIpAddresses
+      tags: [IP addresses]
+      summary: Get IP addresses
+      description: |
+        The test runners' egress IP addresses, so firewall automation can keep an
+        allow-list in sync. No API key needed, and not rate limited. Responses
+        are cacheable for an hour: polling hourly is plenty. Watch `updatedAt` to
+        notice a change.
+      security: []
+      responses:
+        '200':
+          description: The current addresses.
+          headers:
+            Cache-Control:
+              description: '`public, max-age=3600`'
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IpAddresses'
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: x-app-api-key
+      description: An API key from **Settings → API Keys** in the console.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        A DeviceCloud login session's access token, as `dcd login` uses. Send it
+        with `x-dcd-org`.
+    orgHeader:
+      type: apiKey
+      in: header
+      name: x-dcd-org
+      description: |
+        The team (organization) ID to act as, with a Bearer token. The signed-in
+        user must be a member of that team.
+  parameters:
+    UploadId:
+      name: uploadId
+      in: path
+      required: true
+      description: The upload's ID.
+      schema:
+        type: string
+        format: uuid
+      example: 7e12345f-eb12-12ec-a30b-bb1234f1d12a
+    IfNoneMatch:
+      name: If-None-Match
+      in: header
+      description: The `ETag` of a previous response. Answers `304` if nothing has changed.
+      schema:
+        type: string
+      example: W/"115-QMD/XiKlxwtOKM/qnGnVrtcbhVo"
+    PlatformFilter:
+      name: platform
+      in: query
+      description: Only runs on this platform.
+      schema:
+        $ref: '#/components/schemas/Platform'
+    AppIdFilter:
+      name: appId
+      in: query
+      description: Only runs of this app (bundle ID or package name).
+      schema:
+        type: string
+      example: com.example.app
+  headers:
+    ETag:
+      description: A weak validator for the response body. Send it back in `If-None-Match`.
+      schema:
+        type: string
+      example: W/"115-QMD/XiKlxwtOKM/qnGnVrtcbhVo"
+    RetryAfter:
+      description: Seconds to wait before retrying.
+      schema:
+        type: integer
+  responses:
+    Forbidden:
+      description: |
+        No credentials, an invalid or expired API key, a Bearer token without a
+        valid `x-dcd-org`, or a key whose scope doesn't reach this endpoint
+        (`"error": "API_KEY_SCOPE"`).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          examples:
+            invalidKey:
+              summary: Invalid API key
+              value:
+                statusCode: 403
+                message: Invalid API key. Please check your API key and ensure it is valid for this environment.
+                error: Forbidden
+            scope:
+              summary: Key scope too narrow
+              value:
+                statusCode: 403
+                message: This API key is limited to device_sessions and can't reach /uploads/list. Use a key with full access for this.
+                error: API_KEY_SCOPE
+    RateLimited:
+      description: Over 60 requests a minute. Wait for `Retry-After` seconds.
+      headers:
+        Retry-After:
+          $ref: '#/components/headers/RetryAfter'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            statusCode: 429
+            message: 'ThrottlerException: Too Many Requests'
+    KeyCheckUnavailable:
+      description: |
+        The API key couldn't be checked because of a temporary problem on
+        DeviceCloud's side. This says nothing about whether the key is valid. Retry.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            statusCode: 503
+            message: Could not validate the API key right now (a temporary problem on our side). Please retry.
+            error: Service Unavailable
+    InvalidUploadId:
+      description: '`uploadId` isn''t a UUID.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            statusCode: 400
+            message: Validation failed (uuid is expected)
+            error: Bad Request
+    NotModified:
+      description: Nothing has changed since the response whose `ETag` you sent. No body.
+      headers:
+        ETag:
+          $ref: '#/components/headers/ETag'
+    NoResults:
+      description: The upload has no results in your organization, or doesn't exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageOnlyError'
+          example:
+            message: No results found for this upload
+    MessageOnlyServerError:
+      description: The report couldn't be built.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageOnlyError'
+          example:
+            message: Failed to merge JUNIT reports
+    ServerError:
+      description: A problem on DeviceCloud's side.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            statusCode: 500
+            message: Internal server error
+    LiveNotFound:
+      description: '`LIVE_NOT_FOUND`: no session with this id in your organization.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LiveError'
+          example:
+            statusCode: 404
+            message: No device session "brave-teal-otter" in your organization.
+            error: LIVE_NOT_FOUND
+    LiveSessionEnded:
+      description: >-
+        `LIVE_SESSION_ENDED`: the session has ended. The body includes its `session` block, with why it ended.
+        Start a new session.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LiveError'
+          examples:
+            sessionEnded:
+              summary: The session has ended
+              value:
+                statusCode: 409
+                message: Device session "brave-teal-otter" has ended (idle_timeout). Start a new one.
+                error: LIVE_SESSION_ENDED
+                session:
+                  id: brave-teal-otter
+                  live_id: 4182
+                  state: expired
+                  release_reason: idle_timeout
+                  platform: android
+                  model: pixel-10-api-36
+                  client_label: claude-code
+                  created_at: '2026-11-10T14:00:00.000Z'
+                  started_at: '2026-11-10T14:00:21.000Z'
+                  released_at: '2026-11-10T14:31:02.000Z'
+                  expires_at: null
+                  queue: null
+                  time_remaining_s: null
+                  idle_remaining_s: null
+                  cost_so_far_usd: 0.93
+                  last_crash: null
+                  install:
+                    binary_upload_id: 8a2d4c6e-1f3b-4d5a-8e7c-9b0a1c2d3e4f
+                    status: installed
+                    error: null
+                  warnings: []
+                  monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
+    LiveNotReady:
+      description: >-
+        `LIVE_NOT_READY` (425 Too Early): the device is still starting, or an app is still installing. A
+        command first waits up to 45 s for it (not while the session is queued), then answers this; `phase`
+        says where the device is. Screenshot and inspect answer it, with the `session` block instead of
+        `phase`, while the device has no screen to show yet. Retry shortly.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LiveError'
+          examples:
+            starting:
+              summary: The device is still starting
+              value:
+                statusCode: 425
+                message: The device is not ready yet (starting_device). Wait for state "ready", then retry.
+                error: LIVE_NOT_READY
+                phase: starting_device
+            installing:
+              summary: An app is still installing
+              value:
+                statusCode: 425
+                message: 'The app is still installing (installing_app). Wait until the session''s install.status is "installed" (over MCP, get_device_status with wait: true waits for it), then retry.'
+                error: LIVE_NOT_READY
+                phase: installing_app
+    LiveRateLimited:
+      description: >-
+        `LIVE_RATE_LIMITED`: over a per-minute limit. Commands (install, launch, actions, run, request-human,
+        hand-back) are limited to 60 a minute per session. Reads (session status, commands, inspect,
+        screenshot, logs, timeline, artifacts, human status, and stopping an ended session) are limited to 240
+        a minute per session. Session lists, device models and bundle uploads are limited to 120 a minute per
+        organization. The body gives the `limit` and `retry_after_s`, the seconds until the window resets. No
+        `Retry-After` header is sent. Windows are fixed and one minute long, and each API instance keeps its
+        own count.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LiveError'
+          example:
+            statusCode: 429
+            message: 'Too many requests for this session: at most 240 a minute. Retry in 17s.'
+            error: LIVE_RATE_LIMITED
+            limit: 240
+            retry_after_s: 17
+    LiveSecretsUnavailable:
+      description: >-
+        `LIVE_SECRETS_UNAVAILABLE`: this server can't accept secrets (`env` on run, or `sensitive` text) right
+        now. Send the command without them.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LiveError'
+          example:
+            statusCode: 503
+            message: Secrets (env, sensitive text) are not available on this server. Send the command without them.
+            error: LIVE_SECRETS_UNAVAILABLE
+  schemas:
+    ErrorEnvelope:
+      type: object
+      description: |
+        The error body most endpoints use. Some errors add more fields; ignore
+        those you don't know.
+      required: [statusCode, message]
+      properties:
+        statusCode:
+          type: integer
+          description: The HTTP status.
+        message:
+          description: |
+            Human-readable text. Request validation errors give a list, one
+            entry per problem.
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                type: string
+        error:
+          type: string
+          description: |
+            A machine-readable code such as `API_KEY_SCOPE` or a `LIVE_*` code,
+            or the HTTP status text (`Bad Request`). Match on codes, never on
+            status text.
+      additionalProperties: true
+    InBodyError:
+      type: object
+      description: |
+        A client error that `GET /results/{uploadId}`, `GET /flows` and
+        `GET /flows/runs` report in the body of an HTTP `200`.
+      required: [statusCode, message]
+      properties:
+        statusCode:
+          type: integer
+          const: 400
+        message:
+          type: string
+    MessageOnlyError:
+      type: object
+      description: The error body of the report and artifact downloads.
+      required: [message]
+      properties:
+        message:
+          type: string
+    TestStatus:
+      type: string
+      description: |
+        A test's state. `QUEUED` means waiting for a device. More values may be
+        added.
+      enum: [PENDING, QUEUED, RUNNING, PASSED, FAILED, CANCELLED]
+    Platform:
+      type: string
+      enum: [android, ios]
+    Upload:
+      type: object
+      required: [id, name, created_at, consoleUrl]
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: [string, 'null']
+          description: The name given with `dcd cloud --name`, if any.
+        created_at:
+          type: string
+          format: date-time
+        consoleUrl:
+          type: string
+          format: uri
+          description: The upload in the console.
+    UploadList:
+      type: object
+      required: [uploads, total, limit, offset]
+      properties:
+        uploads:
+          type: array
+          items:
+            $ref: '#/components/schemas/Upload'
+        total:
+          type: integer
+          description: How many uploads match, across every page.
+        limit:
+          type: integer
+        offset:
+          type: integer
+      example:
+        uploads:
+          - id: 7e12345f-eb12-12ec-a30b-bb1234f1d12a
+            name: Nightly regression
+            created_at: '2026-01-15T10:30:00+00:00'
+            consoleUrl: https://console.devicecloud.dev/results?upload=7e12345f-eb12-12ec-a30b-bb1234f1d12a
+        total: 42
+        limit: 20
+        offset: 0
+    UploadStatus:
+      type: object
+      required: [uploadId, status, name, createdAt, appBinaryId, consoleUrl, tests]
+      properties:
+        uploadId:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/TestStatus'
+          description: |
+            The run's overall status, worked out from its tests. Never
+            `CANCELLED`: a cancelled test makes the run `FAILED`.
+        name:
+          type: [string, 'null']
+        createdAt:
+          type: [string, 'null']
+          format: date-time
+        appBinaryId:
+          type: string
+          format: uuid
+          description: The ID of the app binary the run tested.
+        consoleUrl:
+          type: string
+          format: uri
+          description: The upload in the console, opened at its most recently created test.
+        tests:
+          type: array
+          description: The latest attempt of each test.
+          items:
+            $ref: '#/components/schemas/UploadStatusTest'
+        supersededBy:
+          type: string
+          format: uuid
+          description: |
+            Only on a run that a newer run from the same CI context replaced
+            (`dcd cloud --cancel-previous`): the newer upload's ID. Its `status`
+            is still `FAILED`, because its cancelled tests count against it, so
+            check this field before failing a CI job.
+      example:
+        uploadId: 7e12345f-eb12-12ec-a30b-bb1234f1d12a
+        status: FAILED
+        name: Nightly regression
+        createdAt: '2026-01-15T10:30:00+00:00'
+        appBinaryId: 67894274-b789-4c1e-80d4-da8998998999
+        consoleUrl: https://console.devicecloud.dev/results?upload=7e12345f-eb12-12ec-a30b-bb1234f1d12a&result=4500
+        tests:
+          - name: ./login-test/onboarding.yaml
+            status: FAILED
+            durationSeconds: 32
+            failReason: 'Element not found: Text matching regex next.* not found'
+            createdAt: '2026-01-15T10:30:04+00:00'
+            device: pixel-7-api-34
+    UploadStatusTest:
+      type: object
+      required: [name, status]
+      properties:
+        name:
+          type: string
+          description: The flow file, relative to the flows folder that was run.
+        status:
+          $ref: '#/components/schemas/TestStatus'
+        durationSeconds:
+          type: integer
+          description: Left out until the test has a duration.
+        failReason:
+          type: string
+          description: Only on a `FAILED` test with a recorded reason.
+        createdAt:
+          type: string
+          format: date-time
+        device:
+          type: string
+          description: The device the test ran on, such as `pixel-7-api-34` or `iPhone 16 - 18`.
+    ResultsResponse:
+      type: object
+      required: [statusCode, results]
+      properties:
+        statusCode:
+          type: integer
+          const: 200
+        results:
+          type: array
+          description: Every attempt of every test, ordered by `id`.
+          items:
+            $ref: '#/components/schemas/Result'
+    Result:
+      type: object
+      description: |
+        One attempt at one test. Fields marked "full view only" are left out with
+        `view=summary`.
+      required:
+        - id
+        - test_file_name
+        - status
+        - retry_of
+        - duration_seconds
+        - fail_reason
+        - cancellation_reason
+        - simulator_name
+        - config
+      properties:
+        id:
+          type: integer
+          description: The result ID.
+        test_file_name:
+          type: string
+          description: The flow file, relative to the flows folder that was run.
+          example: ./login-test/onboarding.yaml
+        test_name:
+          type: [string, 'null']
+          description: The flow's name. Full view only.
+        status:
+          $ref: '#/components/schemas/TestStatus'
+          description: |
+            The test's state. This endpoint still reports a queued test as
+            `PENDING` rather than `QUEUED`, so treat both as "not started yet".
+        retry_of:
+          type: [integer, 'null']
+          description: For a retry, the `id` of the attempt it retried.
+        created_at:
+          type: string
+          format: date-time
+          description: Full view only.
+        duration_seconds:
+          type: [integer, 'null']
+        fail_reason:
+          type: [string, 'null']
+        cancellation_reason:
+          type: [string, 'null']
+          description: |
+            Why a cancelled test was cancelled, when a reason was recorded.
+            `superseded_by:<upload id>` means a newer run from the same CI context
+            replaced this one. `Cancelled: payment for this run failed.` means the
+            run's payment failed after its tests were created. A test you cancel
+            yourself has `null`. Match on the `superseded_by:` prefix, as more
+            reasons may be added.
+        simulator_name:
+          type: string
+          description: The device the test ran on, such as `pixel-7-api-34`.
+        platform:
+          $ref: '#/components/schemas/Platform'
+          description: Full view only.
+        config:
+          type: object
+          description: |
+            The test's run settings. With `view=summary`, only `deviceName` and
+            `osVersion`, each left out when not recorded.
+          properties:
+            deviceName:
+              type: string
+              example: Pixel 7
+            osVersion:
+              type: [string, number]
+              example: '34'
+          additionalProperties: true
+        result_files:
+          type: [object, 'null']
+          description: |
+            References to the test's stored logs, screenshots and video, with the
+            step log itself in `main_log` when it is 512 KB or smaller. Full view
+            only. To download the files, use `POST /results/{uploadId}/download`.
+          additionalProperties: true
+    DownloadArtifactsRequest:
+      type: object
+      required: [results]
+      properties:
+        results:
+          type: string
+          enum: [FAILED, ALL]
+          description: |
+            `FAILED` for the failed tests' files only, `ALL` for every test's.
+            Any other value counts as `ALL`.
+    FlowSummaries:
+      type: object
+      required: [statusCode, flows]
+      properties:
+        statusCode:
+          type: integer
+          const: 200
+        flows:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlowSummary'
+    FlowSummary:
+      type: object
+      required:
+        - flow_name
+        - file_name
+        - last_run_at
+        - total_runs
+        - passed_runs
+        - failed_runs
+        - pass_rate
+        - avg_duration
+        - daily_data
+        - tags
+      properties:
+        flow_name:
+          type: string
+        file_name:
+          type: string
+          description: The flow file, relative to the flows folder that was run. Pass it to `GET /flows/runs`.
+        last_run_at:
+          type: string
+          format: date-time
+        total_runs:
+          type: integer
+          description: |
+            Every run in the range whatever its status, including cancelled and
+            unfinished runs and each retry, so it can be more than
+            `passed_runs` + `failed_runs`.
+        passed_runs:
+          type: integer
+        failed_runs:
+          type: integer
+        pass_rate:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: '`passed / (passed + failed)` as a whole percentage. `0` when nothing passed or failed.'
+        avg_duration:
+          type: integer
+          description: Average duration in seconds.
+        daily_data:
+          type: object
+          description: |
+            Each day with runs (`YYYY-MM-DD`, UTC) and how it went: `passed` (runs
+            passed and none failed), `failed` (runs failed and none passed),
+            `mixed` (both), or `null` (runs, but none passed or failed, for example
+            all cancelled). Days without runs have no entry.
+          additionalProperties:
+            type: [string, 'null']
+            enum: [passed, failed, mixed, null]
+        tags:
+          type: array
+          items:
+            type: string
+    FlowRuns:
+      type: object
+      required: [statusCode, runs]
+      properties:
+        statusCode:
+          type: integer
+          const: 200
+        runs:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlowRun'
+    FlowRun:
+      type: object
+      required: [id, status, createdAt, durationSeconds, failReason, testUploadId, uploadName]
+      properties:
+        id:
+          type: integer
+          description: The result ID.
+        status:
+          $ref: '#/components/schemas/TestStatus'
+        createdAt:
+          type: string
+          format: date-time
+        durationSeconds:
+          type: [integer, 'null']
+        failReason:
+          type: [string, 'null']
+        testUploadId:
+          type: string
+          format: uuid
+          description: The upload the run belongs to.
+        uploadName:
+          type: [string, 'null']
+    IpAddresses:
+      type: object
+      required: [updatedAt, ipAddresses, ranges]
+      properties:
+        updatedAt:
+          type: string
+          format: date
+          description: When the list last changed.
+        ipAddresses:
+          type: array
+          description: Every address as a bare IP, the simplest thing to allow-list.
+          items:
+            type: string
+        ranges:
+          type: array
+          description: Each range in detail. If your firewall takes CIDR notation, allow-list these.
+          items:
+            $ref: '#/components/schemas/IpRange'
+      example:
+        updatedAt: '2026-07-06'
+        ipAddresses: [46.17.215.144, 46.17.215.145, 83.217.174.249]
+        ranges:
+          - cidr: 46.17.215.144/32
+            platforms: [android, ios]
+            type: egress
+            description: Test runner egress
+    IpRange:
+      type: object
+      required: [cidr, platforms, type, description]
+      properties:
+        cidr:
+          type: string
+          description: The range in CIDR notation. A single host is a `/32`.
+        platforms:
+          type: array
+          description: The runner platforms whose traffic leaves from this range.
+          items:
+            $ref: '#/components/schemas/Platform'
+        type:
+          type: string
+          description: The kind of traffic. Currently always `egress`, outbound from the app under test.
+          enum: [egress]
+        description:
+          type: string
+    LiveError:
+      type: object
+      description: >-
+        The error body. `statusCode` equals the HTTP status and `message` is for people. `error`, when present,
+        is a stable code to branch on. Some errors add fields: `session` (the session block), `phase`
+        (LIVE_NOT_READY from a command), `limit` and `retry_after_s` (LIVE_RATE_LIMITED), `limit`
+        (LIVE_CONCURRENCY_LIMIT), and `limit` and `spent` (LIVE_SPEND_CAP). Ignore fields you don't know.
+      required: [statusCode, message]
+      properties:
+        statusCode:
+          type: integer
+          description: The HTTP status.
+          example: 409
+        message:
+          type: string
+          description: What went wrong, in words. Don't branch on it.
+        error:
+          type: string
+          description: |-
+            A stable code. Absent on errors that carry none: validation and payment errors when starting a session, an invalid `before` on artifacts, and 5xx errors other than the ones below.
+
+            - `LIVE_NOT_ENABLED` (403): device sessions aren't enabled for your organization.
+            - `LIVE_CONCURRENCY_LIMIT` (409): your organization has as many sessions open as it may.
+            - `LIVE_SPEND_CAP` (402): your organization reached its monthly spend cap.
+            - `LIVE_NOT_FOUND` (404): no such session in your organization.
+            - `LIVE_NOT_READY` (425): the device is still starting, or an app is installing. Retry shortly.
+            - `LIVE_SESSION_ENDED` (409): the session has ended.
+            - `LIVE_INVALID_ACTION` (400): the request is malformed. The message says how.
+            - `LIVE_INVALID_APP` (400): the build isn't one this device can install, or the install request named neither or both of a build and a URL.
+            - `LIVE_APP_DOWNLOAD_FAILED` (400): the build at the URL couldn't be downloaded.
+            - `LIVE_NO_APP` (409): no app is installed, and none was named.
+            - `LIVE_COMMAND_NOT_FOUND` (404): no such command in this session.
+            - `LIVE_LOGS_UNAVAILABLE` (502): the device logs couldn't be read.
+            - `LIVE_SESSION_REQUIRED`: MCP only, never returned by this API. More than one session is open, so pass `session_id`.
+            - `LIVE_RATE_LIMITED` (429): too many requests. Wait `retry_after_s` seconds.
+            - `LIVE_NOT_WAITING_FOR_HUMAN` (409): hand-back on a session that isn't waiting for a person.
+            - `LIVE_HUMAN_IN_CONTROL` (409): a person has taken control in the console. Wait for them to hand back.
+            - `LIVE_CONSOLE_ONLY` (403): only a person signed in to the console can do this (take control).
+            - `LIVE_NOT_IN_CONTROL` (409): only the person in control can do this (remove a held step).
+            - `LIVE_SECRETS_UNAVAILABLE` (503): secrets can't be accepted right now.
+          enum:
+            - LIVE_NOT_ENABLED
+            - LIVE_CONCURRENCY_LIMIT
+            - LIVE_SPEND_CAP
+            - LIVE_NOT_FOUND
+            - LIVE_NOT_READY
+            - LIVE_SESSION_ENDED
+            - LIVE_INVALID_ACTION
+            - LIVE_INVALID_APP
+            - LIVE_APP_DOWNLOAD_FAILED
+            - LIVE_NO_APP
+            - LIVE_COMMAND_NOT_FOUND
+            - LIVE_LOGS_UNAVAILABLE
+            - LIVE_SESSION_REQUIRED
+            - LIVE_RATE_LIMITED
+            - LIVE_NOT_WAITING_FOR_HUMAN
+            - LIVE_HUMAN_IN_CONTROL
+            - LIVE_CONSOLE_ONLY
+            - LIVE_NOT_IN_CONTROL
+            - LIVE_SECRETS_UNAVAILABLE
+        session:
+          $ref: '#/components/schemas/SessionBlock'
+          description: >-
+            The session's block, on LIVE_SESSION_ENDED, LIVE_NOT_WAITING_FOR_HUMAN, LIVE_LOGS_UNAVAILABLE, and
+            LIVE_NOT_READY from screenshot, inspect and request-human.
+        phase:
+          type: [string, 'null']
+          description: >-
+            LIVE_NOT_READY from a command only. The device's phase: `pending`, `cloning_device`, `starting_device`,
+            `booting_hierarchy` or `booting_screenshot` while it starts; `downloading_app` or `installing_app`
+            while an app installs. Null when the device has reported no phase yet.
+          example: installing_app
+        limit:
+          type: number
+          description: >-
+            LIVE_RATE_LIMITED from a per-minute limit: requests allowed a minute. LIVE_CONCURRENCY_LIMIT: sessions
+            your organization may have open. LIVE_SPEND_CAP: the monthly cap, in USD.
+        retry_after_s:
+          type: integer
+          minimum: 0
+          description: LIVE_RATE_LIMITED from a per-minute limit. Seconds until the window resets.
+        spent:
+          type: number
+          description: LIVE_SPEND_CAP only. What your organization has spent on device sessions this month, in USD.
+
+    SessionBlock:
+      type: object
+      description: >-
+        The compact block every device session response carries as `session`, so you always know the state,
+        the time left and the cost without another call.
+      required:
+        - id
+        - live_id
+        - state
+        - release_reason
+        - platform
+        - model
+        - client_label
+        - created_at
+        - started_at
+        - released_at
+        - expires_at
+        - queue
+        - time_remaining_s
+        - idle_remaining_s
+        - cost_so_far_usd
+        - last_crash
+        - install
+        - warnings
+        - monitor_url
+      properties:
+        id:
+          type: string
+          description: The session id. Every path takes it.
+          example: brave-teal-otter
+        live_id:
+          type: integer
+          description: The session's numeric id. Paths take it too.
+          example: 4182
+        state:
+          type: string
+          description: >-
+            Where the session is. `queued`: waiting for a free device. `provisioning`: a device is starting.
+            `ready`: the device is up. `active`: commands have been sent. `needs_human`: waiting for a person.
+            `released`, `expired` and `failed` are ended.
+          enum: [queued, provisioning, ready, active, needs_human, released, expired, failed]
+        release_reason:
+          type: [string, 'null']
+          description: Why the session ended. Null while it is open.
+          enum:
+            - user_stop
+            - idle_timeout
+            - max_duration
+            - queue_timeout
+            - spend_cap
+            - runner_error
+            - heartbeat_lost
+            - needs_human_timeout
+            - other
+            - null
+        platform:
+          type: string
+          enum: [ios, android]
+        model:
+          type: [string, 'null']
+          description: >-
+            The device, in the form GET /device/models uses: `iphone-16-ios-26.4`, or `pixel-10-api-36`
+            (`-play` with Google Play). The OS version gets more precise once the device has started.
+          example: pixel-10-api-36
+        client_label:
+          type: [string, 'null']
+          description: Who is driving the session, such as `claude-code`.
+        created_at:
+          type: string
+          format: date-time
+          description: When the session was asked for.
+        started_at:
+          type: [string, 'null']
+          format: date-time
+          description: When a device was assigned, which is when billing starts. Null while queued.
+        released_at:
+          type: [string, 'null']
+          format: date-time
+          description: When it ended. Null while it is open.
+        expires_at:
+          type: [string, 'null']
+          format: date-time
+          description: When its maximum duration ends it. Null before a device is assigned, and once it has ended.
+        queue:
+          description: Only while `queued`. Null otherwise.
+          oneOf:
+            - $ref: '#/components/schemas/SessionQueue'
+            - type: 'null'
+        time_remaining_s:
+          type: [integer, 'null']
+          minimum: 0
+          description: Seconds until the maximum duration. Null before a device is assigned, and once it has ended.
+        idle_remaining_s:
+          type: [integer, 'null']
+          minimum: 0
+          description: >-
+            Seconds until the idle timeout (5 minutes without a command). Null when the device isn't running,
+            and while the session waits for a person.
+        cost_so_far_usd:
+          type: [number, 'null']
+          description: >-
+            What the session has cost so far at your organization's rate, in USD: the charge if it ended now.
+            Null when it couldn't be read.
+        last_crash:
+          description: The app's most recent crash in this session, or null.
+          oneOf:
+            - $ref: '#/components/schemas/AppCrash'
+            - type: 'null'
+        install:
+          description: The build the session was asked to install, and where that install is. Null when none was asked for.
+          oneOf:
+            - $ref: '#/components/schemas/SessionInstall'
+            - type: 'null'
+        warnings:
+          type: array
+          description: Plain-English notices, such as a long queue, an upcoming idle timeout, a crash or a failed install.
+          items:
+            type: string
+        monitor_url:
+          type: string
+          format: uri
+          description: The session's page in the console, where people can watch the screen and take control.
+          example: https://console.devicecloud.dev/device/brave-teal-otter
+
+    SessionQueue:
+      type: object
+      required: [position, eta_s, waited_s, reason]
+      properties:
+        position:
+          type: [integer, 'null']
+          description: The session's place in the queue.
+        eta_s:
+          type: [integer, 'null']
+          description: >-
+            An estimate of the seconds still to wait. Null when there is no basis for one, or once the wait has
+            run past the usual one.
+        waited_s:
+          type: [integer, 'null']
+          description: Seconds since the session was created.
+        reason:
+          type: string
+          description: >-
+            `fleet_busy`: the platform is at the fleet-wide limit on device sessions. `waiting_for_device`: under
+            that limit, waiting for a free device. Neither is an error; the session starts on its own.
+          enum: [fleet_busy, waiting_for_device]
+
+    SessionInstall:
+      type: object
+      required: [binary_upload_id, status, error]
+      properties:
+        binary_upload_id:
+          type: string
+          description: The build asked for.
+        status:
+          type: string
+          description: '`installing` (the device hasn''t finished it), `installed`, or `failed`.'
+          enum: [installing, installed, failed]
+        error:
+          type: [string, 'null']
+          description: Why the install failed. Null unless `status` is `failed`.
+
+    AppCrash:
+      type: object
+      required: [at, summary]
+      properties:
+        at:
+          type: string
+          description: When the app crashed, as the device saw it.
+        summary:
+          type: string
+          description: A one-line summary of the crash. GET .../logs has the details.
+
+    SessionResponse:
+      type: object
+      required: [session]
+      properties:
+        session:
+          $ref: '#/components/schemas/SessionBlock'
+
+    SessionListResponse:
+      type: object
+      required: [sessions]
+      properties:
+        sessions:
+          type: array
+          maxItems: 100
+          description: The sessions' blocks, newest first.
+          items:
+            $ref: '#/components/schemas/SessionBlock'
+
+    DeviceModel:
+      type: object
+      required: [model, name, os, default_os, google_play, default]
+      properties:
+        model:
+          type: string
+          description: What `model` takes, such as `iphone-16` or `pixel-10`.
+        name:
+          type: string
+          description: The device's name, such as `iPhone 16`.
+        os:
+          type: array
+          description: What `os` takes for this model. The iOS major version, or the Android API level.
+          items:
+            type: string
+        default_os:
+          type: string
+          description: The OS version a session gets when it names none.
+        google_play:
+          type: boolean
+          description: An Android image with Google Play services. Start it with `googlePlay` true.
+        default:
+          type: boolean
+          description: The model a session gets when it names none.
+
+    DeviceCatalogue:
+      type: object
+      required: [ios, android]
+      properties:
+        ios:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeviceModel'
+        android:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeviceModel'
+
+    StartSessionRequest:
+      type: object
+      required: [platform]
+      properties:
+        platform:
+          type: string
+          enum: [ios, android]
+        model:
+          type: string
+          description: A model from GET /device/models, such as `iphone-16` or `pixel-10`. Default is the platform's default model.
+        os:
+          type: string
+          description: >-
+            The iOS major version (such as `26`) or Android API level (such as `36`), from GET /device/models.
+            A string. Default is the model's default.
+        googlePlay:
+          type: boolean
+          description: Android only. An image with Google Play services. Sending it on iOS is a 400.
+        binaryUploadId:
+          type: string
+          description: An uploaded build to install once the device is ready. It must be your organization's and for this platform.
+        deviceLocale:
+          type: string
+          pattern: '^[a-z]{2,3}_[A-Z]{2}$'
+          description: The device's locale, such as `de_DE`. Default is the device's own.
+        maxDurationMin:
+          type: integer
+          minimum: 1
+          maximum: 60
+          description: >-
+            End the session after this many minutes. Default and ceiling is your organization's limit, which is
+            at most 60.
+        clientLabel:
+          type: string
+          pattern: '^[A-Za-z0-9][A-Za-z0-9 ._/-]{0,63}$'
+          maxLength: 64
+          description: Who is driving the session, such as `claude-code`. Shown to people watching it.
+        record:
+          type: boolean
+          default: true
+          description: >-
+            Record the session's video. Only `false` turns it off. A screenshot after each action and the device
+            log are kept either way.
+        androidDevice:
+          type: string
+          deprecated: true
+          description: >-
+            Older form of `model` for Android, such as `pixel-8`. Needs `androidApiLevel`, and can't be mixed with
+            `model`, `os` or `googlePlay`.
+        androidApiLevel:
+          type: string
+          deprecated: true
+          description: Older form of `os` for Android, such as `34`. Needs `androidDevice`.
+
+    InstallRequest:
+      type: object
+      description: Pass `binaryUploadId` or `url`, not both.
+      properties:
+        binaryUploadId:
+          type: string
+          description: An uploaded build of your organization's, for the session's platform.
+        url:
+          type: string
+          format: uri
+          pattern: '^https://'
+          description: >-
+            An https link to an `.apk`, or to a zipped simulator `.app` for iOS, up to 500 MB. It must be a public
+            host with no user name or password in the URL. The download may take up to 120 s and follow up to 5
+            redirects. A build your organization already has (the same bytes) is reused.
+      oneOf:
+        - required: [binaryUploadId]
+        - required: [url]
+
+    InstallResponse:
+      type: object
+      required: [app, session]
+      properties:
+        app:
+          type: object
+          required: [binary_upload_id, app_id, reused]
+          properties:
+            binary_upload_id:
+              type: string
+              description: The build being installed. For a URL, the build it was stored as.
+            app_id:
+              type: [string, 'null']
+              description: The build's bundle id or package name. Null when it isn't known.
+            reused:
+              type: boolean
+              description: >-
+                True when no new build was stored: always for `binaryUploadId`, and for a `url` whose build your
+                organization already had.
+        session:
+          $ref: '#/components/schemas/SessionBlock'
+
+    LaunchRequest:
+      type: object
+      properties:
+        appId:
+          type: string
+          minLength: 1
+          maxLength: 255
+          pattern: '^[A-Za-z0-9._-]+$'
+          description: A bundle id or package name. Default is the installed build's.
+          example: com.apple.Preferences
+        clearState:
+          type: boolean
+          description: Clear the app's data before launching it.
+
+    DeviceAction:
+      description: One action. `type` picks which, and its other fields.
+      oneOf:
+        - $ref: '#/components/schemas/TapAction'
+        - $ref: '#/components/schemas/TypeAction'
+        - $ref: '#/components/schemas/SwipeAction'
+        - $ref: '#/components/schemas/PressKeyAction'
+      discriminator:
+        propertyName: type
+        mapping:
+          tap: '#/components/schemas/TapAction'
+          type: '#/components/schemas/TypeAction'
+          swipe: '#/components/schemas/SwipeAction'
+          press_key: '#/components/schemas/PressKeyAction'
+
+    TapAction:
+      type: object
+      description: >-
+        Tap one target: a point (`x` and `y`), an element's `text`, or its `id`. Exactly one. Text and ids are
+        matched literally, not as regular expressions.
+      required: [type]
+      properties:
+        type:
+          type: string
+          const: tap
+        x:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Percent of the screen's width, from the left. Rounded to a whole number.
+        y:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Percent of the screen's height, from the top. Rounded to a whole number.
+        text:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          description: The element's text or accessibility label (`txt` or `a11y` in inspect).
+        id:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          description: The element's id (`rid` in inspect).
+      oneOf:
+        - required: [x, y]
+        - required: [text]
+        - required: [id]
+
+    TypeAction:
+      type: object
+      description: Type text into the focused field.
+      required: [type, text]
+      properties:
+        type:
+          type: string
+          const: type
+        text:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        sensitive:
+          type: boolean
+          default: false
+          description: >-
+            The text is a secret. It is encrypted before it is stored, never shown in the timeline, and masked
+            in inspect. Answers 503 LIVE_SECRETS_UNAVAILABLE when the server can't take secrets.
+
+    SwipeAction:
+      type: object
+      description: Swipe in a `direction`, or `from` one point `to` another. Not both.
+      required: [type]
+      properties:
+        type:
+          type: string
+          const: swipe
+        direction:
+          type: string
+          enum: [up, down, left, right]
+        from:
+          $ref: '#/components/schemas/ScreenPoint'
+        to:
+          $ref: '#/components/schemas/ScreenPoint'
+      oneOf:
+        - required: [direction]
+        - required: [from, to]
+
+    PressKeyAction:
+      type: object
+      description: Press a device key.
+      required: [type, key]
+      properties:
+        type:
+          type: string
+          const: press_key
+        key:
+          type: string
+          enum: [back, home, enter, backspace, tab, volume_up, volume_down, lock, power]
+
+    ScreenPoint:
+      type: object
+      description: A point on the screen, in percent. Each value is rounded to a whole number.
+      required: [x, y]
+      properties:
+        x:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Percent of the screen's width, from the left.
+        y:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: Percent of the screen's height, from the top.
+
+    CommandResult:
+      type: object
+      description: >-
+        How the command went on the device. A command that waited 120 s without finishing fails with a timeout
+        error. One held because a person took control fails with a message saying it will run after the
+        hand-back; follow it on the timeline.
+      required: [success]
+      properties:
+        success:
+          type: boolean
+        output:
+          type: string
+          description: What Maestro reported. Often a JSON document in a string.
+        error:
+          type: string
+          description: Why it failed.
+
+    CommandResponse:
+      type: object
+      required: [result, session]
+      properties:
+        result:
+          $ref: '#/components/schemas/CommandResult'
+        session:
+          $ref: '#/components/schemas/SessionBlock'
+
+    RunRequest:
+      type: object
+      description: Pass `yaml` or `flowUploadId`, not both.
+      properties:
+        yaml:
+          type: string
+          pattern: '\S'
+          description: >-
+            One Maestro flow, run whole: a header naming the app, `---`, then commands. Without a header, the
+            installed build's app id is used.
+        flowUploadId:
+          type: string
+          format: uuid
+          description: A flow bundle of your organization's, from POST /device/bundles.
+        flow:
+          type: string
+          pattern: '^(?!/)(?!.*(^|/)\.\.(/|$))[\w .@+-]+(/[\w .@+-]+)*\.ya?ml$'
+          description: >-
+            With `flowUploadId` only. The entry file inside the bundle, as a relative path such as
+            `flows/login.yaml`. Without it, every flow in the bundle runs.
+        env:
+          type: object
+          description: >-
+            Secrets and variables for the flow, used in the YAML as `${NAME}`. They are encrypted before they are
+            stored, never shown in the timeline, and masked in the output and in inspect. Names starting with
+            `DCD_` (any case) are reserved. Answers 503 LIVE_SECRETS_UNAVAILABLE when the server can't take
+            secrets.
+          maxProperties: 50
+          propertyNames:
+            pattern: '^(?![Dd][Cc][Dd]_)[A-Za-z_][A-Za-z0-9_]{0,63}$'
+          additionalProperties:
+            type: string
+            maxLength: 4096
+          example:
+            PASSWORD: correct-horse-battery
+        waitSeconds:
+          type: number
+          minimum: 0
+          maximum: 300
+          default: 110
+          description: >-
+            How long to wait for the flow before answering `running`, in seconds. Time spent waiting for the
+            device to be ready counts against it.
+      oneOf:
+        - required: [yaml]
+        - required: [flowUploadId]
+
+    RunResponse:
+      type: object
+      required: [command_id, status, result, session]
+      properties:
+        command_id:
+          type: string
+          format: uuid
+          description: The command's id. Follow a `running` one at GET /device/sessions/{id}/commands/{commandId}.
+        status:
+          type: string
+          description: '`running` when the flow outlasted the wait.'
+          enum: [passed, failed, running]
+        result:
+          description: The flow's result. Null while it is `running`.
+          oneOf:
+            - $ref: '#/components/schemas/RunResult'
+            - type: 'null'
+        session:
+          $ref: '#/components/schemas/SessionBlock'
+
+    RunResult:
+      type: object
+      required: [success]
+      properties:
+        success:
+          type: boolean
+        output:
+          type: string
+          description: >-
+            Maestro's report, usually a JSON document in a string. Variable values are never included, and a
+            failed run's command count is left out.
+        error:
+          type: string
+          description: >-
+            Why the run failed, in words: for a bundle, which flows failed and why. Includes where it failed when
+            that is known.
+        flows:
+          type: array
+          description: Each flow's outcome, for a run that reported them (a bundle).
+          items:
+            $ref: '#/components/schemas/RunFlowResult'
+        failed_at:
+          $ref: '#/components/schemas/FailureLocation'
+        failed_at_candidates:
+          type: array
+          minItems: 2
+          description: Two or more commands fit the error, and any of them may have failed. Instead of `failed_at`.
+          items:
+            $ref: '#/components/schemas/FailureLocation'
+        screen_text:
+          type: array
+          maxItems: 60
+          description: >-
+            A failed run only: the app's visible text just after the failure, without the keyboard and System UI.
+            Present when the screen could be read.
+          items:
+            type: string
+
+    RunFlowResult:
+      type: object
+      required: [file, success, error]
+      properties:
+        file:
+          type: string
+          description: The flow's path inside the bundle.
+        success:
+          type: boolean
+        error:
+          type: [string, 'null']
+        failed_at:
+          $ref: '#/components/schemas/FailureLocation'
+        failed_at_candidates:
+          type: array
+          minItems: 2
+          items:
+            $ref: '#/components/schemas/FailureLocation'
+
+    FailureLocation:
+      type: object
+      description: Where a flow failed.
+      required: [file, line, command, call_chain]
+      properties:
+        file:
+          type: string
+          description: The file, as a path inside the bundle. `flow.yaml` for an inline flow.
+        line:
+          type: integer
+          minimum: 1
+          description: The line in that file, from 1.
+        command:
+          type: [string, 'null']
+          description: The command as written, on one line. Null when only the position is known.
+        call_chain:
+          type: array
+          description: The `runFlow` lines that led there, outermost first, such as `main.yaml:4`.
+          items:
+            type: string
+
+    CompactElement:
+      type: object
+      description: >-
+        One element on the screen. Keys other than `b` appear only when they apply; the state keys only when
+        they aren't the default.
+      required: [b]
+      properties:
+        b:
+          type: string
+          description: Bounds, `[left,top][right,bottom]`, in the screen's own units.
+          example: '[63,904][1017,1052]'
+        txt:
+          type: string
+          description: Text. Use it as tapOn text.
+        rid:
+          type: string
+          description: Resource id. Use it as tapOn id.
+        a11y:
+          type: string
+          description: Accessibility label, when it differs from `txt`. Use it as tapOn text.
+        hint:
+          type: string
+          description: Hint or placeholder text.
+        checked:
+          type: boolean
+          const: true
+        selected:
+          type: boolean
+          const: true
+        focused:
+          type: boolean
+          const: true
+        enabled:
+          type: boolean
+          const: false
+          description: Present only when the element is disabled.
+
+    CompactScreen:
+      type: object
+      required: [width, height, keys, elements]
+      properties:
+        width:
+          type: number
+        height:
+          type: number
+        keys:
+          type: object
+          description: What each element key means. The same in every response.
+          additionalProperties:
+            type: string
+        elements:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompactElement'
+        keyboard_open:
+          type: boolean
+          const: true
+          description: Android only. An on-screen keyboard is showing.
+        hidden:
+          type: object
+          description: >-
+            Android only, and only when some were left out: how many keyboard keys and System UI elements (status
+            bar, navigation bar) were hidden. `all=true` shows them.
+          required: [keyboard, system]
+          properties:
+            keyboard:
+              type: integer
+              minimum: 0
+            system:
+              type: integer
+              minimum: 0
+
+    InspectResponse:
+      type: object
+      required: [screen, session]
+      properties:
+        screen:
+          allOf:
+            - $ref: '#/components/schemas/CompactScreen'
+            - type: object
+              required: [fresh]
+              properties:
+                fresh:
+                  type: boolean
+                  description: False when no screen read came after your last command in time; this is then the latest.
+        session:
+          $ref: '#/components/schemas/SessionBlock'
+
+    ScreenshotResponse:
+      type: object
+      required: [screenshot, session]
+      properties:
+        screenshot:
+          type: object
+          required: [data_url, captured_at, fresh]
+          properties:
+            data_url:
+              type: string
+              description: The screen as a JPEG data URL.
+            captured_at:
+              type: [string, 'null']
+              format: date-time
+              description: When the device took it, on the device host's clock.
+            fresh:
+              type: boolean
+              description: False when no new frame came within 3 s; this is then the latest there is.
+        session:
+          $ref: '#/components/schemas/SessionBlock'
+
+    LogsResponse:
+      type: object
+      required: [logs, session]
+      properties:
+        logs:
+          type: object
+          required: [lines, source, app_id, scanned]
+          properties:
+            lines:
+              type: array
+              description: The lines, oldest first, at most 24 KB in all.
+              items:
+                type: string
+            source:
+              type: string
+              description: '`logcat` (Android), `ios-unified-log` (iOS), or `none` before an app is installed.'
+              enum: [logcat, ios-unified-log, none]
+            app_id:
+              type: [string, 'null']
+              description: The app the lines belong to. Null when no app is installed.
+            scanned:
+              type: integer
+              minimum: 0
+              description: How many of the app's newest lines were read to find these.
+            truncated:
+              type: boolean
+              const: true
+              description: Present only when older matching lines were left out to keep the answer under 24 KB.
+        session:
+          $ref: '#/components/schemas/SessionBlock'
+
+    HumanStatus:
+      type: object
+      required:
+        - waiting
+        - reason
+        - since
+        - expires_at
+        - handed_back
+        - note
+        - handed_back_at
+        - human_in_control
+        - controller_user_id
+      properties:
+        waiting:
+          type: boolean
+          description: The session is `needs_human`. Keep polling.
+        reason:
+          type: [string, 'null']
+          description: Why help was asked for, while waiting.
+        since:
+          type: [string, 'null']
+          format: date-time
+          description: When help was asked for, while waiting.
+        expires_at:
+          type: [string, 'null']
+          format: date-time
+          description: While waiting, when the session ends unless a person hands it back.
+        handed_back:
+          type: boolean
+          description: A person handed the session back since help was last asked for.
+        note:
+          type: [string, 'null']
+          description: The person's note, if they left one.
+        handed_back_at:
+          type: [string, 'null']
+          format: date-time
+        human_in_control:
+          type: boolean
+          description: A person has taken control in the console. Commands that change the device answer 409 LIVE_HUMAN_IN_CONTROL meanwhile.
+        controller_user_id:
+          type: [string, 'null']
+          description: The console user who has control, if anyone.
+
+    HumanResponse:
+      type: object
+      required: [session, human]
+      properties:
+        session:
+          $ref: '#/components/schemas/SessionBlock'
+        human:
+          $ref: '#/components/schemas/HumanStatus'
+
+    RequestHumanRequest:
+      type: object
+      required: [reason]
+      properties:
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 500
+          description: What the person should do. Leading and trailing spaces are trimmed before the length check.
+          example: Enter the 2FA code sent to the test phone, then hand back
+
+    HandBackRequest:
+      type: object
+      properties:
+        note:
+          type: string
+          maxLength: 2000
+          description: A note for the agent. Trimmed; a blank note counts as none.
+          example: Code entered, you're on the home screen
+
+    ArtifactLink:
+      type: object
+      required: [url, content_type, bytes, created_at]
+      properties:
+        url:
+          type: [string, 'null']
+          format: uri
+          description: A download link that works for about an hour. Null when no link could be made.
+        content_type:
+          type: string
+          description: Such as `video/mp4`, `text/plain`, `image/jpeg` or `application/json`.
+        bytes:
+          type: [integer, 'null']
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+
+    ArtifactAction:
+      type: object
+      required: [command_id, created_at, screenshot, hierarchy]
+      properties:
+        command_id:
+          type: [string, 'null']
+          format: uuid
+          description: The command the screen was captured after.
+        created_at:
+          type: string
+          format: date-time
+        screenshot:
+          description: The screen after the action.
+          oneOf:
+            - $ref: '#/components/schemas/ArtifactLink'
+            - type: 'null'
+        hierarchy:
+          description: The screen dump after the action, as JSON.
+          oneOf:
+            - $ref: '#/components/schemas/ArtifactLink'
+            - type: 'null'
+
+    ArtifactsResponse:
+      type: object
+      required: [session, recording, logs, actions, next_before, pending]
+      properties:
+        session:
+          $ref: '#/components/schemas/SessionBlock'
+        recording:
+          description: The session's video. Null until it arrives, or when the session wasn't recorded.
+          oneOf:
+            - $ref: '#/components/schemas/ArtifactLink'
+            - type: 'null'
+        logs:
+          description: The session's device log file. Null until it arrives.
+          oneOf:
+            - $ref: '#/components/schemas/ArtifactLink'
+            - type: 'null'
+        actions:
+          type: array
+          description: The screen after each action, newest first.
+          items:
+            $ref: '#/components/schemas/ArtifactAction'
+        next_before:
+          type: [string, 'null']
+          format: date-time
+          description: Pass as `before` for the next, older page. Null on the last page.
+        pending:
+          type: array
+          description: >-
+            Files still on their way after the session ended: ask again shortly. Empty while the session is open,
+            and when nothing more is expected.
+          items:
+            type: string
+            enum: [recording, logs]
+
+    TimelineEntry:
+      type: object
+      required:
+        - command_id
+        - kind
+        - source
+        - client_label
+        - actor
+        - actor_email
+        - status
+        - created_at
+        - completed_at
+        - input
+        - output
+        - error
+        - redacted
+        - screenshot
+      properties:
+        command_id:
+          type: string
+          format: uuid
+        kind:
+          type: string
+          enum:
+            - exec
+            - run
+            - tap
+            - type
+            - swipe
+            - press_key
+            - launch
+            - install
+            - stop
+            - logs
+            - human_input
+            - request_human
+            - hand_back
+        source:
+          type: string
+          description: Where it came from, from the `x-dcd-source` header.
+          enum: [cli, mcp, web, api]
+        client_label:
+          type: [string, 'null']
+        actor:
+          type: [string, 'null']
+          description: Sent by a signed-in user, or with an API key.
+          enum: [user, api_key, null]
+        actor_email:
+          type: [string, 'null']
+          description: The user's email when `actor` is `user` and it could be looked up.
+        status:
+          type: string
+          enum: [pending, running, passed, failed, timeout]
+        created_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: [string, 'null']
+          format: date-time
+        input:
+          type: [string, 'null']
+          description: What was sent, such as the YAML. Cut to 2000 characters, with a trailing `…`.
+        output:
+          type: [string, 'null']
+          description: Cut to 2000 characters.
+        error:
+          type: [string, 'null']
+          description: Cut to 2000 characters.
+        redacted:
+          type: boolean
+          description: The command carried a secret, which is not shown.
+        screenshot:
+          description: The screen after it, when one was captured.
+          oneOf:
+            - $ref: '#/components/schemas/ArtifactLink'
+            - type: 'null'
+
+    TimelineResponse:
+      type: object
+      required: [session, timeline, next_before]
+      properties:
+        session:
+          $ref: '#/components/schemas/SessionBlock'
+        timeline:
+          type: array
+          description: Newest first.
+          items:
+            $ref: '#/components/schemas/TimelineEntry'
+        next_before:
+          type: [string, 'null']
+          format: date-time
+          description: Pass as `before` for the next, older page. Null on the last page.
+
+    BundleUploadUrlRequest:
+      type: object
+      properties:
+        bytes:
+          type: integer
+          minimum: 1
+          maximum: 52428800
+          description: The zip's size in bytes, at most 50 MB.
+
+    SignedUpload:
+      type: object
+      required: [path, signedUrl]
+      properties:
+        path:
+          type: string
+          description: Where the zip will be stored.
+        signedUrl:
+          type: string
+          format: uri
+          description: '`PUT` the zip here.'
+
+    BundleUploadUrls:
+      type: object
+      required: [id, upload, mirror]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The bundle's id. Register it with this.
+        upload:
+          description: One copy. Null when it couldn't be signed.
+          oneOf:
+            - $ref: '#/components/schemas/SignedUpload'
+            - type: 'null'
+        mirror:
+          description: The other copy. Null when it couldn't be signed. Upload to both when both are given.
+          oneOf:
+            - $ref: '#/components/schemas/SignedUpload'
+            - type: 'null'
+
+    RegisterBundleRequest:
+      type: object
+      required: [id, sha, bytes]
+      description: Set `supabase` or `backblaze` true, or both, for the URLs you uploaded to.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The id from POST /device/bundles/upload-url.
+        sha:
+          type: string
+          pattern: '^[0-9a-fA-F]{64}$'
+          description: The SHA-256 of the zip, in hex.
+        bytes:
+          type: integer
+          minimum: 1
+          maximum: 52428800
+          description: The zip's size in bytes, at most 50 MB.
+        supabase:
+          type: boolean
+          description: You uploaded to the `upload` URL.
+        backblaze:
+          type: boolean
+          description: You uploaded to the `mirror` URL.
+        enc:
+          $ref: '#/components/schemas/BundleEnvelope'
+
+    BundleEnvelope:
+      type: object
+      description: For a zip encrypted on the client, the key envelope it was encrypted with. Used by the `dcd` CLI.
+      required: [v, kek, wrapped_key]
+      properties:
+        v:
+          type: number
+        kek:
+          type: number
+        wrapped_key:
+          type: string
+
+    FlowBundle:
+      type: object
+      required: [id, sha, bytes, encrypted, created_at]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Pass it to `run` as `flowUploadId`.
+        sha:
+          type: string
+          description: The zip's SHA-256, lowercase hex.
+        bytes:
+          type: integer
+        encrypted:
+          type: boolean
+          description: The zip was encrypted on the client.
+        created_at:
+          type: string
+          format: date-time
+
+    BundleResponse:
+      type: object
+      required: [bundle]
+      properties:
+        bundle:
+          $ref: '#/components/schemas/FlowBundle'
