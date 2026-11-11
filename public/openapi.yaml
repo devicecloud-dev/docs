@@ -483,7 +483,17 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          $ref: '#/components/responses/NoResults'
+          description: |
+            The upload has no results in your organization, or doesn't exist. Unlike
+            the report downloads, this one answers with the standard error envelope.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+              example:
+                statusCode: 404
+                message: No results found for this upload
+                error: Not Found
         '429':
           $ref: '#/components/responses/RateLimited'
         '503':
@@ -3253,7 +3263,7 @@ components:
           type: string
     MessageOnlyError:
       type: object
-      description: The error body of the report and artifact downloads.
+      description: The error body of the JUnit and HTML report downloads.
       required: [message]
       properties:
         message:
