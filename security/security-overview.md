@@ -26,6 +26,12 @@ Data held by our database and file storage providers is encrypted at rest with A
 
 On top of TLS, your uploads get envelope encryption by default. Before anything is uploaded, the CLI encrypts your app binary, flows and environment variables on your machine, each with its own random key (AES-256-GCM). It then encrypts each of those keys with DeviceCloud's public key (X25519), so the copies held in our storage and caches are ciphertext, and only our API can recover the keys that decrypt them. To turn envelope encryption off, pass `--no-encrypt` or set `DCD_ENCRYPT=0`. The upload is still encrypted in transit.
 
+### Sessions
+
+Signing in to the console, or with `dcd login`, starts a session. A session ends 30 days after you sign in, or after 7 days without use, whichever comes first, and you then sign in again. An open console tab counts as use. The limits are checked when the session renews, which happens about once an hour, so a session can last up to an hour past them.
+
+You can see your sessions in the console under **Settings → Account → Active sessions**, sign out a single device, or sign out of all devices at once. API keys are not sessions, so these limits don't apply to them.
+
 ### Data Retention <a href="#data-retention" id="data-retention"></a>
 
 Uploads (both binaries and workflow files) are automatically deleted 1 month after last use; result data including maestro logs, screenshots, videos and the environment variables passed with `--env` are retained for 6 months. Our database backups are kept for at most 6 months, so a backup copy of this data is gone at most 6 months after it is deleted.

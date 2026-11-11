@@ -16,7 +16,7 @@ This opens your browser, where you sign in (email OTP or Enterprise SSO) and aut
 - `$XDG_CONFIG_HOME/dcd/config.json`, or
 - `~/.dcd/config.json` if `XDG_CONFIG_HOME` is not set
 
-The file is written with `0600` permissions (owner read/write only). When a command starts, the CLI refreshes the session if it's about to expire — you generally only log in again if you log out or switch machines. Long-running processes such as the [MCP server](../mcp/overview.md) don't refresh their session, so use an API key for those.
+The file is written with `0600` permissions (owner read/write only). The CLI keeps the session fresh while you use it, but a session ends 30 days after you log in, or after 7 days without a `dcd` command, whichever comes first. Then the CLI tells you to run `dcd login` again. API keys don't expire this way, so use one for CI and for processes that keep running, such as the [MCP server](../mcp/overview.md). See [Session limits](../security/security-overview.md#sessions).
 
 ::: info
 No browser on the box (e.g. over SSH)? Run `dcd login --no-browser` and the CLI prints a URL to open elsewhere.

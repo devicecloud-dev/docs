@@ -44,7 +44,7 @@ When both are present, the environment variable wins.
 Credentials are resolved lazily on the first tool call, not at startup — so your client can connect and enumerate the tools before you've supplied a key, and a bad credential surfaces as a tool error rather than a server that won't start.
 
 ::: warning
-The server resolves credentials once and reuses them for as long as it runs. A `dcd login` session is not refreshed after that, so a long-running server starts failing once the session expires, until you restart it. Use an API key for servers that stay running.
+A `dcd login` session ends 30 days after you log in, or after 7 days without use. The server refreshes the session while it runs, but once the session ends, every tool call fails with a message telling you to run `dcd login` again. The server picks up the new session on the next call, without a restart. Use an API key for servers that stay running.
 :::
 
 ## Tools
