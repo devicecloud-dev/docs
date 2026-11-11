@@ -132,7 +132,7 @@ When an [Agent Devices](../mcp/agent-devices.md) session asks for a person's hel
   "session": {
     "id": "brave-teal-otter",
     "platform": "ios",
-    "model": "iPhone 16",
+    "model": "iphone-16-ios-26.5",
     "client_label": "claude-code"
   },
   "reason": "Enter the 2FA code sent to the test phone",

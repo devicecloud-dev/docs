@@ -86,7 +86,7 @@ When both are present, precedence is: `--api-key` flag → `DEVICE_CLOUD_API_KEY
 | [`dcd whoami`](dcd-login.md#dcd-whoami) | Show the logged-in user and active organisation |
 | [`dcd switch-org`](dcd-login.md#dcd-switch-org) | Switch the active organisation |
 | [`dcd device`](dcd-device.md) | Lease a cloud device, drive it and release it (beta) |
-| [`dcd mcp`](../mcp/agent-devices.md#through-the-cli-with-local-files) | Run the DeviceCloud MCP server on stdio |
+| [`dcd mcp`](../mcp/agent-devices.md#headless-through-the-cli) | Run the DeviceCloud MCP server on stdio |
 | [`dcd live`](dcd-live.md) | Deprecated: use `dcd device` |
 | `dcd upgrade` | Upgrade the standalone binary in place |
 
