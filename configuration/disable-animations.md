@@ -24,14 +24,14 @@ platform:
     disableAnimations: true
 ```
 
-{% hint style="warning" %}
+::: warning
 **Known limitations of the whole-upload settings:**
 
 * The CLI picks `platform.ios` or `platform.android` from your device flags, not from your app. An iOS run only uses `platform.ios` when you pass `--ios-device` or `--ios-version` (or an iOS device matrix); otherwise the `platform.android` value applies.
 * `--disable-animations` can only turn animations off. It can't override `disableAnimations: true` in `config.yaml`.
 
 The per-test overrides below aren't affected, so use them if you need exact control.
-{% endhint %}
+:::
 
 ### Per test (both platforms)
 

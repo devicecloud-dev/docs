@@ -6,9 +6,9 @@ DeviceCloud can send a POST request to a URL of your choice when a set of tests 
 
 Head to the [console settings](https://console.devicecloud.dev/settings?section=notifications) page, open the **Notifications** section and find **Webhooks**. Enter your webhook URL there.
 
-{% hint style="info" %}
-Only HTTPS URLs are supported.
-{% endhint %}
+::: info
+Only HTTPS URLs are supported. The hostname must resolve to a public IP address. Redirects aren't followed, so use the final URL: a `3xx` response counts as a failed delivery.
+:::
 
 You can also send a test request from the console to verify that your endpoint processes webhooks correctly. The test payload will contain information from your most recent job (or sample data if there isn't one yet), is marked with `"test": true`, and uses an `upload_id` prefixed with `test_` and a webhook ID prefixed with `wh_test_`.
 
@@ -97,13 +97,13 @@ properties:
 
 `tags` and `properties` are each omitted from a result when the flow declares none.
 
-{% hint style="info" %}
+::: info
 Property values are always delivered as strings — numbers and booleans are converted (`42` becomes `"42"`, `true` becomes `"true"`).
-{% endhint %}
+:::
 
-{% hint style="warning" %}
+::: warning
 Property values must be scalars. Maestro rejects a flow whose `properties:` contains a nested object or a list, failing it before it runs with `Incorrect Format: <key>`.
-{% endhint %}
+:::
 
 ### Delivery
 

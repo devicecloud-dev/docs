@@ -35,7 +35,7 @@ If `flows` is omitted, all `.yaml` / `.yml` files at the top level of the direct
 
 ### `includedPaths`
 
-Glob patterns selecting extra **non-flow** files to upload alongside your flows. Requires DeviceCloud CLI 5.6.0 or later; older versions warn that the key is unknown and upload nothing extra.
+Glob patterns selecting extra **non-flow** files to upload alongside your flows.
 
 The CLI works out what to upload by reading your flows, so it only picks up files a command actually references by a literal path — `addMedia`, `assertScreenshot`, `runFlow` and `runScript` arguments. A path that contains a variable (`screenshots/${DCD_DEVICE}/home.png`), and anything else your test needs on the device, is invisible to it and silently absent from the run. `includedPaths` is how you declare those files.
 
@@ -50,15 +50,15 @@ Patterns use the same [NPM glob](https://www.npmjs.com/package/glob) syntax as `
 
 Matched files keep their position relative to your flows when they are uploaded, so a baseline at `screenshots/home.png` sitting next to `visual.yaml` arrives next to that flow on the device.
 
-{% hint style="warning" %}
+::: warning
 Patterns cannot escape the workspace folder. A pattern resolving to a file outside it (`../secrets.json`) stops the CLI with an error before anything is uploaded.
-{% endhint %}
+:::
 
-{% hint style="info" %}
+::: info
 Run with `--debug` to list exactly which files were matched and uploaded.
 
 If included or referenced files sit **beside** your flows folder rather than inside it, the upload root moves up to cover both, and the paths your flows are recorded under gain a leading folder (`login.yaml` becomes `flows/login.yaml`). This is what keeps the relative path between a flow and its files intact, but it is more than cosmetic: a flow without a `name:` starts a new history under its new path, and anything that matches on the old path, such as `fileName` in the [Flows API](../api/flows.md), needs updating.
-{% endhint %}
+:::
 
 ### `includeTags` / `excludeTags`
 
@@ -90,7 +90,7 @@ executionOrder:
 - `flowsOrder` — list of flow names to run in sequence. A flow's name is its `name:` field if it has one; the filename without extension is used only for flows without a `name:`. Names must match exactly, including case.
 - `continueOnFailure` — if `true`, subsequent flows in the sequence run even if an earlier one fails. Defaults to `true`. Set it to `false` when a later flow depends on an earlier one having passed: if a flow fails, the rest of the sequence is marked as failed without running.
 
-{% hint style="warning" %}
+::: warning
 **`executionOrder` must be a map containing `flowsOrder`.** A bare list of flow names is not valid:
 
 ```yaml
@@ -108,14 +108,14 @@ executionOrder:
     - checkout
 ```
 
-The bare-list form is not valid Maestro either. Older CLI versions accepted it and silently ignored it, so the flows ran **in parallel** while the run still reported success — the only symptom was flows executing out of order. The CLI now fails with an error naming the expected shape instead.
-{% endhint %}
+The bare-list form is not valid Maestro either. The CLI rejects it with an error naming the expected shape.
+:::
 
-{% hint style="info" %}
+::: info
 If a flow name in `flowsOrder` doesn't match any discovered flow (e.g. after tag filtering), the CLI will emit a warning and lists the available names to help diagnose the mismatch.
 
 Unrecognised top-level keys are also warned about (and ignored), which catches typos like `flowOrder`, a `continueOnFailure` placed at the top level instead of under `executionOrder`, and `tags:` in place of `includeTags`/`excludeTags`.
-{% endhint %}
+:::
 
 ### `notifications`
 
@@ -146,14 +146,14 @@ platform:
     disableAnimations: true   # enables Reduce Motion on the simulator
 ```
 
-{% hint style="warning" %}
+::: warning
 **Known limitations:**
 
 * The CLI picks `platform.ios` or `platform.android` from your device flags, not from your app. An iOS run only uses `platform.ios` when you pass `--ios-device` or `--ios-version` (or an iOS device matrix); otherwise the `platform.android` value applies.
 * `--disable-animations` can only turn animations off. It can't override `disableAnimations: true` set here.
 
 The per-flow `DEVICECLOUD_OVERRIDE_*` settings described in [Animations](disable-animations.md) aren't affected.
-{% endhint %}
+:::
 
 ### `local`
 

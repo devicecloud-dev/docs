@@ -2,13 +2,13 @@
 
 The `@devicecloud.dev/dcd` package ships a second binary, `dcd-mcp` — a [Model Context Protocol](https://modelcontextprotocol.io) server that lets AI agents (Claude, Cursor, VS Code, and other MCP clients) drive DeviceCloud directly: list devices, submit cloud test runs, check status, and download artifacts.
 
-{% hint style="warning" %}
+::: warning
 The MCP server is a new, beta capability. The tool surface may change.
-{% endhint %}
+:::
 
-{% hint style="warning" %}
+::: warning
 Please note that we accept no liability for anything your agent(s) may read or execute when using our MCP server. LLMs are a new technology and should be used with caution at your own risk.
-{% endhint %}
+:::
 
 ## Setup
 
@@ -28,9 +28,9 @@ Add the server to your MCP client's configuration. It runs over stdio via `npx` 
 
 The `--package=` form matters: it tells `npx` to run the package's `dcd-mcp` binary. Without it, `npx` runs the `dcd` CLI instead, which rejects `dcd-mcp` as an unknown command.
 
-{% hint style="info" %}
+::: info
 The MCP server ships in the npm package only. The standalone `dcd` binary doesn't include it, so you need Node even if you installed the CLI with the binary installer.
-{% endhint %}
+:::
 
 ## Authentication
 
@@ -43,9 +43,9 @@ When both are present, the environment variable wins.
 
 Credentials are resolved lazily on the first tool call, not at startup — so your client can connect and enumerate the tools before you've supplied a key, and a bad credential surfaces as a tool error rather than a server that won't start.
 
-{% hint style="warning" %}
-The server resolves credentials once and reuses them for as long as it runs. A `dcd login` session is not refreshed after that, so a long-running server starts failing once the session expires, until you restart it. Use an API key for servers that stay running.
-{% endhint %}
+::: warning
+A `dcd login` session ends 30 days after you log in, or after 7 days without use. The server refreshes the session while it runs, but once the session ends, every tool call fails with a message telling you to run `dcd login` again. The server picks up the new session on the next call, without a restart. Use an API key for servers that stay running.
+:::
 
 ## Tools
 

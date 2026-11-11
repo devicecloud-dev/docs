@@ -12,7 +12,7 @@ We may amend these terms and conditions from time to time, and such amendments s
 
 **1. The Platform**
 
-1.1 The Company is the exclusive owner of the Platform, and the Company and/or its licensors own all Intellectual Property rights in the Platform. The Company grants to you a non-exclusive, non-transferable, non-sublicensable, royalty-free licence to use the Platform, subject to these terms and conditions (the “**Licence**”). The Platform may be accessed by you via a web browser or other device owned or controlled by you. The Platform is designed to allow you to connect and automate your mobile app development workflow. The Platform utilises open source software, which is attributed [here](open-source-notices.md "mention")‍
+1.1 The Company is the exclusive owner of the Platform, and the Company and/or its licensors own all Intellectual Property rights in the Platform. The Company grants to you a non-exclusive, non-transferable, non-sublicensable, royalty-free licence to use the Platform, subject to these terms and conditions (the “**Licence**”). The Platform may be accessed by you via a web browser or other device owned or controlled by you. The Platform is designed to allow you to connect and automate your mobile app development workflow. The Platform utilises open source software, which is attributed [here](open-source-notices.md)‍
 
 1.2 You acknowledge that you are licensed to use the Platform only in accordance with these express terms and conditions, and not further or otherwise. Nothing in these terms and conditions transfers any ownership right in the Platform to you or any other party.
 
@@ -26,7 +26,7 @@ We may amend these terms and conditions from time to time, and such amendments s
 
 2.2 One-off credit purchases have been discontinued. Any credit previously purchased remains on your team account as a legacy balance and is used for test runs before any usage included in a subscription. Usage included in a subscription is valid for the subscription period (typically one month).
 
-2.3 The Company may suspend your access to the Platform, and terminate the Licence, at any time where you (or a member of your organisation) have materially breached these terms and conditions (which includes failing to make payment). Where the Company does so, no refunds will be provided for the then-current period of your subscription. Read the full [refund-policy.md](refund-policy.md "mention")
+2.3 The Company may suspend your access to the Platform, and terminate the Licence, at any time where you (or a member of your organisation) have materially breached these terms and conditions (which includes failing to make payment). Where the Company does so, no refunds will be provided for the then-current period of your subscription. Read the full [Refund Policy](refund-policy.md)
 
 2.4 Where your Licence ends for any reason, you will no longer have access to the information stored on the Platform. The Company has no obligation to maintain any of your data following termination, and is permitted to delete it once your Licence ends. The Company reserves the right, although is not obliged to, retain your data for a short period for record keeping purposes, or to ensure that any such termination of your Licence has not been inadvertent.
 
@@ -42,7 +42,7 @@ We may amend these terms and conditions from time to time, and such amendments s
 
 3.4 The Company uses commercially reasonable endeavours to ensure the Platform is available 24 hours a day, 7 days a week, but is not liable for any downtime or where the Platform is not available to you. Circumstances may occur that are outside the Company’s control (including but not limited to acts of God, floods, fires, earthquakes, pandemics, civil unrest, acts of terror, failure of internet Platform providers or other third party contractors), and the Company is not responsible for failure to provide the Platform in such circumstances.
 
-3.5 The Company has implemented, and maintains, safeguards to ensure the protection and security of your data that is uploaded to the Platform. The Company complies with applicable data protection legislation, including the UK Data Protection Act 2018. For more information on how the Company processes and stores personal data, please see the Company’s [privacy-policy.md](privacy-policy.md "mention").
+3.5 The Company has implemented, and maintains, safeguards to ensure the protection and security of your data that is uploaded to the Platform. The Company complies with applicable data protection legislation, including the UK Data Protection Act 2018. For more information on how the Company processes and stores personal data, please see the Company’s [Privacy Policy](privacy-policy.md).
 
 3.6 You are responsible for the quality, accuracy and completeness of your data. The Company does not verify or evaluate your data, nor does the Company advise you on any compliance or operational-related matters in any way. The Platform does not provide legal or regulatory guidance regarding compliance obligations in certain locations or industries. If you require such advice, please contact an independent professional. You are the owner of your data, and nothing in these terms and conditions transfers any such ownership to the Company.‍
 
@@ -94,5 +94,5 @@ We may amend these terms and conditions from time to time, and such amendments s
 
 6.3 Enterprise Agreements automatically renew every 12 months unless either party provides 90 days' written notice before the renewal date.
 
-6.4 Enterprise Agreement customers gain the benefits of the [service-level-agreements.md](service-level-agreements.md "mention")&#x20;
+6.4 Enterprise Agreement customers gain the benefits of the [Service Level Agreements](service-level-agreements.md)&#x20;
 

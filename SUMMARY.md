@@ -32,8 +32,11 @@
 * [Device Date & Time](configuration/device-datetime.md)
 * [Animations](configuration/disable-animations.md)
 * [Device Orientation](configuration/orientation.md)
+* [Foldable Devices](configuration/foldable-devices.md)
 * [Google Play APIs](configuration/google-play-apis.md)
 * [Runner Types](configuration/runner-type.md)
+* [Extended Runtime](configuration/extended-runtime.md)
+* [Run Priority](configuration/run-priority.md)
 
 ## Test Artifacts & Reports
 
@@ -95,6 +98,7 @@
 ## Billing
 
 * [Subscriptions](billing/subscriptions.md)
+* [Overage](billing/overage.md)
 * [Test Run Billing](billing/test-run-billing.md)
 
 ## Legal

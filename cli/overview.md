@@ -4,35 +4,32 @@ The DCD CLI is the primary way to interact with DeviceCloud from your terminal o
 
 The CLI is published as `@devicecloud.dev/dcd` on npm and as a standalone binary. The npm package also ships an [MCP server](../mcp/overview.md) (`dcd-mcp`) so AI agents can drive DeviceCloud directly. The standalone binary doesn't include the MCP server.
 
-{% hint style="info" %}
+::: info
 **New in v5:** browser-based [`dcd login`](dcd-login.md) (no more passing a key on every command), a standalone binary installer with `dcd upgrade`, interactive [`dcd live`](dcd-live.md) device sessions, and an [MCP server](../mcp/overview.md). Existing API keys and `dcd cloud` usage continue to work unchanged.
-{% endhint %}
+:::
 
 ## Installation
 
 The recommended install is the standalone binary — it has no dependencies and doesn't require Node.
 
-{% tabs %}
-{% tab title="macOS / Linux" %}
+::::tabs
+== macOS / Linux
 ```bash
 curl -fsSL https://get.devicecloud.dev/install.sh | sh
 ```
-{% endtab %}
 
-{% tab title="Windows" %}
+== Windows
 ```powershell
 irm https://get.devicecloud.dev/install.ps1 | iex
 ```
-{% endtab %}
 
-{% tab title="npm" %}
+== npm
 Requires Node 22 or newer.
 
 ```bash
 npm install -g @devicecloud.dev/dcd
 ```
-{% endtab %}
-{% endtabs %}
+::::
 
 In CI, you can skip a separate install step and run the CLI directly with `npx`:
 
@@ -54,9 +51,9 @@ If you installed via npm, upgrade with npm instead:
 npm install -g @devicecloud.dev/dcd@latest
 ```
 
-{% hint style="info" %}
+::: info
 `dcd upgrade` is only for binary installs. Automatic upgrade is not yet supported on Windows — re-run the PowerShell installer to update.
-{% endhint %}
+:::
 
 ## Authentication
 
@@ -99,7 +96,7 @@ When both are present, precedence is: `--api-key` flag → `DEVICE_CLOUD_API_KEY
 |----------|-------------|
 | `DEVICE_CLOUD_API_KEY` | API key to use when `--api-key` isn't passed. Takes precedence over a `dcd login` session |
 | `DCD_CONFIG_DIR` | Directory for the `dcd login` session file (default `$XDG_CONFIG_HOME/dcd`, or `~/.dcd`) |
-| `DCD_ENCRYPT` | Set to `1` to make `dcd cloud` (and the MCP server) encrypt the app binary, flows and `--env` values on your machine before upload, the same as passing `--encrypt` |
+| `DCD_ENCRYPT` | `dcd cloud`, `dcd upload` and the MCP server apply envelope encryption to the app binary, flows and `--env` values on your machine before upload by default. Set to `0` to turn it off, the same as passing `--no-encrypt`; uploads are still encrypted in transit. A flag on the command line takes precedence |
 | `DCD_TELEMETRY_DISABLED` | Set to `1` to turn off [telemetry](#telemetry) |
 | `DCD_API_URL` | MCP server only. The API base URL to use (CLI commands take `--api-url` instead) |
 | `DCD_MCP_READONLY` | MCP server only. Set to `1` for [read-only mode](../mcp/overview.md#read-only-mode) |
@@ -108,12 +105,12 @@ The standalone binary installers also read these:
 
 | Variable | Description |
 |----------|-------------|
-| `DCD_VERSION` | Install a specific version instead of the latest stable release, e.g. `5.5.0` |
+| `DCD_VERSION` | Install a specific version instead of the latest stable release, e.g. `5.11.1` |
 | `DCD_BETA` | Set to `1` to install the latest beta |
 | `DCD_INSTALL_DIR` | Where to install the binary (default `~/.dcd/bin`, or `$env:USERPROFILE\.dcd\bin` on Windows) |
 
 ```bash
-curl -fsSL https://get.devicecloud.dev/install.sh | DCD_VERSION=5.5.0 sh
+curl -fsSL https://get.devicecloud.dev/install.sh | DCD_VERSION=5.11.1 sh
 ```
 
 ## Telemetry

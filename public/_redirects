@@ -1,0 +1,11 @@
+# Cloudflare static-assets redirects. Format: <from> <to> <status>
+# Pages are served at the URLs GitBook used (see .vitepress/summary.ts). When
+# you rename a page title or section heading in SUMMARY.md, its URL changes:
+# add a line here from the old URL to the new one.
+#
+# Redirects from each page's repo path (e.g. /ci-cd/github-actions) are
+# generated at build time and appended below.
+
+/welcome-to-devicecloud /                                301
+# MCP docs moved out of CLI Reference — the old URL is shared in Discord threads.
+/cli-reference/mcp-server /ai-agents-and-mcp/mcp-server  301

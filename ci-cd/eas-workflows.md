@@ -38,9 +38,9 @@ eas env:create --scope project --environment production --environment preview --
 You can find your API key in the [DeviceCloud console settings](https://console.devicecloud.dev/settings).
 
 
-{% hint style="info" %}
+::: info
 EAS Workflow custom jobs run on EAS-hosted runners. `linux-medium` is sufficient — the wrapper just hands off to DeviceCloud, which runs your tests on its own device fleet.
-{% endhint %}
+:::
 
 ## Platform Examples
 
@@ -120,9 +120,9 @@ jobs:
             --ios-version 18
 ```
 
-{% hint style="info" %}
+::: info
 You don't need a macOS runner for iOS — DeviceCloud runs iOS simulators on its own Mac fleet.
-{% endhint %}
+:::
 
 ---
 
@@ -163,9 +163,9 @@ The build artifact itself is downloaded by `eas/download_build` and passed via `
 
 Set `DCD_CHECK_NAME` when a commit is tested by more than one job, so each gets a check of its own that can be required separately in branch protection. Keep it fixed per job — GitHub matches required checks by name.
 
-{% hint style="warning" %}
+::: warning
 `${{ github.event.pull_request.number }}`, `${{ github.event.pull_request.html_url }}` and `${{ github.repository }}` resolve to `null` on manual triggers and EAS rejects them as invalid env values. Only set the PR and repo variables inside an `if:` guard that limits the job to PR events, or omit them. `github.sha` and `github.ref_name` coerce to empty strings safely.
-{% endhint %}
+:::
 
 ### Advanced
 
@@ -203,14 +203,14 @@ Anything you pass on the command line after `npx @devicecloud.dev/eas-workflow@v
 
 | Flag | Description |
 |------|-------------|
-| `--android-device <model>` | `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`, `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl`, `pixel-10-pro-fold`, `pixel-11`, `generic-tablet`. Default `pixel-7` (`pixel-10` from 26 October 2026). |
-| `--android-api-level <n>` | `29` – `37`. Default `34` (`36` from 19 October 2026). |
-| `--ios-device <model>` | `iphone-14`, `iphone-15`, `iphone-16`, `iphone-16-plus`, `iphone-16-pro`, `iphone-16-pro-max`, `iphone-17`, `iphone-air`, `iphone-18-pro`, `iphone-18-pro-max`, `ipad-pro-6th-gen`, `ipad-pro-m5-11`, `ipad-pro-m5-13`. |
-| `--ios-version <n>` | `17`, `18`, `26`, `27`. Default `17` (`26` from 2 November 2026). |
+| `--android-device <model>` | `pixel-6`, `pixel-7` (deprecated), `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl`, `pixel-10-pro-fold`, `pixel-11`, `generic-tablet`. Default `pixel-10`. |
+| `--android-api-level <n>` | `32` – `37`. Default `36`. |
+| `--ios-device <model>` | `iphone-14`, `iphone-16`, `iphone-16-pro` (deprecated), `iphone-17`, `iphone-air`, `iphone-18-pro`, `iphone-18-pro-max`, `iphone-duo`, `ipad-pro-m5-11`, `ipad-pro-m5-13`. |
+| `--ios-version <n>` | `17` (deprecated), `18`, `26`, `27`. Default `26`. |
 | `--device-locale <code>` | E.g. `de_DE`. See [Device Locale](../configuration/device-locale.md). |
 | `--orientation <deg>` | Android only. `0` or `90`. |
 | `--google-play` | Android only. Run on Google Play devices. |
-| `--runner-type <type>` | `default`, `cpu1`, `gpu1` (deprecated), `m1`, `m4`. `gpu1`, `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
+| `--runner-type <type>` | `default`, `cpu1`, `m1`, `m4`. `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
 
 See the [Devices & OS Versions](../getting-started/devices-configuration.md) page for the full availability matrix.
 
@@ -222,7 +222,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `--env KEY=value` | Inject environment variables into your flows. Repeatable. |
 | `--name <name>` | Custom name for this test run. |
 | `--retry <n>` | Number of automatic retries on failure (max `2`). Retries are free. |
-| `--report <format>` | `junit`, `html`, `html-detailed`, `allure`. See [Report Formats](../artifacts/report-formats.md). |
+| `--report <format>` | `junit`, `html`, `html-detailed`, `allure`. `html-detailed` and `allure` are deprecated and will be removed on 7 December 2026. See [Report Formats](../artifacts/report-formats.md). |
 
 ### Execution Options
 
@@ -230,6 +230,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 |------|-------------|
 | `--async` | Exit immediately without waiting for results (exit code `0` regardless). See [Async Execution](../advanced/async-execution.md). |
 | `--cancel-previous` | Cancel the still-queued tests of the previous run of this job on the same branch or PR. Needs `DCD_GH_REPO` plus `DCD_GH_BRANCH` or `DCD_GH_PR_NUMBER`; set `DCD_CHECK_NAME` per job. See [Cancelling superseded runs](../advanced/cancel-previous.md). |
+| `--priority <level>` | `low`, `normal` (default) or `high`. Reorders only your organisation's own queued runs. See [Run Priority](../configuration/run-priority.md). |
 | `--download-artifacts <mode>` | Download logs/screenshots/videos. Options: `ALL`, `FAILED`. |
 | `--disable-animations` | Disable device animations. See [Animations](../configuration/disable-animations.md). |
 | `--maestro-chrome-onboarding` | Android only. See [Chrome Onboarding](../advanced/chrome-onboarding.md). |

@@ -46,9 +46,9 @@ env:
 
 Matching is case-insensitive and matches anywhere in the name, so `apiToken`, `loginPassword`, `userPIN`, and `OTP_CODE` all qualify.
 
-{% hint style="warning" %}
+::: warning
 DeviceCloud accepts no liability for any secret that may be unintentionally displayed through this system. **If your secret has been leaked, rotate it immediately** then contact our support team to flag the issue.
-{% endhint %}
+:::
 
 ### What masking covers
 
@@ -67,6 +67,6 @@ Masking does **not** cover:
 - values computed at runtime and stored in `output.*` (for example a token returned by a login script) — hidden on hover, but not removed from log files if a command prints them;
 - test reports (such as the JUnit and HTML reports), device logs (logcat and iOS device logs), screenshots and videos. Anything your app displays on screen or writes to its own logs is captured as-is.
 
-{% hint style="warning" %}
+::: warning
 Masking is based on the variable **name**, not the value. A sensitive value stored under an innocent-looking name (e.g. `loginUrl = "https://example.com?key=abc123"`) will **not** be masked. Always name secret-bearing variables with one of the keywords above.
-{% endhint %}
+:::

@@ -14,7 +14,7 @@ pipelines:
     - step:
         name: E2E tests
         script:
-          - pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
+          - pipe: docker://moropo/device-cloud-for-bitbucket:1.6.1
             variables:
               API_KEY: $DEVICE_CLOUD_API_KEY
               APP_FILE: 'build/app-release.apk'
@@ -32,7 +32,7 @@ Find your API key at [console.devicecloud.dev/settings](https://console.devicecl
 ### Android
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.6.1
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'build/app-release.apk'
@@ -45,12 +45,12 @@ Find your API key at [console.devicecloud.dev/settings](https://console.devicecl
 ### iOS
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.6.1
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'build/MyApp.app.zip'
     WORKSPACE: '.maestro'
-    IOS_DEVICE: 'iphone-16-pro'
+    IOS_DEVICE: 'iphone-16'
     IOS_VERSION: '18'
 ```
 
@@ -68,12 +68,13 @@ Most pipe variables map to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flag of th
 | `IOS_DEVICE`, `IOS_VERSION` | iOS device + version. |
 | `ENV_LIST` | Newline-separated `KEY=VALUE` env vars injected into flows. |
 | `INCLUDE_TAGS` / `EXCLUDE_TAGS` | Filter flows by Maestro tag. |
-| `REPORT` | `junit`, `html`, `html-detailed`, `allure`. |
+| `REPORT` | `junit`, `html`, `html-detailed`, `allure`. `html-detailed` and `allure` are deprecated and will be removed on 7 December 2026. See [Report Formats](../artifacts/report-formats.md). |
 | `JUNIT_PATH` | Where to write the JUnit report (default `./report.xml`). |
 | `DOWNLOAD_ARTIFACTS` | `ALL` or `FAILED` — downloads logs/screenshots/videos. |
 | `ASYNC` | `"true"` to fire-and-forget. |
 | `CANCEL_PREVIOUS` | `"true"` to cancel the previous run's still-queued tests when this one starts (from pipe 1.5.0). See [Cancelling superseded runs](../advanced/cancel-previous.md). |
-| `RUNNER_TYPE` | `default`, `cpu1`, `gpu1` (deprecated), `m1` or `m4`. `gpu1`, `m1` and `m4` are premium runners, see [Runner Type](../configuration/runner-type.md). |
+| `PRIORITY` | `low`, `normal` (default) or `high` (from pipe 1.6.0). Reorders only your organisation's own queued runs, see [Run Priority](../configuration/run-priority.md). |
+| `RUNNER_TYPE` | `default`, `cpu1`, `m1` or `m4`. `m1` and `m4` are premium runners, see [Runner Type](../configuration/runner-type.md). |
 | `RENDER_ENGINE` | Android only: `lavapipe` or `swiftshader`, the software renderer the emulator boots with on the default Android runner. Leave unset to let DeviceCloud choose (`swiftshader` for apps built with Flutter, otherwise `lavapipe`). |
 
 ## Bitbucket context auto-attached
@@ -89,7 +90,7 @@ If your repository is mirrored on GitHub and you use [GitHub checks](github-chec
 The pipe writes a `dcd-result.env` file into the repo's working directory. Subsequent script lines in the same step can `source` it:
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.6.1
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'app.apk'
@@ -105,16 +106,16 @@ Exported: `DEVICE_CLOUD_CONSOLE_URL`, `DEVICE_CLOUD_UPLOAD_STATUS`, `DEVICE_CLOU
 - `DEVICE_CLOUD_UPLOAD_STATUS` is `PASSED` or `FAILED` once the run has finished, or `PENDING`, `QUEUED` or `RUNNING` if it hadn't (an `ASYNC` run reports whatever it had reached at submission). It's `ERROR` if the status couldn't be read. `SUPERSEDED` when a newer run replaced this one through [`CANCEL_PREVIOUS`](../advanced/cancel-previous.md); the pipe passes.
 - `DEVICE_CLOUD_FLOW_RESULTS` is a JSON array with one entry per flow: `[{"name": "...", "status": "PASSED"}]`, plus `failReason` for a failed flow.
 
-{% hint style="info" %}
+::: info
 Before pipe 1.5.0 only `DEVICE_CLOUD_CONSOLE_URL` and `DEVICE_CLOUD_UPLOAD_ID` are filled in; the other three are empty.
-{% endhint %}
+:::
 
 The pipe exits non-zero when the run fails, so the build fails by default. From 1.5.0 that holds with `JSON_FILE: 'true'` too; on earlier versions, where the CLI exits 0 in that mode, leave `JSON_FILE` unset if you rely on the pipe's result.
 
 ## Passing env vars into flows
 
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.6.1
   variables:
     API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: 'app.apk'
@@ -135,7 +136,7 @@ Bitbucket's **Tests** tab only reads JUnit reports from folders such as `test-re
 - step:
     name: E2E tests
     script:
-      - pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
+      - pipe: docker://moropo/device-cloud-for-bitbucket:1.6.1
         variables:
           API_KEY: $DEVICE_CLOUD_API_KEY
           APP_FILE: 'app.apk'

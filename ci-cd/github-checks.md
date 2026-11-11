@@ -2,9 +2,9 @@
 
 Install the DeviceCloud GitHub App and every test run posts a pass/fail check on the pull request that started it. It works best with the Action's [`async`](github-actions.md#execution-options) mode where your workflow submits the run and exits after a few seconds, we run the tests on our own devices, and the result will land on the PR when it's ready. Nothing sits waiting on a runner, so you're not burning CI minutes while the tests execute.
 
-{% hint style="info" %}
+::: info
 You do not need to install our Checks app to use the GitHub Action, and you don't need the Action to use Checks: any run that carries `gh_repo` and `gh_sha` metadata posts a check. The Action attaches these for you; elsewhere you pass them yourself, see [Any CI](any-ci.md), [Bitrise](bitrise-steps.md), [Bitbucket Pipelines](bitbucket-pipelines.md) and [EAS Workflows](eas-workflows.md).
-{% endhint %}
+:::
 
 ## How it works
 

@@ -40,7 +40,7 @@ dcd cloud app.apk flows/ -e USERNAME=${CI_USERNAME} \
           -e PASSWORD=${CI_PASSWORD}
 ```
 
-Add `--encrypt` (or set `DCD_ENCRYPT=1`) to encrypt the `--env` values on your machine before they're uploaded. This also encrypts the app binary and your flow files.
+The CLI applies envelope encryption to `--env` values on your machine before they're uploaded, along with the app binary and your flow files. This is on by default; `--no-encrypt` or `DCD_ENCRYPT=0` turns it off, and the values are still encrypted in transit. Because the values are envelope-encrypted, the console doesn't list them on the test result. See [Data Encryption](../security/security-overview.md#data-encryption).
 
 ## iOS: SIMCTL Variable Passthrough
 
@@ -66,7 +66,7 @@ DeviceCloud also sets these variables on every run, so a flow can adapt to the d
 
 | Variable | Value |
 | --- | --- |
-| `DCD_DEVICE` | The device and OS version, lowercased and hyphenated — for example `pixel-8-api-34`, `pixel-8-api-34-play` on a Google Play device, `iphone-16-ios-18` or `ipad-pro-12-9-inch-6th-generation-ios-26`. |
+| `DCD_DEVICE` | The device and OS version, lowercased and hyphenated — for example `pixel-8-api-34`, `pixel-8-api-34-play` on a Google Play device, `iphone-16-ios-18` or `iphone-17-ios-26`. |
 | `DCD_PLATFORM` | `android` or `ios`. |
 
 Passing your own value with `-e` overrides the built-in one. [Visual Testing](../advanced/visual-testing.md#per-device-baselines) uses `DCD_DEVICE` to pick a baseline per device.

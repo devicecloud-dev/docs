@@ -14,9 +14,9 @@ Pass `--ios-device-matrix <device>:<version>` (or `--android-device-matrix <devi
 
 ```bash
 dcd cloud --app-binary-id <id> ./flows \
-  --ios-device-matrix iphone-16-pro:18 \
-  --ios-device-matrix iphone-16-pro:26 \
-  --ios-device-matrix iphone-16-pro-max:26
+  --ios-device-matrix iphone-16:18 \
+  --ios-device-matrix iphone-17:26 \
+  --ios-device-matrix iphone-18-pro:27
 # one upload, 3 devices x N flows
 ```
 
@@ -28,7 +28,7 @@ dcd cloud --app-binary-id <id> ./flows \
   --android-device-matrix pixel-10:36
 ```
 
-Append `:play` to run a cell against a Google Play device. Google Play is available as `pixel-8:34`, `pixel-10:36`, `pixel-10:37` and `pixel-7:34` (see [Google Play APIs](google-play-apis.md#device-availability)):
+Append `:play` to run a cell against a Google Play device. Google Play is available as `pixel-8:34`, `pixel-10:36`, `pixel-10:37` and `pixel-7:34` (deprecated, and not on the `m1` runner type) (see [Google Play APIs](google-play-apis.md#device-availability)):
 
 ```bash
 dcd cloud --app-binary-id <id> ./flows \
@@ -41,7 +41,7 @@ cross-product: the flags are not combined with each other, or with `--ios-device
 
 ```bash
 # runs exactly these two, and nothing else
-dcd cloud [...] --ios-device-matrix iphone-15:17 --ios-device-matrix iphone-16-plus:26
+dcd cloud [...] --ios-device-matrix iphone-14:18 --ios-device-matrix iphone-air:26
 ```
 
 This is deliberate as not every device supports every OS. Naming each device explicitly means you always get
@@ -59,7 +59,7 @@ A matrix runs one test per (flow x device), so a 4-device matrix over 10 flows i
     Pixel 10 · API 36   2 flows · $0.18
 ```
 
-Rates are per device — iPad, Generic Tablet, Pixel 10 Pro Fold and Google Play flows are charged at the advanced rate, as per our [pricing](../billing/test-run-billing.md).
+Rates are per device — iPad, iPhone Duo, Generic Tablet, Pixel 10 Pro Fold and Google Play flows are charged at the advanced rate, as per our [pricing](../billing/test-run-billing.md).
 
 ## Results
 
@@ -87,3 +87,5 @@ Without `--async` the run waits for **every** device and exits `0` only if all o
 - One platform per upload. An upload runs one app binary, so `--ios-device-matrix` and `--android-device-matrix` cannot be combined in the same run.
 
 - A flow that names its own device wins. If a flow targets a device in its YAML via [per-flow devices](per-flow-devices.md), it runs once on that device and is excluded from the matrix. Ten flows across four devices with one targeted flow is 37 runs, not 40.
+
+- A flow that sets its own [runner type](runner-type.md#overriding-the-runner-type-for-a-single-flow) is not excluded. It still runs on every device in the matrix, on that runner type.

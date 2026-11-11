@@ -1,0 +1,11 @@
+$schema: https://api.gitbook.com/gitbook-docs.yaml
+site:
+  title: DeviceCloud
+  structure:
+    - type: space
+      key: space-1
+      title: DeviceCloud
+      path: devicecloud.dev
+      default: true
+      content:
+        directory: ./

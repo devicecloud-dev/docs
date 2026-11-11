@@ -37,9 +37,9 @@ dcd list --limit 10 --offset 20
 dcd list --json
 ```
 
-{% hint style="info" %}
+::: info
 Always quote wildcard patterns to prevent your shell from expanding them before they reach the CLI — use `"nightly-*"` not `nightly-*`.
-{% endhint %}
+:::
 
 ## Output
 

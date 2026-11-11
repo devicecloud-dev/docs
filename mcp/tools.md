@@ -4,9 +4,9 @@ Every tool the [MCP server](overview.md) exposes, with its parameters and return
 
 All tools return pretty-printed JSON as their text payload. Failures come back as an error result the agent can read and react to — a failing tool never tears down the server, so an agent can recover and retry.
 
-{% hint style="warning" %}
+::: warning
 The MCP server is a new, beta capability. The tool surface may change.
-{% endhint %}
+:::
 
 ## dcd_list_devices <a href="#dcd-list-devices" id="dcd-list-devices"></a>
 
@@ -52,8 +52,8 @@ Download a completed run's artifacts zip (videos, logs and screenshots) to local
 | `uploadId` | string | **Required.** UUID of the upload to download artifacts for |
 | `type` | `ALL` \| `FAILED` | Which tests to include artifacts for (default `ALL`) |
 | `artifactsPath` | string | Where to write the artifacts zip (default `./artifacts.zip`) |
-| `report` | `junit` \| `allure` \| `html` | Also download a formatted report of this type |
-| `reportPath` | string | Where to write the report (defaults by type: `report.xml` for `junit`, otherwise `report.html`). The `html` report is a ZIP, so give it a `.zip` path |
+| `report` | `junit` \| `allure` \| `html` | Also download a formatted report of this type. `allure` is deprecated and will be removed on 7 December 2026 |
+| `reportPath` | string | Where to write the report (defaults by type: `report.xml` for `junit`, `report.zip` for `html`, `report.html` for `allure`). The `html` report is a ZIP |
 
 Returns `{ uploadId, artifactsPath, reportPath, warnings }`. A **non-empty `warnings` array means a download could not be produced** — most often because the run has no results yet. An empty array means success. See [Artifacts & Downloads](../artifacts/artifacts.md) and [Report Formats](../artifacts/report-formats.md).
 
@@ -61,19 +61,19 @@ Returns `{ uploadId, artifactsPath, reportPath, warnings }`. A **non-empty `warn
 
 Submit a Maestro flow, or a directory of flows, to run on DeviceCloud.
 
-{% hint style="warning" %}
+::: warning
 This tool consumes test credits. It's annotated as destructive so clients can prompt before calling it, and it's hidden entirely in [read-only mode](overview.md#read-only-mode).
-{% endhint %}
+:::
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `flowFile` | string | **Required.** Path to a Maestro `.yaml`/`.yml` flow, or a directory of flows |
 | `appFile` | string | Path to a local app binary — `.apk`, `.app`, or `.zip`. Mutually exclusive with `appBinaryId` |
 | `appBinaryId` | string | ID of a previously uploaded binary. Mutually exclusive with `appFile` |
-| `iosVersion` | string | iOS version, e.g. `17` |
-| `iosDevice` | string | iOS device, e.g. `iphone-14` |
+| `iosVersion` | string | iOS version, e.g. `26` |
+| `iosDevice` | string | iOS device, e.g. `iphone-16` |
 | `androidApiLevel` | string | Android API level, e.g. `34` |
-| `androidDevice` | string | Android device, e.g. `pixel-7` |
+| `androidDevice` | string | Android device, e.g. `pixel-10` |
 | `googlePlay` | boolean | Use a [Google Play-enabled](../configuration/google-play-apis.md) Android image |
 | `name` | string | A name for this run |
 | `env` | string[] | [Environment variables](../configuration/environment-variables.md) as `KEY=VALUE` strings |
@@ -82,12 +82,14 @@ This tool consumes test credits. It's annotated as destructive so clients can pr
 | `excludeFlows` | string[] | Flow paths/patterns to exclude |
 | `maestroVersion` | string | Pin a specific [Maestro version](../configuration/maestro-versions.md) |
 | `retry` | integer | Auto-[retry](../advanced/retry-strategies.md) failed tests, 0–2 |
-| `runnerType` | `default` \| `m4` \| `m1` \| `gpu1` (deprecated) \| `cpu1` | [Runner type](../configuration/runner-type.md) (default `default`). |
+| `runnerType` | `default` \| `m4` \| `m1` \| `cpu1` | [Runner type](../configuration/runner-type.md) (default `default`). |
+| `priority` | `low` \| `normal` \| `high` | [Run priority](../configuration/run-priority.md) (default `normal`). Reorders only your organisation's own queued runs. |
 | `configFile` | string | Path to a [workspace config](../configuration/workspace-config.md) |
 | `ignoreShaCheck` | boolean | Force re-upload of the binary even if an identical one already exists |
+| `encrypt` | boolean | Apply envelope encryption to the binary, flows and `env` values on your machine before upload. Omit it to follow `DCD_ENCRYPT`, then the default, which is on; pass `false` to turn it off (the upload is still encrypted in transit). See [Data Encryption](../security/security-overview.md#data-encryption) |
 | `dryRun` | boolean | Preview which flows would run, without submitting |
 | `wait` | boolean | Block until the run completes instead of returning immediately (default `false`) |
-| `waitTimeoutSeconds` | integer | Max seconds to wait when `wait` is true, 30–3600 (default `600`) |
+| `waitTimeoutSeconds` | integer | Max seconds to wait when `wait` is true, 30–3600 (default `600`). A flow with [extended runtime](../configuration/extended-runtime.md) can run for up to 20 minutes, so raise this when the run includes one |
 
 You must provide either `appFile` or `appBinaryId` — not both, and not neither. Use [`dcd upload`](../cli/dcd-upload.md) or a previous run to get a reusable `appBinaryId`.
 

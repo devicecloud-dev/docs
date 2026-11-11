@@ -1,3 +1,7 @@
+---
+description: "Run a single Maestro flow, a directory of flows, or the flows listed in a workspace config file with dcd cloud."
+---
+
 # Executing & Referencing Flows
 
 There are multiple ways to execute flows from the CLI:
@@ -38,9 +42,9 @@ Where `<directoryPath>` is either:
 
 The CLI will inspect all YAML files at the top level of the directory (sub-directories are not scanned) and create a test for each. To pick up flows in sub-directories, use `flows` glob patterns in a workspace config file (see below).
 
-{% hint style="warning" %}
+::: warning
 The CLI takes a single flow path, not a glob. A quoted glob such as `"./**/*.yaml"` fails because no file has that name, and an unquoted glob is expanded by your shell into several paths, of which only the first is used. Put glob patterns in the `flows` field of a workspace config file instead.
-{% endhint %}
+:::
 
 ### 3. Executing flows using a Workspace Config file
 
@@ -54,4 +58,4 @@ See [Workspace Configuration](../configuration/workspace-config.md) for more inf
 
 ### Referencing flows
 
-As of version 2.0.0, the CLI will search for all nested dependencies referenced by your YAML flows using Maestro keywords (`addMedia`, `runFlow`, `runScript`). From version 5.6.0 it also picks up `assertScreenshot` baselines named by a literal path. Files it can't find this way, such as a path containing a variable, can be added with [`includedPaths`](../configuration/workspace-config.md#includedpaths).
+The CLI searches for all nested dependencies referenced by your YAML flows using Maestro keywords (`addMedia`, `runFlow`, `runScript`), and picks up `assertScreenshot` baselines named by a literal path. Files it can't find this way, such as a path containing a variable, can be added with [`includedPaths`](../configuration/workspace-config.md#includedpaths).

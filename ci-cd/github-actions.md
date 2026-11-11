@@ -27,25 +27,24 @@ on:
     branches: [main]
 ```
 
-{% hint style="warning" %}
-If you use `pull_request_target` to run tests from forked PRs, explicitly check out the PR HEAD to ensure you're testing the changed code. Be aware that `pull_request_target` runs with your repository's secrets, including your DeviceCloud API key, so anything the job runs from a fork's checkout (build scripts, and the flows themselves) runs with access to them. Only run it on PRs you've reviewed, for example by requiring approval through a GitHub environment.
-{% endhint %}
+### Pull requests from forks
+
+GitHub doesn't pass secrets to `pull_request` runs from a fork, so `DCD_API_KEY` is empty and the DeviceCloud step fails. To skip the job on fork PRs instead of failing it, add a condition to the job:
 
 ```yaml
-on:
-  push:
-    branches: [main]
-  pull_request_target:
-    branches: [main]
 jobs:
   run-maestro-on-dcd:
     name: Run Flows on DeviceCloud
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
 ```
+
+We don't recommend switching to `pull_request_target` to test forks. It runs with your repository's secrets, including your DeviceCloud API key, so a fork's build scripts and flows would run with access to them. GitHub also restricts it now:
+
+- Since 20 July 2026, `actions/checkout` refuses to check out a fork's code in a `pull_request_target` run unless you set its `allow-unsafe-pr-checkout` input.
+- From 2 December 2026, GitHub blocks `pull_request_target` in public repositories unless an Actions policy (**Settings** > **Actions** > **Policies**) allows it.
+
+If you still need it, allow the event for that workflow in an Actions policy, set `allow-unsafe-pr-checkout: true` on the checkout step, and only run it on PRs you've reviewed, for example by requiring approval through a GitHub environment.
 
 ## Platform Examples
 
@@ -108,14 +107,14 @@ If you build with EAS, download the build artifact in an earlier step and pass t
 
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
-| `android-device` | No | `pixel-7` | Android device model. Options: `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`, `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl`, `pixel-10-pro-fold`, `pixel-11`, `generic-tablet`. Default becomes `pixel-10` from 26 October 2026. |
-| `android-api-level` | No | `34` | Android API level. Options: `29`, `30`, `31`, `32`, `33`, `34`, `35`, `36`, `37`. Default becomes `36` from 19 October 2026. |
-| `ios-device` | No | — | iOS device model. Options: `iphone-14`, `iphone-15`, `iphone-16`, `iphone-16-plus`, `iphone-16-pro`, `iphone-16-pro-max`, `iphone-17`, `iphone-air`, `iphone-18-pro`, `iphone-18-pro-max`, `ipad-pro-6th-gen`, `ipad-pro-m5-11`, `ipad-pro-m5-13`. |
-| `ios-version` | No | `17` | Major iOS version. Options: `17`, `18`, `26`, `27`. Default becomes `26` from 2 November 2026. |
+| `android-device` | No | `pixel-10` | Android device model. Options: `pixel-6`, `pixel-7` (deprecated), `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl`, `pixel-10-pro-fold`, `pixel-11`, `generic-tablet`. |
+| `android-api-level` | No | `36` | Android API level. Options: `32`, `33`, `34`, `35`, `36`, `37`. |
+| `ios-device` | No | — | iOS device model. Options: `iphone-14`, `iphone-16`, `iphone-16-pro` (deprecated), `iphone-17`, `iphone-air`, `iphone-18-pro`, `iphone-18-pro-max`, `iphone-duo`, `ipad-pro-m5-11`, `ipad-pro-m5-13`. |
+| `ios-version` | No | `26` | Major iOS version. Options: `17` (deprecated), `18`, `26`, `27`. |
 | `device-locale` | No | — | Device locale in `ISO-639-1_ISO-3166-1` format (e.g. `de_DE`). See [Device Locale](../configuration/device-locale.md). |
 | `orientation` | No | `0` | Android only. Device orientation in degrees. Options: `0`, `90`. |
 | `google-play` | No | `false` | Android only. Run flows against Google Play devices. |
-| `runner-type` | No | `default` | Runner type. Options: `default`, `cpu1`, `gpu1` (deprecated), `m1`, `m4`. `gpu1`, `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
+| `runner-type` | No | `default` | Runner type. Options: `default`, `cpu1`, `m1`, `m4`. `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
 
 See the [Devices & OS Versions](../getting-started/devices-configuration.md) page for the full availability matrix.
 
@@ -127,7 +126,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `env` | No | — | Multiline list of environment variables (`KEY=value`) to inject into flows. |
 | `name` | No | PR title or commit message | Custom name for this test run, visible in the console. Defaults to the pull request's title on PR events, the commit message on push events, and the commit SHA otherwise. |
 | `retry` | No | `0` | Number of retries on failure (max `2`). Retries are free — same as pressing retry in the UI. |
-| `report` | No | — | Report format. Options: `junit`, `html`, and from v2.6.0 `html-detailed`. See [Report Formats](../artifacts/report-formats.md). |
+| `report` | No | — | Report format. Options: `junit`, `html`, and from v2.6.0 `html-detailed`. `html-detailed` is deprecated and will be removed on 7 December 2026. See [Report Formats](../artifacts/report-formats.md). |
 
 ### Android-Specific Options
 
@@ -158,6 +157,7 @@ The action automatically attaches Git and pull request metadata to each run, rea
 |-------|----------|---------|-------------|
 | `async` | No | `false` | Exit immediately without waiting for results. Returns exit code `0` regardless of test outcome. See [Async Execution](../advanced/async-execution.md). |
 | `cancel-previous` | No | `false` | Cancel the still-queued tests of the previous run of this job on the same branch or PR (from v2.6.0). See [Cancelling superseded runs](../advanced/cancel-previous.md). |
+| `priority` | No | `normal` | Run priority: `low`, `normal` or `high`. Reorders only your organisation's own queued runs. See [Run Priority](../configuration/run-priority.md). |
 | `quiet` | No | `true` | Quieter output, without progress updates while the run is polled. Set to `false` to see them. Before v2.6.0 this input had no effect and the output was always quiet. |
 | `download-artifacts` | No | — | Download logs, screenshots, and videos after the run. Options: `ALL`, `FAILED`. |
 | `json-file` | No | `false` | Write test results to `<upload_id>_dcd.json` in the working directory. See [Save JSON results file](#save-json-results-file). |
@@ -282,9 +282,9 @@ Use `async: true` to start tests without blocking your pipeline. Then use [`dcd 
     name: ${{ github.sha }}
 ```
 
-{% hint style="info" %}
+::: info
 With the [DeviceCloud GitHub App](github-checks.md) installed, an async run reports back as a pass/fail check on the pull request, so you can gate merges without keeping a runner alive to wait for results.
-{% endhint %}
+:::
 
 ### Filter tests by tag
 

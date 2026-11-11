@@ -6,9 +6,9 @@
 
 Start an interactive cloud device session and drive it from your terminal — install a build, run individual Maestro commands or a whole flow, capture screenshots, and dump the view hierarchy. This is ideal for authoring and debugging flows against a real cloud device.
 
-{% hint style="warning" %}
+::: warning
 **Live is in beta** and is billed at **$0.03/min**, excluding Sales Tax. Access is limited and by request only. If you would like to try Live, please contact support to request access. `dcd live` works with a [`dcd login`](dcd-login.md) session or an [API key](../getting-started/api-keys.md).
-{% endhint %}
+:::
 
 ```bash
 dcd live <subcommand> [flags]
@@ -34,7 +34,7 @@ Start a new live device session. Prints the session name and a console URL you c
 | `--platform <android\|ios>` | Device platform (default: `android`) |
 | `--app-binary-id <id>` | Binary upload ID to install on the device at start |
 | `--device-locale <locale>` | Device locale, e.g. `de_DE` |
-| `--android-device <device>` | Android only. Device profile: `pixel-6`, `pixel-6-pro`, `pixel-7`, `pixel-7-pro`, `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl` or `pixel-11` |
+| `--android-device <device>` | Android only. Device profile: `pixel-6`, `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl` or `pixel-11` |
 | `--android-api-level <level>` | Android only. API level, e.g. `34` (must be passed together with `--android-device`) |
 | `--wait` | Block until the device is ready to accept commands |
 

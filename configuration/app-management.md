@@ -51,7 +51,7 @@ The URL must point to an Expo iOS simulator build (`.tar.gz`). The CLI downloads
 
 ### SHA Hash Checking
 
-By default, Device Cloud checks the SHA hash of your binary to avoid redundant uploads (it will automatically work out the app-binary-id for you). To override:
+By default, Device Cloud checks the SHA hash of your binary to avoid redundant uploads (it will automatically work out the app-binary-id for you). Envelope-encrypted uploads (the default) are only matched against your earlier envelope-encrypted uploads, so a binary you previously uploaded with `--no-encrypt` is uploaded once more the first time it's envelope-encrypted. To override:
 
 ```bash
 dcd cloud --app-file ./app.apk flows/ --ignore-sha-check

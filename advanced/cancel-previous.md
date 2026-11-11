@@ -5,7 +5,6 @@ nobody is waiting on their verdict, but they still sit in the queue and still
 cost you. `--cancel-previous` cancels them when the newer run is submitted.
 
 It is opt-in and off by default. Without it, nothing about your runs changes.
-Requires DeviceCloud CLI 5.6.0 or later.
 
 ## What it does
 
@@ -43,13 +42,13 @@ matches how GitHub Actions treats them.
 If a run has no repository, or no branch and no PR, there is no context to group
 by and nothing is cancelled. The run's output says so rather than guessing.
 
-{% hint style="warning" %}
+::: warning
 **Set a check name per job.** The check name is what keeps your iOS job from
 cancelling your Android job. If one commit runs tests more than once and those
 runs share a check name, they share a group — and the second will cancel the
 first's queued tests. Without a check name, every job on the branch or PR
 shares one group, and the submit output warns you.
-{% endhint %}
+:::
 
 Runs that report the **same** CI run ID never cancel each other, so jobs within
 one CI run are safe even before you set check names. Where the run ID comes
@@ -66,8 +65,8 @@ from:
 
 ## Usage
 
-{% tabs %}
-{% tab title="GitHub Actions" %}
+::::tabs
+== GitHub Actions
 ```yaml
 - uses: devicecloud-dev/device-cloud-for-maestro@v2
   with:
@@ -79,9 +78,8 @@ from:
 
 The Action attaches the repository, branch, PR and run ID for you. Requires
 v2.6.0 or later of the Action.
-{% endtab %}
 
-{% tab title="CLI" %}
+== CLI
 ```bash
 dcd cloud --app-file build/app.apk --flows ./.maestro \
   --cancel-previous \
@@ -95,11 +93,10 @@ The CLI doesn't read your CI provider's environment, so pass the context
 yourself. `--repo-name` plus `--branch` or `--pr-number` are required; without
 them nothing is cancelled. `gh_check_name` scopes the group to this job, and
 `gh_run_id` stops jobs of the same CI run from cancelling each other.
-{% endtab %}
 
-{% tab title="Bitbucket" %}
+== Bitbucket
 ```yaml
-- pipe: docker://moropo/device-cloud-for-bitbucket:1.5.0
+- pipe: docker://moropo/device-cloud-for-bitbucket:1.6.1
   variables:
     API_KEY: $DCD_API_KEY
     APP_FILE: build/app.apk
@@ -109,9 +106,8 @@ them nothing is cancelled. `gh_check_name` scopes the group to this job, and
 
 The pipe attaches the repository, branch, PR and build number for you.
 Requires pipe 1.5.0 or later.
-{% endtab %}
 
-{% tab title="Bitrise" %}
+== Bitrise
 Set the **Cancel Previous Run** input (`cancel_previous`) to `true`. Requires
 step 1.4.0 or later.
 
@@ -126,9 +122,8 @@ gh_branch=$BITRISE_GIT_BRANCH
 
 Give each invocation its own **GitHub Check Name** (`check_name`) if a
 workflow runs the step more than once.
-{% endtab %}
 
-{% tab title="EAS Workflows" %}
+== EAS Workflows
 ```yaml
 e2e_android:
   needs: [build_android]
@@ -158,8 +153,7 @@ can set `DCD_GH_RUN_ID: ${{ workflow.id }}` on every job so the jobs of one
 workflow run count as one run. See
 [EAS Workflows](../ci-cd/eas-workflows.md#git-context-optional) for the
 variables.
-{% endtab %}
-{% endtabs %}
+::::
 
 ## How a superseded run reports
 
