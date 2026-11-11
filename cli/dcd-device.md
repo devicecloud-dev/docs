@@ -16,6 +16,8 @@ A typical session:
 dcd device start --platform ios --app ./build/MyApp.app --wait
 dcd device launch
 dcd device inspect
+dcd device tap --text "Log in"
+dcd device type --text "ann@example.com"
 dcd device run flows/login.yaml
 dcd device screenshot -o after-login.jpg
 dcd device stop
@@ -94,6 +96,31 @@ The screen as compact JSON: each element with its text, id, accessibility label 
 ## `dcd device screenshot [id]`
 
 Save a screenshot. `-o <file>` sets where (default `./<session>-<time>.jpg`). With `--json`, `data` gives the file's path.
+
+## `dcd device tap [id]`
+
+Tap one thing on the screen, by exactly one target. Answers once the screen has settled, usually well under a second. A target that is not on screen waits about 17 seconds before it fails, so `dcd device inspect` first. A failed tap exits `2`.
+
+| Flag | Description |
+|------|-------------|
+| `--text <text>` | The element's text, label or hint, matched whole and ignoring case (not a regex) |
+| `--rid <id>` | The element's resource id, `rid` in `dcd device inspect` |
+| `--x <n> --y <n>` | A point, as percentages of the screen (0 to 100) |
+| `--maestro` | Run the tap as a Maestro flow instead of directly on the device |
+
+## `dcd device type [id] --text <text>`
+
+Type into the focused field (tap it first). `--sensitive` keeps the text secret: it is stored encrypted, never shown, and masked in the output. `--maestro` as above.
+
+## `dcd device swipe [id] <up|down|left|right>`
+
+Swipe across most of the screen in a direction (`up` scrolls the content up, down the page), or from one point to another with `--from x,y --to x,y`, in percentages. `--maestro` as above.
+
+## `dcd device press-key [id] <key>`
+
+Press a key: `back`, `home`, `enter`, `backspace`, `tab`, `volume_up`, `volume_down`, `lock` or `power`. `enter` submits the focused field; `back` closes a keyboard or goes back on Android. `--maestro` as above.
+
+Each of these sends one [typed action](../api/device-sessions.md). For several steps, an assertion, scrolling until something is visible, or launching an app, use `run`.
 
 ## `dcd device run [id] <flow.yaml|directory>`
 

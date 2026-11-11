@@ -14,7 +14,7 @@ Use the DeviceCloud MCP tools to check app changes on a real iOS simulator or An
 1. Call `cheat_sheet` once for Maestro syntax.
 2. `start_device` with the platform (`list_devices` shows the models). Give the user the session's `monitor_url`, where they can watch. A queued session is normal: it starts on its own. Until it is ready, call `get_device_status` with `wait: true`.
 3. `install_app`, then `get_device_status` with `wait: true` until the install is done, then `launch_app`.
-4. Loop: `inspect_screen` to see what is on screen, then `run` with Maestro commands to act, then `inspect_screen` again. Target elements by their text or id from `inspect_screen`, not by coordinates. Use `take_screenshot` when the layout matters.
+4. Loop: `inspect_screen` to see what is on screen, then act: `tap_on`, `input_text`, `swipe` or `press_key` for one step (the fastest path), or `run` with Maestro commands for several steps or an assertion, then `inspect_screen` again. Target elements by their text or id from `inspect_screen`, not by coordinates. Use `take_screenshot` when the layout matters.
 5. If a step needs a person (a 2FA code, a CAPTCHA, a payment sheet), call `request_human` with what they should do, tell the user, and poll `get_human_status` until it is handed back.
 6. Always `stop_device` when you are done, even after a failure. A session bills by the minute.
 
@@ -37,7 +37,7 @@ description: Check app changes on a real cloud iOS simulator or Android emulator
 1. Call `cheat_sheet` once for Maestro syntax.
 2. `start_device` with the platform, and give the user the session's `monitor_url`. A queued session starts on its own: call `get_device_status` with `wait: true` until it is ready.
 3. `install_app` (with `app_path` for a local build when using `dcd mcp`), wait with `get_device_status` until it is installed, then `launch_app`.
-4. Loop: `inspect_screen`, then `run` with Maestro commands, then `inspect_screen` again. Target elements by text or id, not coordinates.
+4. Loop: `inspect_screen`, then `tap_on`, `input_text`, `swipe` or `press_key` for one step, or `run` with Maestro commands for several, then `inspect_screen` again. Target elements by text or id, not coordinates.
 5. If a person is needed (2FA, CAPTCHA, payment), call `request_human`, tell the user, and poll `get_human_status` until it is handed back.
 6. Always `stop_device` when done, even after a failure.
 

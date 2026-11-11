@@ -108,7 +108,7 @@ Every client you sign in shows up under **Settings → Account → Connected app
 1. `list_devices` shows the devices it can start, and any sessions already open.
 2. `start_device` leases a device and waits up to a minute for it. If the fleet is busy, the session is queued, which isn't an error: it starts on its own, and the agent waits for it with `get_device_status`.
 3. `install_app` installs a build you uploaded, or one at an HTTPS link. `launch_app` starts it.
-4. The agent loops: `inspect_screen` to see what's on screen, then `run` to act with Maestro commands, then `inspect_screen` again. `take_screenshot` shows the screen as an image, and `get_logs` reads the app's device log.
+4. The agent loops: `inspect_screen` to see what's on screen, then `tap_on`, `input_text`, `swipe` or `press_key` for one step, or `run` for several Maestro commands, then `inspect_screen` again. `take_screenshot` shows the screen as an image, and `get_logs` reads the app's device log.
 5. `stop_device` releases the device when it's done.
 
 Every response carries a short **session** block: the session's state, how long it has left, its cost so far, its page in the console, and plain-English warnings, such as an upcoming idle timeout or the app having crashed. The agent never needs a separate call to stay oriented. Agents are told to give you the session's console link as soon as they have it, so you can watch.
