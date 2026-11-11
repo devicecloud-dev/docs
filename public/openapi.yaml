@@ -1422,11 +1422,13 @@ paths:
       operationId: performAction
       summary: Perform one action
       description: >-
-        Sends one action to the device: `tap`, `type`, `swipe` or `press_key`. Each becomes one Maestro
-        command. The request waits for it to finish, up to 120 s, after waiting up to 45 s for a device that
-        is still starting or installing. An action that fails on the device still answers 201, with
-        `result.success` false. A `type` action with `sensitive: true` sends its text as a secret: it never
-        appears in the timeline and is masked in `inspect`.
+        Sends one action to the device: `tap`, `type`, `swipe` or `press_key`. The device performs it
+        directly and the request answers once the screen has settled, usually well under a second (up to
+        120 s, after waiting up to 45 s for a device that is still starting or installing). `mode: "maestro"`
+        runs the action as a one-command Maestro flow instead. A `tap` on something that is not on screen
+        waits about 17 s before it fails, so `inspect` first. An action that fails on the device still answers
+        201, with `result.success` false. A `type` action with `sensitive: true` sends its text as a secret: it
+        never appears in the timeline and is masked in `inspect`.
       parameters:
         - name: x-dcd-source
           in: header
@@ -4073,12 +4075,15 @@ components:
       type: object
       description: >-
         Tap one target: a point (`x` and `y`), an element's `text`, or its `id`. Exactly one. Text and ids are
-        matched literally, not as regular expressions.
+        matched whole and ignoring case, literally, not as regular expressions. A target that is not on
+        screen waits about 17 s before the tap fails.
       required: [type]
       properties:
         type:
           type: string
           const: tap
+        mode:
+          $ref: '#/components/schemas/ActionMode'
         x:
           type: number
           minimum: 0
@@ -4112,6 +4117,8 @@ components:
         type:
           type: string
           const: type
+        mode:
+          $ref: '#/components/schemas/ActionMode'
         text:
           type: string
           minLength: 1
@@ -4131,6 +4138,8 @@ components:
         type:
           type: string
           const: swipe
+        mode:
+          $ref: '#/components/schemas/ActionMode'
         direction:
           type: string
           enum: [up, down, left, right]
@@ -4150,9 +4159,18 @@ components:
         type:
           type: string
           const: press_key
+        mode:
+          $ref: '#/components/schemas/ActionMode'
         key:
           type: string
           enum: [back, home, enter, backspace, tab, volume_up, volume_down, lock, power]
+
+    ActionMode:
+      type: string
+      enum: [maestro]
+      description: >-
+        `maestro` runs the action as a one-command Maestro flow instead of directly on the device: slower,
+        with Maestro's own waits. Leave it out otherwise.
 
     ScreenPoint:
       type: object
