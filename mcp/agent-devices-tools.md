@@ -120,7 +120,7 @@ Read-only.
 
 ## `run`
 
-Run Maestro on the device: `yaml` is one flow (a header naming the app, `---`, then commands), run whole. Or `flow_upload_id` runs an uploaded zip of flows (`flow` names the entry file; omitted, all of them run). Waits up to 110s (wait_seconds changes it); a longer flow answers status "running" with a command_id: call get_command_status with wait: true. A failed run's result has screen_text, the app's visible text after the failure, and failed_at: the file, line and command that failed. See cheat_sheet for syntax.
+Run a Maestro flow on the device: `yaml` is one flow (a header naming the app, `---`, then commands), run whole. Or `flow_upload_id` runs an uploaded zip of flows (`flow` names the entry file; omitted, all of them run). A device session runs the common Maestro commands and no flow scripts (runScript, evalScript, JavaScript conditions): cheat_sheet lists what it runs. A command it does not run fails the flow before its first step, with its line. Waits up to 110s (wait_seconds changes it); a longer flow answers status "running" with a command_id: call get_command_status with wait: true. A failed run's result has screen_text, the app's visible text after the failure, and failed_at: the file, line and command that failed. See cheat_sheet for syntax.
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -177,7 +177,7 @@ Read-only.
 
 ## `cheat_sheet`
 
-Maestro syntax and how to work with DeviceCloud device sessions. Read it before your first run.
+How to work with DeviceCloud device sessions, and the Maestro commands a session runs. Read it before your first run.
 
 Read-only.
 
