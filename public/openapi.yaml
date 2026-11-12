@@ -1956,8 +1956,9 @@ paths:
       description: >-
         The screen as a flat list of elements with text, an id, a label or a hint, using Maestro's short key
         names. It waits up to 5 s for a screen read taken after your last command. On Android, the on-screen
-        keyboard and the System UI are left out and counted in `hidden`, unless `all` is set. This session's
-        secret values are masked.
+        keyboard and the System UI are left out and counted in `hidden`, unless `all` is set. Some apps drop
+        their own fields from the tree while a keyboard is open, and `all` cannot bring them back: hide the
+        keyboard first, then inspect again. This session's secret values are masked.
       parameters:
         - name: all
           in: query

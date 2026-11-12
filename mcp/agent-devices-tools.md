@@ -99,6 +99,8 @@ Launch an app on the device: the installed build by default, or any app by id (e
 
 The current screen as compact JSON: every element of the app with text, an id, a label or a hint, with its bounds and any state (checked, selected, focused, enabled: false). Use it before tapping, and copy txt and rid values exactly into run commands (tapOn text / id). Shows the result of your last command. The on-screen keyboard's keys and the System UI (status bar, navigation bar) are left out and counted in `hidden`; keyboard_open says a keyboard is showing.
 
+While a keyboard is open, some apps report their own fields and buttons with clipped accessibility bounds, and those elements are then missing from inspect_screen even with `all`, while the screenshot still shows them. Seen with React Native apps on Android that slide an input bar up above the keyboard. Hide the keyboard first, with `run` and `- hideKeyboard`, then inspect_screen again. Typing does not need the keyboard on screen: `inputText` goes to the focused field.
+
 Read-only.
 
 | Input | Type | Required | Description |
