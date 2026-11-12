@@ -91,6 +91,8 @@ Launch an app: the installed one, or a bundle id or package name. `--clear-state
 
 The screen as compact JSON: each element with its text, id, accessibility label or hint, any state (checked, selected, focused or disabled), and its bounds. Use these to target `tapOn` in a flow. The on-screen keyboard's keys and the System UI (the status and navigation bars) are left out; `--all` lists them too.
 
+While a keyboard is open, some apps report their own fields and buttons with clipped accessibility bounds, so they are missing from `inspect` even with `--all`, while the screenshot still shows them. Seen with React Native apps on Android that slide an input bar up above the keyboard. Hide the keyboard first, with a flow that runs `- hideKeyboard`, then inspect again. Typing does not need the keyboard on screen.
+
 ## `dcd device screenshot [id]`
 
 Save a screenshot. `-o <file>` sets where (default `./<session>-<time>.jpg`). With `--json`, `data` gives the file's path.
