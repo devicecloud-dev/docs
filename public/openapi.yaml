@@ -4078,7 +4078,8 @@ components:
       type: object
       description: >-
         Tap one target: a point (`x` and `y`), an element's `text`, or its `id`. Exactly one. Text and ids are
-        matched literally, not as regular expressions.
+        matched whole and ignoring case, literally, not as regular expressions. A target that is not on
+        screen waits about 17 s before the tap fails.
       required: [type]
       properties:
         type:

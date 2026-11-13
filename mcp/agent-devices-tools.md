@@ -118,9 +118,51 @@ Read-only.
 |-------|------|----------|-------------|
 | `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
 
+## `tap_on`
+
+Tap one thing on the screen: an element by its text (txt or a11y from inspect_screen, matched whole and ignoring case, not as a regex), by its id (rid), or a point as x and y percentages of the screen. Give exactly one target. The fastest way to act: it answers once the screen has settled, usually well under a second. A target that is not on screen waits about 17 seconds before it fails, so inspect_screen first. For several steps or an assertion, use run.
+
+| Input | Type | Required | Description |
+|-------|------|----------|-------------|
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `text` | string | No | The element's text, label or hint, copied from inspect_screen. |
+| `id` | string | No | The element's resource id (rid in inspect_screen). |
+| `x` | number, 0 to 100 | No | x as a percentage of the screen, 0 to 100. |
+| `y` | number, 0 to 100 | No | y as a percentage of the screen, 0 to 100. |
+
+## `input_text`
+
+Type into the focused field (tap_on the field first). Answers once the screen has settled. With sensitive: true the text is stored encrypted, never shown and masked in the output: use it for passwords and codes.
+
+| Input | Type | Required | Description |
+|-------|------|----------|-------------|
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `text` | string | Yes | What to type, as the user would. |
+| `sensitive` | boolean | No | The text is a secret: a password, a code. Default false. |
+
+## `swipe`
+
+Swipe across the screen: a direction (up scrolls the content up, i.e. down the page), or from one point to another as x and y percentages. Give either direction, or from and to. Answers once the screen has settled.
+
+| Input | Type | Required | Description |
+|-------|------|----------|-------------|
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `direction` | `up`, `down`, `left` or `right` | No | A swipe across most of the screen. |
+| `from` | object `{ x, y }` | No | Where the swipe starts, in percentages of the screen. |
+| `to` | object `{ x, y }` | No | Where it ends. |
+
+## `press_key`
+
+Press a device key: back, home, enter, backspace, tab, and on Android volume_up, volume_down, lock, power (an iOS simulator has no such buttons). enter submits the focused field; on Android back closes a keyboard or goes back, on iOS it uses the app's own back control when it has one. On iOS enter, backspace and tab need a focused field. Answers once the screen has settled.
+
+| Input | Type | Required | Description |
+|-------|------|----------|-------------|
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `key` | `back`, `home`, `enter`, `backspace`, `tab`, `volume_up`, `volume_down`, `lock` or `power` | Yes | Which key. |
+
 ## `run`
 
-Run a Maestro flow on the device: `yaml` is one flow (a header naming the app, `---`, then commands), run whole. Or `flow_upload_id` runs an uploaded zip of flows (`flow` names the entry file; omitted, all of them run). A device session runs the common Maestro commands and no flow scripts (runScript, evalScript, JavaScript conditions): cheat_sheet lists what it runs. A command it does not run fails the flow before its first step, with its line. Waits up to 110s (wait_seconds changes it); a longer flow answers status "running" with a command_id: call get_command_status with wait: true. A failed run's result has screen_text, the app's visible text after the failure, and failed_at: the file, line and command that failed. See cheat_sheet for syntax.
+Run a Maestro flow on the device: `yaml` is one flow (a header naming the app, `---`, then commands), run whole. Or `flow_upload_id` runs an uploaded zip of flows (`flow` names the entry file; omitted, all of them run). For a single tap, swipe, key or typed text prefer tap_on, swipe, press_key and input_text, which are faster; use run for several steps, assertions, scrolling until something is visible, or launching an app. A device session runs the common Maestro commands and no flow scripts (runScript, evalScript, JavaScript conditions): cheat_sheet lists what it runs. A command it does not run fails the flow before its first step, with its line. Waits up to 110s (wait_seconds changes it); a longer flow answers status "running" with a command_id: call get_command_status with wait: true. A failed run's result has screen_text, the app's visible text after the failure, and failed_at: the file, line and command that failed.
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
