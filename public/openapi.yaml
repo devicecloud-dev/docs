@@ -1313,7 +1313,7 @@ paths:
               example:
                 result:
                   success: true
-                  output: '{"success":true,"commands_executed":1}'
+                  output: '{"success":true,"message":"Launched com.example.app","via":"direct","ms":1648}'
                 session:
                   id: brave-teal-otter
                   live_id: 4182
@@ -1484,7 +1484,7 @@ paths:
               example:
                 result:
                   success: true
-                  output: '{"success":true,"commands_executed":1}'
+                  output: '{"success":true,"message":"tap text \"Next\" at (540, 1291)","via":"direct","ms":1624}'
                 session:
                   id: brave-teal-otter
                   live_id: 4182
@@ -1652,12 +1652,12 @@ paths:
                     status: failed
                     result:
                       success: false
-                      error: 'Assertion is false: "Star at the center" is visible (at flow.yaml:3)'
-                      output: '{"success":false,"message":"Assertion is false: \"Star at the center\" is visible","failed_at":{"file":"flow.yaml","line":3,"command":"assertVisible: \"Star at the center\"","call_chain":[]}}'
+                      error: 'The flow failed at step 2 (assertVisible "Star at the center"): Maestro visible condition did not match. (flow.yaml:4)'
+                      output: '{"success":false,"message":"The flow failed at step 2 (assertVisible \"Star at the center\"): Maestro visible condition did not match. (flow.yaml:4)","failed_at":{"file":"flow.yaml","line":4,"command":"- assertVisible: \"Star at the center\"","call_chain":[]}}'
                       failed_at:
                         file: flow.yaml
-                        line: 3
-                        command: 'assertVisible: "Star at the center"'
+                        line: 4
+                        command: '- assertVisible: "Star at the center"'
                         call_chain: []
                       screen_text:
                         - Star at the centre
@@ -1692,7 +1692,7 @@ paths:
                     status: passed
                     result:
                       success: true
-                      output: '{"success":true,"device_id":"emulator-5554","total_flows":2,"total_commands_executed":14,"results":[{"file":"flows/login.yaml","success":true,"message":"ok"},{"file":"flows/search.yaml","success":true,"message":"ok"}],"message":"ok"}'
+                      output: '{"success":true,"total_flows":2,"results":[{"file":"flows/login.yaml","success":true},{"file":"flows/search.yaml","success":true}],"message":"All 2 flows passed"}'
                       flows:
                         - file: flows/login.yaml
                           success: true
@@ -1884,7 +1884,7 @@ paths:
                 status: passed
                 result:
                   success: true
-                  output: '{"success":true,"commands_executed":42}'
+                  output: '{"success":true,"message":"Flow executed successfully","commands_executed":42}'
                 session:
                   id: brave-teal-otter
                   live_id: 4182
@@ -2332,7 +2332,7 @@ paths:
                     completed_at: '2026-11-10T14:09:31.902Z'
                     input: "appId: com.example.app\n---\n- tapOn: \"Next\"\n- assertVisible: \"Star at the center\""
                     output: null
-                    error: '{"success":false,"message":"Assertion is false: \"Star at the center\" is visible","failed_at":{"file":"flow.yaml","line":3,"command":"assertVisible: \"Star at the center\"","call_chain":[]}}'
+                    error: '{"success":false,"message":"The flow failed at step 2 (assertVisible \"Star at the center\"): Maestro visible condition did not match. (flow.yaml:4)","failed_at":{"file":"flow.yaml","line":4,"command":"- assertVisible: \"Star at the center\"","call_chain":[]}}'
                     redacted: false
                     screenshot:
                       url: https://cdn.devicecloud.dev/organizations/7/device-sessions/4182/screenshot/9d1b6f3e-4c1a-4f7e-9a51-2b8f0c6d7e21.jpg?exp=1794323400&sig=Vb2y0pQ8xJ3kM1nR5tW7zA9cE4fH6iL0oS2uX8dG1qY
@@ -2349,7 +2349,7 @@ paths:
                     created_at: '2026-11-10T14:08:40.020Z'
                     completed_at: '2026-11-10T14:08:41.377Z'
                     input: "---\n- tapOn:\n    point: \"50%,82%\""
-                    output: '{"success":true,"commands_executed":1}'
+                    output: '{"success":true,"message":"tap 50%,82% at (540, 1968)","via":"direct","ms":1140}'
                     error: null
                     redacted: false
                     screenshot: null
