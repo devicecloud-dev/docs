@@ -42,7 +42,7 @@ A run that would take you over the limit is refused. See [Overage](overage.md#ov
 
 ### Enterprise Plan
 
-This subscription starts at $7,500 per year and allows for custom terms including volume discounts.
+This subscription starts at $15,000 per year and allows for custom terms including volume discounts.
 
 This plan is paid by invoice and includes private, dedicated support via Slack as standard.
 

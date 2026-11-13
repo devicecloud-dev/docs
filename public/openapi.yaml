@@ -1422,13 +1422,12 @@ paths:
       operationId: performAction
       summary: Perform one action
       description: >-
-        Sends one action to the device: `tap`, `type`, `swipe` or `press_key`. The device performs it
-        directly and the request answers once the screen has settled, usually well under a second (up to
-        120 s, after waiting up to 45 s for a device that is still starting or installing). `mode: "maestro"`
-        runs the action as a one-command Maestro flow instead. A `tap` on something that is not on screen
-        waits about 17 s before it fails, so `inspect` first. An action that fails on the device still answers
-        201, with `result.success` false. A `type` action with `sensitive: true` sends its text as a secret: it
-        never appears in the timeline and is masked in `inspect`.
+        Sends one action to the device: `tap`, `type`, `swipe` or `press_key`. The request waits for it to
+        finish, up to 120 s, after waiting up to 45 s for a device that is still starting or installing. A
+        `tap` on text or an id that is not on screen waits about 17 s for it before it fails. On iOS an
+        action goes to the app in front: on the home screen it is refused, so launch an app first. An action that fails on the device still answers 201, with
+        `result.success` false. A `type` action with `sensitive: true` sends its text as a secret: it never
+        appears in the timeline and is masked in `inspect`.
       parameters:
         - name: x-dcd-source
           in: header
@@ -1597,8 +1596,11 @@ paths:
       operationId: runFlow
       summary: Run a Maestro flow
       description: >-
-        Runs Maestro on the device: `yaml` for one flow, or `flowUploadId` for a flow bundle (`flow` names
-        the entry file; without it, every flow in the bundle runs). `env` passes secrets and variables. The
+        Runs a Maestro flow on the device: `yaml` for one flow, or `flowUploadId` for a flow bundle (`flow`
+        names the entry file; without it, every flow in the bundle runs). A session runs the common Maestro
+        commands and no flow scripts (`runScript`, `evalScript`, JavaScript conditions); a flow with a
+        command it does not run fails before its first step and names the line. `env` passes secrets and
+        variables. The
         request waits for the flow up to 110 s, or `waitSeconds`. A flow that takes longer answers `running`
         with a `command_id`: follow it with GET /device/sessions/{id}/commands/{commandId}. A failed run
         answers 201 with `status` `failed`; its result says where it failed and lists the app's visible text
@@ -1958,8 +1960,9 @@ paths:
       description: >-
         The screen as a flat list of elements with text, an id, a label or a hint, using Maestro's short key
         names. It waits up to 5 s for a screen read taken after your last command. On Android, the on-screen
-        keyboard and the System UI are left out and counted in `hidden`, unless `all` is set. This session's
-        secret values are masked.
+        keyboard and the System UI are left out and counted in `hidden`, unless `all` is set. Some apps drop
+        their own fields from the tree while a keyboard is open, and `all` cannot bring them back: hide the
+        keyboard first, then inspect again. This session's secret values are masked.
       parameters:
         - name: all
           in: query
@@ -4082,8 +4085,6 @@ components:
         type:
           type: string
           const: tap
-        mode:
-          $ref: '#/components/schemas/ActionMode'
         x:
           type: number
           minimum: 0
@@ -4117,8 +4118,6 @@ components:
         type:
           type: string
           const: type
-        mode:
-          $ref: '#/components/schemas/ActionMode'
         text:
           type: string
           minLength: 1
@@ -4138,8 +4137,6 @@ components:
         type:
           type: string
           const: swipe
-        mode:
-          $ref: '#/components/schemas/ActionMode'
         direction:
           type: string
           enum: [up, down, left, right]
@@ -4153,24 +4150,17 @@ components:
 
     PressKeyAction:
       type: object
-      description: Press a device key.
+      description: >-
+        Press a device key. `volume_up`, `volume_down`, `lock` and `power` are Android only: an iOS
+        simulator has no such buttons. On iOS, `enter`, `backspace` and `tab` need a focused field.
       required: [type, key]
       properties:
         type:
           type: string
           const: press_key
-        mode:
-          $ref: '#/components/schemas/ActionMode'
         key:
           type: string
           enum: [back, home, enter, backspace, tab, volume_up, volume_down, lock, power]
-
-    ActionMode:
-      type: string
-      enum: [maestro]
-      description: >-
-        `maestro` runs the action as a one-command Maestro flow instead of directly on the device: slower,
-        with Maestro's own waits. Leave it out otherwise.
 
     ScreenPoint:
       type: object
@@ -4200,7 +4190,7 @@ components:
           type: boolean
         output:
           type: string
-          description: What Maestro reported. Often a JSON document in a string.
+          description: What the device reported. Often a JSON document in a string.
         error:
           type: string
           description: Why it failed.
@@ -4290,7 +4280,7 @@ components:
         output:
           type: string
           description: >-
-            Maestro's report, usually a JSON document in a string. Variable values are never included, and a
+            The run's report, usually a JSON document in a string. Variable values are never included, and a
             failed run's command count is left out.
         error:
           type: string

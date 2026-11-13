@@ -20,12 +20,25 @@ A session is named by its `id` (for example `brave-teal-otter`) in every path. E
 |---|---|
 | `POST /device/sessions/:id/install` | Install a build: `{ "binaryUploadId": "..." }`, or `{ "url": "https://..." }` for an `.apk` or a zipped simulator `.app` at a link (up to 500 MB). It installs in the background. A command sent meanwhile waits up to 45 s for it, then answers `LIVE_NOT_READY` |
 | `POST /device/sessions/:id/launch` | Launch an app: `{ "appId"?: "...", "clearState"?: true }`. Without `appId`, the installed build |
-| `POST /device/sessions/:id/actions` | One action: `tap` (`x`/`y` percent, `text` or `id`), `type` (`text`, and `sensitive: true` to keep it secret), `swipe` (`direction`: `up`, `down`, `left` or `right`, or `from`/`to` points in percent), `press_key` (`key`: `back`, `home`, `enter`, `backspace`, `tab`, `volume_up`, `volume_down`, `lock` or `power`). Performed on the device directly and answered once the screen has settled, usually well under a second; `text` and `id` are matched whole, ignoring case. `mode: "maestro"` runs it as a Maestro flow instead. A `tap` on something that is not on screen waits about 17 s before it fails |
-| `POST /device/sessions/:id/run` | Run Maestro: `{ "yaml": "..." }` for one flow, or `{ "flowUploadId": "...", "flow"?: "..." }` for a [flow bundle](#flow-bundles). `env` passes [secrets and variables](#secrets). Waits up to 110 s, or `waitSeconds` (0 to 300), then answers `running` with a `command_id`. A failed run's result includes `screen_text`, the app's visible text after the failure |
+| `POST /device/sessions/:id/actions` | One action: `tap` (`x`/`y` percent, `text` or `id`), `type` (`text`, and `sensitive: true` to keep it secret), `swipe` (`direction`: `up`, `down`, `left` or `right`, or `from`/`to` points in percent), `press_key` (`key`: `back`, `home`, `enter`, `backspace`, `tab`, and on Android `volume_up`, `volume_down`, `lock` or `power`). Answered once the screen has settled. `text` and `id` are matched whole, ignoring case. A `tap` on something that is not on screen waits about 17 s before it fails |
+| `POST /device/sessions/:id/run` | Run a Maestro flow, within [what a session runs](#what-a-session-runs): `{ "yaml": "..." }` for one flow, or `{ "flowUploadId": "...", "flow"?: "..." }` for a [flow bundle](#flow-bundles). `env` passes [secrets and variables](#secrets). Waits up to 110 s, or `waitSeconds` (0 to 300), then answers `running` with a `command_id`. A failed run's result includes `screen_text`, the app's visible text after the failure |
 | `GET /device/sessions/:id/commands/:commandId` | The status and result of a `run` that answered `running`. `?waitSeconds=` (0 to 300) waits for it to finish instead of answering at once |
-| `GET /device/sessions/:id/inspect` | The screen as compact JSON. The on-screen keyboard and the System UI are left out unless you add `?all=true` |
+| `GET /device/sessions/:id/inspect` | The screen as compact JSON. The on-screen keyboard and the System UI are left out unless you add `?all=true`. Some apps also drop their own fields from the tree while a keyboard is open, and `all` cannot bring them back: hide the keyboard first (`run` with `- hideKeyboard`), then inspect again |
 | `GET /device/sessions/:id/screenshot` | The screen as it is now, as a JPEG data URL. `fresh` is `false` when no new frame came within 3 s, so this is the latest there is |
 | `GET /device/sessions/:id/logs` | The installed app's recent device log lines. `lines` (default 200, at most 2000), `level` (`warning` or `error`) and `grep` (any case) narrow them. The answer stops at 24 KB, with `truncated: true` when older lines were left out |
+
+## What a session runs
+
+A session takes Maestro YAML and runs the common Maestro commands: `tapOn`, `doubleTapOn`, `longPressOn`, `inputText`, `eraseText`, `hideKeyboard`, `pressKey` (`Back`, `Home` and `Enter`), `swipe`, `scroll`, `scrollUntilVisible`, `assertVisible`, `assertNotVisible`, `extendedWaitUntil`, `waitForAnimationToEnd`, `launchApp`, `stopApp`, `killApp`, `clearState`, `openLink`, `takeScreenshot`, `back`, and `runFlow`, `repeat` and `retry`.
+
+It doesn't run flow scripts: `runScript`, `evalScript`, or a JavaScript condition or expression. Only `${NAME}` variables from `env` are filled in. It also doesn't run `copyTextFrom`, `pasteText`, `inputRandom*`, `setLocation`, `travel` or `addMedia`, or other `pressKey` keys. A flow with a command it doesn't run fails before its first step, and the error names the line.
+
+These flows are run by a Maestro-compatible engine, not by Maestro itself. A [test run](../getting-started/quickstart.md) runs your flows on Maestro, so check a flow there before you rely on it there.
+
+Two things differ by platform:
+
+- **iOS.** A session works on the app in front. On the home screen the screen reads as empty and a tap is refused, so launch an app first. When a tap opens another app, such as a link into Safari, the session follows it. `lock`, `power`, `volume_up` and `volume_down` aren't available on a simulator.
+- **Android.** `eraseText` must be at the top level of a flow, not inside `runFlow`, `repeat` or `retry`.
 
 ## Flow bundles
 

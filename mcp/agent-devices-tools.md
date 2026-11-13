@@ -99,6 +99,8 @@ Launch an app on the device: the installed build by default, or any app by id (e
 
 The current screen as compact JSON: every element of the app with text, an id, a label or a hint, with its bounds and any state (checked, selected, focused, enabled: false). Use it before tapping, and copy txt and rid values exactly into run commands (tapOn text / id). Shows the result of your last command. The on-screen keyboard's keys and the System UI (status bar, navigation bar) are left out and counted in `hidden`; keyboard_open says a keyboard is showing.
 
+While a keyboard is open, some apps report their own fields and buttons with clipped accessibility bounds, and those elements are then missing from inspect_screen even with `all`, while the screenshot still shows them. Seen with React Native apps on Android that slide an input bar up above the keyboard. Hide the keyboard first, with `run` and `- hideKeyboard`, then inspect_screen again. Typing does not need the keyboard on screen: `inputText` goes to the focused field.
+
 Read-only.
 
 | Input | Type | Required | Description |
@@ -151,7 +153,7 @@ Swipe across the screen: a direction (up scrolls the content up, i.e. down the p
 
 ## `press_key`
 
-Press a device key: back (Android), home, enter, backspace, tab, volume_up, volume_down, lock, power. enter submits the focused field; back closes a keyboard or goes back. Answers once the screen has settled.
+Press a device key: back, home, enter, backspace, tab, and on Android volume_up, volume_down, lock, power (an iOS simulator has no such buttons). enter submits the focused field; on Android back closes a keyboard or goes back, on iOS it uses the app's own back control when it has one. On iOS enter, backspace and tab need a focused field. Answers once the screen has settled.
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -160,7 +162,7 @@ Press a device key: back (Android), home, enter, backspace, tab, volume_up, volu
 
 ## `run`
 
-Run Maestro on the device: `yaml` is one flow (a header naming the app, `---`, then commands), run whole. Or `flow_upload_id` runs an uploaded zip of flows (`flow` names the entry file; omitted, all of them run). For a single tap, swipe, key or typed text prefer tap_on, swipe, press_key and input_text, which are faster; use run for several steps, assertions, scrolling until something is visible, or launching an app. Waits up to 110s (wait_seconds changes it); a longer flow answers status "running" with a command_id: call get_command_status with wait: true. A failed run's result has screen_text, the app's visible text after the failure, and failed_at: the file, line and command that failed. See cheat_sheet for syntax.
+Run a Maestro flow on the device: `yaml` is one flow (a header naming the app, `---`, then commands), run whole. Or `flow_upload_id` runs an uploaded zip of flows (`flow` names the entry file; omitted, all of them run). For a single tap, swipe, key or typed text prefer tap_on, swipe, press_key and input_text, which are faster; use run for several steps, assertions, scrolling until something is visible, or launching an app. A device session runs the common Maestro commands and no flow scripts (runScript, evalScript, JavaScript conditions): cheat_sheet lists what it runs. A command it does not run fails the flow before its first step, with its line. Waits up to 110s (wait_seconds changes it); a longer flow answers status "running" with a command_id: call get_command_status with wait: true. A failed run's result has screen_text, the app's visible text after the failure, and failed_at: the file, line and command that failed.
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -217,7 +219,7 @@ Read-only.
 
 ## `cheat_sheet`
 
-Maestro syntax and how to work with DeviceCloud device sessions. Read it before your first run.
+How to work with DeviceCloud device sessions, and the Maestro commands a session runs. Read it before your first run.
 
 Read-only.
 

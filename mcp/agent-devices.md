@@ -115,6 +115,21 @@ Every response carries a short **session** block: the session's state, how long 
 
 The full list of tools is in the [tool reference](agent-devices-tools.md). To teach your agent this loop, add the [agent instructions](agent-devices-skill.md) to your project.
 
+## What a session runs
+
+A session takes Maestro YAML and runs the common Maestro commands: `tapOn`, `doubleTapOn`, `longPressOn`, `inputText`, `eraseText`, `hideKeyboard`, `pressKey` (`Back`, `Home` and `Enter`), `swipe`, `scroll`, `scrollUntilVisible`, `assertVisible`, `assertNotVisible`, `extendedWaitUntil`, `waitForAnimationToEnd`, `launchApp`, `stopApp`, `killApp`, `clearState`, `openLink`, `takeScreenshot`, `back`, and `runFlow`, `repeat` and `retry`.
+
+It doesn't run flow scripts: `runScript`, `evalScript`, or a JavaScript condition or expression. Only `${NAME}` variables from `env` are filled in. It also doesn't run `copyTextFrom`, `pasteText`, `inputRandom*`, `setLocation`, `travel` or `addMedia`, or other `pressKey` keys. A flow with a command it doesn't run fails before its first step, and the error names the line.
+
+These flows are run by a Maestro-compatible engine, not by Maestro itself. A [test run](../getting-started/quickstart.md) runs your flows on Maestro, so check a flow there before you rely on it there.
+
+Two things differ by platform:
+
+- **iOS.** A session works on the app in front. On the home screen the screen reads as empty and a tap is refused, so launch an app first. When a tap opens another app, such as a link into Safari, the session follows it. `lock`, `power`, `volume_up` and `volume_down` aren't available on a simulator.
+- **Android.** `eraseText` must be at the top level of a flow, not inside `runFlow`, `repeat` or `retry`.
+
+The agent is told all of this by the `cheat_sheet` tool.
+
 ## When the agent needs a person
 
 Some things only a person can do: enter a 2FA code, solve a CAPTCHA, approve a payment sheet. The agent calls `request_human` with what it needs, and then:
