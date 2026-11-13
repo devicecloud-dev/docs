@@ -98,7 +98,7 @@ codex mcp add devicecloud -- dcd mcp
 
 To run the npm package instead of an installed dcd, use `npx` as the command, with the arguments `-y`, `@devicecloud.dev/dcd` and `mcp`. That needs Node 22 or later.
 
-`dcd mcp` signs in like the CLI: with your `dcd login` session, which it renews as it runs, or with `DEVICE_CLOUD_API_KEY`.
+`dcd mcp` signs in like the CLI: with your `dcd login` session, which it renews as it runs, or with `DEVICE_CLOUD_API_KEY`. A `dcd login` session still ends 30 days after you log in, or after 7 days without use, so use an API key for a server that stays running. See [Session limits](../security/security-overview.md#sessions).
 
 ## Tools
 

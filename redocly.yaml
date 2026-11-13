@@ -1,0 +1,12 @@
+# Redocly lint config for public/openapi.yaml (the REST API spec). CI runs
+# `npx @redocly/cli@2.71.2 lint public/openapi.yaml`, see deploy.yml.
+extends:
+  - recommended
+rules:
+  # The API isn't open source, so the spec names no license.
+  info-license: off
+  # GET /ip-addresses takes no input and has no client errors.
+  operation-4xx-response: off
+  # Flags `oneOf: [{required: [x, y]}, {required: [text]}]`, which is valid
+  # JSON Schema: the branches name properties declared on the parent schema.
+  no-required-schema-properties-undefined: off

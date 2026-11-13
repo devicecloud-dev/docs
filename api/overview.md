@@ -48,4 +48,9 @@ Check the `statusCode` field in the body as well as the HTTP status. A malformed
 | [Uploads](uploads.md) | List uploads and poll run status |
 | [Results](results.md) | Fetch results, reports, and artifacts for an upload |
 | [Flows](flows.md) | Aggregated analytics and run history per flow file |
+| [Device Sessions](device-sessions.md) | Start a device and drive it, for AI agents |
 | [IP Addresses](ip-addresses.md) | Current egress IPs for firewall allow-listing (no API key required) |
+
+## OpenAPI specification
+
+Every endpoint above is described in an [OpenAPI 3.1 specification](https://docs.devicecloud.dev/openapi.yaml). Import it into Postman, Insomnia or Bruno, generate a client from it, or give it to an AI agent.

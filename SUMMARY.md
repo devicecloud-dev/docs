@@ -59,6 +59,7 @@
 * [Status](cli/dcd-status.md)
 * [List](cli/dcd-list.md)
 * [Login & Accounts](cli/dcd-login.md)
+* [Devices](cli/dcd-device.md)
 * [Live Sessions](cli/dcd-live.md)
 
 ## REST API
@@ -67,6 +68,7 @@
 * [Uploads](api/uploads.md)
 * [Results](api/results.md)
 * [Flows](api/flows.md)
+* [Device Sessions](api/device-sessions.md)
 * [IP Addresses](api/ip-addresses.md)
 
 ## AI Agents & MCP
@@ -74,6 +76,9 @@
 * [Connect an AI Agent](mcp/connect.md)
 * [MCP Server](mcp/overview.md)
 * [Tools Reference](mcp/tools.md)
+* [Agent Devices](mcp/agent-devices.md)
+* [Agent Devices Tools](mcp/agent-devices-tools.md)
+* [Agent Instructions](mcp/agent-devices-skill.md)
 
 ## Advanced
 
