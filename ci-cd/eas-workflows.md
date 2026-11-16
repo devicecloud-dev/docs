@@ -35,7 +35,7 @@ eas env:create --scope project --environment production --environment preview --
   --name DEVICE_CLOUD_API_KEY --visibility secret --type string --value <your-api-key>
 ```
 
-You can find your API key in the [DeviceCloud console settings](https://console.devicecloud.dev/settings).
+Create the key under **Settings → API Keys** in the [DeviceCloud console](https://console.devicecloud.dev/settings), with **CI: run tests only** access, so a leaked secret can't read your other runs. See [Key access](../getting-started/api-keys.md#key-access).
 
 
 ::: info
