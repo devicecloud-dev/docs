@@ -7,7 +7,7 @@ DeviceCloud keeps the logs, screenshots, videos and reports from every test run.
 Each test run generates:
 
 * Logs
-* Screenshots, including the diff image from a failed [`assertScreenshot`](../advanced/visual-testing.md#reading-a-failure) comparison
+* Screenshots, including the diff image from every [`assertScreenshot`](../advanced/visual-testing.md#reading-a-failure) that doesn't match, whether it failed the flow or was `optional: true` and only warned
 * Videos
 * Test reports
 
@@ -65,6 +65,8 @@ artifacts.zip
 │   │   ├── login-commands.json
 │   │   └── ...
 │   ├── screenshots/
+│   │   ├── login-failure-screenshot.jpg
+│   │   └── login-diff-screenshots-home_diff.png
 │   └── videos/
 │       └── login-recording.mp4
 ├── 4502/
@@ -74,7 +76,7 @@ artifacts.zip
 └── report.xml  # merged JUnit report covering every test in the upload
 ```
 
-Files are named after the flow file (without its extension), e.g. `login-maestro.log` for `login.yaml`. The `logs/` folder also holds stdout/stderr, the device log (`-logcat.zip` on Android, `-ios-device-log.zip` on iOS) and any per-flow reports. With `--download-artifacts FAILED`, only failed tests get a folder, but `report.xml` is always included and still covers every test.
+Files are named after the flow file (without its extension), e.g. `login-maestro.log` for `login.yaml`. In `screenshots/`, a failed flow has one `-failure-screenshot.jpg` of the whole screen, each `takeScreenshot` is named after its `path` (`login-home.jpg` for `takeScreenshot: home`), and each `assertScreenshot` diff is named after its baseline (see [Reading a failure](../advanced/visual-testing.md#reading-a-failure)). Screenshots taller than 1080 px are downscaled to 1080 px tall and saved as JPEG; smaller ones, such as a crop made with `cropOn`, keep their size. Diffs are always full-size PNGs. The `logs/` folder also holds stdout/stderr, the device log (`-logcat.zip` on Android, `-ios-device-log.zip` on iOS) and any per-flow reports. With `--download-artifacts FAILED`, only failed tests get a folder, but `report.xml` is always included and still covers every test.
 
 Each [retry](../advanced/retry-strategies.md#seeing-every-attempt) attempt gets its own result-ID folder, so the failed attempt's screenshots and video are in the zip even if a retry passed.
 
