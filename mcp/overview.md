@@ -47,7 +47,7 @@ A `dcd login` session ends 30 days after you log in, or after 7 days without use
 
 ## Tools
 
-The server exposes five tools. Four are read-only; `dcd_run_cloud_test` submits a run and is billable.
+The server exposes six tools. Five are read-only; `dcd_run_cloud_test` submits a run and is billable.
 
 | Tool | What it does |
 |------|--------------|
@@ -55,6 +55,7 @@ The server exposes five tools. Four are read-only; `dcd_run_cloud_test` submits 
 | [`dcd_list_runs`](tools.md#dcd-list-runs) | List recent test runs (filter by name/date, paginated) |
 | [`dcd_get_status`](tools.md#dcd-get-status) | Get the status and per-test results of a run |
 | [`dcd_download_artifacts`](tools.md#dcd-download-artifacts) | Download a run's artifacts zip, and optionally a report, to disk |
+| [`dcd_get_team_settings`](tools.md#dcd-get-team-settings) | Read your team's settings: concurrency, test runtime, integrations and more |
 | [`dcd_run_cloud_test`](tools.md#dcd-run-cloud-test) | Submit a flow to run on the cloud (**billable**) |
 
 See [Cloud Test Tools](tools.md) for every parameter, default, and return shape.

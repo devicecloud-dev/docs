@@ -57,6 +57,14 @@ Download a completed run's artifacts zip (videos, logs and screenshots) to local
 
 Returns `{ uploadId, artifactsPath, reportPath, warnings }`. A **non-empty `warnings` array means a download could not be produced** — most often because the run has no results yet. An empty array means success. See [Artifacts & Downloads](../artifacts/artifacts.md) and [Report Formats](../artifacts/report-formats.md).
 
+## dcd_get_team_settings
+
+Read how your team is set up: concurrency limits, test runtime, sign-in requirement, retry escalation, overage limit and connected integrations. It changes nothing, so it stays available in [read-only mode](connect.md#read-only-mode). An agent can use it to check limits before it plans a run.
+
+Takes no parameters.
+
+Returns `{ orgId, name, restricted, concurrency: { runners, pools }, testRuntime: { defaultMinutes, extendedMinutes }, integrations: { webhook, slack, github }, signInRequirement, retryEscalation, overage }`, the same object as [`GET /org/settings`](../api/team-settings.md#get-team-settings) and `dcd settings --json`. When `restricted` is `true` (a standard team member), `signInRequirement`, `retryEscalation` and `overage` are `null`. Owners, admins and API keys see them.
+
 ## dcd_run_cloud_test
 
 Submit a Maestro flow, or a directory of flows, to run on DeviceCloud.

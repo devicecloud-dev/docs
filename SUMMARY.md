@@ -68,6 +68,7 @@
 * [Artifacts](cli/dcd-artifacts.md)
 * [Upload](cli/dcd-upload.md)
 * [List](cli/dcd-list.md)
+* [Settings](cli/dcd-settings.md)
 * [Login & Accounts](cli/dcd-login.md)
 * [Devices](cli/dcd-device.md)
 * [Exit Codes](advanced/exit-codes.md)
@@ -79,6 +80,7 @@
 * [Uploads](api/uploads.md)
 * [Results](api/results.md)
 * [Flows](api/flows.md)
+* [Team Settings](api/team-settings.md)
 * [Device Sessions](api/device-sessions.md)
 * [IP Addresses](api/ip-addresses.md)
 
