@@ -37,13 +37,15 @@ npm install -g @devicecloud.dev/dcd
 
 ### 2. Authenticate
 
-Log in once in your browser — the CLI remembers your session, so you don't need to pass a key on every command:
+Log in once in your browser. The CLI remembers your session, so you don't need to pass a key on every command:
 
 ```bash
 dcd login
 ```
 
-Running in CI or a headless environment? Use an API key instead. Find it in the [console settings](https://console.devicecloud.dev/settings) page and set it as an environment variable:
+No account yet? Sign up at the [console](https://console.devicecloud.dev) first. New accounts get $20 of free credits.
+
+Running in CI or a headless environment? Use an API key instead. Create one under **Settings → API Keys** in the [console](https://console.devicecloud.dev/settings). The key is shown only once, so copy it straight into an environment variable or your CI secrets:
 
 ```bash
 export DEVICE_CLOUD_API_KEY=your-api-key
@@ -53,19 +55,19 @@ See [Authentication](api-keys.md) for more detail.
 
 ### 3. Run your first flow
 
-**iOS**
+**iOS** needs a simulator build: an `.app` folder, a `.zip` of one, or an Expo simulator build (`.tar.gz`). Device builds (`.ipa`) aren't supported.
 
 ```bash
 dcd cloud <appFile>.app <flowFile>
 ```
 
-**Android**
+**Android** needs an `.apk`. App bundles (`.aab`) aren't supported.
 
 ```bash
 dcd cloud <appFile>.apk <flowFile>
 ```
 
-That's it! Questions? Issues? Head to our [Discord](https://discord.gg/gm3mJwcNw8).
+See [App Management](../configuration/app-management.md) for every accepted file type and how to reuse an uploaded build. Questions? Head to our [Discord](https://discord.gg/gm3mJwcNw8).
 
 ---
 

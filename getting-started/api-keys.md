@@ -4,19 +4,19 @@ DeviceCloud supports two ways to authenticate the CLI: **browser login** (best f
 
 ## `dcd login` (recommended for local use)
 
-Run `dcd login` once and authenticate in your browser. The CLI stores the resulting session locally, so you don't need to pass a key on every command — and it unlocks live test updates and a smoother experience.
+Run `dcd login` once and authenticate in your browser. The CLI stores the resulting session locally, so you don't need to pass a key on every command.
 
 ```bash
 dcd login
 ```
 
-This opens your browser, where you sign in (email OTP or Enterprise SSO) and authorise the CLI. If you belong to more than one organisation, you'll be prompted to pick one. The session is stored at:
+This opens your browser, where you sign in with an email code, GitHub, Google, a passkey or your company's SSO, then choose **Authorize and finish login**. If your team requires two-factor authentication, you'll also confirm with your authenticator app or a passkey. If you belong to more than one team, you'll be prompted to pick one. The session is stored at:
 
 - `$DCD_CONFIG_DIR/config.json`, if `DCD_CONFIG_DIR` is set, or
 - `$XDG_CONFIG_HOME/dcd/config.json`, or
 - `~/.dcd/config.json` if `XDG_CONFIG_HOME` is not set
 
-The file is written with `0600` permissions (owner read/write only). The CLI keeps the session fresh while you use it, but a session ends 30 days after you log in, or after 7 days without a `dcd` command, whichever comes first. Then the CLI tells you to run `dcd login` again. API keys don't expire this way, so use one for CI and for processes that keep running, such as the [MCP server](../mcp/connect.md). See [Session limits](../security/security-overview.md#sessions).
+The file is written with `0600` permissions (owner read/write only). The CLI keeps the session fresh while you use it, but a session ends 30 days after you log in, or after 7 days without a `dcd` command, whichever comes first. Then the CLI tells you to run `dcd login` again. These limits don't apply to API keys: a key lasts until its expiry date, if you set one, or until you revoke it. So use a key for CI and for processes that keep running, such as the [MCP server](../mcp/connect.md). See [Session limits](../security/security-overview.md#sessions).
 
 ::: info
 No browser on the box (e.g. over SSH)? Run `dcd login --no-browser` and the CLI prints a URL to open elsewhere.
@@ -30,9 +30,10 @@ In CI and other non-interactive environments, use an API key.
 
 ### Getting an API key
 
-1. Log in to the [console](https://console.devicecloud.dev/settings)
-2. Open **Settings → API Keys**
-3. Copy the key
+1. Log in to the [console](https://console.devicecloud.dev/settings).
+2. Open **Settings → API Keys** and choose **Create API key**.
+3. Give it a **Name**, and choose its **Access** and **Expiry**. **Full access** suits CI and scripts. **Device sessions only** suits AI agents that use [Agent Devices](../mcp/agent-devices.md): such a key can start and drive device sessions and upload builds, but can't start test runs or read results. You can't change a key's access later.
+4. Copy the key. It's shown only once, so store it straight away, for example as a CI secret.
 
 ### Using an API key
 
