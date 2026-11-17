@@ -11,7 +11,7 @@ Every result about a session includes a `session` block, so the agent never need
 | Field | What it says |
 |-------|--------------|
 | `id` | The session id, such as `brave-teal-otter` |
-| `live_id` | The session's internal number. Tools take `id`, not this |
+| `live_id` | The session's internal number. Tools take `id`, not this. REST API paths accept either |
 | `state` | `queued`, `provisioning`, `ready`, `active` or `needs_human` while it's open. Once it has ended: `released` (stopped, or ended for another reason), `expired` (it reached a time limit or the spend cap) or `failed` (the device failed) |
 | `release_reason` | Why the session ended, once it has: `user_stop`, `idle_timeout`, `max_duration`, `queue_timeout`, `spend_cap`, `needs_human_timeout`, `runner_error`, `heartbeat_lost` or `other` |
 | `platform`, `model` | The device, such as `ios` and `iphone-16-ios-26.5` |

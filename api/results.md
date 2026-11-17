@@ -14,7 +14,7 @@ All results endpoints operate on a specific upload identified by its UUID.
 
 Returns all test results for an upload, including status and failure reasons.
 
-Tests waiting in the queue are currently reported as `PENDING` rather than `QUEUED` by this endpoint, so treat both as "not started yet".
+This endpoint reports a test waiting in the queue as `PENDING`, not `QUEUED`, so that older CLIs keep working. Treat both as "not started yet". [`GET /uploads/status`](uploads.md#get-upload-status) reports `QUEUED`.
 
 ```
 GET /results/:uploadId
@@ -42,7 +42,7 @@ curl https://api.devicecloud.dev/results/7e12345f-eb12-12ec-a30b-bb1234f1d12a \
       "duration_seconds": 32,
       "retry_of": null,
       "created_at": "2026-01-15T10:30:04Z",
-      "simulator_name": "pixel-7-api-34",
+      "simulator_name": "pixel-10-api-36",
       "platform": "android"
     }
   ]
@@ -50,6 +50,8 @@ curl https://api.devicecloud.dev/results/7e12345f-eb12-12ec-a30b-bb1234f1d12a \
 ```
 
 Every attempt is included: a retry appears as its own entry, with `retry_of` set to the `id` of the original attempt. Each entry also includes `config` (the run settings for that test) and `result_files` (references to its stored artifacts, plus the step log itself when it is 512 KB or smaller), which are left out of the example above. Responses for large uploads can therefore run to several megabytes. To poll a run's progress, use the [summary view](#summary-view), or [`GET /uploads/status`](uploads.md#get-upload-status) if you only need the latest attempt of each test.
+
+An upload ID with no results in your team, such as a mistyped one, answers HTTP `200` with an empty `results` list, not `404`. If a poll keeps getting an empty list, check the ID.
 
 Each result also has a `cancellation_reason`, which is `null` unless the test
 was cancelled for a recorded reason:
@@ -85,8 +87,8 @@ curl "https://api.devicecloud.dev/results/7e12345f-eb12-12ec-a30b-bb1234f1d12a?v
       "duration_seconds": 32,
       "fail_reason": "Element not found: Text matching regex next.* not found",
       "cancellation_reason": null,
-      "simulator_name": "pixel-7-api-34",
-      "config": { "deviceName": "Pixel 7", "osVersion": "34" }
+      "simulator_name": "pixel-10-api-36",
+      "config": { "deviceName": "Pixel 10", "osVersion": "36" }
     }
   ]
 }
@@ -111,7 +113,9 @@ The API also compresses responses when the request includes an `Accept-Encoding`
 
 ## Download JUnit report
 
-Returns a combined JUnit XML report for all tests in an upload. Compatible with most CI systems.
+Returns one JUnit XML report covering the latest attempt of every test in an upload. A test without a report of its own gets a generated test case, so every test appears. Compatible with most CI systems.
+
+An upload with no results in your team answers HTTP `404`.
 
 ```
 GET /results/:uploadId/report
@@ -129,7 +133,7 @@ curl https://api.devicecloud.dev/results/7e12345f-eb12-12ec-a30b-bb1234f1d12a/re
 
 ## Download HTML report
 
-Returns a ZIP containing the HTML report together with the screenshots, videos and logs of every test in an upload (the latest attempt of each).
+Returns a ZIP containing the HTML report together with the screenshots, videos and logs of every test in an upload (the latest attempt of each). An upload with no results in your team answers HTTP `404`.
 
 ```
 GET /results/:uploadId/html-report
