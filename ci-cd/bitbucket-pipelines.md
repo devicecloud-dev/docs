@@ -67,7 +67,7 @@ Most pipe variables map to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flag of th
 | `WORKSPACE` / `FLOWS` | Path to your Maestro flows folder or file. If you set both, `FLOWS` wins. |
 | `ANDROID_DEVICE`, `ANDROID_API_LEVEL` | Android device + API level. |
 | `IOS_DEVICE`, `IOS_VERSION` | iOS device + version. |
-| `DEVICE_LOCALE` | Device locale, e.g. `de_DE`. See [Device Locale](../configuration/device-locale.md). |
+| `DEVICE_LOCALE` | Device locale, e.g. `de_DE`. See [Locale](../configuration/device-settings.md#locale). |
 | `GOOGLE_PLAY` | `"true"` to run on Android devices with Google Play. |
 | `MAESTRO_VERSION` | Maestro version to run your flows with. See [Maestro Versions](../configuration/maestro-versions.md). |
 | `CONFIG` | Path to a custom Maestro config file. |

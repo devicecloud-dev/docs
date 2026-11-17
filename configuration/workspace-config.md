@@ -150,7 +150,7 @@ platform:
 
 The CLI reads the block for your app's platform, which it works out from the app file. With `--app-binary-id` it can't see the app, so it uses `platform.ios` only when you pass `--ios-device`, `--ios-version` or `--ios-device-matrix`, and `platform.android` otherwise.
 
-`--disable-animations` or `--no-disable-animations` on `dcd cloud` beats this setting, and a flow's own `DEVICECLOUD_OVERRIDE_*` setting beats both. See [Animations](disable-animations.md).
+`--disable-animations` or `--no-disable-animations` on `dcd cloud` beats this setting, and a flow's own `DEVICECLOUD_OVERRIDE_*` setting beats both. See [Animations](device-settings.md#animations).
 
 ### `local`
 

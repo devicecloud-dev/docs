@@ -61,15 +61,15 @@ For the devices and OS versions you can pass, and which combinations work, see [
 | Android API Level | `android_api_level` | `36` | Android API level, e.g. `34`. |
 | iOS Device | `ios_device` | `iphone-16` | iOS device, e.g. `iphone-17`. |
 | iOS Version | `ios_version` | `26` | Major iOS version, e.g. `18`. |
-| Device Locale | `device_locale` | — | E.g. `de_DE`. See [Device Locale](../configuration/device-locale.md). |
+| Device Locale | `device_locale` | — | E.g. `de_DE`. See [Locale](../configuration/device-settings.md#locale). |
 | Device Orientation | `orientation` | `0` | Android only. `0` (portrait) or `90` (landscape). |
 | Google Play | `google_play` | `false` | Android only. Run on devices with Google Play. |
 | Runner Type | `runner_type` | `default` | `default`, `cpu1`, `m1` or `m4`. `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
 | Render Engine | `render_engine` | — | Android only, from 1.3.0. `lavapipe` or `swiftshader`, the software renderer the emulator boots with on the default Android runner. Leave it empty to let DeviceCloud choose (`swiftshader` for apps built with Flutter, otherwise `lavapipe`). |
 | Android No Snapshot | `android_no_snapshot` | `false` | Android only. Force a cold boot. Already on for API 34 and later. |
-| Maestro Chrome Onboarding | `maestro_chrome_onboarding` | `false` | Android only. See [Chrome Onboarding](../advanced/chrome-onboarding.md). |
+| Maestro Chrome Onboarding | `maestro_chrome_onboarding` | `false` | Android only. See [Chrome onboarding](../configuration/device-settings.md#chrome-onboarding). |
 | Show Crosshairs | `show_crosshairs` | `false` | Android only. Show crosshairs where the flow taps. |
-| Disable Animations | `disable_animations` | `false` | Turn off device animations (Reduce Motion on iOS). See [Animations](../configuration/disable-animations.md). |
+| Disable Animations | `disable_animations` | `false` | Turn off device animations (Reduce Motion on iOS). See [Animations](../configuration/device-settings.md#animations). |
 
 ### Running the tests
 

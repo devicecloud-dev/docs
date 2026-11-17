@@ -31,11 +31,7 @@
 * [Runner Types](configuration/runner-type.md)
 * [Google Play APIs](configuration/google-play-apis.md)
 * [Foldable Devices](configuration/foldable-devices.md)
-* [Animations](configuration/disable-animations.md)
-* [Device Locale](configuration/device-locale.md)
-* [Device Date & Time](configuration/device-datetime.md)
-* [Device Orientation](configuration/orientation.md)
-* [Chrome Onboarding](advanced/chrome-onboarding.md)
+* [Device Settings](configuration/device-settings.md)
 
 ## Configuration
 

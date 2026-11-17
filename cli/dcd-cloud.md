@@ -44,8 +44,8 @@ See [Authentication](../getting-started/api-keys.md) for the full picture.
 | `--android-api-level <level>` | Android API level |
 | `--ios-device <device>` | iOS device model to run on (see [Devices](../getting-started/devices-configuration.md)) |
 | `--ios-version <version>` | iOS version |
-| `--device-locale <locale>` | Device locale (see [Device Locale](../configuration/device-locale.md)) |
-| `--orientation <orientation>` | Device orientation, `0` (portrait) or `90` (landscape). Android only (see [Orientation](../configuration/orientation.md)) |
+| `--device-locale <locale>` | Device locale (see [Locale](../configuration/device-settings.md#locale)) |
+| `--orientation <orientation>` | Device orientation, `0` (portrait) or `90` (landscape). Android only (see [Orientation](../configuration/device-settings.md#orientation)) |
 | `--google-play` | Use a Google Play-enabled device. Android only (see [Google Play APIs](../configuration/google-play-apis.md)) |
 | `--runner-type <type>` | Runner type to use: `default` (the default), `cpu1`, `m1` or `m4` (see [Runner Types](../configuration/runner-type.md)) |
 | `--render-engine <engine>` | Android only. Software renderer the emulator boots with: `lavapipe` (default) or `swiftshader`. Try `swiftshader` if your app fails to render or the device drops out mid-run. Apps built with Flutter are detected and switched automatically |
@@ -88,7 +88,7 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 
 | Flag | Description |
 |------|-------------|
-| `--maestro-chrome-onboarding` | Force Maestro-based Chrome onboarding. Slows tests but can fix browser-related crashes (see [Chrome Onboarding](../advanced/chrome-onboarding.md)) |
+| `--maestro-chrome-onboarding` | Force Maestro-based Chrome onboarding. Slows tests but can fix browser-related crashes (see [Chrome onboarding](../configuration/device-settings.md#chrome-onboarding)) |
 | `--android-no-snapshot` | Force a cold boot instead of a snapshot boot on the standard Android runner. Automatically enabled for API 34+ |
 | `--show-crosshairs` | Display crosshairs for screen interactions during test execution |
 
@@ -96,7 +96,7 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 
 | Flag | Description |
 |------|-------------|
-| `--disable-animations` | Disable device animations during test execution. On Android, disables system animation scales. On iOS, enables Reduce Motion. Overrides `disableAnimations` in `config.yaml`, and `--no-disable-animations` keeps animations on even when `config.yaml` turns them off (see [Animations](../configuration/disable-animations.md)) |
+| `--disable-animations` | Disable device animations during test execution. On Android, disables system animation scales. On iOS, enables Reduce Motion. Overrides `disableAnimations` in `config.yaml`, and `--no-disable-animations` keeps animations on even when `config.yaml` turns them off (see [Animations](../configuration/device-settings.md#animations)) |
 
 ### Output & Execution
 

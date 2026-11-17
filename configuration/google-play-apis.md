@@ -98,6 +98,6 @@ env:
 * **Devices.** Google Play on `m1` runs on `pixel-8` (API `34`) and `pixel-10` (API `36`, `37`). Pixel 7 isn't offered on `m1`, because it's deprecated.
 * **Concurrency.** Google Play runs on `m1` count towards your `m1` limit, not your `cpu1` limit. [Concurrency Protection](../getting-started/concurrency-and-parallel-runs.md) doesn't cover `m1`.
 
-Google Play images work the same way on both runner types: they come with Google Play Services and the Play Store, the price is the same, and they can't be rooted, so the [device date and time override](device-datetime.md) isn't applied.
+Google Play images work the same way on both runner types: they come with Google Play Services and the Play Store, the price is the same, and they can't be rooted, so the [device date and time override](device-settings.md#date-and-time) isn't applied.
 
 Please contact support if you would like more device/API availability.

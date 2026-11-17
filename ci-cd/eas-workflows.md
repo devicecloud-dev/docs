@@ -216,7 +216,7 @@ For the devices and OS versions you can pass, and which combinations work, see [
 | `--ios-device <model>` | iOS device, e.g. `iphone-17`. Default `iphone-16`. |
 | `--ios-version <n>` | Major iOS version, e.g. `18`. Default `26`. |
 | `--android-device-matrix <cell>`, `--ios-device-matrix <cell>` | Run every flow once per device and OS pair, e.g. `pixel-8:34`. Repeatable. See [Device Matrix](../configuration/device-matrix.md). |
-| `--device-locale <code>` | E.g. `de_DE`. See [Device Locale](../configuration/device-locale.md). |
+| `--device-locale <code>` | E.g. `de_DE`. See [Locale](../configuration/device-settings.md#locale). |
 | `--orientation <deg>` | Android only. `0` or `90`. |
 | `--google-play` | Android only. Run on Google Play devices. |
 | `--runner-type <type>` | `default`, `cpu1`, `m1`, `m4`. `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
@@ -243,8 +243,8 @@ For the devices and OS versions you can pass, and which combinations work, see [
 | `--priority <level>` | `low`, `normal` (default) or `high`. Reorders only your team's own queued runs. See [Run Priority](../configuration/run-priority.md). |
 | `--download-artifacts <mode>` | Download logs/screenshots/videos as `artifacts.zip` in the working directory. Options: `ALL`, `FAILED`. `--artifacts-path` saves it somewhere else. |
 | `--json-file` | Write the results to `<upload_id>_dcd.json`. The job still fails when the run fails. |
-| `--disable-animations` | Disable device animations. See [Animations](../configuration/disable-animations.md). |
-| `--maestro-chrome-onboarding` | Android only. See [Chrome Onboarding](../advanced/chrome-onboarding.md). |
+| `--disable-animations` | Disable device animations. See [Animations](../configuration/device-settings.md#animations). |
+| `--maestro-chrome-onboarding` | Android only. See [Chrome onboarding](../configuration/device-settings.md#chrome-onboarding). |
 | `--android-no-snapshot` | Force cold boot. Auto-enabled for API 34+. |
 | `--debug` | Verbose debug output. |
 
