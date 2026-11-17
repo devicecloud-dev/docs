@@ -21,7 +21,7 @@ Every result about a session includes a `session` block, so the agent never need
 | `queue` | While it's queued: its `position`, `eta_s` (an estimate, or `null`), `waited_s`, and `reason` (`waiting_for_device` or `fleet_busy`) |
 | `time_remaining_s` | Seconds until its maximum length |
 | `idle_remaining_s` | Seconds until the idle timeout. `null` while it waits for a person |
-| `cost_so_far_usd` | What it has cost so far, after your organization's discount |
+| `cost_so_far_usd` | What it has cost so far, after your team's discount |
 | `install` | The build it was asked to install: `binary_upload_id`, `status` (`installing`, `installed` or `failed`) and `error` |
 | `last_crash` | The app's last crash: `at` and `summary` |
 | `warnings` | Plain-English warnings, such as an upcoming idle timeout, a crash or a failed install |

@@ -1,6 +1,6 @@
 # Run Priority
 
-When your organisation is at its concurrency limit, new tests wait in a queue until a slot frees up. Run priority lets you choose which of your own queued runs starts first. For example, you can run release checks at `high` and a nightly regression suite at `low`.
+When your team is at its concurrency limit, new tests wait in a queue until a slot frees up. Run priority lets you choose which of your own queued runs starts first. For example, you can run release checks at `high` and a nightly regression suite at `low`.
 
 Priority is set per run with `--priority`. A run without it is `normal`, so nothing changes unless you set it.
 

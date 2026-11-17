@@ -159,7 +159,7 @@ The action automatically attaches Git and pull request metadata to each run, rea
 |-------|----------|---------|-------------|
 | `async` | No | `false` | Exit immediately without waiting for results. Returns exit code `0` regardless of test outcome. See [Async Execution](../advanced/async-execution.md). |
 | `cancel-previous` | No | `false` | Cancel the still-queued tests of the previous run of this job on the same branch or PR. See [Cancelling superseded runs](../advanced/cancel-previous.md). |
-| `priority` | No | `normal` | Run priority: `low`, `normal` or `high`. Reorders only your organisation's own queued runs. See [Run Priority](../configuration/run-priority.md). |
+| `priority` | No | `normal` | Run priority: `low`, `normal` or `high`. Reorders only your team's own queued runs. See [Run Priority](../configuration/run-priority.md). |
 | `quiet` | No | `true` | Quieter output, without progress updates while the run is polled. Set to `false` to see them. |
 | `download-artifacts` | No | — | Download logs, screenshots, and videos after the run, as `artifacts.zip` in the working directory. Options: `ALL`, `FAILED`. |
 | `json-file` | No | `false` | Write test results to `<upload_id>_dcd.json` in the working directory. See [Save JSON results file](#save-json-results-file). |

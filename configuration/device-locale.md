@@ -1,6 +1,6 @@
 # Device Locale
 
-Set device language and region for localization testing.
+Set device language and region for localisation testing.
 
 ::: info
 If you don't set a locale, Android runs use `en_US` and iOS runs use `en_GB`. Pass `--device-locale` to get the same locale on both.

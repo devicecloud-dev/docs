@@ -24,7 +24,7 @@ env:
 
 The limit covers the whole Maestro run, including starting Maestro on the device, so the flow's own steps get slightly less than the full 20 minutes. A flow that is still running at the limit is stopped and marked as failed with a "Test run timed out after 20 minutes" error, and its logs and video are still uploaded.
 
-You can check your organization's limits in the console under **Settings → Execution**.
+You can check your team's limits in the console under **Settings → Execution**.
 
 ## Pricing
 
@@ -39,12 +39,12 @@ A flow with extended runtime is charged at 2× the rate it would otherwise cost 
 
 * **It holds a concurrency slot for longer.** A 20-minute flow occupies one of your [concurrency](../getting-started/concurrency-and-parallel-runs.md) slots for up to twice as long as a 10-minute one, so other runs in your queue may wait longer.
 * **A stuck flow costs more.** If a flow times out because it's stuck (waiting for an element that never appears, for example), extended runtime only makes it fail later and at twice the price. Check the flow's video and logs first, and use extended runtime for flows that really are long.
-* **20 minutes is the maximum.** It can't be raised per organization.
+* **20 minutes is the maximum.** It can't be raised per team.
 
 ## FAQ
 
 ### Do I need to ask for extended runtime?
-No. Any organization can use it by setting `DEVICECLOUD_OVERRIDE_EXTENDED_RUNTIME` on a flow. If **Settings → Execution** shows extended runtime as off for your organization, contact support@devicecloud.dev.
+No. Any team can use it by setting `DEVICECLOUD_OVERRIDE_EXTENDED_RUNTIME` on a flow. If **Settings → Execution** shows extended runtime as off for your team, contact support@devicecloud.dev.
 
 ### Can I turn it on for every flow at once?
 No. It's set per flow, so you only pay 2× for the flows that need it.

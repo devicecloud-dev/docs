@@ -77,12 +77,12 @@ When both are present, precedence is: `--api-key` flag → `DEVICE_CLOUD_API_KEY
 | [`dcd cloud`](dcd-cloud.md) | Upload an app and run Maestro flows on DeviceCloud |
 | [`dcd upload`](dcd-upload.md) | Upload an app binary and get a reusable binary ID |
 | [`dcd status`](dcd-status.md) | Check the status of a test upload |
-| [`dcd list`](dcd-list.md) | List recent uploads for your organisation |
+| [`dcd list`](dcd-list.md) | List recent uploads for your team |
 | [`dcd artifacts`](dcd-artifacts.md) | Download artifacts or reports for a completed run |
 | [`dcd login`](dcd-login.md) | Authenticate via your browser |
 | [`dcd logout`](dcd-login.md#dcd-logout) | Clear the stored session |
-| [`dcd whoami`](dcd-login.md#dcd-whoami) | Show the logged-in user and active organisation |
-| [`dcd switch-org`](dcd-login.md#dcd-switch-org) | Switch the active organisation |
+| [`dcd whoami`](dcd-login.md#dcd-whoami) | Show the logged-in user and active team |
+| [`dcd switch-org`](dcd-login.md#dcd-switch-org) | Switch the active team |
 | [`dcd device`](dcd-device.md) | Lease a cloud device, drive it and release it (beta) |
 | [`dcd mcp`](../mcp/connect.md) | Run the DeviceCloud MCP server on stdio |
 | [`dcd mcp install`](../mcp/connect.md#set-it-up) | Add the MCP server to Claude Code, Claude Desktop, Codex, Cursor or VS Code |

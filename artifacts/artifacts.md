@@ -1,6 +1,6 @@
 # Download Artifacts
 
-DeviceCloud captures various artifacts during test execution that can help debug and analyze your test runs.
+DeviceCloud captures various artifacts during test execution that can help debug and analyse your test runs.
 
 ## Available Artifacts
 

@@ -3,7 +3,7 @@
 Lease a cloud iOS simulator or Android emulator, drive it, and release it, from your terminal or a script. These are the same device sessions an AI agent uses through [Agent Devices](../mcp/agent-devices.md): you can watch any of them in the console, and they show on the same Devices page.
 
 ::: warning
-**Device sessions are in a closed beta** and are billed at **$0.03/min**, excluding Sales Tax. Access is by request: contact support to have it turned on for your organization. `dcd device` works with a [`dcd login`](dcd-login.md) session or an [API key](../getting-started/api-keys.md).
+**Device sessions are in a closed beta** and are billed at **$0.03/min**, excluding Sales Tax. Access is by request: contact support to have it turned on for your team. `dcd device` works with a [`dcd login`](dcd-login.md) session or an [API key](../getting-started/api-keys.md).
 :::
 
 ```bash
@@ -25,7 +25,7 @@ dcd device stop
 
 ## Rules for every subcommand
 
-- **The session id is optional** when your organization has exactly one open session. With none, or several, the command stops and lists the sessions to choose from.
+- **The session id is optional** when your team has exactly one open session. With none, or several, the command stops and lists the sessions to choose from.
 - **`--json`** prints exactly one JSON object on stdout, on success and on failure:
 
   ```json
@@ -61,13 +61,13 @@ Start a session. Without `--wait` it returns at once, possibly with the session 
 | `--app-binary-id <id>` | A build you already uploaded |
 | `--locale <locale>` | The device locale, such as `de_DE` |
 | `--name <label>` | Who is driving the session, shown in the console (default `dcd-cli`) |
-| `--ttl <minutes>` | The longest the session may run (default: your organization's limit, at most 60) |
+| `--ttl <minutes>` | The longest the session may run (default: your team's limit, at most 60) |
 | `--no-record` | Don't record a video of the session |
 | `--wait` | Wait until the device is ready for commands |
 
 ## `dcd device list`
 
-Your organization's open sessions. `--all` adds those that ended in the last 24 hours.
+Your team's open sessions. `--all` adds those that ended in the last 24 hours.
 
 ## `dcd device status [id]`
 
@@ -75,7 +75,7 @@ A session's state, time left, idle timeout and cost so far.
 
 ## `dcd device stop [id]`
 
-Stop a session and release the device. `--all` stops every open session in your organization.
+Stop a session and release the device. `--all` stops every open session in your team.
 
 ## `dcd device models`
 
@@ -149,7 +149,7 @@ The installed app's recent device log lines. `--lines <n>` sets how many (defaul
 
 ## `dcd device request-human <reason> [id]`
 
-Ask a person for help, such as entering a 2FA code or solving a CAPTCHA. The session waits for them, with its idle timer paused, and they see your reason on the session's page in the console. Your organization's [webhook](../notifications/webhook-notifications.md#device-needs-human) gets a `device.needs_human` event. The reason can be up to 500 characters. `--wait` waits until they hand the session back.
+Ask a person for help, such as entering a 2FA code or solving a CAPTCHA. The session waits for them, with its idle timer paused, and they see your reason on the session's page in the console. Your team's [webhook](../notifications/webhook-notifications.md#device-needs-human) gets a `device.needs_human` event. The reason can be up to 500 characters. `--wait` waits until they hand the session back.
 
 ## `dcd device human [id]`
 

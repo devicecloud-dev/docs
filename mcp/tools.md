@@ -18,7 +18,7 @@ Returns `{ ios, android, androidPlay, maestro }`. `ios`, `android` and `androidP
 
 ## dcd_list_runs
 
-List recent flow uploads for your organisation, most recent first.
+List recent flow uploads for your team, most recent first.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -83,7 +83,7 @@ This tool consumes test credits. It's annotated as destructive so clients can pr
 | `maestroVersion` | string | Pin a specific [Maestro version](../configuration/maestro-versions.md) |
 | `retry` | integer | Auto-[retry](../advanced/retry-strategies.md) failed tests, 0–2 |
 | `runnerType` | `default` \| `m4` \| `m1` \| `cpu1` | [Runner type](../configuration/runner-type.md) (default `default`). |
-| `priority` | `low` \| `normal` \| `high` | [Run priority](../configuration/run-priority.md) (default `normal`). Reorders only your organisation's own queued runs. |
+| `priority` | `low` \| `normal` \| `high` | [Run priority](../configuration/run-priority.md) (default `normal`). Reorders only your team's own queued runs. |
 | `configFile` | string | Path to a [workspace config](../configuration/workspace-config.md) |
 | `ignoreShaCheck` | boolean | Force re-upload of the binary even if an identical one already exists |
 | `encrypt` | boolean | Apply envelope encryption to the binary, flows and `env` values on your machine before upload. Omit it to follow `DCD_ENCRYPT`, then the default, which is on; pass `false` to turn it off (the upload is still encrypted in transit). See [Data Encryption](../security/security-overview.md#data-encryption) |

@@ -67,7 +67,7 @@ Starting a session answers `201` with its `session` block (some fields left out 
 |---|---|
 | `GET /device/models` | The devices you can start: models, OS versions and the defaults |
 | `POST /device/sessions` | Start a session. Body: `platform` (`ios` or `android`), and optionally `model`, `os`, `googlePlay`, `binaryUploadId`, `deviceLocale` (such as `de_DE`), `maxDurationMin`, `clientLabel`, `record` (default `true`) |
-| `GET /device/sessions` | Your organization's open sessions. `?all=true` adds those that ended in the last day |
+| `GET /device/sessions` | Your team's open sessions. `?all=true` adds those that ended in the last day |
 | `GET /device/sessions/:id` | One session |
 | `DELETE /device/sessions/:id` | Stop a session and release the device |
 
@@ -134,9 +134,9 @@ These endpoints have their own limits instead of the API's general one:
 |---|---|
 | Commands (install, launch, actions, run, asking a person, handing back) | 60 a minute, per session |
 | Reads (status, inspect, screenshot, logs, a command's status, whether a person is needed, timeline, artifacts) | 240 a minute, per session |
-| Session lists, device models and bundle uploads | 120 a minute, per organization |
+| Session lists, device models and bundle uploads | 120 a minute, per team |
 
-Over a limit, the API answers HTTP `429` with `LIVE_RATE_LIMITED`, and `retry_after_s` in the body is how many seconds to wait. Stopping an open session is never refused. Starting a session has no per-minute limit, but your organization can only have so many sessions open at once (`LIVE_CONCURRENCY_LIMIT`).
+Over a limit, the API answers HTTP `429` with `LIVE_RATE_LIMITED`, and `retry_after_s` in the body is how many seconds to wait. Stopping an open session is never refused. Starting a session has no per-minute limit, but your team can only have so many sessions open at once (`LIVE_CONCURRENCY_LIMIT`).
 
 ## Errors
 
@@ -144,10 +144,10 @@ Errors are JSON with a `message`. Most also have a stable `error` code, listed b
 
 | Code | Status | Meaning |
 |---|---|---|
-| `LIVE_NOT_ENABLED` | `403` | Device sessions aren't enabled for your organization |
-| `LIVE_CONCURRENCY_LIMIT` | `409` | Your organization has as many sessions open as it may |
-| `LIVE_SPEND_CAP` | `402` | Your organization reached its monthly spend cap |
-| `LIVE_NOT_FOUND` | `404` | No such session in your organization |
+| `LIVE_NOT_ENABLED` | `403` | Device sessions aren't enabled for your team |
+| `LIVE_CONCURRENCY_LIMIT` | `409` | Your team has as many sessions open as it may |
+| `LIVE_SPEND_CAP` | `402` | Your team reached its monthly spend cap |
+| `LIVE_NOT_FOUND` | `404` | No such session in your team |
 | `LIVE_NOT_READY` | `425` | The device is still starting, or installing an app: retry shortly |
 | `LIVE_SESSION_ENDED` | `409` | The session has ended |
 | `LIVE_INVALID_ACTION` | `400` | The request is malformed: the message says how |

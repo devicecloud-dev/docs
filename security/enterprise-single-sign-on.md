@@ -42,7 +42,7 @@ The Default Relay State is where people land when they start from your identity 
 6. Send the following to support@devicecloud.dev from an email address registered with DeviceCloud:
    1. your metadata URL (or XML)
    2. the email domain(s) you wish to protect
-7. Our support team will then verify your organisation is on the Max or Enterprise plan and enforce SSO for the requested domains.
+7. Our support team will then verify your team is on the Max or Enterprise plan and enforce SSO for the requested domains.
 8. Once SSO is on, sign in from the [DeviceCloud login screen](https://console.devicecloud.dev/login): enter your work email, then select **SAML SSO**. You can also start from your identity provider's dashboard.
 
 ![The DeviceCloud sign-in page with the SAML SSO option](../assets/sso-sign-in.png)

@@ -8,7 +8,7 @@ Pass rates are calculated as `passed / (passed + failed)`, excluding cancelled a
 
 ## Get flow summaries
 
-Returns pass rates, run counts, average durations, and a daily status breakdown for every flow in your organisation.
+Returns pass rates, run counts, average durations, and a daily status breakdown for every flow in your team.
 
 ```
 GET /flows

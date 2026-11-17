@@ -14,7 +14,7 @@ If a newer run replaces this one through [`cancel-previous`](../advanced/cancel-
 
 ## Connect the App
 
-Open **Settings → Integrations** in the [console](https://console.devicecloud.dev/settings?section=integrations) and click **Connect GitHub**. GitHub asks you to authorize DeviceCloud, and what happens next depends on whether you already have the App:
+Open **Settings → Integrations** in the [console](https://console.devicecloud.dev/settings?section=integrations) and click **Connect GitHub**. GitHub asks you to authorise DeviceCloud, and what happens next depends on whether you already have the App:
 
 - **First time.** GitHub sends you on to install the App and choose which repositories it can see. Once you're done you land back on the Integrations page, connected to your current team.
 - **Already installed** (for example, you installed it from the App's page on GitHub first). We connect your team to that installation and return you straight to the console, with no reinstall and no repository step. Your existing repository selection carries over; change it any time with **Manage repositories on GitHub** on the Integrations card.

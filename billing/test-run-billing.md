@@ -4,11 +4,11 @@
 All prices exclude Sales Tax. On the Pro and Max plans, tax is added at checkout for your country by our Merchant of Record, Paddle. On the Enterprise plan, tax is added to your invoice where applicable.
 :::
 
-DeviceCloud charges your Team's account per test run. This happens as soon as you run `dcd cloud`.
+DeviceCloud charges your team's account per test run. This happens as soon as you run `dcd cloud`.
 
 In billing terms, a test run is a single top-level flow executing on a single device. Multiple flows in an upload will incur multiple charges. 
 
-For example, an upload with 10 flows running on iOS (at $0.11 per test run) will incur $1.10 of charges to your Team's account.
+For example, an upload with 10 flows running on iOS (at $0.11 per test run) will incur $1.10 of charges to your team's account.
 
 Details of charges made to your account can be found on the [billing page](https://console.devicecloud.dev/billing). On the Pro and Max plans, usage beyond your plan's included credits is billed as [overage](overage.md).
 

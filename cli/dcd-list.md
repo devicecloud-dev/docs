@@ -1,6 +1,6 @@
 # dcd list
 
-List recent test uploads for your organisation.
+List recent test uploads for your team.
 
 ```bash
 dcd list [flags]

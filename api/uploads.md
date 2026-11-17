@@ -2,7 +2,7 @@
 
 ## List uploads
 
-Returns a paginated list of test uploads for your organisation.
+Returns a paginated list of test uploads for your team.
 
 ```
 GET /uploads/list
