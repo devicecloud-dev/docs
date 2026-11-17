@@ -116,6 +116,8 @@ A link into your app takes about a second on Android and 3 to 4 seconds on iOS. 
 
 A sign-in link is a credential. Send it with `"sensitive": true` and it is encrypted before it is stored and never shown in the timeline, like a sensitive `type`.
 
+A flow's `openLink` is not the same thing: it opens the link inside the flow's app. See [What a session runs](../mcp/agent-devices.md#what-a-session-runs).
+
 ## Location
 
 `set_location` sets the device's GPS position, in decimal degrees. South and west are negative:

@@ -108,7 +108,7 @@ Tap one thing on the screen, by exactly one target. Answers once the screen has 
 | `--text <text>` | The element's text, label or hint, matched whole and ignoring case (not a regex) |
 | `--rid <id>` | The element's resource id, `rid` in `dcd device inspect` |
 | `--x <n> --y <n>` | A point, as percentages of the screen (0 to 100) |
-| `--timeout <seconds>` | With `--text` or `--rid`: how long to wait for it to appear, from 0 to 60. `0` looks at the screen once and fails at once if it isn't there |
+| `--timeout <seconds>` | With `--text` or `--rid`: how long to wait for it to appear, from 0 to 60. `0` looks at the screen once and fails at once if it isn't there. Requires CLI 5.14.0 or later |
 
 ## `dcd device type [id] --text <text>`
 
@@ -128,7 +128,7 @@ Press a key: `back`, `home`, `enter`, `backspace`, `tab`, and on Android `volume
 
 ## `dcd device open-link [id] <url>`
 
-Open a link on the device, the way tapping it would. A link your app handles, such as `myapp://orders/42`, opens in your app. Any other web link opens in the browser. Nothing on the device opening the link is a failure, and exits `2`. See [links](../api/device-sessions.md#links) for what the first link of a session can meet.
+Open a link on the device, the way tapping it would. A link your app handles, such as `myapp://orders/42`, opens in your app. Any other web link opens in the browser. Nothing on the device opening the link is a failure, and exits `2`. See [links](../api/device-sessions.md#links) for what the first link of a session can meet. Requires CLI 5.14.0 or later.
 
 `--sensitive` is for a link that carries a token, such as a sign-in link: it is stored encrypted, never shown in the timeline, and not printed.
 
@@ -141,7 +141,7 @@ Quote a link that has a `?` or an `&` in it, so your shell passes it whole.
 
 ## `dcd device set-location [id] --latitude <n> --longitude <n>`
 
-Set the device's GPS position, in decimal degrees. South and west are negative. It stays until you set another or the session ends. A position at `0, 0` is refused. See [location](../api/device-sessions.md#location) for what an app then reads.
+Set the device's GPS position, in decimal degrees. South and west are negative. It stays until you set another or the session ends. A position at `0, 0` is refused. See [location](../api/device-sessions.md#location) for what an app then reads. Requires CLI 5.14.0 or later.
 
 ```bash
 dcd device set-location --latitude 51.5074 --longitude -0.1278
