@@ -77,7 +77,7 @@ A baseline cropped to one element with `cropOn` can be captured on the DeviceClo
    ```
 
    ```bash
-   dcd cloud app.apk .maestro/ --android-device pixel-7 --android-api-level 34 --download-artifacts ALL
+   dcd cloud app.apk .maestro/ --android-device pixel-8 --android-api-level 34 --download-artifacts ALL
    ```
 
 2. The zip holds the crop as `<result-id>/screenshots/visual-home-header.jpg`, named after the flow and the `path`. Commit it unchanged, keeping the `.jpg` extension, for example as `screenshots/home-header.jpg`.
@@ -169,7 +169,7 @@ Comparison error: Assert screenshot matches screenshots/home.png (threshold: 90%
 
 Maestro also writes a diff image that boxes the changed regions. It does this for every assertion that doesn't match, including `optional: true` assertions that only warn and let the flow pass. DeviceCloud collects each diff as a full-resolution PNG and shows it in the run's media strip alongside the video and screenshots, and `--download-artifacts` puts it in the result's `screenshots/` folder, so you can see what moved without re-running anything.
 
-Each diff is named after the flow and the baseline it was compared with, with the baseline's folders joined by hyphens. A flow `visual.yaml` that asserts `screenshots/pixel-7-api-34/home.png` gives `visual-diff-screenshots-pixel-7-api-34-home_diff.png`, so a flow that checks several baselines gets one diff for each, and you can tell them apart. From Maestro 2.12.0, a flow that asserts the same baseline twice gets a diff for each time, and the second name ends in the step, such as `…-home_diff-step-017-assertScreenshot.png`.
+Each diff is named after the flow and the baseline it was compared with, with the baseline's folders joined by hyphens. A flow `visual.yaml` that asserts `screenshots/pixel-8-api-34/home.png` gives `visual-diff-screenshots-pixel-8-api-34-home_diff.png`, so a flow that checks several baselines gets one diff for each, and you can tell them apart. From Maestro 2.12.0, a flow that asserts the same baseline twice gets a diff for each time, and the second name ends in the step, such as `…-home_diff-step-017-assertScreenshot.png`.
 
 The diff is only produced for a pixel mismatch. A size mismatch fails before any comparison happens, and reports the expected and actual dimensions in the step error instead.
 
