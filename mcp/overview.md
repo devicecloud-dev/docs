@@ -1,18 +1,16 @@
-# MCP Server
+# Older dcd-mcp Server
 
-The `@devicecloud.dev/dcd` package ships a second binary, `dcd-mcp` — a [Model Context Protocol](https://modelcontextprotocol.io) server that lets AI agents (Claude, Cursor, VS Code, and other MCP clients) drive DeviceCloud directly: list devices, submit cloud test runs, check status, and download artifacts.
+`dcd-mcp` is the older DeviceCloud MCP server. New setups use `dcd mcp`, the MCP server in the CLI: see [Connect an AI Agent](connect.md).
 
-::: warning
-The MCP server is a new, beta capability. The tool surface may change.
-:::
+`dcd-mcp` is a second binary in the `@devicecloud.dev/dcd` npm package. It serves the same `dcd_*` [cloud test tools](tools.md) as `dcd mcp`: list devices, submit cloud test runs, check their status and download artifacts. It doesn't serve the [Agent Devices](agent-devices.md) tools, and it has no `install` command. You only need it for a setup that already uses it.
 
 ::: warning
-Please note that we accept no liability for anything your agent(s) may read or execute when using our MCP server. LLMs are a new technology and should be used with caution at your own risk.
+We accept no liability for anything your agent may read or execute. LLMs are a new technology: use them with care and at your own risk.
 :::
 
 ## Setup
 
-Add the server to your MCP client's configuration. It runs over stdio via `npx` (Node 22 or newer), so there's nothing to install separately:
+Add the server to your MCP client's configuration. It runs over stdio through `npx`, which needs Node 22 or later:
 
 ```jsonc
 {
@@ -29,7 +27,7 @@ Add the server to your MCP client's configuration. It runs over stdio via `npx` 
 The `--package=` form matters: it tells `npx` to run the package's `dcd-mcp` binary. Without it, `npx` runs the `dcd` CLI instead, which rejects `dcd-mcp` as an unknown command.
 
 ::: info
-The MCP server ships in the npm package only. The standalone `dcd` binary doesn't include it, so you need Node even if you installed the CLI with the binary installer.
+`dcd-mcp` is in the npm package only, so it needs Node even if you installed the CLI with the binary installer. The standalone `dcd` binary has `dcd mcp` instead: see [Connect an AI Agent](connect.md).
 :::
 
 ## Authentication
@@ -39,7 +37,7 @@ Auth is inherited from the CLI:
 - Set `DEVICE_CLOUD_API_KEY` in the server's `env` (as above) — **recommended**, **or**
 - Run [`dcd login`](../cli/dcd-login.md) once and the server will pick up the stored session.
 
-When both are present, the environment variable wins.
+When both are present, the environment variable wins. With a `dcd login` session, the server works in your active team, the one [`dcd switch-org`](../cli/dcd-login.md#dcd-switch-org) sets. After you switch teams, restart your MCP client: a running server can keep using the old team for up to an hour.
 
 Credentials are resolved lazily on the first tool call, not at startup — so your client can connect and enumerate the tools before you've supplied a key, and a bad credential surfaces as a tool error rather than a server that won't start.
 
@@ -59,7 +57,7 @@ The server exposes five tools. Four are read-only; `dcd_run_cloud_test` submits 
 | [`dcd_download_artifacts`](tools.md#dcd-download-artifacts) | Download a run's artifacts zip, and optionally a report, to disk |
 | [`dcd_run_cloud_test`](tools.md#dcd-run-cloud-test) | Submit a flow to run on the cloud (**billable**) |
 
-See [Tools Reference](tools.md) for every parameter, default, and return shape.
+See [Cloud Test Tools](tools.md) for every parameter, default, and return shape.
 
 ## Read-only mode
 
