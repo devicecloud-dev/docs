@@ -4245,7 +4245,8 @@ components:
       type: object
       description: >-
         Set the device's GPS position, for every app on it. It stays until it is set again or the session
-        ends.
+        ends. A position within 0.0001 of 0, 0 on both axes is refused with `LIVE_INVALID_ACTION`: a device
+        takes 0, 0 to mean no position.
       required: [type, latitude, longitude]
       properties:
         type:

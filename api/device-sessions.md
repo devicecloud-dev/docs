@@ -58,6 +58,14 @@ Two things differ by platform:
 
 The action answers once the link has opened. `inspect` next shows where it led. On iOS the session then works on whichever app the link brought to the front.
 
+The first link of a session can meet a screen that is shown only once:
+
+- **iOS, a link into your app.** iOS asks "Open in “Your App”?" the first time. The action presses **Open** for you, and its result says so.
+- **Android, a web link.** Chrome opens on its welcome screens. Tap **Use without an account**, then **No thanks**, and the page is behind them.
+- **iOS, a web link.** Safari may cover the page with a tip. Tap **Close**.
+
+A link into your app takes about a second on Android and 3 to 4 seconds on iOS. The first web link starts the browser, which takes 2 to 3 seconds on Android and 10 seconds or more on iOS.
+
 A sign-in link is a credential. Send it with `"sensitive": true` and it is encrypted before it is stored and never shown in the timeline, like a sensitive `type`.
 
 ## Location
@@ -68,9 +76,26 @@ A sign-in link is a credential. Send it with `"sensitive": true` and it is encry
 { "type": "set_location", "latitude": 51.5074, "longitude": -0.1278 }
 ```
 
-- It applies to the whole device, and stays until you set another or the session ends.
-- An app reads it only if it has the location permission. `launch` grants it.
-- Values are kept to six decimal places.
+- It applies to the whole device, and stays until you set another or the session ends. Leaving an app, relaunching it, and `launch` with `clearState` all keep it.
+- An app that is watching the position gets a new one within about 2 seconds. An app that asks later gets it when it asks.
+- An app reads it only once it has the location permission, and gets nothing without it. `launch` grants your app every permission.
+- Values are kept to six decimal places. iOS gives an app all six. Android gives about five: `51.507351` reads as `51.50735`.
+- A position within `0.0001` of `0, 0` on both axes is refused, because a device takes 0, 0 to mean no position. One axis at 0 is fine, such as `0, 10`.
+
+Until you set a position, an iOS app that asks is told the position is unavailable, and an Android app gets the emulator's own default, in California. Every session starts on a new device, so nothing carries over from an earlier one.
+
+A web page reads the position through the browser, and the browser asks first. On Android, give Chrome the permission in a flow, and Chrome then asks for the site (**Allow while visiting the site**):
+
+```yaml
+appId: com.android.chrome
+---
+- setPermissions:
+    appId: com.android.chrome
+    permissions:
+      location: allow
+```
+
+On iOS, Safari asks twice: **Allow While Using App** for Safari, then **Allow** for the site.
 
 ## Permissions
 

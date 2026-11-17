@@ -124,7 +124,7 @@ Press a key: `back`, `home`, `enter`, `backspace`, `tab`, and on Android `volume
 
 ## `dcd device open-link [id] <url>`
 
-Open a link on the device, the way tapping it would. A link your app handles, such as `myapp://orders/42`, opens in your app. Any other web link opens in the browser. Nothing on the device opening the link is a failure, and exits `2`. See [links](../api/device-sessions.md#links).
+Open a link on the device, the way tapping it would. A link your app handles, such as `myapp://orders/42`, opens in your app. Any other web link opens in the browser. Nothing on the device opening the link is a failure, and exits `2`. See [links](../api/device-sessions.md#links) for what the first link of a session can meet.
 
 `--sensitive` is for a link that carries a token, such as a sign-in link: it is stored encrypted, never shown in the timeline, and not printed.
 
@@ -137,7 +137,7 @@ Quote a link that has a `?` or an `&` in it, so your shell passes it whole.
 
 ## `dcd device set-location [id] --latitude <n> --longitude <n>`
 
-Set the device's GPS position, in decimal degrees. South and west are negative. See [location](../api/device-sessions.md#location) for what an app then reads.
+Set the device's GPS position, in decimal degrees. South and west are negative. It stays until you set another or the session ends. A position at `0, 0` is refused. See [location](../api/device-sessions.md#location) for what an app then reads.
 
 ```bash
 dcd device set-location --latitude 51.5074 --longitude -0.1278
