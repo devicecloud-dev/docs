@@ -1,5 +1,5 @@
 ---
-description: "How DeviceCloud protects your data: security leadership, reporting a vulnerability, where data is held, encryption, sign-in and sessions, retention, payments and code control."
+description: "How DeviceCloud protects your data: security leadership, reporting a vulnerability, where data is held, encryption, sign-in and sessions, retention, payments, code control and the IT security policies we follow."
 ---
 
 # Security Overview
@@ -81,3 +81,24 @@ DeviceCloud uses Paddle, our Merchant of Record, to handle payments. You enter c
 ## Code Control
 
 All code and configurations deployed inside DeviceCloud undergo a thorough code control process, which includes security considerations. All code is written or reviewed by UK-based employees.
+
+## IT security policies
+
+These are the internal security policies DeviceCloud follows to protect data and systems.
+
+You may request access to these policies by emailing support@devicecloud.dev.
+
+The policies available are:
+
+1. Acceptable Use Policy
+2. Access Control Policy
+3. Authentication and Password Policy
+4. Backup Policy
+5. Change Management Policy
+6. Data Classification Policy
+7. Data Retention and Disposal Policy
+8. Encryption Policy
+9. Human Resources Policy
+10. Logging and Monitoring Policy
+11. Security Incident Management Policy
+12. Vendor Management Policy

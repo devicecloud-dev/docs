@@ -92,7 +92,6 @@
 * [Security Overview](security/security-overview.md)
 * [IP Addresses](security/ip-addresses.md)
 * [Enterprise SSO](security/enterprise-single-sign-on.md)
-* [IT Security Policies](security/it-security-policies.md)
 
 ## Billing
 
