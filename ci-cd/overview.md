@@ -17,7 +17,7 @@ DeviceCloud has integrations for the CI providers below. For any other provider,
 * [Cancelling Superseded Runs](../advanced/cancel-previous.md) — Drop the previous run's queued tests when a newer commit arrives
 * [Run Priority](../configuration/run-priority.md) — Choose which of your own queued runs starts first
 * [dcd status](../cli/dcd-status.md) — Poll for results after an async run
-* [Report Formats](../artifacts/report-formats.md) — Generate JUnit/HTML reports for your CI system
+* [Report formats](../artifacts/artifacts.md#report-formats) — Generate JUnit/HTML reports for your CI system
 * [Artifacts & Downloads](../artifacts/artifacts.md) — Access logs, screenshots, and videos
 * [Exit Codes](../advanced/exit-codes.md) — Gate your pipeline on the result
 

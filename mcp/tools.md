@@ -55,7 +55,7 @@ Download a completed run's artifacts zip (videos, logs and screenshots) to local
 | `report` | `junit` \| `allure` \| `html` | Also download a formatted report of this type. `allure` is deprecated, see [Deprecations & Removals](../getting-started/deprecations.md) |
 | `reportPath` | string | Where to write the report (defaults by type: `report.xml` for `junit`, `report.zip` for `html`, `report.html` for `allure`). The `html` report is a ZIP. A relative path works as for `artifactsPath` |
 
-Returns `{ uploadId, artifactsPath, reportPath, warnings }`. A **non-empty `warnings` array means a download could not be produced** — most often because the run has no results yet. An empty array means success. See [Artifacts & Downloads](../artifacts/artifacts.md) and [Report Formats](../artifacts/report-formats.md).
+Returns `{ uploadId, artifactsPath, reportPath, warnings }`. A **non-empty `warnings` array means a download could not be produced** — most often because the run has no results yet. An empty array means success. See [Artifacts & Downloads](../artifacts/artifacts.md) and [Report formats](../artifacts/artifacts.md#report-formats).
 
 ## dcd_get_team_settings
 

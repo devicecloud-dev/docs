@@ -231,7 +231,7 @@ For the devices and OS versions you can pass, and which combinations work, see [
 | `--name <name>` | Custom name for this test run. |
 | `--metadata key=value` | Extra metadata for the run. Repeatable. |
 | `--retry <n>` | Number of automatic retries on failure, up to `2`. See [Retry Strategies](../advanced/retry-strategies.md). |
-| `--report <format>` | `junit` or `html`, saved in the working directory as `report.xml` or `report.zip`. `html-detailed` and `allure` are deprecated, see [Report Formats](../artifacts/report-formats.md). |
+| `--report <format>` | `junit` or `html`, saved in the working directory as `report.xml` or `report.zip`. `html-detailed` and `allure` are deprecated, see [Report formats](../artifacts/artifacts.md#report-formats). |
 | `--junit-path <path>`, `--html-path <path>` | Save the report somewhere else. |
 
 ### Execution Options

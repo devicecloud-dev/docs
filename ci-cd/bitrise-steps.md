@@ -88,7 +88,7 @@ For the devices and OS versions you can pass, and which combinations work, see [
 
 | Input | Key | Default | Description |
 |---|---|---|---|
-| Report Format | `report` | — | `junit` or `html`. `html-detailed` and `allure` are deprecated, see [Report Formats](../artifacts/report-formats.md). |
+| Report Format | `report` | — | `junit` or `html`. `html-detailed` and `allure` are deprecated, see [Report formats](../artifacts/artifacts.md#report-formats). |
 | JUnit Report Path | `junit_path` | `./report.xml` | Where to save the JUnit report. |
 | HTML Report Path | `html_path` | `./report.zip` | Where to save the HTML report, a ZIP of the report and its files. |
 | Allure Report Path | `allure_path` | `./report.html` | Where to save the Allure report. |

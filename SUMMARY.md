@@ -46,7 +46,6 @@
 ## Test Artifacts & Reports
 
 * [Artifacts & Downloads](artifacts/artifacts.md)
-* [Report Formats](artifacts/report-formats.md)
 * [Inspecting Variables](artifacts/inspecting-variables.md)
 
 ## Notifications
