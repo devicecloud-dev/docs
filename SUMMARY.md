@@ -99,6 +99,7 @@
 
 ## Product Lifecycle
 
+* [Support Policy](getting-started/support-policy.md)
 * [Deprecations & Removals](getting-started/deprecations.md)
 
 ## Legal
