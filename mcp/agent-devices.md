@@ -108,7 +108,7 @@ Every client you sign in shows up under **Settings → Account → Connected app
 1. `list_devices` shows the devices it can start, and any sessions already open.
 2. `start_device` leases a device and waits up to a minute for it. If the fleet is busy, the session is queued, which isn't an error: it starts on its own, and the agent waits for it with `get_device_status`.
 3. `install_app` installs a build you uploaded, or one at an HTTPS link. `launch_app` starts it.
-4. The agent loops: `inspect_screen` to see what's on screen, then `tap_on`, `input_text`, `swipe` or `press_key` for one step, or `run` for several Maestro commands, then `inspect_screen` again. `take_screenshot` shows the screen as an image, and `get_logs` reads the app's device log.
+4. The agent loops: `inspect_screen` to see what's on screen, then `tap_on`, `input_text`, `swipe` or `press_key` for one step, or `run` for several Maestro commands, then `inspect_screen` again. `open_link` opens a deep link or a web link, and `set_location` sets the device's position. `take_screenshot` shows the screen as an image, and `get_logs` reads the app's device log.
 5. `stop_device` releases the device when it's done.
 
 Every response carries a short **session** block: the session's state, how long it has left, its cost so far, its page in the console, and plain-English warnings, such as an upcoming idle timeout or the app having crashed. The agent never needs a separate call to stay oriented. Agents are told to give you the session's console link as soon as they have it, so you can watch.
@@ -117,15 +117,19 @@ The full list of tools is in the [tool reference](agent-devices-tools.md). To te
 
 ## What a session runs
 
-A session takes Maestro YAML and runs the common Maestro commands: `tapOn`, `doubleTapOn`, `longPressOn`, `inputText`, `eraseText`, `hideKeyboard`, `pressKey` (`Back`, `Home` and `Enter`), `swipe`, `scroll`, `scrollUntilVisible`, `assertVisible`, `assertNotVisible`, `extendedWaitUntil`, `waitForAnimationToEnd`, `launchApp`, `stopApp`, `killApp`, `clearState`, `openLink`, `takeScreenshot`, `back`, and `runFlow`, `repeat` and `retry`.
+A session takes Maestro YAML and runs the common Maestro commands: `tapOn`, `doubleTapOn`, `longPressOn`, `inputText`, `eraseText`, `hideKeyboard`, `pressKey` (`Back`, `Home` and `Enter`), `swipe`, `scroll`, `scrollUntilVisible`, `assertVisible`, `assertNotVisible`, `extendedWaitUntil`, `waitForAnimationToEnd`, `launchApp`, `stopApp`, `killApp`, `clearState`, `setPermissions`, `openLink`, `takeScreenshot`, `back`, and `runFlow`, `repeat` and `retry`.
 
-It doesn't run flow scripts: `runScript`, `evalScript`, or a JavaScript condition or expression. Only `${NAME}` variables from `env` are filled in. It also doesn't run `copyTextFrom`, `pasteText`, `inputRandom*`, `setLocation`, `travel` or `addMedia`, or other `pressKey` keys. A flow with a command it doesn't run fails before its first step, and the error names the line.
+It doesn't run flow scripts: `runScript`, `evalScript`, or a JavaScript condition or expression. Only `${NAME}` variables from `env` are filled in. It also doesn't run `copyTextFrom`, `pasteText`, `inputRandom*`, `setLocation`, `travel` or `addMedia`, or other `pressKey` keys. A flow with a command it doesn't run fails before its first step, and the error names the line. To set the device's position, use the [`set_location`](agent-devices-tools.md#set_location) tool.
+
+A flow's `openLink` opens the link inside the flow's app. On Android a web link that app doesn't handle fails there. To open a link the way the device would, use the [`open_link`](agent-devices-tools.md#open_link) tool.
+
+`launch` grants the app every permission before it opens it, so no permission dialog covers its first screen, and a flow's `launchApp` does the same unless it sets `permissions` itself. See [permissions](../api/device-sessions.md#permissions) to deny one.
 
 These flows are run by a Maestro-compatible engine, not by Maestro itself. A [test run](../getting-started/quickstart.md) runs your flows on Maestro, so check a flow there before you rely on it there.
 
 Two things differ by platform:
 
-- **iOS.** A session works on the app in front. On the home screen the screen reads as empty and a tap is refused, so launch an app first. When a tap opens another app, such as a link into Safari, the session follows it. `lock`, `power`, `volume_up` and `volume_down` aren't available on a simulator.
+- **iOS.** A session works on the app in front. On the home screen the screen reads as empty and a tap is refused, so launch an app first. When a tap or a link opens another app, such as a link into Safari, the session follows it. There is no back key: `back` presses the app's own back button, or taps the top-left corner where one usually is, and fails if the screen doesn't change. It doesn't close a keyboard. `lock`, `power`, `volume_up` and `volume_down` aren't available on a simulator.
 - **Android.** `eraseText` must be at the top level of a flow, not inside `runFlow`, `repeat` or `retry`.
 
 The agent is told all of this by the `cheat_sheet` tool.

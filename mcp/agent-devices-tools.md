@@ -120,7 +120,7 @@ Read-only.
 
 ## `tap_on`
 
-Tap one thing on the screen: an element by its text (txt or a11y from inspect_screen, matched whole and ignoring case, not as a regex), by its id (rid), or a point as x and y percentages of the screen. Give exactly one target. The fastest way to act: it answers once the screen has settled, usually well under a second. A target that is not on screen waits about 17 seconds before it fails, so inspect_screen first. For several steps or an assertion, use run.
+Tap one thing on the screen: an element by its text (txt or a11y from inspect_screen, matched whole and ignoring case, not as a regex), by its id (rid), or a point as x and y percentages of the screen. Give exactly one target. The fastest way to act: it answers once the screen has settled, in about a second. A text or an id that is not on screen is waited for, 17 seconds unless timeout_seconds says otherwise, and then the tap fails: inspect_screen first, or give a short timeout_seconds when the element may not be there. For several steps or an assertion, use run.
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -129,6 +129,7 @@ Tap one thing on the screen: an element by its text (txt or a11y from inspect_sc
 | `id` | string | No | The element's resource id (rid in inspect_screen). |
 | `x` | number, 0 to 100 | No | x as a percentage of the screen, 0 to 100. |
 | `y` | number, 0 to 100 | No | y as a percentage of the screen, 0 to 100. |
+| `timeout_seconds` | number, 0 to 60 | No | With text or id: how long to wait for it to appear before failing, in seconds. Default 17; 0 looks at the screen once. |
 
 ## `input_text`
 
@@ -153,12 +154,32 @@ Swipe across the screen: a direction (up scrolls the content up, i.e. down the p
 
 ## `press_key`
 
-Press a device key: back, home, enter, backspace, tab, and on Android volume_up, volume_down, lock, power (an iOS simulator has no such buttons). enter submits the focused field; on Android back closes a keyboard or goes back, on iOS it uses the app's own back control when it has one. On iOS enter, backspace and tab need a focused field. Answers once the screen has settled.
+Press a device key: back, home, enter, backspace, tab, and on Android volume_up, volume_down, lock, power (an iOS simulator has no such buttons). enter submits the focused field. On Android back closes a keyboard or goes back. iOS has no back key: back presses the app's own back button, or taps the top-left corner where one usually is and fails if the screen does not change, so it is navigation, not a way to close the keyboard (press enter, or tap outside the field). On iOS enter, backspace and tab need a focused field. Answers once the screen has settled.
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
 | `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
 | `key` | `back`, `home`, `enter`, `backspace`, `tab`, `volume_up`, `volume_down`, `lock` or `power` | Yes | Which key. |
+
+## `open_link`
+
+Open a link on the device, as tapping it would: a web link opens in the app that claims it, or else in the browser, and an app link such as myapp://path opens in its app. Use it to go straight to a screen, or to sign a test user in by link. It fails when nothing on the device opens the link. With sensitive: true the link is stored encrypted and never shown: use it when the link carries a token. Answers once the link has opened; inspect_screen next to see where it led.
+
+| Input | Type | Required | Description |
+|-------|------|----------|-------------|
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `url` | string, up to 2048 characters | Yes | The link with its scheme, e.g. "https://example.com/page" or "myapp://path". No spaces: percent-encode them. |
+| `sensitive` | boolean | No | The link is a secret: it carries a token or a code. Default false. |
+
+## `set_location`
+
+Set where the device is: the GPS position its apps read, in decimal degrees. It applies to the whole device and stays until you set another or the session ends. An app reads it only if it has location permission, which launch_app grants. Answers once the device has taken the position.
+
+| Input | Type | Required | Description |
+|-------|------|----------|-------------|
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `latitude` | number, -90 to 90 | Yes | Decimal degrees, north positive, e.g. 51.5074. |
+| `longitude` | number, -180 to 180 | Yes | Decimal degrees, east positive, e.g. -0.1278. |
 
 ## `run`
 
