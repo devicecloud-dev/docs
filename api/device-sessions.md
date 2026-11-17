@@ -1,4 +1,4 @@
-# Device sessions
+# Device Sessions
 
 The REST API behind [Agent Devices](../mcp/agent-devices.md). The MCP tools call these same endpoints. Authenticate with an [API key](../getting-started/api-keys.md) in `x-app-api-key`, as for the rest of the [REST API](overview.md#authentication). A key limited to **Device sessions only** can reach these endpoints, the hosted MCP server and the build upload endpoints, but nothing else.
 

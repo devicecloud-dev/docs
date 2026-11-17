@@ -2,7 +2,7 @@
 
 DeviceCloud has integrations for the CI providers below. For any other provider, call the CLI directly, as described in [Any CI](any-ci.md). To ask for a new integration, post in [GitHub Discussions](https://github.com/orgs/devicecloud-dev/discussions).
 
-### Integration Guides
+## Integration Guides
 
 * [GitHub Actions](github-actions.md) - The DeviceCloud GitHub Action, with every input and output
 * [GitHub Checks](github-checks.md) - A pass/fail check on each pull request, whichever CI started the run
@@ -11,7 +11,7 @@ DeviceCloud has integrations for the CI providers below. For any other provider,
 * [Bitbucket Pipelines](bitbucket-pipelines.md) - The DeviceCloud pipe
 * [Any CI](any-ci.md) - The CLI on its own, with GitLab CI and CircleCI examples
 
-### Useful Features For CI/CD
+## Useful Features For CI/CD
 
 * [Async Execution](../advanced/async-execution.md) - Fire-and-forget tests without blocking your pipeline
 * [Cancelling Superseded Runs](../advanced/cancel-previous.md) - Drop the previous run's queued tests when a newer commit arrives
@@ -21,7 +21,7 @@ DeviceCloud has integrations for the CI providers below. For any other provider,
 * [Artifacts & Downloads](../artifacts/artifacts.md) - Access logs, screenshots, and videos
 * [Exit Codes](../advanced/exit-codes.md) - Gate your pipeline on the result
 
-### Configuration
+## Configuration
 
 * [Environment Variables](../configuration/environment-variables.md) - Pass secrets and config to your flows
 * [API Keys](../getting-started/api-keys.md) - Manage authentication

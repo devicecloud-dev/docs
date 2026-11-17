@@ -1,4 +1,4 @@
-# Agent Devices tool reference
+# Agent Devices Tools
 
 These are the tools DeviceCloud's hosted MCP server (`https://api.devicecloud.dev/mcp`) offers for [Agent Devices](agent-devices.md). Each description below is the one your agent sees. Every tool except `list_devices`, `start_device` and `cheat_sheet` takes an optional `session_id`. You can leave it out when your team has exactly one open session. With none open, or several, the tool answers `LIVE_SESSION_REQUIRED`.
 

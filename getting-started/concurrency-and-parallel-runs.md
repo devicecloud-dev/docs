@@ -12,7 +12,7 @@ The plans come with these limits:
 | Max | up to 20, with 1 protected | up to 5 | up to 20, with 1 protected | up to 20 |
 
 ::: warning
-The `gpu1` runner type was removed on 9 November 2026. Runs that still pass it run on `cpu1` and count towards the `cpu1` limit. See [Runner Type](../configuration/runner-type.md).
+The `gpu1` runner type was removed on 9 November 2026. Runs that still pass it run on `cpu1` and count towards the `cpu1` limit. See [Runner Types](../configuration/runner-type.md).
 :::
 
 ::: info
@@ -27,10 +27,10 @@ If you have a plan with Concurrency Protection, DeviceCloud will prioritise your
 
 Some accounts have a shared pool instead, shown in the console as **Standard — shared across iOS & Android**. Standard iOS (`default`) and Android (`cpu1`) runs then draw on one combined limit rather than a limit each.
 
-#### **Enterprise Plans**
+## Enterprise Plans
 
 If you need larger guaranteed concurrency or a bespoke concurrency setup and availability, please contact us at [sales@devicecloud.dev](mailto:sales@devicecloud.dev) and we'd be happy to arrange an enterprise plan that meets your requirements.
 
-#### **Why limit concurrency at all?**
+## Why limit concurrency at all?
 
 DeviceCloud owns its own hardware, which is how we're able to offer such competitive prices. However, we have limited capacity in our runner pool. As such, we sometimes need to limit concurrency to ensure fair throughput for everyone. As more users subscribe, we gradually invest in and expand this pool to increase overall capacity.

@@ -1,4 +1,4 @@
-# Agent instructions for Agent Devices
+# Agent Instructions
 
 Your agent works better with [Agent Devices](agent-devices.md) when it knows the loop: look at the screen, act, look again. Copy one of these into your project so it does.
 

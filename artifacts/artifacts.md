@@ -1,4 +1,4 @@
-# Download Artifacts
+# Artifacts & Downloads
 
 DeviceCloud captures various artifacts during test execution that can help debug and analyse your test runs.
 

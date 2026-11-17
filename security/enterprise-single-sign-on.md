@@ -21,7 +21,7 @@ We support the following identity providers:
 
 Using a provider that isn't on the list? Contact us and we'll help you set it up.
 
-#### Integration Steps
+## Integration Steps
 
 These steps have been written with Okta in mind, but are applicable to other identity providers too.
 
@@ -47,7 +47,7 @@ The Default Relay State is where people land when they start from your identity 
 
 ![The DeviceCloud sign-in page with the SAML SSO option](../assets/sso-sign-in.png)
 
-#### What changes once SSO is on
+## What changes once SSO is on
 
 * People with an email address on a protected domain must sign in with **SAML SSO**. The login screen turns away an email code, GitHub, Google or a passkey for those addresses.
 * Assign everyone who needs access to the DeviceCloud app in your identity provider before SSO is turned on. Anyone on a protected domain who isn't assigned can't sign in.

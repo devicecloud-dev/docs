@@ -2,7 +2,7 @@
 
 DeviceCloud can send a POST request to a URL of your choice when a set of tests completes. No request is sent for a run superseded by a newer run through [`--cancel-previous`](../advanced/cancel-previous.md).
 
-### Enabling Webhooks
+## Enabling Webhooks
 
 Head to the [console settings](https://console.devicecloud.dev/settings?section=notifications) page, open the **Notifications** section and find **Webhooks**. Enter your webhook URL there and select **Save**. **Delete** removes the webhook.
 
@@ -12,7 +12,7 @@ Only HTTPS URLs are supported, up to 2,048 characters. The hostname must resolve
 
 Select **Test** to send a test request and verify that your endpoint processes webhooks correctly. The test payload will contain information from your most recent job (or sample data if there isn't one yet), is marked with `"test": true`, and uses an `upload_id` prefixed with `test_` and a webhook ID prefixed with `wh_test_`.
 
-### Webhook Structure
+## Webhook Structure
 
 **Request headers:**
 
@@ -79,7 +79,7 @@ User-Agent: DeviceCloud-Webhooks/1.0
 | `metadata` | Every key/value pair attached to the run: the pairs you supplied via the CLI `--metadata` flag, the `gh_*` keys set by the CLI's git flags (e.g. `--branch` is sent as `gh_branch`), and any keys added by our CI integrations (e.g. `gh_*` from the GitHub Action, `bb_*` from the Bitbucket pipe). Omitted when there are none. |
 | `test` | Present and `true` only for test requests sent from the console. |
 
-### Tags and Custom Properties
+## Tags and Custom Properties
 
 Each entry in `results` carries the `tags` and `properties` declared in that flow's YAML front matter, so you can route or filter events without a second API call:
 
@@ -105,7 +105,7 @@ Property values are always delivered as strings — numbers and booleans are con
 Property values must be scalars. Maestro rejects a flow whose `properties:` contains a nested object or a list, failing it before it runs with `Incorrect Format: <key>`.
 :::
 
-### Delivery
+## Delivery
 
 * Each attempt times out after 10 seconds, so respond with a `2xx` quickly and do any slow processing afterwards.
 * Timeouts and connection errors, such as a refused or reset connection or a failed DNS lookup, are retried, up to 3 attempts in total (1 second, then 2 seconds apart). Every attempt carries the same `X-DeviceCloud-Webhook-ID`, so you can use it to ignore duplicates.
@@ -113,7 +113,7 @@ Property values must be scalars. Maestro rejects a flow whose `properties:` cont
 * The URL's address is checked again before every delivery. If the hostname now resolves to a private, loopback, link-local or other reserved address, nothing is sent.
 * The console doesn't keep a delivery log, so log incoming requests on your side if you need a record.
 
-### Repeat Deliveries After Retries
+## Repeat Deliveries After Retries
 
 If tests are retried after a run has already been reported — for example when you retry a failed test from the console — DeviceCloud sends another `upload.completed` for the same `upload_id` once the retried tests finish. It carries the run's updated `status`, `summary` and `results`.
 
@@ -121,7 +121,7 @@ This is on by default, so automations always see the latest outcome. To be calle
 
 Your endpoint should therefore treat `upload_id` as the key for a run and keep the delivery with the latest `timestamp`, rather than assuming one request per run.
 
-### Device needs human
+## Device needs human
 
 When an [Agent Devices](../mcp/agent-devices.md) session asks for a person's help, your webhook receives a `device.needs_human` event. It's sent once each time a session starts waiting, with the same headers and delivery as `upload.completed`:
 
@@ -144,7 +144,7 @@ When an [Agent Devices](../mcp/agent-devices.md) session asks for a person's hel
 
 `reason` is what the agent asked for. `expires_at` is when the session ends unless someone hands it back. `console_url` opens the session in the console, where you can take control and hand it back.
 
-### Usage alert
+## Usage alert
 
 When a [usage alert](../billing/usage-alerts.md) that includes **Webhook** is sent, your webhook receives a `usage.alert` event, with the same headers and delivery as `upload.completed`:
 
@@ -188,7 +188,7 @@ When a [usage alert](../billing/usage-alerts.md) that includes **Webhook** is se
 | `window` | The alert's window (UTC), the usage in it so far, the threshold in dollars (`limit`) and what's left before it. Amounts are in dollars. |
 | `period` | The billing period: its usage, your `allowance` (included credits plus Overage Limit), what's left, and `estimated_cap_at`, when you'll reach the allowance at your current rate (`null` if it can't be estimated). `period` is `null` when your team has no Overage Limit. |
 
-### Webhook Secrets
+## Webhook Secrets
 
 Every request includes the secret shown on your DeviceCloud console, sent as-is in the `X-DeviceCloud-Secret` header. To verify a request came from DeviceCloud, compare that header with your secret using a constant-time comparison (such as `crypto.timingSafeEqual` in Node.js or `hmac.compare_digest` in Python) and reject the request if they don't match.
 

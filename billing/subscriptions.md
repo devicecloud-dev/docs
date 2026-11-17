@@ -8,7 +8,7 @@ All prices exclude Sales Tax. On the Pro and Max plans, tax is added at checkout
 
 Subscriptions have replaced one-off credit purchases. Reach out to support if you need help choosing a plan.
 
-### Pro Plan
+## Pro Plan
 
 This subscription costs $25 per month and comes with $25 of usage included which can be used as per [Test Run Billing](test-run-billing.md).
 
@@ -20,7 +20,7 @@ For support, ask our team and community on [Discord](https://discord.gg/gm3mJwcN
 
 This plan supports unlimited users and unlimited apps. Results are retained for 6 months.
 
-### Max Plan
+## Max Plan
 
 This subscription costs $200 per month and comes with $200 of usage included which can be used as per [Test Run Billing](test-run-billing.md).
 
@@ -34,7 +34,7 @@ This plan supports [Enterprise SSO](../security/enterprise-single-sign-on.md) an
 
 This plan supports unlimited users and unlimited apps. Results are retained for 6 months.
 
-### Overage Limit
+## Overage Limit
 
 On the Pro and Max plans, overage is capped each billing period so a runaway pipeline can't produce an unexpected bill. By default the **Overage Limit** is 8× your plan's included usage: $200 on Pro and $1,600 on Max, on top of the usage included in your plan. Owners and admins can change it on the [billing page](https://console.devicecloud.dev/billing).
 
@@ -42,7 +42,7 @@ A run that would take you over the limit is refused. See [Overage](overage.md#ov
 
 To be told before you get there, or to refuse runs at a lower amount per day, week or billing period, set up [Usage Alerts & Limits](usage-alerts.md).
 
-### Enterprise Plan
+## Enterprise Plan
 
 This subscription starts at $15,000 per year and allows for custom terms including volume discounts.
 
@@ -50,7 +50,7 @@ This plan is paid by invoice and includes private, dedicated support via Slack a
 
 Please reach out to [sales@devicecloud.dev](mailto:sales@devicecloud.dev) for more info.
 
-### Without a subscription
+## Without a subscription
 
 New teams get $20 of free credits to try DeviceCloud. Without a subscription, runs are paid from that prepaid balance and there's no overage: new runs are refused once the balance runs out. See [Credits](test-run-billing.md#credits).
 

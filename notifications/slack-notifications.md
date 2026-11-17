@@ -4,7 +4,7 @@ DeviceCloud can post a pass/fail summary to a Slack channel every time a test ru
 
 Slack is configured once per team from the DeviceCloud console — there is nothing to add to your `config.yaml` or CI pipeline.
 
-### Connecting Slack
+## Connecting Slack
 
 1. Head to the [console settings](https://console.devicecloud.dev/settings?section=notifications) page and open the **Notifications** section.
 2. Click **Connect Slack**. You'll be redirected to Slack to authorise DeviceCloud for your workspace.
@@ -17,21 +17,21 @@ The channel list shows every public channel. A private channel only appears once
 DeviceCloud requests only the permissions it needs to list your channels and post messages. It cannot read your messages.
 :::
 
-#### Sending a test message
+### Sending a test message
 
 Once you've saved a channel, use **Send test** to post a sample message to that channel and confirm everything is wired up. The test uses data from your most recent run when available.
 
-#### Only notify on failures
+### Only notify on failures
 
 By default DeviceCloud posts after **every** completed run. To cut down on noise, turn on **Only notify on failures** in the Slack section — passing runs will then be skipped and you'll only get a message when a run has at least one failed or cancelled flow.
 
-#### Post again after retries
+### Post again after retries
 
 If you retry tests after a run has already been posted, DeviceCloud doesn't post again by default. Turn on **Post again after retries** to get an updated message once the retried tests finish; its duration covers only the retry.
 
 A run superseded by a newer run through [`--cancel-previous`](../advanced/cancel-previous.md) never posts, whatever this setting.
 
-### What's in the message
+## What's in the message
 
 Each notification includes:
 
@@ -41,13 +41,13 @@ Each notification includes:
 - A list of failed flows with their failure reason, where available. The list shows up to 10 flows (with a count of any more), and each reason is shortened to 140 characters.
 - A **View results in DeviceCloud** link to the run in the console.
 
-#### Choosing what's shown
+### Choosing what's shown
 
 Under **What to show** you can turn each optional part of the message on or off: App ID, Device and OS, Maestro version, Runner type, Git / PR context, the per-flow failures list, and the retry count (shown when it's above zero). All of them are on by default; the suite name, pass/fail counts and duration are always shown.
 
 **Duration shown** picks which duration appears: **Overall runtime** (the default — wall-clock time from the first test starting to the last one finishing), **Suite runtime (summed)** (every test's duration added together, which is large for parallel runs), or **Both**.
 
-#### Git / CI context
+### Git / CI context
 
 When a run carries git metadata, the message also shows a line with the **repository**, **branch**, a linked **commit**, and a linked **pull request**.
 
@@ -64,10 +64,10 @@ dcd cloud app.apk flows/ \
 
 The line only appears when at least one of these values is present. The commit links to GitHub when `--repo-name` is set. The pull request links to `--pr-url`, or to the pull request built from `--repo-name` and `--pr-number`.
 
-### Usage alerts
+## Usage alerts
 
 If a [usage alert](../billing/usage-alerts.md) includes **Slack**, it's posted to the same channel, whatever your **Only notify on failures** setting.
 
-### Disconnecting
+## Disconnecting
 
 Click **Disconnect** in the Slack section to stop notifications and revoke DeviceCloud's access to your workspace. You can disconnect and reconnect at any time.
