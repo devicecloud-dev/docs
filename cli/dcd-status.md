@@ -150,7 +150,7 @@ jobs:
           echo "$RESULT" | jq -e '.status == "PASSED" or .supersededBy != null' > /dev/null
 ```
 
-See [Async Execution](../advanced/async-execution.md) for more patterns.
+See [Async execution](../ci-cd/overview.md#async-execution) for more patterns.
 
 ## Underlying API
 

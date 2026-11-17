@@ -102,7 +102,7 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 
 | Flag | Description |
 |------|-------------|
-| `--async` | Submit tests and return immediately (exit `0`) without waiting for results. `--download-artifacts` and `--report` do nothing with `--async`: download them later with [`dcd artifacts`](dcd-artifacts.md) (see [Async Execution](../advanced/async-execution.md)) |
+| `--async` | Submit tests and return immediately (exit `0`) without waiting for results. `--download-artifacts` and `--report` do nothing with `--async`: download them later with [`dcd artifacts`](dcd-artifacts.md) (see [Async execution](../ci-cd/overview.md#async-execution)) |
 | `--cancel-previous` | Cancel the still-queued tests of the previous run from the same CI context. Needs a repository plus a branch or PR: `--repo-name` with `--branch` or `--pr-number`, or the same values as `--metadata gh_repo=…` with `gh_branch=…` or `gh_pr_number=…` (see [Cancelling superseded runs](../advanced/cancel-previous.md)) |
 | `--priority <level>` | `low`, `normal` (default) or `high`. Reorders only your team's own queued runs (see [Run Priority](../configuration/run-priority.md)) |
 | `--quiet`, `-q` | Suppress per-test progress; print only the final summary |

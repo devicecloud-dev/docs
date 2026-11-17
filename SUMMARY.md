@@ -18,7 +18,6 @@
 * [Bitrise Steps](ci-cd/bitrise-steps.md)
 * [Bitbucket Pipelines](ci-cd/bitbucket-pipelines.md)
 * [Any CI](ci-cd/any-ci.md)
-* [Async Execution](advanced/async-execution.md)
 * [Cancelling Superseded Runs](advanced/cancel-previous.md)
 
 ## Devices

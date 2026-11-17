@@ -80,7 +80,7 @@ For the devices and OS versions you can pass, and which combinations work, see [
 | Retry Count | `retry` | `0` | Retries on failure, up to `2`. See [Retry Strategies](../advanced/retry-strategies.md). |
 | Priority | `priority` | `normal` | From 1.5.0. `low`, `normal` or `high`: which of your team's queued runs starts first. It never moves your runs ahead of other customers. See [Run Priority](../configuration/run-priority.md). |
 | Cancel Previous Run | `cancel_previous` | `false` | From 1.4.0. Cancel the previous run's still-queued tests when this one starts. See [Cancelling superseded runs](#cancelling-superseded-runs). |
-| Async Execution | `async` | `false` | Don't wait for the results: the step passes once the run is submitted. See [Async Execution](../advanced/async-execution.md). |
+| Async Execution | `async` | `false` | Don't wait for the results: the step passes once the run is submitted. See [Async execution](overview.md#async-execution). |
 | Dry Run | `dry_run` | `false` | List the flows that would run without starting a run. |
 | Ignore SHA Check | `ignore_sha_check` | `false` | Upload the binary even if the same file was uploaded before. Not recommended. |
 
