@@ -106,19 +106,19 @@ The standalone binary installers also read these:
 
 | Variable | Description |
 |----------|-------------|
-| `DCD_VERSION` | Install a specific version instead of the latest stable release, e.g. `5.13.0` |
+| `DCD_VERSION` | Install a specific version instead of the latest stable release, e.g. `5.14.0` |
 | `DCD_BETA` | Set to `1` to install the latest beta |
 | `DCD_INSTALL_DIR` | Where to install the binary (default `~/.dcd/bin`, or `$env:USERPROFILE\.dcd\bin` on Windows) |
 
 ```bash
-curl -fsSL https://get.devicecloud.dev/install.sh | DCD_VERSION=5.13.0 sh
+curl -fsSL https://get.devicecloud.dev/install.sh | DCD_VERSION=5.14.0 sh
 ```
 
 ## Telemetry
 
 The CLI sends usage and error events to DeviceCloud to help us find and fix problems. Only commands that authenticate send anything — `--help`, `--version` and `dcd whoami`, for example, don't. Events include:
 
-- the command and its arguments, with the values of `--api-key`, `--app-url` and `--env` / `-e` redacted. Other values are sent as you typed them, including the text you pass to `dcd device type`. The next CLI release redacts that text too.
+- the command and its arguments, with the values of `--api-key`, `--app-url` and `--env` / `-e`, and the text you pass to `dcd device type`, redacted. Other values are sent as you typed them. CLI versions before 5.14.0 also sent the `dcd device type` text.
 - how long the command took and its exit code
 - the error message and stack trace when a command fails
 - the names, durations and errors of [MCP server](../mcp/connect.md) tool calls

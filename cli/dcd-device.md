@@ -114,7 +114,7 @@ Tap one thing on the screen, by exactly one target. Answers once the screen has 
 Type into the focused field (tap it first). `--sensitive` treats the text as a secret: DeviceCloud stores it encrypted and masks it in the output.
 
 ::: warning
-CLI 5.13.0 also sends the text you type with `dcd device type` in its usage [telemetry](overview.md#telemetry), with or without `--sensitive`. Until the next CLI release, which leaves it out, don't type real passwords or codes this way, or set `DCD_TELEMETRY_DISABLED=1` first.
+CLI versions before 5.14.0 also send the text you type with `dcd device type` in their usage [telemetry](overview.md#telemetry), with or without `--sensitive`. [Upgrade](../getting-started/quickstart.md#upgrading-the-cli) before you type real passwords or codes this way.
 :::
 
 ## `dcd device swipe [id] <up|down|left|right>`
