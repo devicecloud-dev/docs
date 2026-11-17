@@ -32,8 +32,37 @@ In CI and other non-interactive environments, use an API key.
 
 1. Log in to the [console](https://console.devicecloud.dev/settings).
 2. Open **Settings → API Keys** and choose **Create API key**.
-3. Give it a **Name**, and choose its **Access** and **Expiry**. **Full access** suits CI and scripts. **Device sessions only** suits AI agents that use [Agent Devices](../mcp/agent-devices.md): such a key can start and drive device sessions and upload builds, but can't start test runs or read results. You can't change a key's access later.
-4. Copy the key. It's shown only once, so store it straight away, for example as a CI secret.
+3. Give it a **Name**, and choose its **Access** and **Expiry**. For CI, choose **CI: run tests only**; see [Key access](#key-access).
+4. Copy the key. It's shown only once, when it's created or rotated, so store it straight away, for example as a CI secret.
+
+### Key access
+
+You choose what a key can do when you create it. You can't change it later, so create a new key if you need different access.
+
+| Access | What the key can do | Use it for |
+| --- | --- | --- |
+| **Full access** | Everything an API key can do. | Scripts that manage runs or read results across your team |
+| **CI: run tests only** | Upload builds and flows, start test runs, and follow, download and report on the runs it started. | CI secrets |
+| **Device sessions only** | Start and drive device sessions and upload builds. It can't start test runs or read results. | AI agents using [Agent Devices](../mcp/agent-devices.md) |
+
+A CI-only key limits what a leaked secret can do. Whoever holds it can start test runs, which are billed, but can't read your other runs, results or artifacts, or change your settings.
+
+With a CI-only key, these work for the runs the key started:
+
+- `dcd cloud`, including `--download-artifacts`, `--report` and `--cancel-previous`
+- `dcd status`
+- `dcd artifacts`
+
+`--cancel-previous` only cancels earlier runs that the same key started.
+
+These need a key with full access, or `dcd login`:
+
+- `dcd list`
+- Reading a run that another key or a person started
+- The [REST API](../api/overview.md) flow analytics endpoints
+- The [MCP server](../mcp/connect.md)
+
+A command outside a key's access fails with HTTP `403` and the error code `API_KEY_SCOPE`. Asking a CI-only key about a run it didn't start returns `404`, the same as a run that doesn't exist.
 
 ### Using an API key
 

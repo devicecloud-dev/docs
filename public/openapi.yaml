@@ -25,8 +25,16 @@ info:
     `dcd login`: send `Authorization: Bearer <access-token>` together with
     `x-dcd-org: <team-id>`. For scripts and CI, use an API key.
 
-    A key limited to **Device sessions only** reaches the `/device/*` endpoints and
-    nothing else in this API. Other endpoints answer it with `403` and
+    A key's access is chosen when it's created:
+
+    - **Full access** reaches every endpoint.
+    - **CI: run tests only** reaches `GET /uploads/status`, `GET /results/{uploadId}`,
+      the report endpoints and `POST /results/{uploadId}/download`, and only for
+      runs that key started. Any other run answers `404` with
+      `"error": "UPLOAD_NOT_FOUND"`, the same as a run that doesn't exist.
+    - **Device sessions only** reaches the `/device/*` endpoints.
+
+    An endpoint a key's access doesn't cover answers `403` with
     `"error": "API_KEY_SCOPE"`.
 
     ## Rate limits
@@ -249,15 +257,26 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
         '404':
-          description: No upload in your organization matches.
+          description: |
+            No upload in your team matches. For a key with
+            **CI: run tests only** access, no upload that key started matches.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorEnvelope'
-              example:
-                statusCode: 404
-                message: Upload not found
-                error: Upload not found
+              examples:
+                notFound:
+                  summary: No such upload
+                  value:
+                    statusCode: 404
+                    message: Upload not found
+                    error: Upload not found
+                notStartedByKey:
+                  summary: A CI-only key, and a run it didn't start
+                  value:
+                    statusCode: 404
+                    message: Upload not found
+                    error: UPLOAD_NOT_FOUND
         '503':
           $ref: '#/components/responses/KeyCheckUnavailable'
   /results/{uploadId}:
@@ -357,6 +376,8 @@ paths:
           $ref: '#/components/responses/InvalidUploadId'
         '403':
           $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/UploadNotStartedByKey'
         '503':
           $ref: '#/components/responses/KeyCheckUnavailable'
   /results/{uploadId}/report:
@@ -492,16 +513,27 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           description: |
-            The upload has no results in your organization, or doesn't exist. Unlike
+            The upload has no results in your team, or doesn't exist. Unlike
             the report downloads, this one answers with the standard error envelope.
+            For a key with **CI: run tests only** access, also a run that key didn't
+            start.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorEnvelope'
-              example:
-                statusCode: 404
-                message: No results found for this upload
-                error: Not Found
+              examples:
+                noResults:
+                  summary: No results
+                  value:
+                    statusCode: 404
+                    message: No results found for this upload
+                    error: Not Found
+                notStartedByKey:
+                  summary: A CI-only key, and a run it didn't start
+                  value:
+                    statusCode: 404
+                    message: Upload not found
+                    error: UPLOAD_NOT_FOUND
         '429':
           $ref: '#/components/responses/RateLimited'
         '503':
@@ -3164,7 +3196,7 @@ components:
     Forbidden:
       description: |
         No credentials, an invalid or expired API key, a Bearer token without a
-        valid `x-dcd-org`, or a key whose scope doesn't reach this endpoint
+        valid `x-dcd-org`, or a key whose access doesn't cover this endpoint
         (`"error": "API_KEY_SCOPE"`).
       content:
         application/json:
@@ -3178,10 +3210,10 @@ components:
                 message: Invalid API key. Please check your API key and ensure it is valid for this environment.
                 error: Forbidden
             scope:
-              summary: Key scope too narrow
+              summary: Key access too narrow
               value:
                 statusCode: 403
-                message: This API key is limited to device_sessions and can't reach /uploads/list. Use a key with full access for this.
+                message: This API key is limited to CI (run tests only) and can't reach /uploads/list. Use a key with full access for this.
                 error: API_KEY_SCOPE
     RateLimited:
       description: Over 60 requests a minute to this endpoint. Wait `Retry-After` seconds, then retry with backoff.
@@ -3195,6 +3227,18 @@ components:
           example:
             statusCode: 429
             message: 'ThrottlerException: Too Many Requests'
+    UploadNotStartedByKey:
+      description: |
+        Only for a key with **CI: run tests only** access: the key didn't start
+        this run, or it doesn't exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+          example:
+            statusCode: 404
+            message: Upload not found
+            error: UPLOAD_NOT_FOUND
     KeyCheckUnavailable:
       description: |
         The API key couldn't be checked because of a temporary problem on
@@ -3223,13 +3267,28 @@ components:
         ETag:
           $ref: '#/components/headers/ETag'
     NoResults:
-      description: The upload has no results in your team, or doesn't exist.
+      description: |
+        The upload has no results in your team, or doesn't exist. This body has
+        only a `message`. For a key with **CI: run tests only** access, a run that
+        key didn't start also answers `404`, but with the standard error envelope
+        and `"error": "UPLOAD_NOT_FOUND"`.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/MessageOnlyError'
-          example:
-            message: No results found for this upload
+            anyOf:
+              - $ref: '#/components/schemas/MessageOnlyError'
+              - $ref: '#/components/schemas/ErrorEnvelope'
+          examples:
+            noResults:
+              summary: No results
+              value:
+                message: No results found for this upload
+            notStartedByKey:
+              summary: A CI-only key, and a run it didn't start
+              value:
+                statusCode: 404
+                message: Upload not found
+                error: UPLOAD_NOT_FOUND
     MessageOnlyServerError:
       description: The report couldn't be built.
       content:

@@ -2,7 +2,7 @@
 
 The DeviceCloud CLI runs anywhere Node 22 or later is installed, so you can call it from any CI service in a single script step.
 
-We recommend using npx so you don't need to install the npm package. In CI, authenticate with an [API key](../getting-started/api-keys.md) — set `DEVICE_CLOUD_API_KEY` as a secret, or pass `--api-key`. For example:
+We recommend using npx so you don't need to install the npm package. In CI, authenticate with an [API key](../getting-started/api-keys.md) — set `DEVICE_CLOUD_API_KEY` as a secret, or pass `--api-key`. Give the key **CI: run tests only** access, so a leaked secret can't read your other runs (see [Key access](../getting-started/api-keys.md#key-access)). For example:
 
 ```bash
 npx --yes @devicecloud.dev/dcd@latest cloud --app-file build/app-release.apk --flows .maestro --quiet

@@ -13,7 +13,7 @@ To get a pass/fail check on each pull request, which you can require before merg
     app-file: <path_to_your_app_file>
 ```
 
-Store your API key as a [GitHub Actions secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets) named `DCD_API_KEY`. You can find your API key in the [console settings](https://console.devicecloud.dev/settings).
+Store your API key as a [GitHub Actions secret](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets) named `DCD_API_KEY`. Create the key under **Settings → API Keys** in the [console](https://console.devicecloud.dev/settings), with **CI: run tests only** access, so a leaked secret can't read your other runs. See [Key access](../getting-started/api-keys.md#key-access).
 
 ## Trigger Recommendations
 

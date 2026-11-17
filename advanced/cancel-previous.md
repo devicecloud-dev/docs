@@ -198,3 +198,5 @@ Each result cancelled this way carries a `cancellation_reason` of
 * A re-run that reports the same CI run ID, such as GitHub's "Re-run failed
   jobs", does not supersede the original attempt.
 * A previous run older than 24 hours is not superseded.
+* With a [CI-only API key](../getting-started/api-keys.md#key-access), a run
+  supersedes only earlier runs that the same key started.

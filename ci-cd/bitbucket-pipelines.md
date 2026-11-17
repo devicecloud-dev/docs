@@ -25,7 +25,7 @@ pipelines:
 
 Store your DeviceCloud API key as a **Secured Repository variable** in *Repository settings → Repository variables*. Reference it as `$DEVICE_CLOUD_API_KEY` and pass it to the pipe as `API_KEY`.
 
-Find your API key at [console.devicecloud.dev/settings](https://console.devicecloud.dev/settings).
+Create the key under **Settings → API Keys** in the [console](https://console.devicecloud.dev/settings), with **CI: run tests only** access, so a leaked secret can't read your other runs. See [Key access](../getting-started/api-keys.md#key-access).
 
 ## Platform Examples
 

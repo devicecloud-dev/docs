@@ -6,6 +6,8 @@ description: "REST API endpoints for one upload's test results: statuses and fai
 
 All results endpoints operate on a specific upload identified by its UUID.
 
+With a key that has [**CI: run tests only**](../getting-started/api-keys.md#key-access) access, every endpoint on this page works only for runs that key started. Any other run answers HTTP `404` with the standard error envelope and `"error": "UPLOAD_NOT_FOUND"`, the same as a run that doesn't exist.
+
 **Status values:** `PENDING`, `QUEUED`, `RUNNING`, `PASSED`, `FAILED`, `CANCELLED`
 
 ---
@@ -51,7 +53,7 @@ curl https://api.devicecloud.dev/results/7e12345f-eb12-12ec-a30b-bb1234f1d12a \
 
 Every attempt is included: a retry appears as its own entry, with `retry_of` set to the `id` of the original attempt. Each entry also includes `config` (the run settings for that test) and `result_files` (references to its stored artifacts, plus the step log itself when it is 512 KB or smaller), which are left out of the example above. Responses for large uploads can therefore run to several megabytes. To poll a run's progress, use the [summary view](#summary-view), or [`GET /uploads/status`](uploads.md#get-upload-status) if you only need the latest attempt of each test.
 
-An upload ID with no results in your team, such as a mistyped one, answers HTTP `200` with an empty `results` list, not `404`. If a poll keeps getting an empty list, check the ID.
+An upload ID with no results in your team, such as a mistyped one, answers HTTP `200` with an empty `results` list, not `404` (unless you use a CI-only key, as above). If a poll keeps getting an empty list, check the ID.
 
 Each result also has a `cancellation_reason`, which is `null` unless the test
 was cancelled for a recorded reason:
