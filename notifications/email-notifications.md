@@ -69,7 +69,7 @@ If you are not receiving emails for your test runs, try adding **hello@deviceclo
 
 ### Disabling emails
 
-Simply set `enabled: false` (or remove the `notifications.email` block) from your `config.yaml`.
+Set `enabled: false`, or remove the `notifications.email` block from your `config.yaml`.
 
 ```yaml
 # config.yaml
@@ -81,3 +81,7 @@ notifications:
       - sam@example.com
       - devs@example.com
 ```
+
+### Usage alert emails
+
+[Usage alerts](../billing/usage-alerts.md) are separate from run summaries. They're set up on the billing page, not in `config.yaml`, and go to your team's billing email address, or to its owners and admins if none is set.

@@ -91,7 +91,7 @@ There are first-class integrations for GitHub Actions, Bitrise, Bitbucket Pipeli
 
 ### How do I get videos, logs and test reports?
 
-Pass `--download-artifacts ALL` (or `FAILED`) to a `dcd cloud` run, or fetch them after the fact with `dcd artifacts --upload-id <uuid> --download-artifacts ALL`. Each result in the console also has a download menu for its logs, reports, app binary and workspace. Reports are available as `junit` and `html` via `--report`. `html-detailed` and `allure` are deprecated and will be removed on 7 December 2026. See [Artifacts & Downloads](artifacts/artifacts.md) and [Report Formats](artifacts/report-formats.md).
+Pass `--download-artifacts ALL` (or `FAILED`) to a `dcd cloud` run, or fetch them after the fact with `dcd artifacts --upload-id <uuid> --download-artifacts ALL`. Each result in the console also has a download menu for its logs, reports, app binary and workspace. Reports are available as `junit` and `html` via `--report`. `html-detailed` and `allure` are deprecated, and we're targeting their removal on 7 December 2026. See [Artifacts & Downloads](artifacts/artifacts.md) and [Report Formats](artifacts/report-formats.md).
 
 ### Is there a time limit on a test?
 
@@ -107,7 +107,7 @@ Yes. `dcd mcp`, the Model Context Protocol server built into the CLI, lets Claud
 
 ### How do I get support?
 
-Every account gets community and team support via [Discord](https://discord.gg/gm3mJwcNw8), and you can also email [support@devicecloud.dev](mailto:support@devicecloud.dev). We aim to respond within four hours for urgent queries and three days for non-urgent. Max and Enterprise customers both receive priority email support and Enterprise customers have direct access to the team via Slack Connect. Support hours are 8am–8pm UK time, Monday to Friday. See [Service Level Agreements](legal/service-level-agreements.md).
+Every account gets community and team support via [Discord](https://discord.gg/gm3mJwcNw8), and you can also email [support@devicecloud.dev](mailto:support@devicecloud.dev). We aim to respond within four hours for urgent queries, and within one to three business days for other queries, depending on severity. Max and Enterprise customers both receive priority email support and Enterprise customers have direct access to the team via Slack Connect. Support hours are 8am–8pm UK time, Monday to Friday. See [Service Level Agreements](legal/service-level-agreements.md).
 
 ::: info
 Question not answered here? Ask in our [Discord](https://discord.gg/gm3mJwcNw8) or email [support@devicecloud.dev](mailto:support@devicecloud.dev) and we'll be happy to help.
