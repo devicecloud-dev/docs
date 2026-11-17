@@ -90,15 +90,17 @@ dcd cloud --app-file build/app.apk --flows ./.maestro \
 ```
 
 The CLI doesn't read your CI provider's environment, so pass the context
-yourself. `--repo-name` plus `--branch` or `--pr-number` are required; without
-them nothing is cancelled. `gh_check_name` scopes the group to this job, and
-`gh_run_id` stops jobs of the same CI run from cancelling each other.
+yourself. A repository plus a branch or PR are required: `--repo-name` with
+`--branch` or `--pr-number`, or the same values as `--metadata gh_repo=…` with
+`gh_branch=…` or `gh_pr_number=…`. Without them nothing is cancelled.
+`gh_check_name` scopes the group to this job, and `gh_run_id` stops jobs of
+the same CI run from cancelling each other.
 
 == Bitbucket
 ```yaml
 - pipe: docker://moropo/device-cloud-for-bitbucket:1.6.1
   variables:
-    API_KEY: $DCD_API_KEY
+    API_KEY: $DEVICE_CLOUD_API_KEY
     APP_FILE: build/app.apk
     CANCEL_PREVIOUS: "true"
     CHECK_NAME: Android

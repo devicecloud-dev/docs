@@ -23,7 +23,7 @@ dcd live run --session <name> path/to/flow.yaml
 dcd live stop --session <name>
 ```
 
-Every subcommand (except `start`) takes a `--session <name>` flag identifying the session, and accepts `--api-key` / `--api-url`.
+Every subcommand (except `start`) takes a `--session <name>` flag identifying the session. Every subcommand accepts `--api-key` / `--api-url`, and `--json` to print its result as one JSON object.
 
 ## `dcd live start`
 

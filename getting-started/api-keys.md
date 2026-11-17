@@ -10,7 +10,7 @@ Run `dcd login` once and authenticate in your browser. The CLI stores the result
 dcd login
 ```
 
-This opens your browser, where you sign in with an email code, GitHub, Google, a passkey or your company's SSO, then choose **Authorize and finish login**. If your team requires two-factor authentication, you'll also confirm with your authenticator app or a passkey. If you belong to more than one team, you'll be prompted to pick one. The session is stored at:
+This opens your browser, where you sign in with an email code, GitHub, Google, a passkey or your company's SSO, then choose **Authorize and finish login**. If you use two-factor authentication, or your team requires it, you'll also confirm with your authenticator app or a passkey. If you belong to more than one team, you'll be prompted to pick one. The session is stored at:
 
 - `$DCD_CONFIG_DIR/config.json`, if `DCD_CONFIG_DIR` is set, or
 - `$XDG_CONFIG_HOME/dcd/config.json`, or
