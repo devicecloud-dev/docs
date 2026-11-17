@@ -1,6 +1,6 @@
 # Environment Variables
 
-Device Cloud allows you to inject environment variables into your test flows, enabling dynamic configuration and secure credential management.
+Environment variables pass configuration and credentials into your flows when they run.
 
 ## Setting Environment Variables
 
@@ -62,12 +62,13 @@ Variables starting with `SIMCTL_CHILD_DYLD_` are blocked and never reach the app
 
 ## Built-in Variables
 
-DeviceCloud also sets these variables on every run, so a flow can adapt to the device it runs on:
+DeviceCloud also sets these variables for your flows. `DCD_DEVICE` and `DCD_PLATFORM` are set on every run, so a flow can adapt to the device it runs on:
 
 | Variable | Value |
 | --- | --- |
 | `DCD_DEVICE` | The device and OS version, lowercased and hyphenated — for example `pixel-8-api-34`, `pixel-8-api-34-play` on a Google Play device, `iphone-16-ios-18` or `iphone-17-ios-26`. |
 | `DCD_PLATFORM` | `android` or `ios`. |
+| `DCD_CONTROL_URL` | The address of the run's device-control server. Set only on [foldable](foldable-devices.md) runs and on flows that set `DEVICECLOUD_OVERRIDE_DEVICE_CONTROL: "true"`. |
 
 Passing your own value with `-e` overrides the built-in one. [Visual Testing](../advanced/visual-testing.md#per-device-baselines) uses `DCD_DEVICE` to pick a baseline per device.
 
@@ -77,7 +78,7 @@ Variables whose names start with `MAESTRO_` are also set in the environment of t
 
 ## DeviceCloud Overrides
 
-`DEVICECLOUD_OVERRIDE_*` settings, such as [`DEVICECLOUD_OVERRIDE_DEVICE_LOCALE`](device-locale.md), only work in a flow's `env:` block. Passed with `-e`, they're treated as ordinary variables and have no effect.
+`DEVICECLOUD_OVERRIDE_*` settings, such as `DEVICECLOUD_OVERRIDE_DEVICE_LOCALE`, only work in a flow's `env:` block. Passed with `-e`, they're treated as ordinary variables and have no effect. See [Per-flow Overrides](per-flow-overrides.md) for every key.
 
 ## Masking Secrets
 

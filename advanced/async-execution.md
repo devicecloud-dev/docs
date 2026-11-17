@@ -10,6 +10,8 @@ dcd cloud <appFile> <flowFile> --async
 
 When tests are submitted successfully, the command exits with code `0` regardless of test outcome. If submission itself fails, it exits with code `1`.
 
+Because the command doesn't wait for the run, `--download-artifacts` and `--report` do nothing with `--async`. Download artifacts and reports with [`dcd artifacts`](../cli/dcd-artifacts.md) once the run has finished. With `--json` or `--json-file`, the result has `status` `PENDING`, and each test has the status it was submitted with (see [JSON output](../cli/dcd-cloud.md#json-output)).
+
 Pair `--async` with `--name` to make it easy to look up results later:
 
 ```bash
@@ -21,10 +23,10 @@ dcd cloud <appFile> <flowFile> --async --name "build-$GIT_SHA"
 Use the `dcd status` command to poll for results by upload ID:
 
 ```bash
-dcd status --upload-id <uploadId>
+dcd status --upload-id <id>
 ```
 
-You can also look a run up by name with `--name` (handy when paired with `--async --name`). See [dcd status](../cli/dcd-status.md) for the full reference.
+You can also look a run up by name with `--name` (handy when paired with `--async --name`). A run's status can turn `FAILED` before all its tests have finished, so wait until no test is queued, pending or running before you download anything. See [dcd status](../cli/dcd-status.md#polling-an-async-run) for an example.
 
 ## GitHub Actions Pattern
 

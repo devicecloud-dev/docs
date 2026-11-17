@@ -3,7 +3,7 @@
 Lease a cloud iOS simulator or Android emulator, drive it, and release it, from your terminal or a script. These are the same device sessions an AI agent uses through [Agent Devices](../mcp/agent-devices.md): you can watch any of them in the console, and they show on the same Devices page.
 
 ::: warning
-**Device sessions are in a closed beta** and are billed at **$0.03/min**, excluding Sales Tax. Access is by request: contact support to have it turned on for your organization. `dcd device` works with a [`dcd login`](dcd-login.md) session or an [API key](../getting-started/api-keys.md).
+**Device sessions are in a closed beta** and are billed at **$0.03/min**, excluding Sales Tax. Access is by request: contact support to have it turned on for your team. `dcd device` works with a [`dcd login`](dcd-login.md) session or an [API key](../getting-started/api-keys.md).
 :::
 
 ```bash
@@ -25,7 +25,7 @@ dcd device stop
 
 ## Rules for every subcommand
 
-- **The session id is optional** when your organization has exactly one open session. With none, or several, the command stops and lists the sessions to choose from.
+- **The session id is optional** when your team has exactly one open session. With none, or several, the command stops and lists the sessions to choose from.
 - **`--json`** prints exactly one JSON object on stdout, on success and on failure:
 
   ```json
@@ -38,7 +38,7 @@ dcd device stop
   | Code | Meaning |
   |---|---|
   | `0` | Done |
-  | `1` | Called wrongly: a bad flag or value, or no session to pick |
+  | `1` | Called wrongly: a bad flag or value, no session to pick, or credentials the API rejected |
   | `2` | It ran and failed: a flow or launch failed, or the API couldn't do it |
   | `3` | A limit was hit: concurrent sessions, spend cap, or rate limit |
   | `4` | The session has ended, or there is no such session |
@@ -61,13 +61,13 @@ Start a session. Without `--wait` it returns at once, possibly with the session 
 | `--app-binary-id <id>` | A build you already uploaded |
 | `--locale <locale>` | The device locale, such as `de_DE` |
 | `--name <label>` | Who is driving the session, shown in the console (default `dcd-cli`) |
-| `--ttl <minutes>` | The longest the session may run (default: your organization's limit, at most 60) |
+| `--ttl <minutes>` | The longest the session may run (default: your team's limit, at most 60) |
 | `--no-record` | Don't record a video of the session |
 | `--wait` | Wait until the device is ready for commands |
 
 ## `dcd device list`
 
-Your organization's open sessions. `--all` adds those that ended in the last 24 hours.
+Your team's open sessions. `--all` adds those that ended in the last 24 hours.
 
 ## `dcd device status [id]`
 
@@ -75,7 +75,7 @@ A session's state, time left, idle timeout and cost so far.
 
 ## `dcd device stop [id]`
 
-Stop a session and release the device. `--all` stops every open session in your organization.
+Stop a session and release the device. `--all` stops every open session in your team.
 
 ## `dcd device models`
 
@@ -112,7 +112,11 @@ Tap one thing on the screen, by exactly one target. Answers once the screen has 
 
 ## `dcd device type [id] --text <text>`
 
-Type into the focused field (tap it first). `--sensitive` keeps the text secret: it is stored encrypted, never shown, and masked in the output.
+Type into the focused field (tap it first). `--sensitive` treats the text as a secret: DeviceCloud stores it encrypted and masks it in the output.
+
+::: warning
+CLI 5.13.0 also sends the text you type with `dcd device type` in its usage [telemetry](overview.md#telemetry), with or without `--sensitive`. Until the next CLI release, which leaves it out, don't type real passwords or codes this way, or set `DCD_TELEMETRY_DISABLED=1` first.
+:::
 
 ## `dcd device swipe [id] <up|down|left|right>`
 
@@ -149,6 +153,8 @@ Each of these sends one [typed action](../api/device-sessions.md). For several s
 
 Run Maestro on the device and wait for the result. A failed flow exits `2`. Maestro's output is printed either way, and after a failure, so is the app's visible text.
 
+A device session runs the common Maestro commands, not all of them. It refuses flow scripts (`runScript`, `evalScript`, and JavaScript conditions or expressions), and doesn't run `addMedia`, `copyTextFrom`, `pasteText`, `inputRandom*`, `setLocation` or `travel`. A flow that uses one fails before its first step, and the error names the line. See [What a session runs](../mcp/agent-devices.md#what-a-session-runs) for the full list.
+
 | Flag | Description |
 |------|-------------|
 | `<flow.yaml>` | One flow file, run whole |
@@ -157,7 +163,7 @@ Run Maestro on the device and wait for the result. A failed flow exits `2`. Maes
 | `--yaml <flow>` | The flow inline, instead of a file |
 | `--env KEY=VALUE` | A variable for the flow, used as `${KEY}`. Repeat it for more. Values are encrypted before they're stored, and masked in the output |
 
-For a directory, only the YAML files and the files the flows use, such as scripts and media, are uploaded, up to 50 MB.
+For a directory, only the YAML files, the files the flows refer to and the `includedPaths` in its `config.yaml` are uploaded, up to 50 MB.
 
 ## `dcd device logs [id]`
 
@@ -165,7 +171,7 @@ The installed app's recent device log lines. `--lines <n>` sets how many (defaul
 
 ## `dcd device request-human <reason> [id]`
 
-Ask a person for help, such as entering a 2FA code or solving a CAPTCHA. The session waits for them, with its idle timer paused, and they see your reason on the session's page in the console. Your organization's [webhook](../notifications/webhook-notifications.md#device-needs-human) gets a `device.needs_human` event. The reason can be up to 500 characters. `--wait` waits until they hand the session back.
+Ask a person for help, such as entering a 2FA code or solving a CAPTCHA. The session waits for them, with its idle timer paused, and they see your reason on the session's page in the console. Your team's [webhook](../notifications/webhook-notifications.md#device-needs-human) gets a `device.needs_human` event. The reason can be up to 500 characters. `--wait` waits until they hand the session back.
 
 ## `dcd device human [id]`
 

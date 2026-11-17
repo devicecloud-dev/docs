@@ -1,6 +1,10 @@
+---
+description: "List your team's recent test uploads from the CLI with dcd list, filtered by name or date, a page at a time, or as JSON."
+---
+
 # dcd list
 
-List recent test uploads for your organisation.
+List recent test uploads for your team.
 
 ```bash
 dcd list [flags]
@@ -13,9 +17,10 @@ dcd list [flags]
 | `--limit <n>` | `20` | Maximum number of uploads to return |
 | `--offset <n>` | `0` | Number of uploads to skip (for pagination) |
 | `--name <pattern>` | | Filter by upload name. Supports `*` as a wildcard — always quote wildcards to prevent shell expansion |
-| `--from <date>` | | Return uploads created on or after this date (ISO 8601, e.g. `2024-01-01`) |
+| `--from <date>` | | Return uploads created on or after this date (ISO 8601, e.g. `2026-11-01`) |
 | `--to <date>` | | Return uploads created on or before this date (ISO 8601) |
-| `--api-key <key>` | | Your DeviceCloud API key. Defaults to `DEVICE_CLOUD_API_KEY` env var |
+| `--api-key <key>` | | Your DeviceCloud API key. Defaults to `DEVICE_CLOUD_API_KEY` env var. Optional if you've run [`dcd login`](dcd-login.md) |
+| `--api-url <url>` | | API base URL. Defaults to the environment you logged in to with `dcd login`, otherwise `https://api.devicecloud.dev` |
 | `--json` | | Output results as JSON |
 
 ## Examples
@@ -28,7 +33,7 @@ dcd list
 dcd list --name "nightly-*"
 
 # Filter by date range
-dcd list --from 2024-01-01 --to 2024-01-31
+dcd list --from 2026-11-01 --to 2026-11-30
 
 # Paginate
 dcd list --limit 10 --offset 20

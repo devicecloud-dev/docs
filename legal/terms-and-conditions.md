@@ -1,4 +1,4 @@
-# Terms and Conditions
+# Terms & Conditions
 
 These are the terms and conditions of devicecloud.dev (the “Platform”), operated by Moropo Limited (the "Company")
 

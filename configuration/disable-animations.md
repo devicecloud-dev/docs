@@ -14,7 +14,7 @@ Pass the flag on `dcd cloud`:
 dcd cloud ... --disable-animations
 ```
 
-Or set it once in the workspace `config.yaml`:
+Or set it once in the workspace `config.yaml`, separately for each platform:
 
 ```yaml
 platform:
@@ -24,18 +24,17 @@ platform:
     disableAnimations: true
 ```
 
-::: warning
-**Known limitations of the whole-upload settings:**
+The CLI reads the block for your app's platform: `platform.android` for an `.apk`, and `platform.ios` for an `.app`, `.zip` or Expo `.tar.gz` build. With `--app-binary-id` it can't see the app, so it uses `platform.ios` only when you pass `--ios-device`, `--ios-version` or `--ios-device-matrix`, and `platform.android` otherwise.
 
-* The CLI picks `platform.ios` or `platform.android` from your device flags, not from your app. An iOS run only uses `platform.ios` when you pass `--ios-device` or `--ios-version` (or an iOS device matrix); otherwise the `platform.android` value applies.
-* `--disable-animations` can only turn animations off. It can't override `disableAnimations: true` in `config.yaml`.
+A flag on `dcd cloud` beats `config.yaml`. To keep animations on for a run, even where `config.yaml` turns them off, pass `--no-disable-animations`:
 
-The per-test overrides below aren't affected, so use them if you need exact control.
-:::
+```bash
+dcd cloud ... --no-disable-animations
+```
 
 ### Per test (both platforms)
 
-Override the upload-wide setting for a single flow via the DeviceCloud env variable:
+Override the upload-wide setting for a single flow with a [per-flow override](per-flow-overrides.md):
 
 ```yaml
 # in your test.yaml
@@ -72,8 +71,9 @@ When more than one is set, the most specific wins:
 
 1. `DEVICECLOUD_OVERRIDE_<PLATFORM>_DISABLE_ANIMATIONS` (per test, this platform)
 2. `DEVICECLOUD_OVERRIDE_DISABLE_ANIMATIONS` (per test, both platforms)
-3. The upload-wide `--disable-animations` flag or `config.yaml` (either one turns animations off)
-4. Default: animations are **on**
+3. `--disable-animations` or `--no-disable-animations` on `dcd cloud` (whole upload)
+4. `disableAnimations` in `config.yaml`, for the run's platform (whole upload)
+5. Default: animations are **on**
 
 A `false` override is honoured the same as `true` — a test can opt out even when the
 upload-wide flag is set.

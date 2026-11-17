@@ -1,6 +1,6 @@
 # Concurrency & Parallel Runs
 
-DeviceCloud supports parallel runs, also known as concurrency. This means multiple tests run simultaneously, greatly reducing the overall test suite execution time for a given CI run.
+DeviceCloud runs several of your tests at once, so a suite finishes sooner. How many can run at once, your concurrency, depends on your plan and runner type.
 
 Limits are set per platform and [runner type](../configuration/runner-type.md). In the console, under **Settings → Execution**, the **Concurrency Limits** card shows two values for each: minimum guaranteed concurrency (**Concurrency Protection**) and maximum concurrency (**Surge Concurrency When Capacity Allows**).
 
@@ -12,14 +12,14 @@ The plans come with these limits:
 | Max | up to 20, with 1 protected | up to 5 | up to 20, with 1 protected | up to 20 |
 
 ::: warning
-The `gpu1` runner type was removed on 9 November 2026. Runs that still pass it run on `cpu1` and count towards the `cpu1` limit. See [Runner Type](../configuration/runner-type.md).
+The `gpu1` runner type was removed on 9 November 2026. Runs that still pass it run on `cpu1` and count towards the `cpu1` limit. See [Runner Types](../configuration/runner-type.md).
 :::
 
 ::: info
-Google Play runs move to `m1` on 14 December 2026, after which they count towards the `m1` limit rather than `cpu1`. Runs you move there early with `--runner-type m1` count towards `m1` already. See [Google Play APIs](../configuration/google-play-apis.md#moving-to-apple-silicon-m1).
+Google Play runs are moving to `m1`, and then count towards the `m1` limit rather than `cpu1`. See [Deprecations & Removals](deprecations.md) for the date.
 :::
 
-Cheaper plans typically have no Concurrency Protection, which means that during busy periods when runner capacity is stretched, you may need to wait for runner availability or experience less concurrency than your maximum.
+The Pro plan has no Concurrency Protection, so during busy periods, when runner capacity is stretched, your tests may wait for a runner or run with less concurrency than your maximum.
 
 Once you reach your maximum concurrency for a runner type, additional tests enter a queued state and sit in a backlog until you're under your concurrency limits. At that point, they automatically move to pending and are processed by the runners. To choose which of your own queued runs starts first, see [Run Priority](../configuration/run-priority.md).
 
@@ -27,10 +27,10 @@ If you have a plan with Concurrency Protection, DeviceCloud will prioritise your
 
 Some accounts have a shared pool instead, shown in the console as **Standard — shared across iOS & Android**. Standard iOS (`default`) and Android (`cpu1`) runs then draw on one combined limit rather than a limit each.
 
-#### **Enterprise Plans**
+## Enterprise Plans
 
 If you need larger guaranteed concurrency or a bespoke concurrency setup and availability, please contact us at [sales@devicecloud.dev](mailto:sales@devicecloud.dev) and we'd be happy to arrange an enterprise plan that meets your requirements.
 
-#### **Why limit concurrency at all?**
+## Why limit concurrency at all?
 
 DeviceCloud owns its own hardware, which is how we're able to offer such competitive prices. However, we have limited capacity in our runner pool. As such, we sometimes need to limit concurrency to ensure fair throughput for everyone. As more users subscribe, we gradually invest in and expand this pool to increase overall capacity.

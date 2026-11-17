@@ -1,9 +1,9 @@
 # Report Formats
 
-Device Cloud supports the standard Maestro report formats: JUnit and HTML.
+DeviceCloud supports the standard Maestro report formats: JUnit and HTML.
 
 ::: warning
-`allure` and `html-detailed` are deprecated and **will be removed on 7 December 2026**. From that date, runs that pass them still run and don't fail:
+`allure` and `html-detailed` are deprecated. We're targeting their removal on **7 December 2026**, subject to change based on usage. Once they're removed, runs that pass them still run and don't fail:
 
 - `--report html-detailed` gets the standard HTML report.
 - `--report allure` gets no report.
@@ -17,10 +17,10 @@ We support the following report types:
 
 - `junit`
 - `html`
-- `html-detailed` (deprecated, removed on 7 December 2026)
-- `allure` (deprecated, removed on 7 December 2026)
+- `html-detailed` (deprecated, removal targeted for 7 December 2026)
+- `allure` (deprecated, removal targeted for 7 December 2026)
 
-You can enable each report using `--report <type>`.
+You can enable each report using `--report <type>`. `--format` is an alias for `--report`.
 
 The CLI will automatically download the report to your working directory for you after the run finishes. To change the download path, use the flag for that report format:
 
@@ -42,8 +42,8 @@ JUnit reports are XML-based and are generally the standard format for CI/CD repo
 
 ### HTML and HTML-Detailed
 
-HTML reports are human-readable and provide a summary of a test run, including failure screenshots. Both are delivered as a ZIP containing the report and the files it links to. Detailed reports add the test steps to everything in a standard HTML report. `html-detailed` is deprecated: from 7 December 2026 it gives the standard HTML report.
+HTML reports are human-readable and provide a summary of a test run, including failure screenshots. Both are delivered as a ZIP containing the report and the files it links to. Detailed reports add the test steps to everything in a standard HTML report. `html-detailed` is deprecated: once it's removed (targeted for 7 December 2026), it gives the standard HTML report.
 
 ### Allure
 
-Allure reports are HTML-based and are downloaded as a single, self-contained HTML file. Allure is deprecated and will be removed on 7 December 2026. From that date, runs that pass `--report allure` get no report. Use `html` or `junit` instead.
+Allure reports are HTML-based and are downloaded as a single, self-contained HTML file. Allure is deprecated, and we're targeting its removal on 7 December 2026. Once it's removed, runs that pass `--report allure` get no report. Use `html` or `junit` instead.

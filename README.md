@@ -1,15 +1,13 @@
 # Welcome to DeviceCloud
 
-DeviceCloud is a third-party Maestro Cloud alternative.
+DeviceCloud is a third-party alternative to Maestro Cloud. It runs your Maestro flows on cloud iOS simulators and Android emulators.
 
-Reasons to switch:
+Why teams switch:
 
-* Cheap unit-based pricing
-* Up to 100 parallel runs
-* Twice as fast as Maestro Cloud for half the cost
-* Google Play APIs
-* Tablets and iPads
-* Fast support response times (via Discord or Slack Connect)
+* Per-test-run pricing, with $20 of free credits to start
+* Parallel runs: up to 20 iOS and 20 Android tests at once on the Max plan, and more on Enterprise
+* Google Play APIs, tablets, iPads and foldables
+* Fast support, through Discord or Slack Connect
 
 ## Try it
 
@@ -29,37 +27,37 @@ Start with the [Quick Start](getting-started/quickstart.md) to install the CLI a
 
 ### Get started
 
-* [Quick Start](getting-started/quickstart.md) - install the CLI and run your first flow
-* [Authentication](getting-started/api-keys.md) - `dcd login` locally, API key in CI
-* [Flows & Workspaces](getting-started/flows-and-workspaces.md) - run a single file, a directory, or a whole workspace
-* [Devices & OS Versions](getting-started/devices-configuration.md) - every supported device, Android API level and iOS version
+* [Quick Start](getting-started/quickstart.md) — install the CLI and run your first flow
+* [Authentication](getting-started/api-keys.md) — `dcd login` locally, API key in CI
+* [Flows & Workspaces](getting-started/flows-and-workspaces.md) — run a single file, a directory, or a whole workspace
+* [Devices & OS Versions](getting-started/devices-configuration.md) — every supported device, Android API level and iOS version
 
 ### Run in CI
 
-* [CI/CD Integration](ci-cd/overview.md) - supported providers, and the features that matter in a pipeline
-* [GitHub Actions](ci-cd/github-actions.md) - drop-in replacement for the Maestro Cloud action
-* [GitHub Checks](ci-cd/github-checks.md) - report pass/fail straight onto the pull request
-* [Artifacts & Downloads](artifacts/artifacts.md) - pull logs, screenshots, videos and reports
+* [CI/CD Integration](ci-cd/overview.md) — supported providers, and the features that matter in a pipeline
+* [GitHub Actions](ci-cd/github-actions.md) — drop-in replacement for the Maestro Cloud action
+* [GitHub Checks](ci-cd/github-checks.md) — report pass/fail straight onto the pull request
+* [Artifacts & Downloads](artifacts/artifacts.md) — pull logs, screenshots, videos and reports
 
 ### Configure your runs
 
-* [Device Matrix](configuration/device-matrix.md) - run your suite across several devices in one upload
-* [Maestro Versions](configuration/maestro-versions.md) - pin a Maestro version, or track `latest`
-* [Environment Variables](configuration/environment-variables.md) - inject config and secrets into your flows
+* [Device Matrix](configuration/device-matrix.md) — run your suite across several devices in one upload
+* [Maestro Versions](configuration/maestro-versions.md) — pin a Maestro version, or track `latest`
+* [Environment Variables](configuration/environment-variables.md) — inject config and secrets into your flows
 
 ### Automate with AI & code
 
-* [Agent Devices](mcp/agent-devices.md) - give your AI agent a cloud iOS or Android device to drive, with a person on hand when it gets stuck (beta)
-* [MCP Server](mcp/overview.md) - let Claude, Cursor and other MCP clients run your tests
-* [CLI Reference](cli/overview.md) - every `dcd` command and flag
-* [REST API](api/overview.md) - uploads, results and flows over HTTP
+* [Agent Devices](mcp/agent-devices.md) — give your AI agent a cloud iOS or Android device to drive, with a person on hand when it gets stuck (beta)
+* [Connect an AI Agent](mcp/connect.md) — let Claude Code, Cursor and other MCP clients run your tests
+* [CLI Reference](cli/overview.md) — every `dcd` command and flag
+* [REST API](api/overview.md) — uploads, results, flow analytics, device sessions and IP addresses over HTTP
 
 ### Pricing & plans
 
-* [Test Run Billing](billing/test-run-billing.md) - what a single test run costs
-* [Subscriptions](billing/subscriptions.md) - the Pro, Max and Enterprise plans
-* [Overage](billing/overage.md) - usage beyond your plan's included credits, and the Overage Limit
-* [Concurrency & Parallel Runs](getting-started/concurrency-and-parallel-runs.md) - how many of your tests run at once
+* [Test Run Billing](billing/test-run-billing.md) — what a single test run costs
+* [Subscriptions](billing/subscriptions.md) — the Pro, Max and Enterprise plans
+* [Overage](billing/overage.md) — usage beyond your plan's included credits, and the Overage Limit
+* [Concurrency & Parallel Runs](getting-started/concurrency-and-parallel-runs.md) — how many of your tests run at once
 
 ## FAQ
 
@@ -69,11 +67,11 @@ For most projects, yes. The CLI mimics the Maestro Cloud API, so you change `mae
 
 ### How much does it cost?
 
-DeviceCloud bills per test run i.e. a single top-level flow on a single device and are charged at $0.11 for standard iOS and $0.09 for standard Android. iPad, iPhone Duo, Pixel 10 Pro Fold, Google Play, tablet and `m4` and `m1` runner flows are charged at the advanced rate of $0.15. New accounts get $20 of free credits. The Pro and Max plans include a set amount of usage each month, and usage beyond that is billed as [overage](billing/overage.md), up to a limit you control. See [Test Run Billing](billing/test-run-billing.md).
+DeviceCloud bills per test run: one top-level flow on one device, from $0.09 a run. Tablets, foldables, Google Play images and the `m4` and `m1` runner types cost the advanced rate, and new accounts get free credits to start. The Pro and Max plans include a set amount of usage each month, and usage beyond that is billed as [overage](billing/overage.md), up to a limit you control. See [Test Run Billing](billing/test-run-billing.md).
 
 ### How many tests can I run in parallel?
 
-It depends on your plan: Pro runs up to 5 iOS and 5 Android tests at once, and Max up to 20 of each. Enterprise concurrency is arranged to fit your requirements. Once you hit your maximum, further tests queue and start automatically as capacity frees up. See [Concurrency & Parallel Runs](getting-started/concurrency-and-parallel-runs.md) and [Subscriptions](billing/subscriptions.md).
+It depends on your plan. On the standard runners, Max runs up to 20 iOS and 20 Android tests at once, and Enterprise concurrency is arranged to fit your requirements. Once you hit your maximum, further tests queue and start automatically as capacity frees up. See [Concurrency & Parallel Runs](getting-started/concurrency-and-parallel-runs.md) and [Subscriptions](billing/subscriptions.md).
 
 ### Which devices and OS versions can I run on?
 
@@ -81,7 +79,7 @@ Android runs cover a range of Google Pixel phones plus a generic tablet, and iOS
 
 ### Which Maestro versions are supported?
 
-We always support the latest version of Maestro with backwards compatibility up to v2.2.0. Runs default to v2.10.0, and you can use `--maestro-version latest` to always use the most up to date version. We periodically remove support for older versions, and these will be announced with plenty of warning. See [Maestro Versions](configuration/maestro-versions.md).
+We always support the latest version of Maestro, and several older ones. Runs default to v2.10.0, and `--maestro-version latest` always uses the newest version we support. We announce removals of older versions well in advance, in [Deprecations & Removals](getting-started/deprecations.md). See [Maestro Versions](configuration/maestro-versions.md).
 
 ### Do I need an API key, or can I just log in?
 
@@ -89,27 +87,27 @@ Both work. Run `dcd login` once for local use and our CLI will store your sessio
 
 ### How do I run DeviceCloud in my CI?
 
-There are first-class integrations for GitHub Actions, Bitrise, Bitbucket Pipelines and EAS Workflows. Any other provider can call the CLI directly with `npx --yes @devicecloud.dev/dcd@latest cloud <app-file> <flows-dir>` and gate the build on the [exit code](advanced/exit-codes.md). See [CI/CD Integration](ci-cd/overview.md).
+There are first-class integrations for GitHub Actions, Bitrise, Bitbucket Pipelines and EAS Workflows. Any other provider can call the CLI directly with `npx --yes @devicecloud.dev/dcd@latest cloud <appFile> <flowFile>` and gate the build on the [exit code](advanced/exit-codes.md). See [CI/CD Integration](ci-cd/overview.md).
 
 ### How do I get videos, logs and test reports?
 
-Pass `--download-artifacts ALL` (or `FAILED`) to a `dcd cloud` run, or fetch them after the fact with `dcd artifacts --upload-id <uuid> --download-artifacts ALL`. Each result in the console also has a download menu for its logs, reports, app binary and workspace. Reports are available as `junit` and `html` via `--report`. `html-detailed` and `allure` are deprecated and will be removed on 7 December 2026. See [Artifacts & Downloads](artifacts/artifacts.md) and [Report Formats](artifacts/report-formats.md).
+Pass `--download-artifacts ALL` (or `FAILED`) to a `dcd cloud` run, or fetch them after the fact with `dcd artifacts --upload-id <uuid> --download-artifacts ALL`. Each result in the console also has a download menu for its logs, reports, app binary and workspace. Reports are available as `junit` and `html` via `--report` (`html-detailed` and `allure` are [deprecated](getting-started/deprecations.md)). See [Artifacts & Downloads](artifacts/artifacts.md) and [Report Formats](artifacts/report-formats.md).
 
 ### Is there a time limit on a test?
 
-Yes. Every flow has a 10-minute execution limit. A flow that is still running when it reaches the limit is stopped and marked as failed, with a "Test run timed out after 10 minutes" error. A flow that needs longer can opt into [extended runtime](configuration/extended-runtime.md), which gives it up to 20 minutes and is charged at 2×. Failed tests can be retried up to twice, giving a maximum of three total runs, free of charge. See [Quick Start](getting-started/quickstart.md#limits) and [Retry Strategies](advanced/retry-strategies.md).
+Yes. Every flow has a 10-minute execution limit, and a flow that is still running when it reaches the limit is stopped and marked as failed. A flow that needs longer can opt into [extended runtime](configuration/extended-runtime.md). A failed test can be retried for free, see [Retry Strategies](advanced/retry-strategies.md).
 
 ### Can I allow-list DeviceCloud in our firewall?
 
-Yes. Test runner egress comes from a published set of IP ranges, and the same list is served from an unauthenticated endpoint — `GET https://api.devicecloud.dev/ip-addresses` so your tooling can poll it rather than watching a docs page. See [IP Addresses](security/ip-addresses.md).
+Yes. Test runner egress comes from a published set of IP ranges, and the same list is served from an unauthenticated endpoint, `GET https://api.devicecloud.dev/ip-addresses`, so your tooling can poll it rather than watching a docs page. See [IP Addresses](security/ip-addresses.md).
 
 ### Can AI agents drive DeviceCloud?
 
-Yes. The `@devicecloud.dev/dcd` package ships `dcd-mcp`, a Model Context Protocol server that lets Claude, Cursor, VS Code and other MCP clients list devices, submit runs, check status and download artifacts. It's in beta, and the one billable tool can be hidden entirely with `--read-only`. See [MCP Server](mcp/overview.md).
+Yes. `dcd mcp`, the Model Context Protocol server built into the CLI, lets Claude Code, Cursor, VS Code, Codex and other MCP clients list devices, run cloud tests, check status and download artifacts. `--read-only` hides the one billable tool. [Agent Devices](mcp/agent-devices.md) (closed beta) also give an agent a cloud device to drive, through DeviceCloud's hosted MCP server. See [Connect an AI Agent](mcp/connect.md).
 
 ### How do I get support?
 
-Every account gets community and team support via [Discord](https://discord.gg/gm3mJwcNw8), and you can also email [support@devicecloud.dev](mailto:support@devicecloud.dev). We aim to respond within four hours for urgent queries and three days for non-urgent. Max and Enterprise customers both receive priority email support and Enterprise customers have direct access to the team via Slack Connect. Support hours are 8am–8pm UK time, Monday to Friday. See [Service Level Agreements](legal/service-level-agreements.md).
+Every account gets community and team support via [Discord](https://discord.gg/gm3mJwcNw8), and you can also email [support@devicecloud.dev](mailto:support@devicecloud.dev). We aim to respond to urgent queries within four hours, during our support hours. Max and Enterprise customers both receive priority email support and Enterprise customers have direct access to the team via Slack Connect. See [Service Level Agreements](legal/service-level-agreements.md) for response times and support hours.
 
 ::: info
 Question not answered here? Ask in our [Discord](https://discord.gg/gm3mJwcNw8) or email [support@devicecloud.dev](mailto:support@devicecloud.dev) and we'll be happy to help.

@@ -1,9 +1,13 @@
+---
+description: "Set the device's language and region for a whole upload with --device-locale, or for one flow, plus the locale format, the defaults and common locales."
+---
+
 # Device Locale
 
-Set device language and region for localization testing.
+Set device language and region for localisation testing.
 
 ::: info
-The default locale for Android is `en_US` . The default locale for iOS is currently `en_GB` but will be changing to `en_US` later in 2026.
+If you don't set a locale, Android runs use `en_US` and iOS runs use `en_GB`. Pass `--device-locale` to get the same locale on both.
 :::
 
 ## Format
@@ -34,7 +38,7 @@ dcd cloud ... --device-locale de_DE
 dcd cloud ... --android-device pixel-6 --device-locale ja_JP
 ```
 
-To override locale for a specific test, pass in the DeviceCloud env variable. This will override the upload setting above, but just for a single test:
+To override the locale for a single test, set a [per-flow override](per-flow-overrides.md) in its `env:` block. It overrides the upload setting above, for that test only:
 
 ```yaml
 # in your test.yaml
@@ -44,8 +48,6 @@ env:
 ---
 # test steps
 ```
-
-
 
 ## Common Locales
 

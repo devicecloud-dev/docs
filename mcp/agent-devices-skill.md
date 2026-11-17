@@ -1,10 +1,10 @@
-# Agent instructions for Agent Devices
+# Agent Instructions
 
 Your agent works better with [Agent Devices](agent-devices.md) when it knows the loop: look at the screen, act, look again. Copy one of these into your project so it does.
 
 ## `AGENTS.md`
 
-Codex, Cursor, Claude Code and most other agents read an `AGENTS.md` file at the root of your repository. Add this section to it:
+Codex, Cursor and most other agents read an `AGENTS.md` file at the root of your repository. Add this section to it:
 
 ````markdown
 ## Testing on a device (DeviceCloud)
@@ -20,7 +20,10 @@ Use the DeviceCloud MCP tools to check app changes on a real iOS simulator or An
 
 Never write passwords or tokens into the YAML. Pass them in `run`'s `env` and use `${NAME}` in the flow.
 Read the `warnings` in every result's session block: they say when the idle timeout or the session's time is running out.
+If a command answers `LIVE_HUMAN_IN_CONTROL`, a person has taken control: stop sending commands and poll `get_human_status` until it is handed back.
 ````
+
+Claude Code reads `AGENTS.md` only when your repository has no `CLAUDE.md` or `CLAUDE.local.md`. If it has one, add the line `@AGENTS.md` to your `CLAUDE.md`, or put the section in `CLAUDE.md` instead.
 
 ## Claude Code skill
 
@@ -42,6 +45,7 @@ description: Check app changes on a real cloud iOS simulator or Android emulator
 6. Always `stop_device` when done, even after a failure.
 
 Pass secrets in `run`'s `env` and use `${NAME}` in the flow; never write them into YAML.
+If a command answers `LIVE_HUMAN_IN_CONTROL`, a person has taken control: stop sending commands and poll `get_human_status` until it is handed back.
 ````
 
-Both assume the DeviceCloud MCP server is connected: see [Connect your agent](agent-devices.md#connect-your-agent).
+Both assume your agent has the device tools, through the hosted server or `dcd mcp`: see [Connect your agent](agent-devices.md#connect-your-agent).

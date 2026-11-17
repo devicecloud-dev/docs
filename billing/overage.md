@@ -76,10 +76,14 @@ The full message also gives your usage so far, the cost of the upload, your limi
 
 To start testing again, raise your Overage Limit or wait for your next billing period to start.
 
+A [hard stop](usage-alerts.md#hard-stop) that you've set on a usage alert refuses runs in the same way, with the same HTTP `402` and `USAGE_LIMIT_EXCEEDED`. Its message names the alert's limit instead of the Overage Limit.
+
 
 ## Warnings
 
 The billing page shows a warning once you've used 80% of your Overage Limit, and another when you reach it. With a limit of `0`, both are based on your included credits instead.
+
+To be told by email, Slack or webhook when usage reaches an amount you choose, per day, per week or per billing period, set up [Usage Alerts & Limits](usage-alerts.md).
 
 
 ## Refunds

@@ -1,6 +1,6 @@
 # Bitbucket Pipelines
 
-DeviceCloud ships a [Bitbucket Pipe](https://support.atlassian.com/bitbucket-cloud/docs/pipes/) that runs your Maestro flows on devicecloud.dev directly from your Bitbucket Pipelines.
+DeviceCloud ships a [Bitbucket Pipe](https://support.atlassian.com/bitbucket-cloud/docs/what-are-pipes/) that runs your Maestro flows on DeviceCloud directly from your Bitbucket Pipelines.
 
 ## Quick Start
 
@@ -56,30 +56,40 @@ Find your API key at [console.devicecloud.dev/settings](https://console.devicecl
 
 ## Variables
 
-Most pipe variables map to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flag of the same name, e.g. `ANDROID_API_LEVEL` sets `--android-api-level`. The full list for version 1.5.0 lives in the pipe's [README](https://bitbucket.org/devicecloud-dev/device-cloud-for-bitbucket/src/v1.5.0/README.md). Required: `API_KEY`. Common ones:
+Most pipe variables map to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flag of the same name, e.g. `ANDROID_API_LEVEL` sets `--android-api-level`. The full list for version 1.6.1 lives in the pipe's [README](https://bitbucket.org/devicecloud-dev/device-cloud-for-bitbucket/src/v1.6.1/README.md). Required: `API_KEY`. Common ones:
 
 | Variable | Description |
 |---|---|
 | `API_KEY` | DeviceCloud API key (required, secured). |
-| `APP_FILE` | Path to the app binary to upload. |
+| `APP_FILE` | Path to the app binary to upload. Set one of `APP_FILE`, `APP_BINARY_ID` or `APP_URL`. |
 | `APP_BINARY_ID` | Reuse a previously uploaded binary. |
-| `WORKSPACE` / `FLOWS` | Path to your Maestro flows folder/file. |
+| `APP_URL` | Signed URL of an Expo iOS simulator build (`.tar.gz`). The CLI downloads and extracts it. |
+| `WORKSPACE` / `FLOWS` | Path to your Maestro flows folder or file. If you set both, `FLOWS` wins. |
 | `ANDROID_DEVICE`, `ANDROID_API_LEVEL` | Android device + API level. |
 | `IOS_DEVICE`, `IOS_VERSION` | iOS device + version. |
+| `DEVICE_LOCALE` | Device locale, e.g. `de_DE`. See [Device Locale](../configuration/device-locale.md). |
+| `GOOGLE_PLAY` | `"true"` to run on Android devices with Google Play. |
+| `MAESTRO_VERSION` | Maestro version to run your flows with. See [Maestro Versions](../configuration/maestro-versions.md). |
+| `CONFIG` | Path to a custom Maestro config file. |
+| `NAME` | Name for the run in the console. |
 | `ENV_LIST` | Newline-separated `KEY=VALUE` env vars injected into flows. |
+| `METADATA` | Newline-separated `key=value` metadata attached to the run. |
 | `INCLUDE_TAGS` / `EXCLUDE_TAGS` | Filter flows by Maestro tag. |
-| `REPORT` | `junit`, `html`, `html-detailed`, `allure`. `html-detailed` and `allure` are deprecated and will be removed on 7 December 2026. See [Report Formats](../artifacts/report-formats.md). |
+| `RETRY` | Number of retries on failure, up to `2`. See [Retry Strategies](../advanced/retry-strategies.md). |
+| `REPORT` | `junit` or `html`. `html-detailed` and `allure` are deprecated, see [Report Formats](../artifacts/report-formats.md). |
 | `JUNIT_PATH` | Where to write the JUnit report (default `./report.xml`). |
 | `DOWNLOAD_ARTIFACTS` | `ALL` or `FAILED` — downloads logs/screenshots/videos. |
+| `JSON_FILE` | `"true"` to write the results to `<upload_id>_dcd.json`. |
 | `ASYNC` | `"true"` to fire-and-forget. |
 | `CANCEL_PREVIOUS` | `"true"` to cancel the previous run's still-queued tests when this one starts (from pipe 1.5.0). See [Cancelling superseded runs](../advanced/cancel-previous.md). |
-| `PRIORITY` | `low`, `normal` (default) or `high` (from pipe 1.6.0). Reorders only your organisation's own queued runs, see [Run Priority](../configuration/run-priority.md). |
-| `RUNNER_TYPE` | `default`, `cpu1`, `m1` or `m4`. `m1` and `m4` are premium runners, see [Runner Type](../configuration/runner-type.md). |
+| `PRIORITY` | `low`, `normal` (default) or `high` (from pipe 1.6.0). Reorders only your team's own queued runs, see [Run Priority](../configuration/run-priority.md). |
+| `CHECK_NAME` | Names the GitHub check this run posts, see [Bitbucket context auto-attached](#bitbucket-context-auto-attached). |
+| `RUNNER_TYPE` | `default`, `cpu1`, `m1` or `m4`. `m1` and `m4` are premium runners, see [Runner Types](../configuration/runner-type.md). |
 | `RENDER_ENGINE` | Android only: `lavapipe` or `swiftshader`, the software renderer the emulator boots with on the default Android runner. Leave unset to let DeviceCloud choose (`swiftshader` for apps built with Flutter, otherwise `lavapipe`). |
 
 ## Bitbucket context auto-attached
 
-The pipe auto-attaches Bitbucket context (commit SHA, repo, branch, PR number) as metadata on every run and are included on the Console UI so you know what triggered each run. 
+The pipe attaches each run's Bitbucket context as metadata: the commit, repository, branch, build number and, for a pull request, the PR number and URL. The console shows it with the run, so you can see what triggered it.
 
 If you would prefer not to include this metadata, set `INCLUDE_BITBUCKET_CONTEXT: 'false'`.
 

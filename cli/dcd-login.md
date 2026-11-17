@@ -2,6 +2,8 @@
 
 These commands manage browser-based authentication and the team your runs are billed to. They're the recommended way to authenticate for local or interactive use. For CI and headless environments, you should use an [API key](../getting-started/api-keys.md) instead.
 
+Each of these commands takes `--json`, which prints its result as one JSON object on stdout.
+
 ## `dcd login`
 
 Authenticate with DeviceCloud via your browser. Run it once and the CLI stores your session, so subsequent commands don't need an API key.
@@ -10,7 +12,9 @@ Authenticate with DeviceCloud via your browser. Run it once and the CLI stores y
 dcd login
 ```
 
-This opens your browser to complete sign-in (email OTP or Enterprise SSO). After you authorise the CLI, if you belong to more than one team you'll be prompted to pick the one to use. The picker starts on the team from your last login, so pressing Enter keeps it. Your session is then saved locally (see [Where credentials are stored](#where-credentials-are-stored)).
+This opens your browser. Sign in with an email code, GitHub, Google, a passkey or your company's SSO, then choose **Authorize and finish login**. If you use two-factor authentication, or your team requires it, you'll also confirm with your authenticator app or a passkey. A session that doesn't meet a team's sign-in requirement can't reach that team's results (see [Sign-in and two-factor authentication](../security/security-overview.md#sign-in-and-two-factor-authentication)). If you belong to more than one team, the CLI then asks you to pick the one to use. The picker starts on the team from your last login, so pressing Enter keeps it. Your session is then saved locally (see [Where credentials are stored](#where-credentials-are-stored)).
+
+The CLI waits up to 10 minutes for you to finish in the browser. After that, it stops with "Login timed out", and you run `dcd login` again.
 
 ### Flags
 
@@ -18,7 +22,9 @@ This opens your browser to complete sign-in (email OTP or Enterprise SSO). After
 |------|-------------|
 | `--no-browser` | Print the login URL instead of opening a browser. Useful over SSH or on machines without a browser. |
 | `--frontend-url <url>` | Override the frontend URL used to complete login |
-| `--org <name\|id>` | Use this team instead of picking one. Teams are matched by name (case-insensitive) or ID, and login fails if you're not a member. |
+| `--org <name\|id>` | Use this team instead of picking one. Teams are matched by name (case-insensitive), slug or ID, and login fails if you're not a member. |
+| `--api-url <url>` | The API to log in to (default `https://api.devicecloud.dev`). Later commands use the same API until you log in to another one |
+| `--json` | Print the result as one JSON object on stdout. The login URL and any prompts go to stderr |
 
 ::: info
 `dcd login` uses a PKCE browser flow with no local server, so it works over SSH and when you open the URL on a different device. A leaked login URL is inert and can't be used to claim your session.
@@ -38,13 +44,15 @@ You still complete sign-in in a browser. Pass `--no-browser` to print the URL in
 
 ## `dcd logout`
 
-Clear the stored session and revoke it server-side (best effort).
+Delete the session stored on this machine.
 
 ```bash
 dcd logout
 ```
 
 This only affects the `dcd login` session and it does not touch the environment variables or the `--api-key` flag.
+
+`dcd logout` doesn't end the session on DeviceCloud's side: until it expires, anyone with a copy of the session file can still use it. To end a session for good, open **Settings → Account** in the console. Under **Active sessions**, sign out that device, or choose **Sign out of all devices** to end every session, including the console one you're using.
 
 ## `dcd whoami`
 
@@ -72,7 +80,7 @@ dcd switch-org
 dcd switch-org "example@example.com's Team"
 ```
 
-Teams are matched by name (case-insensitive). Without a terminal, such as in a script, pass the team name, because the picker needs a keypress. Requires an active `dcd login` session. It only changes the session's team: an exported `DEVICE_CLOUD_API_KEY` doesn't affect `switch-org`, but still takes precedence for every other command.
+Teams are matched by name (case-insensitive), slug or ID. Without a terminal, such as in a script, pass the team name, because the picker needs a keypress. Requires an active `dcd login` session. It only changes the session's team: an exported `DEVICE_CLOUD_API_KEY` doesn't affect `switch-org`, but still takes precedence for every other command.
 
 ## Where credentials are stored
 

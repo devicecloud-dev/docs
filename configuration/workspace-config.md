@@ -9,6 +9,8 @@ Place your `config.yaml` file at the root of the directory you pass to `dcd clou
 dcd cloud app.apk flows/        # flows/config.yaml is loaded automatically
 ```
 
+Auto-detection only works when you pass a folder. If you pass a single flow file, the CLI doesn't look for a `config.yaml`, so pass it with `--config`. `executionOrder` is ignored then, because there's only one flow.
+
 ## Custom path
 
 Use `--config` to load a config file from a non-standard location:
@@ -46,7 +48,7 @@ includedPaths:
   - certs/test-ca.pem
 ```
 
-Patterns use the same [NPM glob](https://www.npmjs.com/package/glob) syntax as `flows`, and are resolved **relative to the workspace folder you pass to `dcd cloud`** — not relative to the config file, even when you load it with `--config`. If you pass a single flow file with `--config` instead of a folder, patterns are resolved relative to that flow file's folder.
+Patterns use the same glob syntax as `flows` (`*`, `**`, `?` and `{a,b}`), and are resolved **relative to the workspace folder you pass to `dcd cloud`** — not relative to the config file, even when you load it with `--config`. If you pass a single flow file with `--config` instead of a folder, patterns are resolved relative to that flow file's folder.
 
 Matched files keep their position relative to your flows when they are uploaded, so a baseline at `screenshots/home.png` sitting next to `visual.yaml` arrives next to that flow on the device.
 
@@ -112,7 +114,7 @@ The bare-list form is not valid Maestro either. The CLI rejects it with an error
 :::
 
 ::: info
-If a flow name in `flowsOrder` doesn't match any discovered flow (e.g. after tag filtering), the CLI will emit a warning and lists the available names to help diagnose the mismatch.
+If a flow name in `flowsOrder` doesn't match any discovered flow (e.g. after tag filtering), the CLI warns and lists the available names, so you can spot the mismatch.
 
 Unrecognised top-level keys are also warned about (and ignored), which catches typos like `flowOrder`, a `continueOnFailure` placed at the top level instead of under `executionOrder`, and `tags:` in place of `includeTags`/`excludeTags`.
 :::
@@ -136,7 +138,7 @@ notifications:
 
 ### `platform`
 
-Per-platform settings. Currently supports disabling animations, which is equivalent to passing `--disable-animations` on the CLI but lets you control each platform independently.
+Per-platform settings. The only setting is `disableAnimations`, which works like `--disable-animations` but lets you set each platform separately.
 
 ```yaml
 platform:
@@ -146,14 +148,9 @@ platform:
     disableAnimations: true   # enables Reduce Motion on the simulator
 ```
 
-::: warning
-**Known limitations:**
+The CLI reads the block for your app's platform, which it works out from the app file. With `--app-binary-id` it can't see the app, so it uses `platform.ios` only when you pass `--ios-device`, `--ios-version` or `--ios-device-matrix`, and `platform.android` otherwise.
 
-* The CLI picks `platform.ios` or `platform.android` from your device flags, not from your app. An iOS run only uses `platform.ios` when you pass `--ios-device` or `--ios-version` (or an iOS device matrix); otherwise the `platform.android` value applies.
-* `--disable-animations` can only turn animations off. It can't override `disableAnimations: true` set here.
-
-The per-flow `DEVICECLOUD_OVERRIDE_*` settings described in [Animations](disable-animations.md) aren't affected.
-:::
+`--disable-animations` or `--no-disable-animations` on `dcd cloud` beats this setting, and a flow's own `DEVICECLOUD_OVERRIDE_*` setting beats both. See [Animations](disable-animations.md).
 
 ### `local`
 

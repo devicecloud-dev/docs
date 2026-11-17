@@ -1,6 +1,6 @@
-# Download Artifacts
+# Artifacts & Downloads
 
-DeviceCloud captures various artifacts during test execution that can help debug and analyze your test runs.
+DeviceCloud keeps the logs, screenshots, videos and reports from every test run. You can download them during a `dcd cloud` run, afterwards with `dcd artifacts`, or from the console.
 
 ## Available Artifacts
 
@@ -45,11 +45,13 @@ dcd artifacts --upload-id <uuid> --report junit
 dcd artifacts --upload-id <uuid> --report html --html-path ./report.zip
 ```
 
+One `dcd artifacts` command can't take both `--download-artifacts` and `--report`. To get the artifacts and a report, run it twice.
+
 See the [`dcd artifacts` reference](../cli/dcd-artifacts.md) for the full flag list.
 
 ### From the Console
 
-Each test result in the [DeviceCloud console](https://console.devicecloud.dev) has a download menu with the files for that result: `commands.json`, the Maestro log, Maestro stdout and stderr, the logcat (Android), the HTML, JUnit and Allure reports (when the run generated them; Allure is deprecated and will be removed on 7 December 2026), the app binary (APK or APP build) and the workspace. Videos and screenshots are shown on the result page; to download them in bulk, use `--download-artifacts` or `dcd artifacts`.
+Each test result in the [DeviceCloud console](https://console.devicecloud.dev) has a download menu with the files for that result: `commands.json`, the Maestro log, Maestro stdout and stderr, the logcat (Android), the HTML, JUnit and Allure reports (when the run generated them; Allure is deprecated, see [Deprecations & Removals](../getting-started/deprecations.md)), the app binary (APK or APP build) and the workspace. Videos and screenshots are shown on the result page; to download them in bulk, use `--download-artifacts` or `dcd artifacts`.
 
 ## Artifact Archive Structure
 
@@ -74,7 +76,7 @@ artifacts.zip
 
 Files are named after the flow file (without its extension), e.g. `login-maestro.log` for `login.yaml`. The `logs/` folder also holds stdout/stderr, the device log (`-logcat.zip` on Android, `-ios-device-log.zip` on iOS) and any per-flow reports. With `--download-artifacts FAILED`, only failed tests get a folder, but `report.xml` is always included and still covers every test.
 
-When `--retry` reruns a flow, every attempt gets its own result-ID folder, so the failed attempt's screenshots and video are in the zip even if a retry passed. `report.xml` covers only the final attempt of each flow.
+Each [retry](../advanced/retry-strategies.md#seeing-every-attempt) attempt gets its own result-ID folder, so the failed attempt's screenshots and video are in the zip even if a retry passed.
 
 ## Retention
 

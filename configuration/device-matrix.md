@@ -8,7 +8,7 @@ invocation. Every flow runs once per device, all under one upload with one conso
 
 ## Usage
 
-Pass `--ios-device-matrix <device>:<version>` (or `--android-device-matrix <device>:<apiLevel>`) once per device you want. Supported devices and operating systems are listed [here](../getting-started/devices-configuration.md).
+Pass `--ios-device-matrix <device>:<version>` (or `--android-device-matrix <device>:<apiLevel>`) once per device you want. Supported devices and OS versions are listed in [Devices & OS Versions](../getting-started/devices-configuration.md).
 
 ### iOS
 
@@ -59,7 +59,7 @@ A matrix runs one test per (flow x device), so a 4-device matrix over 10 flows i
     Pixel 10 · API 36   2 flows · $0.18
 ```
 
-Rates are per device — iPad, iPhone Duo, Generic Tablet, Pixel 10 Pro Fold and Google Play flows are charged at the advanced rate, as per our [pricing](../billing/test-run-billing.md).
+Rates are per device. iPad, iPhone Duo, Generic Tablet, Pixel 10 Pro Fold and Google Play flows, and flows on the `m4` or `m1` [runner type](runner-type.md), are charged at the advanced rate, as per our [pricing](../billing/test-run-billing.md). A flow with [extended runtime](extended-runtime.md) costs 2× on every device. The `est. cost` the CLI prints includes all of these.
 
 ## Results
 
@@ -82,7 +82,7 @@ Without `--async` the run waits for **every** device and exits `0` only if all o
 
 ## Rules
 
-- Every device and OS must be a supported combination, including Google Play if applicable. An unsupported one is rejected before anything runs so you never get a partial submission. Some runner types support fewer devices, see [Runner Type](runner-type.md).
+- Every device and OS must be a supported combination, including Google Play if applicable. An unsupported one is rejected before anything runs so you never get a partial submission. Some runner types support fewer devices, see [Runner Types](runner-type.md).
 
 - One platform per upload. An upload runs one app binary, so `--ios-device-matrix` and `--android-device-matrix` cannot be combined in the same run.
 

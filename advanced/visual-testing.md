@@ -9,7 +9,7 @@ Maestro's `assertScreenshot` command compares the current screen against a refer
 DeviceCloud runs these assertions like any other command. The one thing you need to set up is getting your baseline images onto the device.
 
 ::: warning
-**Use Maestro 2.10.0**, the default version. Maestro 2.2.0 resolves the baseline path against a different working directory and reports `Screenshot file not found` no matter where you put the file, so don't pin `--maestro-version` to it — see [Maestro Versions](../configuration/maestro-versions.md).
+**Don't pin `--maestro-version 2.2.0`.** That version resolves the baseline path against a different working directory and reports `Screenshot file not found` no matter where you put the file. Use the default version or a later one (see [Maestro Versions](../configuration/maestro-versions.md)).
 :::
 
 ## Uploading your baselines
@@ -47,7 +47,7 @@ The file extension is optional. `assertScreenshot: screenshots/home` looks for `
 
 ## Creating your first baseline
 
-Maestro has no "record" mode, so you have to capture the first baseline yourself. A baseline must match the device's screen dimensions **exactly**, so capture it on a local emulator or simulator configured identically to the DeviceCloud device you intend to test on — a `pixel-7` / API 34 AVD for `--android-device pixel-7 --android-api-level 34`, for example.
+Maestro has no "record" mode, so you have to capture the first baseline yourself. A baseline must match the device's screen dimensions **exactly**, so capture it on a local emulator or simulator configured identically to the DeviceCloud device you intend to test on — a `pixel-8` / API 34 AVD for `--android-device pixel-8 --android-api-level 34`, for example.
 
 1. Boot that local device and run the flow with `takeScreenshot` in place of the assertion:
 
@@ -100,7 +100,7 @@ Because baselines are resolution-locked, a [device matrix](../configuration/devi
 
 ```
 screenshots/
-  pixel-7-api-34/home.png
+  pixel-8-api-34/home.png
   iphone-16-ios-18/home.png
 ```
 
@@ -114,8 +114,8 @@ includedPaths:
 
 | Device | `DCD_DEVICE` |
 | --- | --- |
-| `--android-device pixel-7 --android-api-level 34` | `pixel-7-api-34` |
-| The same with `--google-play` | `pixel-7-api-34-play` |
+| `--android-device pixel-8 --android-api-level 34` | `pixel-8-api-34` |
+| The same with `--google-play` | `pixel-8-api-34-play` |
 | `--android-device generic-tablet --android-api-level 36` | `13-5in-freeform-api-36` |
 | `--ios-device iphone-16 --ios-version 18` | `iphone-16-ios-18` |
 | `--ios-device iphone-17 --ios-version 26` | `iphone-17-ios-26` |

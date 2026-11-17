@@ -8,7 +8,7 @@ Pass rates are calculated as `passed / (passed + failed)`, excluding cancelled a
 
 ## Get flow summaries
 
-Returns pass rates, run counts, average durations, and a daily status breakdown for every flow in your organisation.
+Returns pass rates, run counts, average durations, and a daily status breakdown for every flow in your team.
 
 ```
 GET /flows
@@ -21,9 +21,11 @@ GET /flows
 | `platform` | string | No | Filter by platform: `android` or `ios`. |
 | `appId` | string | No | Filter by app ID (e.g. `com.example.app`). |
 | `days` | number | No | Lookback window in days. Default: `14`. Ignored if `startDate` is set. |
-| `startDate` | string | No | Start of date range (ISO 8601). Overrides `days`. |
-| `endDate` | string | No | End of date range (ISO 8601). Defaults to now if `startDate` is set. |
+| `startDate` | string | No | Start of date range (ISO 8601). A date without a time means the start of that day (UTC). Overrides `days`. |
+| `endDate` | string | No | End of date range (ISO 8601). A date without a time means the end of that day (UTC). Defaults to now if `startDate` is set. |
 | `tags` | string | No | Comma-separated tag filter. Returns flows that have any of the given tags (e.g. `smoke,critical`). |
+
+A date without a time in `endDate` covers that whole day, so `endDate=2026-01-31` includes 31 January. This differs from `to` on [`GET /uploads/list`](uploads.md#list-uploads), where a date without a time means the start of the day.
 
 **Example**
 
@@ -76,12 +78,14 @@ GET /flows/runs
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `fileName` | string | Yes | The flow's path exactly as `GET /flows` returns it in `file_name` — relative to the flows folder you ran and starting with `./` (e.g. `./auth/login.yaml`). URL-encode it. |
+| `fileName` | string | Yes | The flow's path exactly as `GET /flows` returns it in `file_name`, starting with `./` (e.g. `./auth/login.yaml`). It's relative to the flows folder you ran, unless your flows use files outside that folder: see [`includedPaths`](../configuration/workspace-config.md#includedpaths). URL-encode it. |
 | `platform` | string | No | Filter by platform: `android` or `ios`. |
 | `appId` | string | No | Filter by app ID. |
 | `limit` | number | No | Maximum number of runs to return. Default: `100`. |
-| `startDate` | string | No | Start of date range (ISO 8601). |
-| `endDate` | string | No | End of date range (ISO 8601). |
+| `startDate` | string | No | Start of date range (ISO 8601). A date without a time means the start of that day (UTC). |
+| `endDate` | string | No | End of date range (ISO 8601). A date without a time means the end of that day (UTC). |
+
+Neither date has a default. Leave both out to get the newest runs of any age, up to `limit`.
 
 **Example**
 
@@ -110,3 +114,5 @@ curl --get "https://api.devicecloud.dev/flows/runs" \
   ]
 }
 ```
+
+`uploadName` is `Unknown` for an upload that was given no name.

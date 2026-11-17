@@ -23,7 +23,7 @@ dcd live run --session <name> path/to/flow.yaml
 dcd live stop --session <name>
 ```
 
-Every subcommand (except `start`) takes a `--session <name>` flag identifying the session, and accepts `--api-key` / `--api-url`.
+Every subcommand (except `start`) takes a `--session <name>` flag identifying the session. Every subcommand accepts `--api-key` / `--api-url`, and `--json` to print its result as one JSON object.
 
 ## `dcd live start`
 
@@ -67,7 +67,7 @@ Run a whole Maestro flow file against the session. The flow's `appId:` header is
 
 | Flag | Description |
 |------|-------------|
-| `<flow-file>` | **Required.** Path to the Maestro flow file (positional argument) |
+| `<flowFile>` | **Required.** Path to the Maestro flow file (positional argument) |
 | `--session <name>` | **Required.** Live session name |
 | `--timeout <seconds>` | Max seconds to wait for the flow to finish (default: `600`) |
 | `--wait` | Wait for the device to be ready before running |

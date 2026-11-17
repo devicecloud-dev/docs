@@ -31,9 +31,10 @@ info:
 
     ## Rate limits
 
-    The API accepts up to 60 requests a minute. Over the limit it answers `429`
-    with a `Retry-After` header. These endpoints aren't rate limited, so they're
-    safe to poll: `GET /results/{uploadId}`, `GET /uploads/status` and
+    Each endpoint accepts up to 60 requests a minute. Over the limit it answers
+    `429` with a `Retry-After` header: wait that many seconds, then retry, and
+    back off further if you get `429` again. These endpoints aren't counted, so
+    they're safe to poll: `GET /results/{uploadId}`, `GET /uploads/status` and
     `GET /ip-addresses`. The device session endpoints have their own limits,
     described on each one.
 
@@ -118,7 +119,7 @@ paths:
       tags: [Uploads]
       summary: List uploads
       description: |
-        Your organization's uploads, newest first.
+        Your team's uploads, newest first.
       parameters:
         - name: name
           in: query
@@ -273,7 +274,7 @@ paths:
         to a request with `If-None-Match`, and the API then always sends the full
         response.)
 
-        An upload ID with no results in your organization answers an empty
+        An upload ID with no results in your team answers an empty
         `results` list, not `404`.
       parameters:
         - $ref: '#/components/parameters/UploadId'
@@ -315,10 +316,10 @@ paths:
                         duration_seconds: 32
                         fail_reason: 'Element not found: Text matching regex next.* not found'
                         cancellation_reason: null
-                        simulator_name: pixel-7-api-34
+                        simulator_name: pixel-10-api-36
                         config:
-                          deviceName: Pixel 7
-                          osVersion: '34'
+                          deviceName: Pixel 10
+                          osVersion: '36'
                 full:
                   summary: Full view (config and result_files shortened)
                   value:
@@ -333,11 +334,11 @@ paths:
                         duration_seconds: 32
                         fail_reason: 'Element not found: Text matching regex next.* not found'
                         cancellation_reason: null
-                        simulator_name: pixel-7-api-34
+                        simulator_name: pixel-10-api-36
                         platform: android
                         config:
-                          deviceName: Pixel 7
-                          osVersion: '34'
+                          deviceName: Pixel 10
+                          osVersion: '36'
                           maestroVersion: 2.10.0
                         result_files:
                           id: 9120
@@ -377,7 +378,7 @@ paths:
               example: |
                 <?xml version="1.0" encoding="UTF-8"?>
                 <testsuites tests="1" failures="0" time="11">
-                  <testsuite name="Test Suite" device="pixel-7-api-34" tests="1" failures="0" time="11">
+                  <testsuite name="Test Suite" device="pixel-10-api-36" tests="1" failures="0" time="11">
                     <testcase id="Onboarding" name="Onboarding" classname="Onboarding" time="11"/>
                   </testsuite>
                 </testsuites>
@@ -505,7 +506,7 @@ paths:
       summary: Get flow summaries
       description: |
         Pass rates, run counts, average durations and a daily status breakdown for
-        every flow in your organization: the data on the console's Flows page.
+        every flow in your team: the data on the console's Flows page.
       parameters:
         - $ref: '#/components/parameters/PlatformFilter'
         - $ref: '#/components/parameters/AppIdFilter'
@@ -586,14 +587,18 @@ paths:
       operationId: getFlowRuns
       tags: [Flows]
       summary: Get runs for a flow
-      description: Every run of one flow file, newest first.
+      description: |
+        The newest runs of one flow file, up to `limit`. Neither date has a
+        default, so without them runs of any age count. `uploadName` is `Unknown` for an
+        upload that was given no name.
       parameters:
         - name: fileName
           in: query
           required: true
           description: |
-            The flow's path exactly as `GET /flows` returns it in `file_name`:
-            relative to the flows folder that was run, starting with `./`.
+            The flow's path exactly as `GET /flows` returns it in `file_name`,
+            starting with `./`. It's relative to the flows folder that was run,
+            unless the flows use files outside that folder.
           schema:
             type: string
           example: ./auth/login.yaml
@@ -734,7 +739,7 @@ paths:
         Asks for a device. A new session is `queued` until a device is free, then moves through `provisioning`
         to `ready` on its own: poll GET /device/sessions/{id} until it is `ready`. Billing starts when a device
         is assigned. The session ends after 5 idle minutes, at its maximum duration, or when you stop it.
-        This endpoint has no per-minute rate limit, but your organization can only have so many sessions
+        This endpoint has no per-minute rate limit, but your team can only have so many sessions
         open at once.
       parameters:
         - name: x-dcd-source
@@ -802,7 +807,7 @@ paths:
             The request is invalid. These errors carry no `error` code, only a `message`: a missing or unknown
             `platform`, an unknown `model`, an `os` the model doesn't offer, `googlePlay` on iOS, a bad
             `deviceLocale`, `clientLabel` or
-            `maxDurationMin`, a build that isn't your organization's or is for the other platform, or
+            `maxDurationMin`, a build that isn't your team's or is for the other platform, or
             `model`/`os`/`googlePlay` mixed with `androidDevice`/`androidApiLevel`.
           content:
             application/json:
@@ -831,7 +836,7 @@ paths:
                     message: Binary platform (ios) does not match session platform (android)
         '402':
           description: >-
-            `LIVE_SPEND_CAP`: your organization reached its monthly spend cap on device sessions (the body adds
+            `LIVE_SPEND_CAP`: your team reached its monthly spend cap on device sessions (the body adds
             `limit` and `spent`, in USD). A payment problem (an overdue subscription, or not enough credits)
             also answers 402, with no `error` code.
           content:
@@ -854,8 +859,9 @@ paths:
                     message: Not enough credits to start a live session.
         '403':
           description: >-
-            `LIVE_NOT_ENABLED`: device sessions aren't enabled for your organization. A missing or invalid API
-            key also answers 403 (see the shared `Forbidden` response).
+            `LIVE_NOT_ENABLED`: device sessions aren't enabled for your team. They're in a closed beta:
+            contact support to have them turned on. A missing or invalid API key also answers 403 (see the
+            shared `Forbidden` response).
           content:
             application/json:
               schema:
@@ -866,7 +872,7 @@ paths:
                 error: LIVE_NOT_ENABLED
         '409':
           description: >-
-            `LIVE_CONCURRENCY_LIMIT`: your organization has as many sessions open as it may. `limit` is that
+            `LIVE_CONCURRENCY_LIMIT`: your team has as many sessions open as it may. `limit` is that
             number. Stop a session first.
           content:
             application/json:
@@ -888,7 +894,7 @@ paths:
                 message: Failed to create live session
         '503':
           description: >-
-            Your organization has a spend cap and the spend so far could not be read. No `error` code. Retry.
+            Your team has a spend cap and the spend so far could not be read. No `error` code. Retry.
           content:
             application/json:
               schema:
@@ -900,9 +906,9 @@ paths:
     get:
       tags: [Device sessions]
       operationId: listDeviceSessions
-      summary: List your organization's sessions
+      summary: List your team's sessions
       description: >-
-        Your organization's open sessions (`queued` through `needs_human`), newest first, at most 100.
+        Your team's open sessions (`queued` through `needs_human`), newest first, at most 100.
         With `all=true`, sessions that ended in the last 24 hours are included too.
       parameters:
         - name: all
@@ -945,7 +951,7 @@ paths:
                     monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
                   - id: calm-blue-heron
                     live_id: 4177
-                    state: released
+                    state: expired
                     release_reason: idle_timeout
                     platform: ios
                     model: iphone-16-ios-26.4
@@ -1163,7 +1169,7 @@ paths:
         '400':
           description: >-
             `LIVE_INVALID_APP`: neither or both of `binaryUploadId` and `url` were given, or the build isn't
-            your organization's, is for the other platform, or isn't an app this device can install.
+            your team's, is for the other platform, or isn't an app this device can install.
             `LIVE_APP_DOWNLOAD_FAILED`: the build at `url` couldn't be downloaded (not https, not a public host,
             an error status, too large, or too slow).
           content:
@@ -1799,7 +1805,7 @@ paths:
           description: >-
             `LIVE_INVALID_ACTION`: neither or both of `yaml` and `flowUploadId`, a `flow` without a bundle or
             with an unsafe path, `waitSeconds` out of range, a malformed `env`, or a `flowUploadId` that isn't a
-            bundle of your organization's.
+            bundle of your team's.
           content:
             application/json:
               schema:
@@ -1965,7 +1971,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           description: >-
-            `LIVE_NOT_FOUND`: no such session in your organization. `LIVE_COMMAND_NOT_FOUND`: no such command
+            `LIVE_NOT_FOUND`: no such session in your team. `LIVE_COMMAND_NOT_FOUND`: no such command
             in this session.
           content:
             application/json:
@@ -2537,8 +2543,8 @@ paths:
       summary: Ask a person for help
       description: >-
         Asks a person to do something on the device, such as entering a 2FA code. The session moves to
-        `needs_human` and its idle timer pauses, for up to your organization's limit (30 minutes by default),
-        and never past the session's maximum duration. When the session starts waiting, your organization's
+        `needs_human` and its idle timer pauses, for up to your team's limit (30 minutes by default),
+        and never past the session's maximum duration. When the session starts waiting, your team's
         webhook gets a `device.needs_human` event. Asking again while it waits updates the reason. Poll GET
         /device/sessions/{id}/human until `handed_back` is true. Allowed while a person has control.
       parameters:
@@ -3038,7 +3044,8 @@ components:
       name: x-dcd-org
       description: |
         The team (organization) ID to act as, with a Bearer token. The signed-in
-        user must be a member of that team.
+        user must be a member of that team. The ID is a number: `dcd whoami --json`
+        shows it as `org.id`.
   parameters:
     UploadId:
       name: uploadId
@@ -3103,7 +3110,7 @@ components:
                 message: This API key is limited to device_sessions and can't reach /uploads/list. Use a key with full access for this.
                 error: API_KEY_SCOPE
     RateLimited:
-      description: Over 60 requests a minute. Wait for `Retry-After` seconds.
+      description: Over 60 requests a minute to this endpoint. Wait `Retry-After` seconds, then retry with backoff.
       headers:
         Retry-After:
           $ref: '#/components/headers/RetryAfter'
@@ -3142,7 +3149,7 @@ components:
         ETag:
           $ref: '#/components/headers/ETag'
     NoResults:
-      description: The upload has no results in your organization, or doesn't exist.
+      description: The upload has no results in your team, or doesn't exist.
       content:
         application/json:
           schema:
@@ -3167,7 +3174,7 @@ components:
             statusCode: 500
             message: Internal server error
     LiveNotFound:
-      description: '`LIVE_NOT_FOUND`: no session with this id in your organization.'
+      description: '`LIVE_NOT_FOUND`: no session with this id in your team.'
       content:
         application/json:
           schema:
@@ -3245,7 +3252,7 @@ components:
         hand-back) are limited to 60 a minute per session. Reads (session status, commands, inspect,
         screenshot, logs, timeline, artifacts, human status, and stopping an ended session) are limited to 240
         a minute per session. Session lists, device models and bundle uploads are limited to 120 a minute per
-        organization. The body gives the `limit` and `retry_after_s`, the seconds until the window resets. No
+        team. The body gives the `limit` and `retry_after_s`, the seconds until the window resets. No
         `Retry-After` header is sent. Windows are fixed and one minute long, and each API instance keeps its
         own count.
       content:
@@ -3417,7 +3424,7 @@ components:
             durationSeconds: 32
             failReason: 'Element not found: Text matching regex next.* not found'
             createdAt: '2026-01-15T10:30:04+00:00'
-            device: pixel-7-api-34
+            device: pixel-10-api-36
     UploadStatusTest:
       type: object
       required: [name, status]
@@ -3438,7 +3445,7 @@ components:
           format: date-time
         device:
           type: string
-          description: The device the test ran on, such as `pixel-7-api-34` or `iPhone 16 - 18`.
+          description: The device the test ran on, such as `pixel-10-api-36` or `iPhone 16 - 18`.
     ResultsResponse:
       type: object
       required: [statusCode, results]
@@ -3480,8 +3487,9 @@ components:
         status:
           $ref: '#/components/schemas/TestStatus'
           description: |
-            The test's state. This endpoint still reports a queued test as
-            `PENDING` rather than `QUEUED`, so treat both as "not started yet".
+            The test's state. This endpoint reports a queued test as `PENDING`
+            rather than `QUEUED`, so that older CLIs keep working. Treat both as
+            "not started yet". `GET /uploads/status` reports `QUEUED`.
         retry_of:
           type: [integer, 'null']
           description: For a retry, the `id` of the attempt it retried.
@@ -3504,7 +3512,7 @@ components:
             reasons may be added.
         simulator_name:
           type: string
-          description: The device the test ran on, such as `pixel-7-api-34`.
+          description: The device the test ran on, such as `pixel-10-api-36`.
         platform:
           $ref: '#/components/schemas/Platform'
           description: Full view only.
@@ -3516,10 +3524,10 @@ components:
           properties:
             deviceName:
               type: string
-              example: Pixel 7
+              example: Pixel 10
             osVersion:
               type: [string, number]
-              example: '34'
+              example: '36'
           additionalProperties: true
         result_files:
           type: [object, 'null']
@@ -3646,7 +3654,10 @@ components:
           description: When the list last changed.
         ipAddresses:
           type: array
-          description: Every address as a bare IP, the simplest thing to allow-list.
+          description: |
+            Every address in one flat list, the simplest thing to allow-list. A
+            single host (`/32`) appears as a bare IP; a wider range would appear in
+            CIDR notation.
           items:
             type: string
         ranges:
@@ -3701,10 +3712,10 @@ components:
           description: |-
             A stable code. Absent on errors that carry none: validation and payment errors when starting a session, an invalid `before` on artifacts, and 5xx errors other than the ones below.
 
-            - `LIVE_NOT_ENABLED` (403): device sessions aren't enabled for your organization.
-            - `LIVE_CONCURRENCY_LIMIT` (409): your organization has as many sessions open as it may.
-            - `LIVE_SPEND_CAP` (402): your organization reached its monthly spend cap.
-            - `LIVE_NOT_FOUND` (404): no such session in your organization.
+            - `LIVE_NOT_ENABLED` (403): device sessions aren't enabled for your team.
+            - `LIVE_CONCURRENCY_LIMIT` (409): your team has as many sessions open as it may.
+            - `LIVE_SPEND_CAP` (402): your team reached its monthly spend cap.
+            - `LIVE_NOT_FOUND` (404): no such session in your team.
             - `LIVE_NOT_READY` (425): the device is still starting, or an app is installing. Retry shortly.
             - `LIVE_SESSION_ENDED` (409): the session has ended.
             - `LIVE_INVALID_ACTION` (400): the request is malformed. The message says how.
@@ -3713,7 +3724,7 @@ components:
             - `LIVE_NO_APP` (409): no app is installed, and none was named.
             - `LIVE_COMMAND_NOT_FOUND` (404): no such command in this session.
             - `LIVE_LOGS_UNAVAILABLE` (502): the device logs couldn't be read.
-            - `LIVE_SESSION_REQUIRED`: MCP only, never returned by this API. More than one session is open, so pass `session_id`.
+            - `LIVE_SESSION_REQUIRED`: MCP only, never returned by this API. No session is open, or more than one is, so pass `session_id`.
             - `LIVE_RATE_LIMITED` (429): too many requests. Wait `retry_after_s` seconds.
             - `LIVE_NOT_WAITING_FOR_HUMAN` (409): hand-back on a session that isn't waiting for a person.
             - `LIVE_HUMAN_IN_CONTROL` (409): a person has taken control in the console. Wait for them to hand back.
@@ -3756,14 +3767,14 @@ components:
           type: number
           description: >-
             LIVE_RATE_LIMITED from a per-minute limit: requests allowed a minute. LIVE_CONCURRENCY_LIMIT: sessions
-            your organization may have open. LIVE_SPEND_CAP: the monthly cap, in USD.
+            your team may have open. LIVE_SPEND_CAP: the monthly cap, in USD.
         retry_after_s:
           type: integer
           minimum: 0
           description: LIVE_RATE_LIMITED from a per-minute limit. Seconds until the window resets.
         spent:
           type: number
-          description: LIVE_SPEND_CAP only. What your organization has spent on device sessions this month, in USD.
+          description: LIVE_SPEND_CAP only. What your team has spent on device sessions this month, in USD.
 
     SessionBlock:
       type: object
@@ -3866,7 +3877,7 @@ components:
         cost_so_far_usd:
           type: [number, 'null']
           description: >-
-            What the session has cost so far at your organization's rate, in USD: the charge if it ended now.
+            What the session has cost so far at your team's rate, in USD: the charge if it ended now.
             Null when it couldn't be read.
         last_crash:
           description: The app's most recent crash in this session, or null.
@@ -4013,7 +4024,10 @@ components:
           description: Android only. An image with Google Play services. Sending it on iOS is a 400.
         binaryUploadId:
           type: string
-          description: An uploaded build to install once the device is ready. It must be your organization's and for this platform.
+          description: >-
+            An uploaded build to install once the device is ready. It must be your team's and for this
+            platform. Upload one with `dcd upload`, which prints its ID, or reuse a test run's `appBinaryId` from
+            GET /uploads/status.
         deviceLocale:
           type: string
           pattern: '^[a-z]{2,3}_[A-Z]{2}$'
@@ -4023,7 +4037,7 @@ components:
           minimum: 1
           maximum: 60
           description: >-
-            End the session after this many minutes. Default and ceiling is your organization's limit, which is
+            End the session after this many minutes. Default and ceiling is your team's limit, which is
             at most 60.
         clientLabel:
           type: string
@@ -4053,7 +4067,9 @@ components:
       properties:
         binaryUploadId:
           type: string
-          description: An uploaded build of your organization's, for the session's platform.
+          description: >-
+            An uploaded build of your team's, for the session's platform. Upload one with `dcd upload`,
+            which prints its ID, or reuse a test run's `appBinaryId` from GET /uploads/status.
         url:
           type: string
           format: uri
@@ -4061,7 +4077,7 @@ components:
           description: >-
             An https link to an `.apk`, or to a zipped simulator `.app` for iOS, up to 500 MB. It must be a public
             host with no user name or password in the URL. The download may take up to 120 s and follow up to 5
-            redirects. A build your organization already has (the same bytes) is reused.
+            redirects. A build your team already has (the same bytes) is reused.
       oneOf:
         - required: [binaryUploadId]
         - required: [url]
@@ -4084,7 +4100,7 @@ components:
               type: boolean
               description: >-
                 True when no new build was stored: always for `binaryUploadId`, and for a `url` whose build your
-                organization already had.
+                team already had.
         session:
           $ref: '#/components/schemas/SessionBlock'
 
@@ -4318,7 +4334,7 @@ components:
         flowUploadId:
           type: string
           format: uuid
-          description: A flow bundle of your organization's, from POST /device/bundles.
+          description: A flow bundle of your team's, from POST /device/bundles.
         flow:
           type: string
           pattern: '^(?!/)(?!.*(^|/)\.\.(/|$))[\w .@+-]+(/[\w .@+-]+)*\.ya?ml$'

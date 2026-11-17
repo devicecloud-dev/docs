@@ -3,16 +3,16 @@
 By default every flow in an upload runs on the same device, set by the `--ios-device`,
 `--ios-version`, `--android-device` and `--android-api-level` flags on `dcd cloud`.
 
-Sometimes a single flow only matters on one device for example a flow you must verify on a
+Sometimes a single flow only matters on one device: for example, a flow you must verify on a
 tablet, or a flow that has to work on your oldest supported OS. Rather than running
 a separate upload per flow, a flow can declare the device it needs directly in its YAML.
 
 A flow that declares a device runs as normal on that device. Flows that declare
-nothing inherit the upload's device, exactly as before. Your run count does not change.
+nothing inherit the upload's device. Your run count does not change.
 
 ## Usage
 
-Set the device in the flow's `env:` block. You can find a list of supported devices and operating systems [here](../getting-started/devices-configuration.md).
+Set the device in the flow's `env:` block, like the other [per-flow overrides](per-flow-overrides.md). Supported devices and OS versions are listed in [Devices & OS Versions](../getting-started/devices-configuration.md).
 
 ### iOS
 

@@ -2,7 +2,7 @@
 
 Returns the current list of DeviceCloud test-runner egress IP addresses, so your DevOps tooling can automate firewall allow-listing instead of updating it by hand whenever the addresses change.
 
-Unlike the other REST API endpoints, this one is **public** — no API key is required — so automation can poll it without credentials. Responses are cacheable (`Cache-Control: public, max-age=3600`); polling once an hour is plenty.
+This endpoint needs no API key, so automation can poll it without credentials. It isn't rate limited, and responses are cacheable (`Cache-Control: public, max-age=3600`), so polling once an hour is plenty.
 
 The same data is published in human-readable form on the [IP Addresses](../security/ip-addresses.md) security page, which is regenerated daily from this endpoint.
 
@@ -46,11 +46,13 @@ curl https://api.devicecloud.dev/ip-addresses
 | Field | Type | Description |
 |-------|------|-------------|
 | `updatedAt` | `string` | ISO date (`YYYY-MM-DD`) the list last changed. Watch this to detect updates without diffing the whole payload. |
-| `ipAddresses` | `string[]` | Flat list of bare IP addresses — the simplest thing to allow-list. |
+| `ipAddresses` | `string[]` | Every address in one flat list, the simplest thing to allow-list. A single host (`/32`) appears as a bare IP; a wider range would appear in CIDR notation. |
 | `ranges` | `object[]` | Structured view of each range (see below). |
 | `ranges[].cidr` | `string` | The range in CIDR notation. Single hosts are expressed as `/32`. |
 | `ranges[].platforms` | `string[]` | Runner platforms whose traffic egresses from this range — `android`, `ios`, or both. |
 | `ranges[].type` | `string` | Traffic type. Currently always `egress` (outbound from the app under test). |
 | `ranges[].description` | `string` | Human-readable note about the range. |
 
-> **Tip:** If your firewall accepts CIDR notation, allow-list `ranges[].cidr`; otherwise use the flat `ipAddresses` list. Poll on a schedule and reconcile against `updatedAt` to keep your allow-list in sync automatically.
+::: tip
+If your firewall accepts CIDR notation, allow-list `ranges[].cidr`. Otherwise use the flat `ipAddresses` list, and check it for any entry in CIDR notation. Poll on a schedule and compare `updatedAt` to keep your allow-list in sync.
+:::

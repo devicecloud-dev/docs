@@ -1,24 +1,24 @@
-# Tools Reference
+# Cloud Test Tools
 
-Every tool the [MCP server](overview.md) exposes, with its parameters and return shape.
+The `dcd_*` tools run Maestro tests in the cloud and read their results. [`dcd mcp`](connect.md) serves them, and so does the [older `dcd-mcp` server](overview.md). This page lists each tool's parameters and return shape. The tools that drive a cloud device are in [Agent Devices Tools](agent-devices-tools.md).
 
 All tools return pretty-printed JSON as their text payload. Failures come back as an error result the agent can read and react to — a failing tool never tears down the server, so an agent can recover and retry.
 
 ::: warning
-The MCP server is a new, beta capability. The tool surface may change.
+The `dcd_*` tools are in beta, so they may change.
 :::
 
-## dcd_list_devices <a href="#dcd-list-devices" id="dcd-list-devices"></a>
+## dcd_list_devices
 
-Discover the devices, OS versions, and Maestro versions available to your organisation. Agents should call this **before** `dcd_run_cloud_test` so they pass valid device values.
+Discover the devices, OS versions, and Maestro versions available on DeviceCloud. Agents should call this **before** `dcd_run_cloud_test` so they pass valid device values.
 
 Takes no parameters.
 
-Returns `{ ios, android, androidPlay, maestro }`, where each platform maps an OS version to its supported device list. See [Devices & OS Versions](../getting-started/devices-configuration.md) and [Maestro Versions](../configuration/maestro-versions.md).
+Returns `{ ios, android, androidPlay, maestro }`. `ios`, `android` and `androidPlay` each map a device, such as `pixel-10`, to the OS versions it runs. `androidPlay` covers the [Google Play](../configuration/google-play-apis.md) images: a device with an empty list has none. `maestro` holds `supportedVersions`, `defaultVersion` and `latestVersion`. See [Devices & OS Versions](../getting-started/devices-configuration.md) and [Maestro Versions](../configuration/maestro-versions.md).
 
-## dcd_list_runs <a href="#dcd-list-runs" id="dcd-list-runs"></a>
+## dcd_list_runs
 
-List recent flow uploads for your organisation, most recent first.
+List recent flow uploads for your team, most recent first.
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -30,7 +30,7 @@ List recent flow uploads for your organisation, most recent first.
 
 Returns `{ uploads: [{ id, name, created_at, consoleUrl }], total, limit, offset }`. Use a returned `id` with `dcd_get_status` or `dcd_download_artifacts`.
 
-## dcd_get_status <a href="#dcd-get-status" id="dcd-get-status"></a>
+## dcd_get_status
 
 Get the status and per-test results of a single upload. This is the polling primitive: after an async `dcd_run_cloud_test`, call this until `status` leaves `PENDING` / `QUEUED` / `RUNNING`.
 
@@ -43,26 +43,26 @@ Provide **exactly one** of `uploadId` or `name` — passing both, or neither, is
 
 Returns `{ status, name, createdAt, tests: [{ name, status, durationSeconds, failReason }] }`.
 
-## dcd_download_artifacts <a href="#dcd-download-artifacts" id="dcd-download-artifacts"></a>
+## dcd_download_artifacts
 
-Download a completed run's artifacts zip (videos, logs and screenshots) to local disk, plus a formatted report if you ask for one. The artifacts zip is always downloaded; `report` adds a report on top of it. It reads cloud state and writes local files, so it stays available in [read-only mode](overview.md#read-only-mode).
+Download a completed run's artifacts zip (videos, logs and screenshots) to local disk, plus a formatted report if you ask for one. The artifacts zip is always downloaded; `report` adds a report on top of it. It reads cloud state and writes local files, so it stays available in [read-only mode](connect.md#read-only-mode).
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `uploadId` | string | **Required.** UUID of the upload to download artifacts for |
 | `type` | `ALL` \| `FAILED` | Which tests to include artifacts for (default `ALL`) |
-| `artifactsPath` | string | Where to write the artifacts zip (default `./artifacts.zip`) |
-| `report` | `junit` \| `allure` \| `html` | Also download a formatted report of this type. `allure` is deprecated and will be removed on 7 December 2026 |
-| `reportPath` | string | Where to write the report (defaults by type: `report.xml` for `junit`, `report.zip` for `html`, `report.html` for `allure`). The `html` report is a ZIP |
+| `artifactsPath` | string | Where to write the artifacts zip (default `./artifacts.zip`). A relative path is from the server's working directory, which your MCP client chooses, so prefer an absolute path |
+| `report` | `junit` \| `allure` \| `html` | Also download a formatted report of this type. `allure` is deprecated, see [Deprecations & Removals](../getting-started/deprecations.md) |
+| `reportPath` | string | Where to write the report (defaults by type: `report.xml` for `junit`, `report.zip` for `html`, `report.html` for `allure`). The `html` report is a ZIP. A relative path works as for `artifactsPath` |
 
 Returns `{ uploadId, artifactsPath, reportPath, warnings }`. A **non-empty `warnings` array means a download could not be produced** — most often because the run has no results yet. An empty array means success. See [Artifacts & Downloads](../artifacts/artifacts.md) and [Report Formats](../artifacts/report-formats.md).
 
-## dcd_run_cloud_test <a href="#dcd-run-cloud-test" id="dcd-run-cloud-test"></a>
+## dcd_run_cloud_test
 
 Submit a Maestro flow, or a directory of flows, to run on DeviceCloud.
 
 ::: warning
-This tool consumes test credits. It's annotated as destructive so clients can prompt before calling it, and it's hidden entirely in [read-only mode](overview.md#read-only-mode).
+This tool consumes test credits. It's annotated as destructive so clients can prompt before calling it, and it's hidden entirely in [read-only mode](connect.md#read-only-mode).
 :::
 
 | Parameter | Type | Description |
@@ -83,7 +83,7 @@ This tool consumes test credits. It's annotated as destructive so clients can pr
 | `maestroVersion` | string | Pin a specific [Maestro version](../configuration/maestro-versions.md) |
 | `retry` | integer | Auto-[retry](../advanced/retry-strategies.md) failed tests, 0–2 |
 | `runnerType` | `default` \| `m4` \| `m1` \| `cpu1` | [Runner type](../configuration/runner-type.md) (default `default`). |
-| `priority` | `low` \| `normal` \| `high` | [Run priority](../configuration/run-priority.md) (default `normal`). Reorders only your organisation's own queued runs. |
+| `priority` | `low` \| `normal` \| `high` | [Run priority](../configuration/run-priority.md) (default `normal`). Reorders only your team's own queued runs. |
 | `configFile` | string | Path to a [workspace config](../configuration/workspace-config.md) |
 | `ignoreShaCheck` | boolean | Force re-upload of the binary even if an identical one already exists |
 | `encrypt` | boolean | Apply envelope encryption to the binary, flows and `env` values on your machine before upload. Omit it to follow `DCD_ENCRYPT`, then the default, which is on; pass `false` to turn it off (the upload is still encrypted in transit). See [Data Encryption](../security/security-overview.md#data-encryption) |
@@ -91,7 +91,7 @@ This tool consumes test credits. It's annotated as destructive so clients can pr
 | `wait` | boolean | Block until the run completes instead of returning immediately (default `false`) |
 | `waitTimeoutSeconds` | integer | Max seconds to wait when `wait` is true, 30–3600 (default `600`). A flow with [extended runtime](../configuration/extended-runtime.md) can run for up to 20 minutes, so raise this when the run includes one |
 
-You must provide either `appFile` or `appBinaryId` — not both, and not neither. Use [`dcd upload`](../cli/dcd-upload.md) or a previous run to get a reusable `appBinaryId`.
+You must provide either `appFile` or `appBinaryId` — not both, and not neither. A `dryRun` needs neither. Use [`dcd upload`](../cli/dcd-upload.md) or a previous run to get a reusable `appBinaryId`.
 
 ### Async by default
 

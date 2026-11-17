@@ -1,8 +1,12 @@
+---
+description: "REST API endpoints that list your team's test uploads and report an upload's status and per-test results, for polling a run in progress."
+---
+
 # Uploads
 
 ## List uploads
 
-Returns a paginated list of test uploads for your organisation.
+Returns a paginated list of test uploads for your team.
 
 ```
 GET /uploads/list
@@ -12,11 +16,13 @@ GET /uploads/list
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `name` | string | No | Filter by upload name. Supports `*` as a wildcard. |
+| `name` | string | No | Filter by upload name. Supports `*` as a wildcard. A name with a `*` matches regardless of case; without one, the match is exact. |
 | `from` | string | No | Return uploads created on or after this date (ISO 8601). |
 | `to` | string | No | Return uploads created on or before this date (ISO 8601). A date without a time means midnight at the start of that day (UTC), so `to=2026-01-31` leaves out uploads made on 31 January — use `2026-02-01` or `2026-01-31T23:59:59Z` to include them. |
 | `limit` | number | No | Maximum number of results. Default: `20`. At most 1,000 uploads are returned per request; use `offset` to page through more. |
 | `offset` | number | No | Number of results to skip. Default: `0`. |
+
+The response is HTTP `400` if `limit` isn't a whole number of 1 or more, `offset` isn't a whole number of 0 or more, `from` or `to` isn't ISO 8601, or `from` is after `to`.
 
 **Example**
 
@@ -60,7 +66,7 @@ GET /uploads/status
 | `uploadId` | string | No* | The upload UUID. |
 | `name` | string | No* | The upload name. Returns the most recent match if multiple exist. |
 
-*One of `uploadId` or `name` is required. If no upload matches, the response is HTTP `404`.
+*One of `uploadId` or `name` is required. With both, `uploadId` is tried first. If no upload matches, the response is HTTP `404`. With neither, or with an `uploadId` that isn't a UUID, it's HTTP `400`.
 
 **Example**
 
@@ -86,13 +92,15 @@ curl "https://api.devicecloud.dev/uploads/status?uploadId=7e12345f-eb12-12ec-a30
       "durationSeconds": 32,
       "failReason": "Element not found: Text matching regex next.* not found",
       "createdAt": "2026-01-15T10:30:04Z",
-      "device": "pixel-7-api-34"
+      "device": "pixel-10-api-36"
     }
   ]
 }
 ```
 
-`tests` lists the latest attempt of each test. Each entry also carries `createdAt` and `device` (the device the test ran on, e.g. `pixel-7-api-34` or `iPhone 16 - 18`), and `consoleUrl` includes a `&result=` parameter that opens the upload's most recently created test.
+`tests` lists the latest attempt of each test. `device` is the device the test ran on, such as `pixel-10-api-36` or `iPhone 16 - 18`. `durationSeconds` is left out until the test has a duration, and `failReason` appears only on a failed test.
+
+`consoleUrl` opens the upload in the console at its most recently created test (the `&result=` parameter).
 
 The overall `status` is worked out from the tests:
 
