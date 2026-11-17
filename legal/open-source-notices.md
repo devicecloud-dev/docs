@@ -1,3 +1,7 @@
+---
+description: "The open-source software DeviceCloud uses, such as Maestro and Allure, and the licences it's used under."
+---
+
 # Open Source Notices
 
 devicecloud.dev uses open-source software.

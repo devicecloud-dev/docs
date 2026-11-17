@@ -1,6 +1,10 @@
+---
+description: "The Pro, Max and Enterprise plans: what each costs and includes, the Overage Limit, and running DeviceCloud without a subscription."
+---
+
 # Subscriptions
 
-DeviceCloud offers subscriptions for use of the service.
+DeviceCloud offers three subscription plans: Pro, Max and Enterprise.
 
 ::: info
 All prices exclude Sales Tax. On the Pro and Max plans, tax is added at checkout for your country by our Merchant of Record, Paddle. On the Enterprise plan, tax is added to your invoice where applicable.

@@ -1,3 +1,7 @@
+---
+description: "Set the device's language and region for a whole upload with --device-locale, or for one flow, plus the locale format, the defaults and common locales."
+---
+
 # Device Locale
 
 Set device language and region for localisation testing.

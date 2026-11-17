@@ -1,5 +1,5 @@
 ---
-description: SAML-based authentication for larger companies
+description: "Set up SAML single sign-on for DeviceCloud with Okta, Entra ID, Google Workspace or another identity provider, on the Max and Enterprise plans."
 ---
 
 # Enterprise SSO

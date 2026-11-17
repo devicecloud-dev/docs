@@ -1,3 +1,7 @@
+---
+description: "List your team's recent test uploads from the CLI with dcd list, filtered by name or date, a page at a time, or as JSON."
+---
+
 # dcd list
 
 List recent test uploads for your team.

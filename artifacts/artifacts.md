@@ -1,6 +1,6 @@
 # Artifacts & Downloads
 
-DeviceCloud captures various artifacts during test execution that can help debug and analyse your test runs.
+DeviceCloud keeps the logs, screenshots, videos and reports from every test run. You can download them during a `dcd cloud` run, afterwards with `dcd artifacts`, or from the console.
 
 ## Available Artifacts
 

@@ -1,6 +1,6 @@
 # Google Play APIs
 
-DeviceCloud allows flow execution using Android emulators with the Google Play APIs. Please note that these are charged at our advanced rate as per our [pricing](../billing/test-run-billing.md).
+Flows can run on Android emulators with the Google Play APIs, for apps that need Play Services. These runs are charged at the advanced rate, see [pricing](../billing/test-run-billing.md).
 
 ::: warning
 **On 14 December 2026, Google Play runs move from x86 (`cpu1`) to Apple Silicon (`m1`) emulators**, at the same price. You can test your app on them now: add `--runner-type m1` to your Google Play runs. Your app needs arm64-v8a native code. See [Moving to Apple Silicon](#moving-to-apple-silicon-m1).

@@ -1,6 +1,6 @@
 # Environment Variables
 
-DeviceCloud allows you to inject environment variables into your test flows, enabling dynamic configuration and secure credential management.
+Environment variables pass configuration and credentials into your flows when they run.
 
 ## Setting Environment Variables
 

@@ -1,6 +1,10 @@
+---
+description: "How DeviceCloud protects your data: security leadership, reporting a vulnerability, where data is held, encryption, sign-in and sessions, retention, payments and code control."
+---
+
 # Security Overview
 
-As experienced engineers, we take security seriously and adopt industry standards wherever possible. If you have specific questions not covered by this document, please contact us via email - support@devicecloud.dev - we are happy to answer your security questionnaires.
+DeviceCloud follows industry standards for security wherever possible. If this page doesn't answer your question, or you'd like us to fill in a security questionnaire, email support@devicecloud.dev.
 
 ## Security Leadership
 

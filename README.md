@@ -1,6 +1,10 @@
+---
+description: "DeviceCloud runs Maestro flows on cloud iOS simulators and Android emulators, a drop-in alternative to Maestro Cloud. Setup, CI, devices, pricing and FAQs."
+---
+
 # Welcome to DeviceCloud
 
-DeviceCloud is a third-party Maestro Cloud alternative.
+DeviceCloud is a third-party alternative to Maestro Cloud. It runs your Maestro flows on cloud iOS simulators and Android emulators.
 
 Why teams switch:
 

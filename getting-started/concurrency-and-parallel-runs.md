@@ -1,6 +1,6 @@
 # Concurrency & Parallel Runs
 
-DeviceCloud supports parallel runs, also known as concurrency. This means multiple tests run simultaneously, greatly reducing the overall test suite execution time for a given CI run.
+DeviceCloud runs several of your tests at once, so a suite finishes sooner. How many can run at once, your concurrency, depends on your plan and runner type.
 
 Limits are set per platform and [runner type](../configuration/runner-type.md). In the console, under **Settings → Execution**, the **Concurrency Limits** card shows two values for each: minimum guaranteed concurrency (**Concurrency Protection**) and maximum concurrency (**Surge Concurrency When Capacity Allows**).
 

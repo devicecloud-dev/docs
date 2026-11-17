@@ -1,6 +1,6 @@
 # Maestro Versions
 
-DeviceCloud supports multiple Maestro versions to ensure compatibility with your test flows.
+You can choose which Maestro version runs your flows, from the versions listed below.
 
 By default, tests run using Maestro 2.10.0. Pin `--maestro-version` if you need to stay on a specific version.
 
