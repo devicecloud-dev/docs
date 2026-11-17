@@ -8,20 +8,46 @@
 
 /welcome-to-devicecloud /                                301
 # MCP docs moved out of CLI Reference — the old URL is shared in Discord threads.
-/cli-reference/mcp-server /ai-agents-and-mcp/older-dcd-mcp-server  301
+/cli-reference/mcp-server /ai-agents-and-mcp/connect-an-ai-agent  301
 
 # Sidebar reorder (Nov 2026): the Devices section and the end of Advanced. Pages whose
 # old URL was their repo path are redirected by the build; these are the rest.
 /getting-started/devices-and-os-versions   /devices/devices-and-os-versions               301
-/getting-started/deprecations-and-removals /devices/deprecations-and-removals             301
-/configuration/device-date-and-time        /devices/device-date-and-time                  301
-/configuration/animations                  /devices/animations                            301
-/configuration/device-orientation          /devices/device-orientation                    301
+/getting-started/deprecations-and-removals /product-lifecycle/deprecations-and-removals   301
+/configuration/device-date-and-time        /devices/device-settings#date-and-time         301
+/configuration/animations                  /devices/device-settings#animations            301
+/configuration/device-orientation          /devices/device-settings#orientation           301
 /configuration/runner-types                /devices/runner-types                          301
 /advanced/cancelling-superseded-runs       /ci-cd-integration/cancelling-superseded-runs  301
-/ai-agents-and-mcp/mcp-server              /ai-agents-and-mcp/older-dcd-mcp-server        301
+/ai-agents-and-mcp/mcp-server              /ai-agents-and-mcp/connect-an-ai-agent         301
 /ai-agents-and-mcp/tools-reference         /ai-agents-and-mcp/cloud-test-tools            301
 
 # Old GitBook paths still linked from GitHub Action releases up to v2.7.2.
 /reference/maestro-versions                /configuration/maestro-versions                301
-/reference/chrome-onboarding               /devices/chrome-onboarding                     301
+/reference/chrome-onboarding               /devices/device-settings#chrome-onboarding     301
+
+# Small pages merged into larger ones (Nov 2026). The build no longer redirects a
+# deleted page's repo path, so each old URL is listed here, pointing at its section.
+/devices/animations                            /devices/device-settings#animations                                  301
+/configuration/disable-animations              /devices/device-settings#animations                                  301
+/devices/device-locale                         /devices/device-settings#locale                                      301
+/configuration/device-locale                   /devices/device-settings#locale                                      301
+/devices/device-date-and-time                  /devices/device-settings#date-and-time                               301
+/configuration/device-datetime                 /devices/device-settings#date-and-time                               301
+/devices/device-orientation                    /devices/device-settings#orientation                                 301
+/configuration/orientation                     /devices/device-settings#orientation                                 301
+/devices/chrome-onboarding                     /devices/device-settings#chrome-onboarding                           301
+/advanced/chrome-onboarding                    /devices/device-settings#chrome-onboarding                           301
+/devices/per-flow-devices                      /devices/per-flow-overrides#pin-a-flow-to-a-device                   301
+/configuration/per-flow-devices                /devices/per-flow-overrides#pin-a-flow-to-a-device                   301
+/test-artifacts-and-reports/report-formats     /test-artifacts-and-reports/artifacts-and-downloads#report-formats   301
+/artifacts/report-formats                      /test-artifacts-and-reports/artifacts-and-downloads#report-formats   301
+/security-and-compliance/it-security-policies  /security-and-compliance/security-overview#it-security-policies      301
+/security/it-security-policies                 /security-and-compliance/security-overview#it-security-policies      301
+/ci-cd-integration/async-execution             /ci-cd-integration/overview#async-execution                          301
+/advanced/async-execution                      /ci-cd-integration/overview#async-execution                          301
+/ai-agents-and-mcp/older-dcd-mcp-server        /ai-agents-and-mcp/connect-an-ai-agent                               301
+/mcp/overview                                  /ai-agents-and-mcp/connect-an-ai-agent                               301
+
+# Deprecations & Removals moved to its own Product Lifecycle section (Nov 2026).
+/devices/deprecations-and-removals             /product-lifecycle/deprecations-and-removals                         301

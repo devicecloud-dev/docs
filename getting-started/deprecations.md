@@ -15,7 +15,7 @@ Removal dates are targets, subject to change based on usage.
 | Pixel 7 (`pixel-7`) | Android device | 23 November 2026 | `pixel-8` or `pixel-10` (`pixel-6` for API level 33). On Google Play, `pixel-8` keeps API level 34 |
 | iOS 17 | iOS version | 23 November 2026 | iOS 18, 26 or 27. iPhone 14 runs iOS 18 |
 | Maestro 2.2.0 | Maestro version | 23 November 2026 | 2.6.1 or newer |
-| `html-detailed` and `allure` | Report formats | 7 December 2026 | `--report html` or `--report junit`. See [Report Formats](../artifacts/report-formats.md) for what happens to runs that still pass them |
+| `html-detailed` and `allure` | Report formats | 7 December 2026 | `--report html` or `--report junit`. See [Report formats](../artifacts/artifacts.md#report-formats) for what happens to runs that still pass them |
 | iPhone 16 Pro (`iphone-16-pro`) | iOS device | 7 December 2026 | `iphone-16` (the default), `iphone-17`, `iphone-air`, `iphone-18-pro` or `iphone-18-pro-max` |
 | Google Play on `cpu1` | Runner type change | 14 December 2026 | Nothing: Google Play runs move to `m1` on their own. Test your app on `m1` first, see [Moving to Apple Silicon](../configuration/google-play-apis.md#moving-to-apple-silicon-m1) |
 

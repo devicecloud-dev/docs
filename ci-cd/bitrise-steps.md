@@ -61,15 +61,15 @@ For the devices and OS versions you can pass, and which combinations work, see [
 | Android API Level | `android_api_level` | `36` | Android API level, e.g. `34`. |
 | iOS Device | `ios_device` | `iphone-16` | iOS device, e.g. `iphone-17`. |
 | iOS Version | `ios_version` | `26` | Major iOS version, e.g. `18`. |
-| Device Locale | `device_locale` | — | E.g. `de_DE`. See [Device Locale](../configuration/device-locale.md). |
+| Device Locale | `device_locale` | — | E.g. `de_DE`. See [Locale](../configuration/device-settings.md#locale). |
 | Device Orientation | `orientation` | `0` | Android only. `0` (portrait) or `90` (landscape). |
 | Google Play | `google_play` | `false` | Android only. Run on devices with Google Play. |
 | Runner Type | `runner_type` | `default` | `default`, `cpu1`, `m1` or `m4`. `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
 | Render Engine | `render_engine` | — | Android only, from 1.3.0. `lavapipe` or `swiftshader`, the software renderer the emulator boots with on the default Android runner. Leave it empty to let DeviceCloud choose (`swiftshader` for apps built with Flutter, otherwise `lavapipe`). |
 | Android No Snapshot | `android_no_snapshot` | `false` | Android only. Force a cold boot. Already on for API 34 and later. |
-| Maestro Chrome Onboarding | `maestro_chrome_onboarding` | `false` | Android only. See [Chrome Onboarding](../advanced/chrome-onboarding.md). |
+| Maestro Chrome Onboarding | `maestro_chrome_onboarding` | `false` | Android only. See [Chrome onboarding](../configuration/device-settings.md#chrome-onboarding). |
 | Show Crosshairs | `show_crosshairs` | `false` | Android only. Show crosshairs where the flow taps. |
-| Disable Animations | `disable_animations` | `false` | Turn off device animations (Reduce Motion on iOS). See [Animations](../configuration/disable-animations.md). |
+| Disable Animations | `disable_animations` | `false` | Turn off device animations (Reduce Motion on iOS). See [Animations](../configuration/device-settings.md#animations). |
 
 ### Running the tests
 
@@ -80,7 +80,7 @@ For the devices and OS versions you can pass, and which combinations work, see [
 | Retry Count | `retry` | `0` | Retries on failure, up to `2`. See [Retry Strategies](../advanced/retry-strategies.md). |
 | Priority | `priority` | `normal` | From 1.5.0. `low`, `normal` or `high`: which of your team's queued runs starts first. It never moves your runs ahead of other customers. See [Run Priority](../configuration/run-priority.md). |
 | Cancel Previous Run | `cancel_previous` | `false` | From 1.4.0. Cancel the previous run's still-queued tests when this one starts. See [Cancelling superseded runs](#cancelling-superseded-runs). |
-| Async Execution | `async` | `false` | Don't wait for the results: the step passes once the run is submitted. See [Async Execution](../advanced/async-execution.md). |
+| Async Execution | `async` | `false` | Don't wait for the results: the step passes once the run is submitted. See [Async execution](overview.md#async-execution). |
 | Dry Run | `dry_run` | `false` | List the flows that would run without starting a run. |
 | Ignore SHA Check | `ignore_sha_check` | `false` | Upload the binary even if the same file was uploaded before. Not recommended. |
 
@@ -88,7 +88,7 @@ For the devices and OS versions you can pass, and which combinations work, see [
 
 | Input | Key | Default | Description |
 |---|---|---|---|
-| Report Format | `report` | — | `junit` or `html`. `html-detailed` and `allure` are deprecated, see [Report Formats](../artifacts/report-formats.md). |
+| Report Format | `report` | — | `junit` or `html`. `html-detailed` and `allure` are deprecated, see [Report formats](../artifacts/artifacts.md#report-formats). |
 | JUnit Report Path | `junit_path` | `./report.xml` | Where to save the JUnit report. |
 | HTML Report Path | `html_path` | `./report.zip` | Where to save the HTML report, a ZIP of the report and its files. |
 | Allure Report Path | `allure_path` | `./report.html` | Where to save the Allure report. |

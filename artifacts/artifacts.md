@@ -80,6 +80,56 @@ Files are named after the flow file (without its extension), e.g. `login-maestro
 
 Each [retry](../advanced/retry-strategies.md#seeing-every-attempt) attempt gets its own result-ID folder, so the failed attempt's screenshots and video are in the zip even if a retry passed.
 
+## Report formats
+
+DeviceCloud supports the standard Maestro report formats: JUnit and HTML.
+
+::: warning
+`allure` and `html-detailed` are deprecated. We're targeting their removal on **7 December 2026**, subject to change based on usage. Once they're removed, runs that pass them still run and don't fail:
+
+- `--report html-detailed` gets the standard HTML report.
+- `--report allure` gets no report.
+
+To move now, use `--report html` or `--report junit`.
+:::
+
+### Available Reports
+
+We support the following report types:
+
+- `junit`
+- `html`
+- `html-detailed` (deprecated, removal targeted for 7 December 2026)
+- `allure` (deprecated, removal targeted for 7 December 2026)
+
+You can enable each report using `--report <type>`. `--format` is an alias for `--report`.
+
+The CLI will automatically download the report to your working directory for you after the run finishes. To change the download path, use the flag for that report format:
+
+- `--junit-path <path>` (default `./report.xml`)
+- `--html-path <path>` (default `./report.zip`, applies to `html` and `html-detailed`)
+- `--allure-path <path>` (default `./report.html`)
+
+::: info
+The `html` and `html-detailed` reports are downloaded as a ZIP archive (the report plus its screenshots, videos and logs). Unzip it to view the report.
+:::
+
+(`--artifacts-path` is a separate flag that sets the download path for the artifacts zip and requires `--download-artifacts`.)
+
+### Types of Report
+
+#### JUnit
+
+JUnit reports are XML-based and are generally the standard format for CI/CD reports.
+
+#### HTML and HTML-Detailed
+
+HTML reports are human-readable and provide a summary of a test run, including failure screenshots. Both are delivered as a ZIP containing the report and the files it links to. Detailed reports add the test steps to everything in a standard HTML report. `html-detailed` is deprecated: once it's removed (targeted for 7 December 2026), it gives the standard HTML report.
+
+#### Allure
+
+Allure reports are HTML-based and are downloaded as a single, self-contained HTML file. Allure is deprecated, and we're targeting its removal on 7 December 2026. Once it's removed, runs that pass `--report allure` get no report. Use `html` or `junit` instead.
+
 ## Retention
 
 App binaries and workspaces are deleted 1 month after they were last used. Test results, their artifacts (logs, screenshots and videos) and the environment variables passed with `--env` are kept for 6 months.

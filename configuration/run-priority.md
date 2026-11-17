@@ -99,4 +99,4 @@ See [Any CI](../ci-cd/any-ci.md).
 
 ## AI agents
 
-The [MCP server](../mcp/overview.md)'s `dcd_run_cloud_test` tool takes an optional `priority` parameter with the same values. See the [Tools Reference](../mcp/tools.md#dcd-run-cloud-test).
+The [MCP server](../mcp/connect.md)'s `dcd_run_cloud_test` tool takes an optional `priority` parameter with the same values. See the [Cloud Test Tools](../mcp/tools.md#dcd-run-cloud-test).

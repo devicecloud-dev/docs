@@ -44,8 +44,8 @@ See [Authentication](../getting-started/api-keys.md) for the full picture.
 | `--android-api-level <level>` | Android API level |
 | `--ios-device <device>` | iOS device model to run on (see [Devices](../getting-started/devices-configuration.md)) |
 | `--ios-version <version>` | iOS version |
-| `--device-locale <locale>` | Device locale (see [Device Locale](../configuration/device-locale.md)) |
-| `--orientation <orientation>` | Device orientation, `0` (portrait) or `90` (landscape). Android only (see [Orientation](../configuration/orientation.md)) |
+| `--device-locale <locale>` | Device locale (see [Locale](../configuration/device-settings.md#locale)) |
+| `--orientation <orientation>` | Device orientation, `0` (portrait) or `90` (landscape). Android only (see [Orientation](../configuration/device-settings.md#orientation)) |
 | `--google-play` | Use a Google Play-enabled device. Android only (see [Google Play APIs](../configuration/google-play-apis.md)) |
 | `--runner-type <type>` | Runner type to use: `default` (the default), `cpu1`, `m1` or `m4` (see [Runner Types](../configuration/runner-type.md)) |
 | `--render-engine <engine>` | Android only. Software renderer the emulator boots with: `lavapipe` (default) or `swiftshader`. Try `swiftshader` if your app fails to render or the device drops out mid-run. Apps built with Flutter are detected and switched automatically |
@@ -88,7 +88,7 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 
 | Flag | Description |
 |------|-------------|
-| `--maestro-chrome-onboarding` | Force Maestro-based Chrome onboarding. Slows tests but can fix browser-related crashes (see [Chrome Onboarding](../advanced/chrome-onboarding.md)) |
+| `--maestro-chrome-onboarding` | Force Maestro-based Chrome onboarding. Slows tests but can fix browser-related crashes (see [Chrome onboarding](../configuration/device-settings.md#chrome-onboarding)) |
 | `--android-no-snapshot` | Force a cold boot instead of a snapshot boot on the standard Android runner. Automatically enabled for API 34+ |
 | `--show-crosshairs` | Display crosshairs for screen interactions during test execution |
 
@@ -96,13 +96,13 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 
 | Flag | Description |
 |------|-------------|
-| `--disable-animations` | Disable device animations during test execution. On Android, disables system animation scales. On iOS, enables Reduce Motion. Overrides `disableAnimations` in `config.yaml`, and `--no-disable-animations` keeps animations on even when `config.yaml` turns them off (see [Animations](../configuration/disable-animations.md)) |
+| `--disable-animations` | Disable device animations during test execution. On Android, disables system animation scales. On iOS, enables Reduce Motion. Overrides `disableAnimations` in `config.yaml`, and `--no-disable-animations` keeps animations on even when `config.yaml` turns them off (see [Animations](../configuration/device-settings.md#animations)) |
 
 ### Output & Execution
 
 | Flag | Description |
 |------|-------------|
-| `--async` | Submit tests and return immediately (exit `0`) without waiting for results. `--download-artifacts` and `--report` do nothing with `--async`: download them later with [`dcd artifacts`](dcd-artifacts.md) (see [Async Execution](../advanced/async-execution.md)) |
+| `--async` | Submit tests and return immediately (exit `0`) without waiting for results. `--download-artifacts` and `--report` do nothing with `--async`: download them later with [`dcd artifacts`](dcd-artifacts.md) (see [Async execution](../ci-cd/overview.md#async-execution)) |
 | `--cancel-previous` | Cancel the still-queued tests of the previous run from the same CI context. Needs a repository plus a branch or PR: `--repo-name` with `--branch` or `--pr-number`, or the same values as `--metadata gh_repo=…` with `gh_branch=…` or `gh_pr_number=…` (see [Cancelling superseded runs](../advanced/cancel-previous.md)) |
 | `--priority <level>` | `low`, `normal` (default) or `high`. Reorders only your team's own queued runs (see [Run Priority](../configuration/run-priority.md)) |
 | `--quiet`, `-q` | Suppress per-test progress; print only the final summary |
@@ -110,7 +110,7 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 | `--json-file` | Write JSON results to a file (`<upload_id>_dcd.json` by default). Exits `0` even if the test run fails; infrastructure errors still exit `1`. Also turns on `--quiet` |
 | `--json-file-name <name>` | Custom name (or relative path) for the JSON file. Requires `--json-file` |
 | `--dry-run` | Simulate the run without uploading or triggering a test — useful for debugging workflow issues |
-| `--report <format>`, `--format` | Generate and download a report. Options: `junit`, `html`, `html-detailed`, `allure`. `html-detailed` and `allure` are deprecated, and we're targeting their removal on 7 December 2026. After that, runs that pass them still run (see [Report Formats](../artifacts/report-formats.md)) |
+| `--report <format>`, `--format` | Generate and download a report. Options: `junit`, `html`, `html-detailed`, `allure`. `html-detailed` and `allure` are deprecated, and we're targeting their removal on 7 December 2026. After that, runs that pass them still run (see [Report formats](../artifacts/artifacts.md#report-formats)) |
 | `--junit-path <path>` | Output path for the JUnit report (requires `--report junit`) |
 | `--html-path <path>` | Output path for the HTML report (requires `--report html` or `html-detailed`). The HTML report downloads as a ZIP, so use a `.zip` path such as `./report.zip` |
 | `--allure-path <path>` | Output path for the Allure report (requires `--report allure`). Deprecated, along with `allure` |

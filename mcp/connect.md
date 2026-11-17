@@ -4,13 +4,12 @@ description: "Connect Claude Code, Cursor, VS Code, Claude Desktop, Codex or ano
 
 # Connect an AI Agent
 
-DeviceCloud has three [MCP](https://modelcontextprotocol.io) servers. Most setups need only `dcd mcp`, which this page sets up.
+DeviceCloud has two [MCP](https://modelcontextprotocol.io) servers. Most setups need only `dcd mcp`, which this page sets up.
 
 | Server | Where it runs | What it serves |
 |---|---|---|
 | `dcd mcp` | On your machine or in CI, started by your MCP client. It comes with the [CLI](../cli/overview.md) | The `dcd_*` [cloud test tools](tools.md). Teams in the [Agent Devices](agent-devices.md) beta also get the device tools through it |
 | `https://api.devicecloud.dev/mcp` | Hosted by DeviceCloud. Your MCP client signs in through your browser | The device tools only, for teams in the Agent Devices beta. See [Connect your agent](agent-devices.md#connect-your-agent) |
-| `dcd-mcp` | On your machine, from the npm package only | The `dcd_*` tools only. It's the [older server](overview.md): new setups use `dcd mcp` |
 
 `dcd mcp` lets an AI agent, such as Claude Code, Cursor, VS Code, Claude Desktop or Codex, run cloud tests and read their results. It works the same on your machine and headless, such as in CI.
 
@@ -33,6 +32,10 @@ dcd mcp install claude-code    # or claude-desktop, codex, cursor, vscode
 If your dcd has no `dcd mcp`, or `dcd mcp install` doesn't list your client, update the CLI first (`dcd upgrade`, or `npm install -g @devicecloud.dev/dcd` for the npm package). Leave out the client to pick from a list. Add `--read-only` for a server that offers only the tools that change nothing, or `--print` to see what it would add without changing anything.
 
 For Claude Code, Codex and VS Code, `dcd mcp install` runs the client's own command: `claude mcp add`, `codex mcp add` or `code --add-mcp`. For Claude Desktop and Cursor, it adds an entry to their config file and keeps everything else in it. In Claude Code, Codex, Claude Desktop and Cursor, it replaces an entry already named `devicecloud`, such as one for the hosted server. Restart the app afterwards.
+
+::: info
+Set up the older `dcd-mcp` command? Point your MCP client at `dcd mcp` instead: it serves the same tools.
+:::
 
 ## Headless, with an API key
 
@@ -127,7 +130,3 @@ If your team is in the [Agent Devices](agent-devices.md) beta, `dcd mcp` also se
 ## Read-only mode
 
 `dcd_run_cloud_test` starts a test run, which is billable. For an agent that should only look, add `--read-only` after `mcp` in the arguments, or set `DCD_MCP_READONLY=1`. The server then leaves out every tool that changes anything, including the device tools that start, drive or stop a device. `dcd_download_artifacts` stays, because it only writes files on your machine.
-
-## The older `dcd-mcp` server
-
-The npm package also has `dcd-mcp`, an older server with the same `dcd_*` tools but no device tools. `dcd mcp` covers it, so you only need `dcd-mcp` for a setup that already uses it. See [Older dcd-mcp Server](overview.md).

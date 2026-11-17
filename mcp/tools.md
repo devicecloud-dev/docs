@@ -1,6 +1,6 @@
 # Cloud Test Tools
 
-The `dcd_*` tools run Maestro tests in the cloud and read their results. [`dcd mcp`](connect.md) serves them, and so does the [older `dcd-mcp` server](overview.md). This page lists each tool's parameters and return shape. The tools that drive a cloud device are in [Agent Devices Tools](agent-devices-tools.md).
+The `dcd_*` tools run Maestro tests in the cloud and read their results. [`dcd mcp`](connect.md) serves them. This page lists each tool's parameters and return shape. The tools that drive a cloud device are in [Agent Devices Tools](agent-devices-tools.md).
 
 All tools return pretty-printed JSON as their text payload. Failures come back as an error result the agent can read and react to — a failing tool never tears down the server, so an agent can recover and retry.
 
@@ -55,7 +55,7 @@ Download a completed run's artifacts zip (videos, logs and screenshots) to local
 | `report` | `junit` \| `allure` \| `html` | Also download a formatted report of this type. `allure` is deprecated, see [Deprecations & Removals](../getting-started/deprecations.md) |
 | `reportPath` | string | Where to write the report (defaults by type: `report.xml` for `junit`, `report.zip` for `html`, `report.html` for `allure`). The `html` report is a ZIP. A relative path works as for `artifactsPath` |
 
-Returns `{ uploadId, artifactsPath, reportPath, warnings }`. A **non-empty `warnings` array means a download could not be produced** — most often because the run has no results yet. An empty array means success. See [Artifacts & Downloads](../artifacts/artifacts.md) and [Report Formats](../artifacts/report-formats.md).
+Returns `{ uploadId, artifactsPath, reportPath, warnings }`. A **non-empty `warnings` array means a download could not be produced** — most often because the run has no results yet. An empty array means success. See [Artifacts & Downloads](../artifacts/artifacts.md) and [Report formats](../artifacts/artifacts.md#report-formats).
 
 ## dcd_get_team_settings
 

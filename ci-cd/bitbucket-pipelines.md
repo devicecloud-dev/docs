@@ -67,7 +67,7 @@ Most pipe variables map to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flag of th
 | `WORKSPACE` / `FLOWS` | Path to your Maestro flows folder or file. If you set both, `FLOWS` wins. |
 | `ANDROID_DEVICE`, `ANDROID_API_LEVEL` | Android device + API level. |
 | `IOS_DEVICE`, `IOS_VERSION` | iOS device + version. |
-| `DEVICE_LOCALE` | Device locale, e.g. `de_DE`. See [Device Locale](../configuration/device-locale.md). |
+| `DEVICE_LOCALE` | Device locale, e.g. `de_DE`. See [Locale](../configuration/device-settings.md#locale). |
 | `GOOGLE_PLAY` | `"true"` to run on Android devices with Google Play. |
 | `MAESTRO_VERSION` | Maestro version to run your flows with. See [Maestro Versions](../configuration/maestro-versions.md). |
 | `CONFIG` | Path to a custom Maestro config file. |
@@ -76,7 +76,7 @@ Most pipe variables map to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flag of th
 | `METADATA` | Newline-separated `key=value` metadata attached to the run. |
 | `INCLUDE_TAGS` / `EXCLUDE_TAGS` | Filter flows by Maestro tag. |
 | `RETRY` | Number of retries on failure, up to `2`. See [Retry Strategies](../advanced/retry-strategies.md). |
-| `REPORT` | `junit` or `html`. `html-detailed` and `allure` are deprecated, see [Report Formats](../artifacts/report-formats.md). |
+| `REPORT` | `junit` or `html`. `html-detailed` and `allure` are deprecated, see [Report formats](../artifacts/artifacts.md#report-formats). |
 | `JUNIT_PATH` | Where to write the JUnit report (default `./report.xml`). |
 | `DOWNLOAD_ARTIFACTS` | `ALL` or `FAILED` — downloads logs/screenshots/videos. |
 | `JSON_FILE` | `"true"` to write the results to `<upload_id>_dcd.json`. |

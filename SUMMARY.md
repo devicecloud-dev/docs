@@ -18,24 +18,17 @@
 * [Bitrise Steps](ci-cd/bitrise-steps.md)
 * [Bitbucket Pipelines](ci-cd/bitbucket-pipelines.md)
 * [Any CI](ci-cd/any-ci.md)
-* [Async Execution](advanced/async-execution.md)
 * [Cancelling Superseded Runs](advanced/cancel-previous.md)
 
 ## Devices
 
 * [Devices & OS Versions](getting-started/devices-configuration.md)
-* [Deprecations & Removals](getting-started/deprecations.md)
 * [Device Matrix](configuration/device-matrix.md)
-* [Per-flow Devices](configuration/per-flow-devices.md)
 * [Per-flow Overrides](configuration/per-flow-overrides.md)
 * [Runner Types](configuration/runner-type.md)
 * [Google Play APIs](configuration/google-play-apis.md)
 * [Foldable Devices](configuration/foldable-devices.md)
-* [Animations](configuration/disable-animations.md)
-* [Device Locale](configuration/device-locale.md)
-* [Device Date & Time](configuration/device-datetime.md)
-* [Device Orientation](configuration/orientation.md)
-* [Chrome Onboarding](advanced/chrome-onboarding.md)
+* [Device Settings](configuration/device-settings.md)
 
 ## Configuration
 
@@ -51,7 +44,6 @@
 ## Test Artifacts & Reports
 
 * [Artifacts & Downloads](artifacts/artifacts.md)
-* [Report Formats](artifacts/report-formats.md)
 * [Inspecting Variables](artifacts/inspecting-variables.md)
 
 ## Notifications
@@ -70,9 +62,9 @@
 * [List](cli/dcd-list.md)
 * [Login & Accounts](cli/dcd-login.md)
 * [Settings](cli/dcd-settings.md)
-* [Devices](cli/dcd-device.md)
 * [Exit Codes](advanced/exit-codes.md)
 * [Live Sessions](cli/dcd-live.md)
+* [Devices](cli/dcd-device.md)
 
 ## REST API
 
@@ -91,14 +83,6 @@
 * [Agent Devices](mcp/agent-devices.md)
 * [Agent Devices Tools](mcp/agent-devices-tools.md)
 * [Agent Instructions](mcp/agent-devices-skill.md)
-* [Older dcd-mcp Server](mcp/overview.md)
-
-## Security & Compliance
-
-* [Security Overview](security/security-overview.md)
-* [IP Addresses](security/ip-addresses.md)
-* [Enterprise SSO](security/enterprise-single-sign-on.md)
-* [IT Security Policies](security/it-security-policies.md)
 
 ## Billing
 
@@ -106,6 +90,16 @@
 * [Subscriptions](billing/subscriptions.md)
 * [Overage](billing/overage.md)
 * [Usage Alerts & Limits](billing/usage-alerts.md)
+
+## Security & Compliance
+
+* [Security Overview](security/security-overview.md)
+* [IP Addresses](security/ip-addresses.md)
+* [Enterprise SSO](security/enterprise-single-sign-on.md)
+
+## Product Lifecycle
+
+* [Deprecations & Removals](getting-started/deprecations.md)
 
 ## Legal
 

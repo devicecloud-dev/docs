@@ -115,7 +115,7 @@ For the devices and OS versions you can pass, and which combinations work, see [
 | `android-api-level` | No | `36` | Android API level, e.g. `34`. |
 | `ios-device` | No | `iphone-16` | iOS device model, e.g. `iphone-17`. |
 | `ios-version` | No | `26` | Major iOS version, e.g. `18`. |
-| `device-locale` | No | — | Device locale in `ISO-639-1_ISO-3166-1` format (e.g. `de_DE`). See [Device Locale](../configuration/device-locale.md). |
+| `device-locale` | No | — | Device locale in `ISO-639-1_ISO-3166-1` format (e.g. `de_DE`). See [Locale](../configuration/device-settings.md#locale). |
 | `orientation` | No | `0` | Android only. Device orientation in degrees. Options: `0`, `90`. |
 | `google-play` | No | `false` | Android only. Run flows against Google Play devices. |
 | `runner-type` | No | `default` | Runner type. Options: `default`, `cpu1`, `m1`, `m4`. `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
@@ -128,13 +128,13 @@ For the devices and OS versions you can pass, and which combinations work, see [
 | `env` | No | — | Multiline list of environment variables (`KEY=value`) to inject into flows. |
 | `name` | No | PR title or commit message | Custom name for this test run, visible in the console. Defaults to the pull request's title on PR events, the commit message on push events, and the commit SHA otherwise. |
 | `retry` | No | `0` | Number of retries on failure, up to `2`. See [Retry Strategies](../advanced/retry-strategies.md). |
-| `report` | No | — | Report format: `junit` or `html`, saved in the working directory as `report.xml` or `report.zip`. `html-detailed` still works but is deprecated. See [Report Formats](../artifacts/report-formats.md). |
+| `report` | No | — | Report format: `junit` or `html`, saved in the working directory as `report.xml` or `report.zip`. `html-detailed` still works but is deprecated. See [Report formats](../artifacts/artifacts.md#report-formats). |
 
 ### Android-Specific Options
 
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
-| `maestro-chrome-onboarding` | No | `false` | Force Maestro-based Chrome onboarding. Fixes browser-related crashes but slows tests. See [Chrome Onboarding](../advanced/chrome-onboarding.md). |
+| `maestro-chrome-onboarding` | No | `false` | Force Maestro-based Chrome onboarding. Fixes browser-related crashes but slows tests. See [Chrome onboarding](../configuration/device-settings.md#chrome-onboarding). |
 | `android-no-snapshot` | No | `false` | Force cold boot instead of snapshot boot. Automatically enabled for API level 34+. |
 | `render-engine` | No | — | Software renderer the emulator boots with on the default Android runner (`cpu1`). Options: `lavapipe`, `swiftshader`. Leave unset to let DeviceCloud choose: `lavapipe`, or `swiftshader` for apps built with Flutter. Try `swiftshader` if your app fails to render or the device drops offline mid-run. |
 
@@ -157,7 +157,7 @@ The action automatically attaches Git and pull request metadata to each run, rea
 
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
-| `async` | No | `false` | Exit immediately without waiting for results. Returns exit code `0` regardless of test outcome. See [Async Execution](../advanced/async-execution.md). |
+| `async` | No | `false` | Exit immediately without waiting for results. Returns exit code `0` regardless of test outcome. See [Async execution](overview.md#async-execution). |
 | `cancel-previous` | No | `false` | Cancel the still-queued tests of the previous run of this job on the same branch or PR. See [Cancelling superseded runs](../advanced/cancel-previous.md). |
 | `priority` | No | `normal` | Run priority: `low`, `normal` or `high`. Reorders only your team's own queued runs. See [Run Priority](../configuration/run-priority.md). |
 | `quiet` | No | `true` | Quieter output, without progress updates while the run is polled. Set to `false` to see them. |

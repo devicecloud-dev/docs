@@ -67,7 +67,7 @@ dcd cloud ... --google-play --android-device pixel-8 --android-api-level 34
 
 If you pass only one of them, DeviceCloud picks the other so the pair has a Google Play image: a device runs on its Google Play API level, and an API level runs on a Google Play device that offers it. If you pass neither, the run uses the default Android device, Pixel 10 on API 36, which has a Google Play image. A device with no Google Play image, or an API level no Google Play device offers, is rejected.
 
-If only some flows opt in with `DEVICECLOUD_OVERRIDE_GOOGLE_PLAY`, those flows are resolved the same way, from the device and API level the flow names, then the ones the upload names. A flow that opts in runs on Pixel 10 on API 36 when neither the flow nor the upload names a device or API level. To choose the device, pin it on the upload, or on those flows with [per-flow devices](per-flow-devices.md).
+If only some flows opt in with `DEVICECLOUD_OVERRIDE_GOOGLE_PLAY`, those flows are resolved the same way, from the device and API level the flow names, then the ones the upload names. A flow that opts in runs on Pixel 10 on API 36 when neither the flow nor the upload names a device or API level. To choose the device, pin it on the upload, or on those flows with a [per-flow override](per-flow-overrides.md#pin-a-flow-to-a-device).
 
 ## Moving to Apple Silicon (`m1`)
 
@@ -98,6 +98,6 @@ env:
 * **Devices.** Google Play on `m1` runs on `pixel-8` (API `34`) and `pixel-10` (API `36`, `37`). Pixel 7 isn't offered on `m1`, because it's deprecated.
 * **Concurrency.** Google Play runs on `m1` count towards your `m1` limit, not your `cpu1` limit. [Concurrency Protection](../getting-started/concurrency-and-parallel-runs.md) doesn't cover `m1`.
 
-Google Play images work the same way on both runner types: they come with Google Play Services and the Play Store, the price is the same, and they can't be rooted, so the [device date and time override](device-datetime.md) isn't applied.
+Google Play images work the same way on both runner types: they come with Google Play Services and the Play Store, the price is the same, and they can't be rooted, so the [device date and time override](device-settings.md#date-and-time) isn't applied.
 
 Please contact support if you would like more device/API availability.

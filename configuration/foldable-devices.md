@@ -7,7 +7,7 @@ DeviceCloud runs two foldables: the **iPhone Duo** on iOS 27 and the **Pixel 10 
 | iPhone Duo        | `--ios-device iphone-duo --ios-version 27`                 | `closed`, on the cover screen  | `closed`, `book`, `open`  | cover 1398 x 2034, plus the larger inner screen |
 | Pixel 10 Pro Fold | `--android-device pixel-10-pro-fold --android-api-level 36` | `open`, on the inner screen    | `closed`, `half`, `open`  | inner 2076 x 2152, cover 1080 x 2364            |
 
-A single flow can also name a foldable with [per-flow devices](per-flow-devices.md), for example `DEVICECLOUD_OVERRIDE_IOS_DEVICE: iphone-duo` with `DEVICECLOUD_OVERRIDE_IOS_VERSION: "27"`.
+A single flow can also name a foldable with a [per-flow override](per-flow-overrides.md#pin-a-flow-to-a-device), for example `DEVICECLOUD_OVERRIDE_IOS_DEVICE: iphone-duo` with `DEVICECLOUD_OVERRIDE_IOS_VERSION: "27"`.
 
 ## Device control from a flow
 
