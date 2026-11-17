@@ -23,7 +23,6 @@
 ## Devices
 
 * [Devices & OS Versions](getting-started/devices-configuration.md)
-* [Deprecations & Removals](getting-started/deprecations.md)
 * [Device Matrix](configuration/device-matrix.md)
 * [Per-flow Overrides](configuration/per-flow-overrides.md)
 * [Runner Types](configuration/runner-type.md)
@@ -63,9 +62,9 @@
 * [List](cli/dcd-list.md)
 * [Login & Accounts](cli/dcd-login.md)
 * [Settings](cli/dcd-settings.md)
-* [Devices](cli/dcd-device.md)
 * [Exit Codes](advanced/exit-codes.md)
 * [Live Sessions](cli/dcd-live.md)
+* [Devices](cli/dcd-device.md)
 
 ## REST API
 
@@ -85,18 +84,22 @@
 * [Agent Devices Tools](mcp/agent-devices-tools.md)
 * [Agent Instructions](mcp/agent-devices-skill.md)
 
-## Security & Compliance
-
-* [Security Overview](security/security-overview.md)
-* [IP Addresses](security/ip-addresses.md)
-* [Enterprise SSO](security/enterprise-single-sign-on.md)
-
 ## Billing
 
 * [Test Run Billing](billing/test-run-billing.md)
 * [Subscriptions](billing/subscriptions.md)
 * [Overage](billing/overage.md)
 * [Usage Alerts & Limits](billing/usage-alerts.md)
+
+## Security & Compliance
+
+* [Security Overview](security/security-overview.md)
+* [IP Addresses](security/ip-addresses.md)
+* [Enterprise SSO](security/enterprise-single-sign-on.md)
+
+## Product Lifecycle
+
+* [Deprecations & Removals](getting-started/deprecations.md)
 
 ## Legal
 
