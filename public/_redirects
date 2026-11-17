@@ -8,4 +8,20 @@
 
 /welcome-to-devicecloud /                                301
 # MCP docs moved out of CLI Reference — the old URL is shared in Discord threads.
-/cli-reference/mcp-server /ai-agents-and-mcp/mcp-server  301
+/cli-reference/mcp-server /ai-agents-and-mcp/older-dcd-mcp-server  301
+
+# Sidebar reorder (Nov 2026): the Devices section and the end of Advanced. Pages whose
+# old URL was their repo path are redirected by the build; these are the rest.
+/getting-started/devices-and-os-versions   /devices/devices-and-os-versions               301
+/getting-started/deprecations-and-removals /devices/deprecations-and-removals             301
+/configuration/device-date-and-time        /devices/device-date-and-time                  301
+/configuration/animations                  /devices/animations                            301
+/configuration/device-orientation          /devices/device-orientation                    301
+/configuration/runner-types                /devices/runner-types                          301
+/advanced/cancelling-superseded-runs       /ci-cd-integration/cancelling-superseded-runs  301
+/ai-agents-and-mcp/mcp-server              /ai-agents-and-mcp/older-dcd-mcp-server        301
+/ai-agents-and-mcp/tools-reference         /ai-agents-and-mcp/cloud-test-tools            301
+
+# Old GitBook paths still linked from GitHub Action releases up to v2.7.2.
+/reference/maestro-versions                /configuration/maestro-versions                301
+/reference/chrome-onboarding               /devices/chrome-onboarding                     301
