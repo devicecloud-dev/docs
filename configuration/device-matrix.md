@@ -82,7 +82,7 @@ Without `--async` the run waits for **every** device and exits `0` only if all o
 
 ## Rules
 
-- Every device and OS must be a supported combination, including Google Play if applicable. An unsupported one is rejected before anything runs so you never get a partial submission. Some runner types support fewer devices, see [Runner Type](runner-type.md).
+- Every device and OS must be a supported combination, including Google Play if applicable. An unsupported one is rejected before anything runs so you never get a partial submission. Some runner types support fewer devices, see [Runner Types](runner-type.md).
 
 - One platform per upload. An upload runs one app binary, so `--ios-device-matrix` and `--android-device-matrix` cannot be combined in the same run.
 

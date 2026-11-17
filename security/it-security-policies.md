@@ -1,8 +1,8 @@
 # IT Security Policies
 
-DeviceCloud implements a number of internal security policies to help protect data and systems.
+These are the internal security policies DeviceCloud follows to protect data and systems.
 
-You may request access to these policies by emailing support@devicecloud.dev
+You may request access to these policies by emailing support@devicecloud.dev.
 
 The policies available are:
 

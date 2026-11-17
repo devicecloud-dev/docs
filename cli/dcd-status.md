@@ -103,7 +103,7 @@ If the lookup itself fails — for example the upload ID doesn't exist, or the A
 
 Other errors print the same `status` and `error` but exit `1`. These include passing neither `--upload-id` nor `--name`, or having no API key and no `dcd login` session. Either way, check for an `error` field before treating `FAILED` as a failed test run.
 
-Use with [jq](https://jqlang.github.io/jq/) to extract specific values:
+Use with [jq](https://jqlang.org/) to extract specific values:
 
 ```bash
 export BINARY_ID=$(dcd status --name "Nightly regression" --json | jq -r '.appBinaryId')

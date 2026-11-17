@@ -34,8 +34,8 @@ Pass exactly one of `--download-artifacts` or `--report`.
 
 | Flag | Description |
 |------|-------------|
-| `--report <format>` | Download a test report. Options: `junit`, `html`, `html-detailed`, `allure`. `html-detailed` and `allure` are deprecated, and we're targeting their removal on 7 December 2026 (see [Report Formats](../artifacts/report-formats.md)). Mutually exclusive with `--download-artifacts` |
-| `--allure-path <path>` | Output path for the Allure report (default: `./report.html`). Requires `--report allure`. Deprecated, with removal targeted for 7 December 2026 |
+| `--report <format>` | Download a test report. Options: `junit`, `html`, `html-detailed`, `allure`. `html-detailed` and `allure` are deprecated, see [Deprecations & Removals](../getting-started/deprecations.md). Mutually exclusive with `--download-artifacts` |
+| `--allure-path <path>` | Output path for the Allure report (default: `./report.html`). Requires `--report allure`. Deprecated, along with `allure` |
 | `--html-path <path>` | Output path for the HTML report (default: `./report.zip`). Requires `--report html` or `html-detailed`. The HTML report downloads as a ZIP, so use a `.zip` path |
 | `--junit-path <path>` | Output path for the JUnit report (default: `./report.xml`). Requires `--report junit` |
 

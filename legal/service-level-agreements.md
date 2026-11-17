@@ -1,14 +1,14 @@
 # Service Level Agreements
 
-### Enterprise Platform Uptime SLA <a href="#enterprise-platform-uptime-sla" id="enterprise-platform-uptime-sla"></a>
+## Enterprise Platform Uptime SLA
 
 The following Service Level Agreement forms part of the Subscription Agreement between devicecloud.dev and Customer (the "Agreement"), will apply to the Services for Enterprise Customers specified in an Order Form during the applicable Subscription Term:
 
-#### 1. Uptime Commitment <a href="#id-1-uptime-commitment" id="id-1-uptime-commitment"></a>
+### 1. Uptime Commitment
 
 devicecloud.dev will provide Actual Availability for at least 99.9% of the total time in each calendar month during the Subscription Term, as measured by devicecloud.dev (the **"Uptime Commitment"**).
 
-#### 2. Service Credits <a href="#id-2-service-credits" id="id-2-service-credits"></a>
+### 2. Service Credits
 
 If the Uptime Commitment is not met during any particular calendar month during the Subscription Term, then Customer will be eligible for a service credit provided that Customer reports to devicecloud.dev such failure to meet the Uptime Commitment and requests such Service Credit per this process.&#x20;
 
@@ -21,11 +21,11 @@ The amount of any Service Credit due hereunder shall be calculated as follows: X
 | Less than 98.0% but greater than or equal to 96.0% | 30%               |
 | Less than 96.0%                                    | 40%               |
 
-#### 3. Credit Requests and Payment <a href="#id-3-credit-requests-and-payment" id="id-3-credit-requests-and-payment"></a>
+### 3. Credit Requests and Payment
 
 To request a Service Credit, the Customer must send an email to [support@devicecloud.dev](mailto:support@devicecloud.dev) within 30 days of the end of the month in which the Uptime Commitment was not met. Customer must include their registered email address and the previously reported dates and times that there was no Service Availability. If devicecloud.dev confirms that Customer is eligible for a Service Credit, devicecloud.dev will issue a credit to Customer's account within 30 days. Service Credits are not refunds, cannot be exchanged into a cash amount, and may only be used against future billing charges. Except as outlined below, the Service Credits shall be Customer's sole and exclusive remedy and devicecloud.dev's sole and exclusive liability, for any failure by devicecloud.dev to meet the Uptime Commitment.
 
-#### 4. Definitions <a href="#id-4-definitions" id="id-4-definitions"></a>
+### 4. Definitions
 
 All capitalized words used but not defined in this Service Level Agreement have the meaning outlined in the Agreement.
 
@@ -47,42 +47,42 @@ All capitalized words used but not defined in this Service Level Agreement have 
 
 "Development", "Staging", "uat", "pre-production" or new feature implementation even if in a production environment, are not considered Production.
 
-#### SLA Exclusions <a href="#sla-exclusions" id="sla-exclusions"></a>
+### SLA Exclusions
 
 * Caused by factors outside of our reasonable control, including but not limited to any force majeure event or Internet access, ISP provider issues, and/or related problems beyond the demarcation point of devicecloud.dev. For the avoidance of doubt, this list is not exhaustive, and we will endeavour to inform you if the issue is beyond a factor that we can reasonably control.
 * That results from any voluntary actions or inactions from you including erroneous Maestro test scripts or configuration.
 * That results from you not following the basic operational guidelines described in our documentation
 * That results from your equipment, software, or other technology.
 
-### Support <a href="#support" id="support"></a>
+## Support
 
 devicecloud.dev provides Support Service Level Agreements for our Enterprise customers. We support Standard customers with "Best Effort" support.
 
-#### 1. Urgent <a href="#id-1-urgent" id="id-1-urgent"></a>
+### 1. Urgent
 
 **Critical Issue**
 
 Defect resulting in full or partial system outage or a condition that makes devicecloud.dev unusable or unavailable for critical business systems in the Customer's workflows.
 
-#### 2. High <a href="#id-2-high" id="id-2-high"></a>
+### 2. High
 
 **Significant Business Disruption**
 
 Issue resulting in a situation meaning major functionality is impacted and significant performance degradation is experienced. The issue impacts a significant proportion of test runs and/or major devicecloud.dev functionality.
 
-#### 3. Normal <a href="#id-3-normal" id="id-3-normal"></a>
+### 3. Normal
 
 **Minor Feature or Functional Issue / General Question**
 
 The issue results in a component of devicecloud.dev not performing as expected or documented. An inquiry by a Customer representative regarding a general technical issue or general question.
 
-#### 4. Low <a href="#id-4-low" id="id-4-low"></a>
+### 4. Low
 
 **Minor Issue / Feature Request**
 
 An information request about devicecloud.dev or feature request.
 
-### Target initial response times <a href="#target-initial-response-times" id="target-initial-response-times"></a>
+## Target initial response times
 
 | Severity Level | Standard (Pro/Max) | Enterprise Account (annual contract) |
 | -------------- | ------------------ | ------------------------------------ |

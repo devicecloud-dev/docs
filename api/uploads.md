@@ -1,8 +1,12 @@
+---
+description: "REST API endpoints that list your team's test uploads and report an upload's status and per-test results, for polling a run in progress."
+---
+
 # Uploads
 
 ## List uploads
 
-Returns a paginated list of test uploads for your organisation.
+Returns a paginated list of test uploads for your team.
 
 ```
 GET /uploads/list

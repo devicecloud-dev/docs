@@ -3,7 +3,7 @@
 Upload an app binary and run Maestro flows on DeviceCloud. This is the primary command and a drop-in replacement for `maestro cloud`.
 
 ```bash
-dcd cloud <app-file> <flows-dir> [flags]
+dcd cloud <appFile> <flowFile> [flags]
 ```
 
 The command blocks until all tests have completed, then exits with an appropriate [exit code](../advanced/exit-codes.md).
@@ -12,8 +12,8 @@ The command blocks until all tests have completed, then exits with an appropriat
 
 | Argument | Description |
 |----------|-------------|
-| `<app-file>` | Path to your app binary: `.apk` for Android, `.app` or `.zip` for iOS, or an Expo iOS build archive (`.tar.gz`), which is extracted automatically |
-| `<flows-dir>` | Path to the flow file or directory of flows to run |
+| `<appFile>` | Path to your app binary: `.apk` for Android, `.app` or `.zip` for iOS, or an Expo iOS build archive (`.tar.gz`), which is extracted automatically |
+| `<flowFile>` | Path to the flow file or directory of flows to run |
 
 ## Flags
 
@@ -32,7 +32,7 @@ See [Authentication](../getting-started/api-keys.md) for the full picture.
 |------|-------------|
 | `--app-binary-id <id>` | Reuse a previously uploaded binary instead of uploading again |
 | `--app-url <url>` | Signed URL to an Expo iOS build (`.tar.gz`). The archive is downloaded and extracted automatically. Expo signed URLs expire after ~1 hour. Mutually exclusive with `--app-file` |
-| `--app-file <path>` | Path to the app binary (alternative to the positional `<app-file>` argument) |
+| `--app-file <path>` | Path to the app binary (alternative to the positional `<appFile>` argument) |
 | `--ignore-sha-check` | Force re-upload even if a binary with the same SHA already exists |
 | `--encrypt` / `--no-encrypt` | Envelope encryption is on by default: the app binary, flow files and `--env` values are encrypted on your machine before upload, each with its own key. Pass `--no-encrypt` (or set `DCD_ENCRYPT=0`) to turn it off; the upload is still encrypted in transit. An unchanged binary is still deduplicated, so it isn't uploaded again. See [Data Encryption](../security/security-overview.md#data-encryption) |
 
@@ -56,7 +56,7 @@ See [Authentication](../getting-started/api-keys.md) for the full picture.
 
 | Flag | Description |
 |------|-------------|
-| `--flows <path>` | Path to a flow file or a directory of flows (alternative to the positional `<flows-dir>` argument) |
+| `--flows <path>` | Path to a flow file or a directory of flows (alternative to the positional `<flowFile>` argument) |
 | `--config <path>` | Path to a `config.yaml` workspace config file (see [Workspace Configuration](../configuration/workspace-config.md)) |
 | `--exclude-flows <paths>` | Flow files or sub-directories to exclude. Comma-separated, or repeat the flag |
 | `--include-tags <tags>` | Only run flows with these tags. Comma-separated, or repeat the flag |
@@ -104,7 +104,7 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 |------|-------------|
 | `--async` | Submit tests and return immediately (exit `0`) without waiting for results. `--download-artifacts` and `--report` do nothing with `--async`: download them later with [`dcd artifacts`](dcd-artifacts.md) (see [Async Execution](../advanced/async-execution.md)) |
 | `--cancel-previous` | Cancel the still-queued tests of the previous run from the same CI context. Needs a repository plus a branch or PR: `--repo-name` with `--branch` or `--pr-number`, or the same values as `--metadata gh_repo=…` with `gh_branch=…` or `gh_pr_number=…` (see [Cancelling superseded runs](../advanced/cancel-previous.md)) |
-| `--priority <level>` | `low`, `normal` (default) or `high`. Reorders only your organisation's own queued runs (see [Run Priority](../configuration/run-priority.md)) |
+| `--priority <level>` | `low`, `normal` (default) or `high`. Reorders only your team's own queued runs (see [Run Priority](../configuration/run-priority.md)) |
 | `--quiet`, `-q` | Suppress per-test progress; print only the final summary |
 | `--json` | Output results as JSON (see [JSON output](#json-output)). Exits `0` on success, `2` on test failure, `1` on CLI/infrastructure errors. The output includes a `notices` array with any deprecation or other notices for the run. A run superseded through `--cancel-previous` has `status` `SUPERSEDED` and exits `0` |
 | `--json-file` | Write JSON results to a file (`<upload_id>_dcd.json` by default). Exits `0` even if the test run fails; infrastructure errors still exit `1`. Also turns on `--quiet` |
@@ -113,7 +113,7 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 | `--report <format>`, `--format` | Generate and download a report. Options: `junit`, `html`, `html-detailed`, `allure`. `html-detailed` and `allure` are deprecated, and we're targeting their removal on 7 December 2026. After that, runs that pass them still run (see [Report Formats](../artifacts/report-formats.md)) |
 | `--junit-path <path>` | Output path for the JUnit report (requires `--report junit`) |
 | `--html-path <path>` | Output path for the HTML report (requires `--report html` or `html-detailed`). The HTML report downloads as a ZIP, so use a `.zip` path such as `./report.zip` |
-| `--allure-path <path>` | Output path for the Allure report (requires `--report allure`). Deprecated, with removal targeted for 7 December 2026 |
+| `--allure-path <path>` | Output path for the Allure report (requires `--report allure`). Deprecated, along with `allure` |
 | `--download-artifacts <ALL\|FAILED>` | Download test artifacts after completion (see [Artifacts](../artifacts/artifacts.md)) |
 | `--artifacts-path <path>` | Output path for the artifacts zip (default `./artifacts.zip`). Requires `--download-artifacts` |
 | `--debug` | Enable verbose debug logging |

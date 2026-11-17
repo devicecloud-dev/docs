@@ -4,7 +4,7 @@ DeviceCloud can email a pass/fail summary of each test run to your team, so peop
 
 Unlike [Slack](slack-notifications.md) and [webhook](webhook-notifications.md) notifications, email is configured **per project** in your `config.yaml` rather than from the console. That means it travels with your repo and can differ per branch or pipeline.
 
-### Enabling email notifications
+## Enabling email notifications
 
 Add a `notifications.email` block to your `config.yaml` and list the recipients:
 
@@ -24,7 +24,7 @@ By default you'll only be emailed when a suite has at least one failed or cancel
 The `config.yaml` is picked up automatically from the directory you pass to `dcd cloud`. See [Workspace Configuration](../configuration/workspace-config.md) for where the file lives and how it's loaded.
 :::
 
-#### Also notify on passing runs
+### Also notify on passing runs
 
 To receive a summary after **every** completed run set `onSuccess` to `true`:
 
@@ -39,7 +39,7 @@ notifications:
       - devs@example.com
 ```
 
-#### Also notify after retries
+### Also notify after retries
 
 If you retry tests after a run's summary has already been emailed, no further email is sent by default. To receive an updated summary once the retried tests finish, set `onRetry` to `true`. The updated summary follows the same rule as any other: unless `onSuccess` is also `true`, it's only sent while the run still has a failed or cancelled flow.
 
@@ -54,7 +54,7 @@ notifications:
       - devs@example.com
 ```
 
-### What's in the email
+## What's in the email
 
 The email is sent from **DeviceCloud &lt;hello@devicecloud.dev&gt;** and includes:
 
@@ -67,7 +67,7 @@ The email is sent from **DeviceCloud &lt;hello@devicecloud.dev&gt;** and include
 If you are not receiving emails for your test runs, try adding **hello@devicecloud.dev** to your safe senders list.
 :::
 
-### Disabling emails
+## Disabling emails
 
 Set `enabled: false`, or remove the `notifications.email` block from your `config.yaml`.
 
@@ -82,6 +82,6 @@ notifications:
       - devs@example.com
 ```
 
-### Usage alert emails
+## Usage alert emails
 
 [Usage alerts](../billing/usage-alerts.md) are separate from run summaries. They're set up on the billing page, not in `config.yaml`, and go to your team's billing email address, or to its owners and admins if none is set.

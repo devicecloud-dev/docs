@@ -67,7 +67,7 @@ Run a whole Maestro flow file against the session. The flow's `appId:` header is
 
 | Flag | Description |
 |------|-------------|
-| `<flow-file>` | **Required.** Path to the Maestro flow file (positional argument) |
+| `<flowFile>` | **Required.** Path to the Maestro flow file (positional argument) |
 | `--session <name>` | **Required.** Live session name |
 | `--timeout <seconds>` | Max seconds to wait for the flow to finish (default: `600`) |
 | `--wait` | Wait for the device to be ready before running |

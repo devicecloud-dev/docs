@@ -1,5 +1,5 @@
 ---
-description: SAML-based authentication for larger companies
+description: "Set up SAML single sign-on for DeviceCloud with Okta, Entra ID, Google Workspace or another identity provider, on the Max and Enterprise plans."
 ---
 
 # Enterprise SSO
@@ -21,7 +21,7 @@ We support the following identity providers:
 
 Using a provider that isn't on the list? Contact us and we'll help you set it up.
 
-#### Integration Steps
+## Integration Steps
 
 These steps have been written with Okta in mind, but are applicable to other identity providers too.
 
@@ -42,14 +42,14 @@ The Default Relay State is where people land when they start from your identity 
 6. Send the following to support@devicecloud.dev from an email address registered with DeviceCloud:
    1. your metadata URL (or XML)
    2. the email domain(s) you wish to protect
-7. Our support team will then verify your organisation is on the Max or Enterprise plan and enforce SSO for the requested domains.
-8. Once SSO is on, sign in from the [DeviceCloud login screen](https://console.devicecloud.dev/login): enter your work email, then select **SAML SSO**. You can also start from your identity provider's dashboard.
+7. Our support team will then verify your team is on the Max or Enterprise plan and enforce SSO for the requested domains.
+8. Once SSO is on, sign in from the [DeviceCloud login screen](https://console.devicecloud.dev/login): enter your work email, then select **Login with SAML SSO**. You can also start from your identity provider's dashboard.
 
-![The DeviceCloud sign-in page with the SAML SSO option](../assets/sso-sign-in.png)
+![The DeviceCloud sign-in page, with the Login with SAML SSO button below the email, GitHub, Google and passkey options](../assets/sso-sign-in.png)
 
-#### What changes once SSO is on
+## What changes once SSO is on
 
-* People with an email address on a protected domain must sign in with **SAML SSO**. The login screen turns away an email code, GitHub, Google or a passkey for those addresses.
+* People with an email address on a protected domain must sign in through **Login with SAML SSO**. The login screen turns away an email code, GitHub, Google or a passkey for those addresses.
 * Assign everyone who needs access to the DeviceCloud app in your identity provider before SSO is turned on. Anyone on a protected domain who isn't assigned can't sign in.
 * People who sign in through SSO for the first time join your team automatically.
 * Your identity provider handles multi-factor authentication. SSO accounts don't set up DeviceCloud two-factor authentication or passkeys, and an SSO sign-in meets every team [Sign-in requirement](security-overview.md#sign-in-and-two-factor-authentication).

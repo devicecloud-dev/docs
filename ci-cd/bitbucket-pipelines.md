@@ -1,6 +1,6 @@
 # Bitbucket Pipelines
 
-DeviceCloud ships a [Bitbucket Pipe](https://support.atlassian.com/bitbucket-cloud/docs/pipes/) that runs your Maestro flows on devicecloud.dev directly from your Bitbucket Pipelines.
+DeviceCloud ships a [Bitbucket Pipe](https://support.atlassian.com/bitbucket-cloud/docs/what-are-pipes/) that runs your Maestro flows on DeviceCloud directly from your Bitbucket Pipelines.
 
 ## Quick Start
 
@@ -75,14 +75,14 @@ Most pipe variables map to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flag of th
 | `ENV_LIST` | Newline-separated `KEY=VALUE` env vars injected into flows. |
 | `METADATA` | Newline-separated `key=value` metadata attached to the run. |
 | `INCLUDE_TAGS` / `EXCLUDE_TAGS` | Filter flows by Maestro tag. |
-| `RETRY` | Number of retries on failure, up to `2`. Retries are free. |
+| `RETRY` | Number of retries on failure, up to `2`. See [Retry Strategies](../advanced/retry-strategies.md). |
 | `REPORT` | `junit` or `html`. `html-detailed` and `allure` are deprecated, see [Report Formats](../artifacts/report-formats.md). |
 | `JUNIT_PATH` | Where to write the JUnit report (default `./report.xml`). |
 | `DOWNLOAD_ARTIFACTS` | `ALL` or `FAILED` — downloads logs/screenshots/videos. |
 | `JSON_FILE` | `"true"` to write the results to `<upload_id>_dcd.json`. |
 | `ASYNC` | `"true"` to fire-and-forget. |
 | `CANCEL_PREVIOUS` | `"true"` to cancel the previous run's still-queued tests when this one starts (from pipe 1.5.0). See [Cancelling superseded runs](../advanced/cancel-previous.md). |
-| `PRIORITY` | `low`, `normal` (default) or `high` (from pipe 1.6.0). Reorders only your organisation's own queued runs, see [Run Priority](../configuration/run-priority.md). |
+| `PRIORITY` | `low`, `normal` (default) or `high` (from pipe 1.6.0). Reorders only your team's own queued runs, see [Run Priority](../configuration/run-priority.md). |
 | `CHECK_NAME` | Names the GitHub check this run posts, see [Bitbucket context auto-attached](#bitbucket-context-auto-attached). |
 | `RUNNER_TYPE` | `default`, `cpu1`, `m1` or `m4`. `m1` and `m4` are premium runners, see [Runner Types](../configuration/runner-type.md). |
 | `RENDER_ENGINE` | Android only: `lavapipe` or `swiftshader`, the software renderer the emulator boots with on the default Android runner. Leave unset to let DeviceCloud choose (`swiftshader` for apps built with Flutter, otherwise `lavapipe`). |

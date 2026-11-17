@@ -127,7 +127,7 @@ For the devices and OS versions you can pass, and which combinations work, see [
 | `maestro-version` | No | — | Maestro CLI version to run flows with. See [Maestro Versions](../configuration/maestro-versions.md). |
 | `env` | No | — | Multiline list of environment variables (`KEY=value`) to inject into flows. |
 | `name` | No | PR title or commit message | Custom name for this test run, visible in the console. Defaults to the pull request's title on PR events, the commit message on push events, and the commit SHA otherwise. |
-| `retry` | No | `0` | Number of retries on failure (max `2`). Retries are free — same as pressing retry in the UI. |
+| `retry` | No | `0` | Number of retries on failure, up to `2`. See [Retry Strategies](../advanced/retry-strategies.md). |
 | `report` | No | — | Report format: `junit` or `html`, saved in the working directory as `report.xml` or `report.zip`. `html-detailed` still works but is deprecated. See [Report Formats](../artifacts/report-formats.md). |
 
 ### Android-Specific Options
@@ -159,12 +159,12 @@ The action automatically attaches Git and pull request metadata to each run, rea
 |-------|----------|---------|-------------|
 | `async` | No | `false` | Exit immediately without waiting for results. Returns exit code `0` regardless of test outcome. See [Async Execution](../advanced/async-execution.md). |
 | `cancel-previous` | No | `false` | Cancel the still-queued tests of the previous run of this job on the same branch or PR. See [Cancelling superseded runs](../advanced/cancel-previous.md). |
-| `priority` | No | `normal` | Run priority: `low`, `normal` or `high`. Reorders only your organisation's own queued runs. See [Run Priority](../configuration/run-priority.md). |
+| `priority` | No | `normal` | Run priority: `low`, `normal` or `high`. Reorders only your team's own queued runs. See [Run Priority](../configuration/run-priority.md). |
 | `quiet` | No | `true` | Quieter output, without progress updates while the run is polled. Set to `false` to see them. |
 | `download-artifacts` | No | — | Download logs, screenshots, and videos after the run, as `artifacts.zip` in the working directory. Options: `ALL`, `FAILED`. |
 | `json-file` | No | `false` | Write test results to `<upload_id>_dcd.json` in the working directory. See [Save JSON results file](#save-json-results-file). |
 | `debug` | No | `false` | Enable verbose debug output. |
-| `use-beta` | No | `false` | Use the beta version of the DCD CLI. |
+| `use-beta` | No | `false` | Use the beta version of the dcd CLI. |
 
 ---
 

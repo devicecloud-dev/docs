@@ -2,7 +2,7 @@
 description: "The hardware each DeviceCloud test runs on, and the larger runner types, such as M4 for iOS, you can choose for resource-heavy apps and tests."
 ---
 
-# Runner Type
+# Runner Types
 
 By default each test run uses the following underlying hardware specifications:
 
@@ -27,14 +27,14 @@ If your app or test struggles on the default runner types, try the options below
 | Runner Type | Platform | Host OS | Architecture | RAM   | CPU Cores | Notes |
 | ----------- | -------- | ------- | ------------ | ----- | --------- | ----- |
 | `m4`        | iOS      | MacOS   | M4           | 16 GB | 10        | |
-| `m1`        | Android  | MacOS   | M1           | 8 GB  | 8         | Apple Silicon (arm64). Runs Google Play from 14 December 2026. |
+| `m1`        | Android  | MacOS   | M1           | 8 GB  | 8         | Apple Silicon (arm64). Google Play runs are moving here, see below. |
 
 ::: warning
 The `gpu1` runner type was removed on 9 November 2026. Android runs that still pass `--runner-type gpu1`, or set it with `DEVICECLOUD_OVERRIDE_RUNNER_TYPE`, run on `cpu1` instead, billed at the standard Android rate. They don't fail. On iOS, `gpu1` is still rejected. Stop passing `gpu1`: Android runs use `cpu1` by default, or you can pass `--runner-type cpu1`. See the [Runner Type Support Policy](#runner-type-support-policy) for more information.
 :::
 
 ::: info
-**Google Play runs move to `m1` on 14 December 2026.** From that date every Google Play run uses `m1` rather than `cpu1`, at the same price. To test your app on `m1` now, add `--runner-type m1` to your Google Play runs. See [Moving to Apple Silicon](google-play-apis.md#moving-to-apple-silicon-m1).
+**Google Play runs are moving from `cpu1` to `m1`**, at the same price. See [Deprecations & Removals](../getting-started/deprecations.md) for the date.
 :::
 
 ### Limitations
@@ -74,7 +74,7 @@ env:
 * A value that isn't a runner type, or one that the platform doesn't support, rejects the whole upload before anything runs. The flow is never quietly run on the upload's runner type instead.
 * The flow is charged at its own runner type's rate. For example, an `m4` flow in a `default` upload is charged the advanced rate, and the other flows are charged the standard rate.
 * In a [device matrix](device-matrix.md), the flow still runs on every device in the matrix, each time on its own runner type.
-* Like all `DEVICECLOUD_OVERRIDE_*` settings, this only works in the flow's `env:` block, not with `-e`.
+* Like all [per-flow overrides](per-flow-overrides.md), this only works in the flow's `env:` block, not with `-e`.
 
 ## Runner Type Support Policy
 

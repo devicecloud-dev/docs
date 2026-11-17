@@ -1,10 +1,10 @@
 # Maestro Versions
 
-DeviceCloud supports multiple Maestro versions to ensure compatibility with your test flows.
+You can choose which Maestro version runs your flows, from the versions listed below.
 
 By default, tests run using Maestro 2.10.0. Pin `--maestro-version` if you need to stay on a specific version.
 
-Please note that we periodically remove support for older versions so we always recommend you stay up to date.
+We periodically remove support for older versions, so we always recommend you stay up to date.
 
 ## Available Versions
 
@@ -61,4 +61,4 @@ Once Maestro 2.5.0 is released, 2.0.10 is five minor versions old, so we may mar
 
 We may update the default version from time to time and we will always provide at least 30 days of notice beforehand.
 
-We will always provide at least 30 days of warning before removing support for previous Maestro versions.
+We will always provide at least 30 days of warning before removing support for previous Maestro versions. Upcoming removals are listed in [Deprecations & Removals](../getting-started/deprecations.md).

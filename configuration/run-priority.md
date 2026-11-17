@@ -1,6 +1,6 @@
 # Run Priority
 
-When your organisation is at its concurrency limit, new tests wait in a queue until a slot frees up. Run priority lets you choose which of your own queued runs starts first. For example, you can run release checks at `high` and a nightly regression suite at `low`.
+When your team is at its concurrency limit, new tests wait in a queue until a slot frees up. Run priority lets you choose which of your own queued runs starts first. For example, you can run release checks at `high` and a nightly regression suite at `low`.
 
 Priority is set per run with `--priority`. A run without it is `normal`, so nothing changes unless you set it.
 
@@ -23,7 +23,7 @@ The priority applies to the whole run: every flow in that `dcd cloud` run gets t
 Once you reach your maximum concurrency, extra tests are queued until you're back under your limit (see [Concurrency & Parallel Runs](../getting-started/concurrency-and-parallel-runs.md)). Each time a slot frees up, your queued `high` tests start first, then `normal`, then `low`.
 
 * Priority takes effect when your team is at its maximum concurrency and runs are waiting in the queue. When you're under the limit, nothing is held back, so there is nothing to reorder.
-* Retries keep the original run's priority. This covers both automatic retries from [`--retry`](../advanced/retry-strategies.md) and retries you queue from the console.
+* [Retries](../advanced/retry-strategies.md), from `--retry` or the console, keep the original run's priority.
 * In an `executionOrder` sequence, priority only decides when the first flow starts. Each later flow in the sequence can start once the one before it finishes.
 * Priority reorders your queued runs within each device. If a higher-priority run on one device takes the slot your queued run on another device would have used, that run goes back in its device's queue as if you had just submitted it.
 

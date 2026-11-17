@@ -1,6 +1,6 @@
 # App Management
 
-DeviceCloud provides several ways to manage your application binaries during test execution.
+Every `dcd cloud` run needs your app's binary. You can pass a file, reuse a binary you've already uploaded, or give the URL of an Expo build.
 
 ## App Binary Options
 

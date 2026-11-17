@@ -7,6 +7,7 @@
 * [Quick Start](getting-started/quickstart.md)
 * [Authentication](getting-started/api-keys.md)
 * [Devices & OS Versions](getting-started/devices-configuration.md)
+* [Deprecations & Removals](getting-started/deprecations.md)
 * [Flows & Workspaces](getting-started/flows-and-workspaces.md)
 * [Concurrency & Parallel Runs](getting-started/concurrency-and-parallel-runs.md)
 
@@ -27,6 +28,7 @@
 * [Workspace Configuration](configuration/workspace-config.md)
 * [Maestro Versions](configuration/maestro-versions.md)
 * [Per-flow Devices](configuration/per-flow-devices.md)
+* [Per-flow Overrides](configuration/per-flow-overrides.md)
 * [Device Matrix](configuration/device-matrix.md)
 * [Device Locale](configuration/device-locale.md)
 * [Device Date & Time](configuration/device-datetime.md)

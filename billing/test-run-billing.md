@@ -4,11 +4,11 @@
 All prices exclude Sales Tax. On the Pro and Max plans, tax is added at checkout for your country by our Merchant of Record, Paddle. On the Enterprise plan, tax is added to your invoice where applicable.
 :::
 
-DeviceCloud charges your Team's account per test run. This happens as soon as you run `dcd cloud`.
+DeviceCloud charges your team's account per test run. This happens as soon as you run `dcd cloud`.
 
 In billing terms, a test run is a single top-level flow executing on a single device. Multiple flows in an upload will incur multiple charges. 
 
-For example, an upload with 10 flows running on iOS (at $0.11 per test run) will incur $1.10 of charges to your Team's account.
+For example, an upload with 10 flows running on iOS (at $0.11 per test run) will incur $1.10 of charges to your team's account.
 
 Details of charges made to your account can be found on the [billing page](https://console.devicecloud.dev/billing). On the Pro and Max plans, usage beyond your plan's included credits is billed as [overage](overage.md).
 
@@ -23,21 +23,21 @@ Details of charges made to your account can be found on the [billing page](https
 Enterprise customers with volume discounts, and customers on older pricing, may pay different rates. Your team's rates, with any discount applied, are under **Flow Run Cost** on the [billing page](https://console.devicecloud.dev/billing).
 :::
 
-### Extended runtime
+## Extended runtime
 
 A flow that opts into [extended runtime](../configuration/extended-runtime.md) (up to 20 minutes instead of 10) is charged at 2× its rate above, whether or not it uses the extra time. Flows that don't opt in are charged at the normal rate.
 
-### Live and device sessions
+## Live and device sessions
 
 [Live sessions](../cli/dcd-live.md) and [Agent Devices](../mcp/agent-devices.md) sessions aren't charged per test run. They cost $0.03 a minute, charged in 30-second steps from when a device is assigned to the session until the session ends. Time spent queued isn't charged, and your team's discount applies.
 
-### Credits
+## Credits
 
 New teams are given $20 in free credits to test the service.
 
 Historically, DeviceCloud users purchased credits in advance and these were drawn down via usage. Credits can no longer be purchased or topped up — [subscriptions](subscriptions.md) have replaced them — but any prepaid balance you still hold doesn't expire. If you also have a subscription, your prepaid balance (including any remaining free credits) is spent first, before your plan's included usage.
 
-### Cancelled tests
+## Cancelled tests
 
 A test you cancel before it starts running is refunded at 75% of its cost. The 25% is used to cover our network and egress costs from preparing your test to run.
 
@@ -51,15 +51,15 @@ Each refund appears as a negative line in your usage history, alongside the orig
 
 A run paid for from more than one of these is refunded in the same proportions. Refunds for cancelled tests are never paid back to your card.
 
-### Retries
+## Retries
 
 Retrying a test doesn't cost anything: retries you start from the console or with `--retry` aren't charged. If a test is interrupted by an infrastructure failure on our side (for example, a simulator that fails to boot), it is re-run automatically at no extra charge.
 
-### Plan changes
+## Plan changes
 
 Upgrading your plan takes effect immediately, and you're charged the prorated difference for the rest of the current billing period. Downgrading takes effect from your next billing date, and no refund is issued for the current period.
 
-### Overdue payments
+## Overdue payments
 
 If a subscription payment fails, you can keep testing for 14 days while the payment is retried. We email your billing email address, or your team's owners and admins if you haven't set one. A notice also appears in the CLI, the console and your CI output, with the date new runs will stop.
 

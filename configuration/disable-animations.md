@@ -34,7 +34,7 @@ dcd cloud ... --no-disable-animations
 
 ### Per test (both platforms)
 
-Override the upload-wide setting for a single flow via the DeviceCloud env variable:
+Override the upload-wide setting for a single flow with a [per-flow override](per-flow-overrides.md):
 
 ```yaml
 # in your test.yaml

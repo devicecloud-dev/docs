@@ -1,3 +1,7 @@
+---
+description: "Run Android tests in portrait or landscape with --orientation, and the values it accepts. iOS devices stay in portrait."
+---
+
 # Device Orientation
 
 Control Android device orientation during test execution.
