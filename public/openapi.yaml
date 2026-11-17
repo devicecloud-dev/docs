@@ -3150,13 +3150,28 @@ components:
         ETag:
           $ref: '#/components/headers/ETag'
     NoResults:
-      description: The upload has no results in your team, or doesn't exist.
+      description: |
+        The upload has no results in your team, or doesn't exist. This body has
+        only a `message`. For a key with **CI: run tests only** access, a run that
+        key didn't start also answers `404`, but with the standard error envelope
+        and `"error": "UPLOAD_NOT_FOUND"`.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/MessageOnlyError'
-          example:
-            message: No results found for this upload
+            anyOf:
+              - $ref: '#/components/schemas/MessageOnlyError'
+              - $ref: '#/components/schemas/ErrorEnvelope'
+          examples:
+            noResults:
+              summary: No results
+              value:
+                message: No results found for this upload
+            notStartedByKey:
+              summary: A CI-only key, and a run it didn't start
+              value:
+                statusCode: 404
+                message: Upload not found
+                error: UPLOAD_NOT_FOUND
     MessageOnlyServerError:
       description: The report couldn't be built.
       content:
