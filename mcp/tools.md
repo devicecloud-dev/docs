@@ -1,6 +1,6 @@
 # Cloud Test Tools
 
-The `dcd_*` tools run Maestro tests in the cloud and read their results. [`dcd mcp`](connect.md) serves them, and so does the [older `dcd-mcp` server](overview.md). This page lists each tool's parameters and return shape. The tools that drive a cloud device are in [Agent Devices Tools](agent-devices-tools.md).
+The `dcd_*` tools run Maestro tests in the cloud and read their results. [`dcd mcp`](connect.md) serves them. This page lists each tool's parameters and return shape. The tools that drive a cloud device are in [Agent Devices Tools](agent-devices-tools.md).
 
 All tools return pretty-printed JSON as their text payload. Failures come back as an error result the agent can read and react to — a failing tool never tears down the server, so an agent can recover and retry.
 

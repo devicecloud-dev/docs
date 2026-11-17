@@ -84,7 +84,6 @@
 * [Agent Devices](mcp/agent-devices.md)
 * [Agent Devices Tools](mcp/agent-devices-tools.md)
 * [Agent Instructions](mcp/agent-devices-skill.md)
-* [Older dcd-mcp Server](mcp/overview.md)
 
 ## Security & Compliance
 
