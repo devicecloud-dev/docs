@@ -160,7 +160,7 @@ We will always aim to support the latest versions of iOS and additionally contin
 We will always aim to support the latest versions of iOS and additionally continue to provide support for previous versions. Our policy for this is as follows:
 
 * We will always support the latest version plus the previous two.
-* Supported versions will always be the latest point release (i.e. 26.x rather than 26.0). Point releases change without notice; you target a major version such as `--ios-version 26` and we run it on the newest 26.x we hold.
+* Supported versions will always be the latest point release (e.g. 26.x rather than 26.0). Point releases change without notice; you target a major version such as `--ios-version 26` and we run it on the newest 26.x we hold.
 * Once a version is no longer one of the latest three, we'll mark it as deprecated.
 * Deprecated versions are then removed after 30 days, provided its total usage over seven days is less than 1%.
 
@@ -176,7 +176,7 @@ We will always aim to support the latest devices and additionally continue to pr
 
 * The latest even-numbered Google Pixel model & its variations, i.e. Pixel 10, 10 Pro, 10 Pro XL & 10 Pro Fold.
 * The previous two supported (i.e. even-numbered) generations of Pixels, i.e. Pixel 8 & Pixel 6.
-* The latest odd-numbered, base-model Pixel i.e. Pixel 11.
+* The latest odd-numbered, base-model Pixel, i.e. Pixel 11.
 * A generic-tablet model.
 * Once a device is to be no longer supported, we'll mark it as deprecated.
 * Deprecated devices are then removed after 30 days, provided their total usage over seven days is less than 1%.

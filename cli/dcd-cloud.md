@@ -3,7 +3,7 @@
 Upload an app binary and run Maestro flows on DeviceCloud. This is the primary command and a drop-in replacement for `maestro cloud`.
 
 ```bash
-dcd cloud <app-file> <flows-dir> [flags]
+dcd cloud <appFile> <flowFile> [flags]
 ```
 
 The command blocks until all tests have completed, then exits with an appropriate [exit code](../advanced/exit-codes.md).
@@ -12,8 +12,8 @@ The command blocks until all tests have completed, then exits with an appropriat
 
 | Argument | Description |
 |----------|-------------|
-| `<app-file>` | Path to your app binary: `.apk` for Android, `.app` or `.zip` for iOS, or an Expo iOS build archive (`.tar.gz`), which is extracted automatically |
-| `<flows-dir>` | Path to the flow file or directory of flows to run |
+| `<appFile>` | Path to your app binary: `.apk` for Android, `.app` or `.zip` for iOS, or an Expo iOS build archive (`.tar.gz`), which is extracted automatically |
+| `<flowFile>` | Path to the flow file or directory of flows to run |
 
 ## Flags
 
@@ -32,7 +32,7 @@ See [Authentication](../getting-started/api-keys.md) for the full picture.
 |------|-------------|
 | `--app-binary-id <id>` | Reuse a previously uploaded binary instead of uploading again |
 | `--app-url <url>` | Signed URL to an Expo iOS build (`.tar.gz`). The archive is downloaded and extracted automatically. Expo signed URLs expire after ~1 hour. Mutually exclusive with `--app-file` |
-| `--app-file <path>` | Path to the app binary (alternative to the positional `<app-file>` argument) |
+| `--app-file <path>` | Path to the app binary (alternative to the positional `<appFile>` argument) |
 | `--ignore-sha-check` | Force re-upload even if a binary with the same SHA already exists |
 | `--encrypt` / `--no-encrypt` | Envelope encryption is on by default: the app binary, flow files and `--env` values are encrypted on your machine before upload, each with its own key. Pass `--no-encrypt` (or set `DCD_ENCRYPT=0`) to turn it off; the upload is still encrypted in transit. An unchanged binary is still deduplicated, so it isn't uploaded again. See [Data Encryption](../security/security-overview.md#data-encryption) |
 
@@ -56,7 +56,7 @@ See [Authentication](../getting-started/api-keys.md) for the full picture.
 
 | Flag | Description |
 |------|-------------|
-| `--flows <path>` | Path to a flow file or a directory of flows (alternative to the positional `<flows-dir>` argument) |
+| `--flows <path>` | Path to a flow file or a directory of flows (alternative to the positional `<flowFile>` argument) |
 | `--config <path>` | Path to a `config.yaml` workspace config file (see [Workspace Configuration](../configuration/workspace-config.md)) |
 | `--exclude-flows <paths>` | Flow files or sub-directories to exclude. Comma-separated, or repeat the flag |
 | `--include-tags <tags>` | Only run flows with these tags. Comma-separated, or repeat the flag |

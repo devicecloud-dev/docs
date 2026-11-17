@@ -24,7 +24,7 @@ env:
 If the value can't be parsed, it is ignored and the flow runs with the default
 (real) time.
 
-Please note that due to platform limitations, this behaves very differently on Android and iOS. 
+Due to platform limitations, this behaves very differently on Android and iOS. 
 On Android it sets the real device clock, so the app sees the new time. 
 On iOS it only changes the cosmetic status-bar clock — the app's own `Date()` is unaffected as iOS simulators share their host kernel. Read the platform notes below before relying on it.
 
@@ -35,7 +35,7 @@ Sets the real emulator clock, so `Date.now()`, `System.currentTimeMillis()`, dat
 The override sets the clock the run starts with. The clock then ticks forward normally for the rest of the run; it isn't frozen. If you need time to stand still, drive it from within your app or test instead.
 
 ::: info
-Please note that this is not available on Google Play images. [Google Play](google-play-apis.md) emulators are not rootable, so the clock cannot be set. Google Play flows will log a warning and continue on real time. Use the standard image if you need the date/time override.
+This is not available on Google Play images. [Google Play](google-play-apis.md) emulators are not rootable, so the clock cannot be set. Google Play flows will log a warning and continue on real time. Use the standard image if you need the date/time override.
 :::
 
 ## iOS

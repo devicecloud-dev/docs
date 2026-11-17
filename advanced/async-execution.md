@@ -5,7 +5,7 @@ By default, `dcd cloud` waits for all tests to complete before exiting. Async mo
 ## Basic Usage
 
 ```bash
-dcd cloud <app-file> <flows-dir> --async
+dcd cloud <appFile> <flowFile> --async
 ```
 
 When tests are submitted successfully, the command exits with code `0` regardless of test outcome. If submission itself fails, it exits with code `1`.
@@ -15,7 +15,7 @@ Because the command doesn't wait for the run, `--download-artifacts` and `--repo
 Pair `--async` with `--name` to make it easy to look up results later:
 
 ```bash
-dcd cloud <app-file> <flows-dir> --async --name "build-$GIT_SHA"
+dcd cloud <appFile> <flowFile> --async --name "build-$GIT_SHA"
 ```
 
 ## Checking Results After an Async Run

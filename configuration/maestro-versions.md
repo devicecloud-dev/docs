@@ -4,7 +4,7 @@ You can choose which Maestro version runs your flows, from the versions listed b
 
 By default, tests run using Maestro 2.10.0. Pin `--maestro-version` if you need to stay on a specific version.
 
-Please note that we periodically remove support for older versions so we always recommend you stay up to date.
+We periodically remove support for older versions, so we always recommend you stay up to date.
 
 ## Available Versions
 

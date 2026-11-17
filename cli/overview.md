@@ -30,7 +30,7 @@ npm install -g @devicecloud.dev/dcd
 In CI, you can skip a separate install step and run the CLI directly with `npx`:
 
 ```bash
-npx --yes @devicecloud.dev/dcd@latest cloud <app-file> <flows-dir>
+npx --yes @devicecloud.dev/dcd@latest cloud <appFile> <flowFile>
 ```
 
 ## Upgrading

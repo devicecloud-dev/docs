@@ -31,37 +31,37 @@ Start with the [Quick Start](getting-started/quickstart.md) to install the CLI a
 
 ### Get started
 
-* [Quick Start](getting-started/quickstart.md) - install the CLI and run your first flow
-* [Authentication](getting-started/api-keys.md) - `dcd login` locally, API key in CI
-* [Flows & Workspaces](getting-started/flows-and-workspaces.md) - run a single file, a directory, or a whole workspace
-* [Devices & OS Versions](getting-started/devices-configuration.md) - every supported device, Android API level and iOS version
+* [Quick Start](getting-started/quickstart.md) — install the CLI and run your first flow
+* [Authentication](getting-started/api-keys.md) — `dcd login` locally, API key in CI
+* [Flows & Workspaces](getting-started/flows-and-workspaces.md) — run a single file, a directory, or a whole workspace
+* [Devices & OS Versions](getting-started/devices-configuration.md) — every supported device, Android API level and iOS version
 
 ### Run in CI
 
-* [CI/CD Integration](ci-cd/overview.md) - supported providers, and the features that matter in a pipeline
-* [GitHub Actions](ci-cd/github-actions.md) - drop-in replacement for the Maestro Cloud action
-* [GitHub Checks](ci-cd/github-checks.md) - report pass/fail straight onto the pull request
-* [Artifacts & Downloads](artifacts/artifacts.md) - pull logs, screenshots, videos and reports
+* [CI/CD Integration](ci-cd/overview.md) — supported providers, and the features that matter in a pipeline
+* [GitHub Actions](ci-cd/github-actions.md) — drop-in replacement for the Maestro Cloud action
+* [GitHub Checks](ci-cd/github-checks.md) — report pass/fail straight onto the pull request
+* [Artifacts & Downloads](artifacts/artifacts.md) — pull logs, screenshots, videos and reports
 
 ### Configure your runs
 
-* [Device Matrix](configuration/device-matrix.md) - run your suite across several devices in one upload
-* [Maestro Versions](configuration/maestro-versions.md) - pin a Maestro version, or track `latest`
-* [Environment Variables](configuration/environment-variables.md) - inject config and secrets into your flows
+* [Device Matrix](configuration/device-matrix.md) — run your suite across several devices in one upload
+* [Maestro Versions](configuration/maestro-versions.md) — pin a Maestro version, or track `latest`
+* [Environment Variables](configuration/environment-variables.md) — inject config and secrets into your flows
 
 ### Automate with AI & code
 
-* [Agent Devices](mcp/agent-devices.md) - give your AI agent a cloud iOS or Android device to drive, with a person on hand when it gets stuck (beta)
-* [Connect an AI Agent](mcp/connect.md) - let Claude Code, Cursor and other MCP clients run your tests
-* [CLI Reference](cli/overview.md) - every `dcd` command and flag
-* [REST API](api/overview.md) - uploads, results, flow analytics, device sessions and IP addresses over HTTP
+* [Agent Devices](mcp/agent-devices.md) — give your AI agent a cloud iOS or Android device to drive, with a person on hand when it gets stuck (beta)
+* [Connect an AI Agent](mcp/connect.md) — let Claude Code, Cursor and other MCP clients run your tests
+* [CLI Reference](cli/overview.md) — every `dcd` command and flag
+* [REST API](api/overview.md) — uploads, results, flow analytics, device sessions and IP addresses over HTTP
 
 ### Pricing & plans
 
-* [Test Run Billing](billing/test-run-billing.md) - what a single test run costs
-* [Subscriptions](billing/subscriptions.md) - the Pro, Max and Enterprise plans
-* [Overage](billing/overage.md) - usage beyond your plan's included credits, and the Overage Limit
-* [Concurrency & Parallel Runs](getting-started/concurrency-and-parallel-runs.md) - how many of your tests run at once
+* [Test Run Billing](billing/test-run-billing.md) — what a single test run costs
+* [Subscriptions](billing/subscriptions.md) — the Pro, Max and Enterprise plans
+* [Overage](billing/overage.md) — usage beyond your plan's included credits, and the Overage Limit
+* [Concurrency & Parallel Runs](getting-started/concurrency-and-parallel-runs.md) — how many of your tests run at once
 
 ## FAQ
 
@@ -91,7 +91,7 @@ Both work. Run `dcd login` once for local use and our CLI will store your sessio
 
 ### How do I run DeviceCloud in my CI?
 
-There are first-class integrations for GitHub Actions, Bitrise, Bitbucket Pipelines and EAS Workflows. Any other provider can call the CLI directly with `npx --yes @devicecloud.dev/dcd@latest cloud <app-file> <flows-dir>` and gate the build on the [exit code](advanced/exit-codes.md). See [CI/CD Integration](ci-cd/overview.md).
+There are first-class integrations for GitHub Actions, Bitrise, Bitbucket Pipelines and EAS Workflows. Any other provider can call the CLI directly with `npx --yes @devicecloud.dev/dcd@latest cloud <appFile> <flowFile>` and gate the build on the [exit code](advanced/exit-codes.md). See [CI/CD Integration](ci-cd/overview.md).
 
 ### How do I get videos, logs and test reports?
 
