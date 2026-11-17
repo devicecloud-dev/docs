@@ -2,7 +2,7 @@
 
 The DeviceCloud GitHub Action is a drop-in replacement for the [Maestro Cloud Action](https://github.com/mobile-dev-inc/action-maestro-cloud). The inputs are identical where practical, so switching is straightforward.
 
-Additionally, you can set up our GitHub App to use GitHub Checks to manage pull requests and blocking. Read more [here](github-checks.md).
+To get a pass/fail check on each pull request, which you can require before merging, install the DeviceCloud GitHub App. See [GitHub Checks](github-checks.md).
 
 ## Quick Start
 
@@ -57,7 +57,7 @@ If you still need it, allow the event for that workflow in an Actions policy, se
     app-file: app/build/outputs/apk/debug/app-debug.apk
 ```
 
-From v2.6.0, `app-file` also accepts a glob pattern such as `build/**/*.apk`. When a pattern matches several files, the first in sorted order is used.
+`app-file` also accepts a glob pattern such as `build/**/*.apk`. When a pattern matches several files, the first in sorted order is used.
 
 ### iOS
 
@@ -68,7 +68,7 @@ From v2.6.0, `app-file` also accepts a glob pattern such as `build/**/*.apk`. Wh
     app-file: <app_name>.zip
 ```
 
-`app-file` must point to an Apple silicon compatible Simulator `.app` build, or a zipped `.zip` bundle. From v2.6.0 it can also be a glob pattern, as for Android.
+`app-file` must point to an Apple silicon compatible Simulator `.app` build, or a zipped `.zip` bundle. It can also be a glob pattern, as for Android.
 
 ### iOS with Expo
 
@@ -77,6 +77,8 @@ If you build with EAS, download the build artifact in an earlier step and pass t
 ---
 
 ## Inputs Reference
+
+`@v2` always runs the latest 2.x release of the Action, so every input below is available.
 
 ### Authentication
 
@@ -88,7 +90,7 @@ If you build with EAS, download the build artifact in an earlier step and pass t
 
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
-| `app-file` | No* | — | Path to the app binary (`.apk`, `.app`/`.zip`, or an Expo iOS `.tar.gz`), or from v2.6.0 a glob pattern (first match in sorted order). *Either `app-file` or `app-binary-id` is required. |
+| `app-file` | No* | — | Path to the app binary (`.apk`, `.app`/`.zip`, or an Expo iOS `.tar.gz`), or a glob pattern (first match in sorted order). *Set exactly one of `app-file` and `app-binary-id`. |
 | `app-binary-id` | No* | — | ID of a previously uploaded app binary. Skips the upload step. |
 | `ignore-sha-check` | No | `false` | Skip the SHA hash check that prevents duplicate uploads. Not recommended. |
 
@@ -105,18 +107,18 @@ If you build with EAS, download the build artifact in an earlier step and pass t
 
 ### Device Configuration
 
+For the devices and OS versions you can pass, and which combinations work, see [Devices & OS Versions](../getting-started/devices-configuration.md).
+
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
-| `android-device` | No | `pixel-10` | Android device model. Options: `pixel-6`, `pixel-7` (deprecated), `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl`, `pixel-10-pro-fold`, `pixel-11`, `generic-tablet`. |
-| `android-api-level` | No | `36` | Android API level. Options: `32`, `33`, `34`, `35`, `36`, `37`. |
-| `ios-device` | No | — | iOS device model. Options: `iphone-14`, `iphone-16`, `iphone-16-pro` (deprecated), `iphone-17`, `iphone-air`, `iphone-18-pro`, `iphone-18-pro-max`, `iphone-duo`, `ipad-pro-m5-11`, `ipad-pro-m5-13`. |
-| `ios-version` | No | `26` | Major iOS version. Options: `17` (deprecated), `18`, `26`, `27`. |
+| `android-device` | No | `pixel-10` | Android device model, e.g. `pixel-8`. |
+| `android-api-level` | No | `36` | Android API level, e.g. `34`. |
+| `ios-device` | No | `iphone-16` | iOS device model, e.g. `iphone-17`. |
+| `ios-version` | No | `26` | Major iOS version, e.g. `18`. |
 | `device-locale` | No | — | Device locale in `ISO-639-1_ISO-3166-1` format (e.g. `de_DE`). See [Device Locale](../configuration/device-locale.md). |
 | `orientation` | No | `0` | Android only. Device orientation in degrees. Options: `0`, `90`. |
 | `google-play` | No | `false` | Android only. Run flows against Google Play devices. |
 | `runner-type` | No | `default` | Runner type. Options: `default`, `cpu1`, `m1`, `m4`. `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
-
-See the [Devices & OS Versions](../getting-started/devices-configuration.md) page for the full availability matrix.
 
 ### Test Configuration
 
@@ -126,7 +128,7 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `env` | No | — | Multiline list of environment variables (`KEY=value`) to inject into flows. |
 | `name` | No | PR title or commit message | Custom name for this test run, visible in the console. Defaults to the pull request's title on PR events, the commit message on push events, and the commit SHA otherwise. |
 | `retry` | No | `0` | Number of retries on failure (max `2`). Retries are free — same as pressing retry in the UI. |
-| `report` | No | — | Report format. Options: `junit`, `html`, and from v2.6.0 `html-detailed`. `html-detailed` is deprecated and will be removed on 7 December 2026. See [Report Formats](../artifacts/report-formats.md). |
+| `report` | No | — | Report format: `junit` or `html`, saved in the working directory as `report.xml` or `report.zip`. `html-detailed` still works but is deprecated. See [Report Formats](../artifacts/report-formats.md). |
 
 ### Android-Specific Options
 
@@ -149,17 +151,17 @@ The action automatically attaches Git and pull request metadata to each run, rea
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
 | `include-github-context` | No | `true` | Automatically attach GitHub/PR context (branch, commit SHA, PR number, PR URL, run ID, repository) to the run as metadata. Set to `false` to opt out. |
-| `check-name` | No | — | Names the [GitHub check](github-checks.md) this run posts — `iOS` gives a check called `DeviceCloud / iOS`. Use it when a PR runs more than once so each run gets its own check. Keep it fixed for a given job. |
+| `check-name` | No | — | Names the [GitHub check](github-checks.md) this run posts — `iOS` gives a check called `DeviceCloud / iOS`. Use it when a PR runs more than once so each run gets its own check. Keep it fixed for a given job. It's ignored when `include-github-context` is `false`, because the run then carries no commit to post a check on. |
 
 ### Execution Options
 
 | Input | Required | Default | Description |
 |-------|----------|---------|-------------|
 | `async` | No | `false` | Exit immediately without waiting for results. Returns exit code `0` regardless of test outcome. See [Async Execution](../advanced/async-execution.md). |
-| `cancel-previous` | No | `false` | Cancel the still-queued tests of the previous run of this job on the same branch or PR (from v2.6.0). See [Cancelling superseded runs](../advanced/cancel-previous.md). |
+| `cancel-previous` | No | `false` | Cancel the still-queued tests of the previous run of this job on the same branch or PR. See [Cancelling superseded runs](../advanced/cancel-previous.md). |
 | `priority` | No | `normal` | Run priority: `low`, `normal` or `high`. Reorders only your organisation's own queued runs. See [Run Priority](../configuration/run-priority.md). |
-| `quiet` | No | `true` | Quieter output, without progress updates while the run is polled. Set to `false` to see them. Before v2.6.0 this input had no effect and the output was always quiet. |
-| `download-artifacts` | No | — | Download logs, screenshots, and videos after the run. Options: `ALL`, `FAILED`. |
+| `quiet` | No | `true` | Quieter output, without progress updates while the run is polled. Set to `false` to see them. |
+| `download-artifacts` | No | — | Download logs, screenshots, and videos after the run, as `artifacts.zip` in the working directory. Options: `ALL`, `FAILED`. |
 | `json-file` | No | `false` | Write test results to `<upload_id>_dcd.json` in the working directory. See [Save JSON results file](#save-json-results-file). |
 | `debug` | No | `false` | Enable verbose debug output. |
 | `use-beta` | No | `false` | Use the beta version of the DCD CLI. |
@@ -182,8 +184,10 @@ Add an `id` to the step to reference its outputs in later steps:
 |--------|-------------|
 | `DEVICE_CLOUD_CONSOLE_URL` | URL to view the test results in the DeviceCloud console. |
 | `DEVICE_CLOUD_FLOW_RESULTS` | JSON array with results for each flow: `[{ "name": "...", "status": "PASSED" }]`. Empty (`[]`) with `async: true`. |
-| `DEVICE_CLOUD_UPLOAD_STATUS` | Overall status of the test run: `PASSED` or `FAILED` once it has finished (a run with a cancelled flow counts as `FAILED`). `PENDING`, `QUEUED` or `RUNNING` if it hadn't finished when the status was read, and always `PENDING` with `async: true`. `ERROR` if the Action couldn't read the status. `SUPERSEDED` (from v2.6.0) when a newer run replaced this one through [`cancel-previous`](../advanced/cancel-previous.md); the job passes. |
+| `DEVICE_CLOUD_UPLOAD_STATUS` | Overall status of the test run: `PASSED` or `FAILED` once it has finished (a run with a cancelled flow counts as `FAILED`). `PENDING`, `QUEUED` or `RUNNING` if it hadn't finished when the status was read, and always `PENDING` with `async: true`. `ERROR` if the Action couldn't read the status; the job then fails. `SUPERSEDED` when a newer run replaced this one through [`cancel-previous`](../advanced/cancel-previous.md); the job passes. |
 | `DEVICE_CLOUD_APP_BINARY_ID` | ID of the uploaded app binary. Reuse this in subsequent jobs to skip re-uploading. Not set with `async: true`. |
+
+If `dcd cloud` itself exits with an error (exit code `1`), the job fails and no outputs are set.
 
 ---
 
@@ -200,34 +204,39 @@ Add an `id` to the step to reference its outputs in later steps:
 
 - name: Post Test Results to Slack
   if: always()
-  uses: slackapi/slack-github-action@v1.24.0
+  uses: slackapi/slack-github-action@v4.0.0
   with:
-    channel-id: 'test-results'
-    slack-message: |
-      Test Run Status: ${{ steps.devicecloud.outputs.DEVICE_CLOUD_UPLOAD_STATUS }}
-      View Results: ${{ steps.devicecloud.outputs.DEVICE_CLOUD_CONSOLE_URL }}
-  env:
-    SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+    method: chat.postMessage
+    token: ${{ secrets.SLACK_BOT_TOKEN }}
+    payload: |
+      channel: ${{ secrets.SLACK_CHANNEL_ID }}
+      text: "Test run status: ${{ steps.devicecloud.outputs.DEVICE_CLOUD_UPLOAD_STATUS }}\nView results: ${{ steps.devicecloud.outputs.DEVICE_CLOUD_CONSOLE_URL }}"
 ```
+
+DeviceCloud can also post every run to Slack itself, without a workflow step. See [Slack Notifications](../notifications/slack-notifications.md).
 
 ### Save results as a workflow artifact
 
 ```yaml
 - name: Save Test Results
   if: always()
-  run: |
-    echo '${{ steps.devicecloud.outputs.DEVICE_CLOUD_FLOW_RESULTS }}' > test-results.json
+  env:
+    FLOW_RESULTS: ${{ steps.devicecloud.outputs.DEVICE_CLOUD_FLOW_RESULTS }}
+  run: printf '%s\n' "$FLOW_RESULTS" > test-results.json
 
 - name: Upload Results
-  uses: actions/upload-artifact@v4
+  if: always()
+  uses: actions/upload-artifact@v7
   with:
     name: test-results
     path: test-results.json
 ```
 
+Passing the output through `env:` rather than writing `${{ }}` into the script keeps a flow name with a quote in it from breaking the command.
+
 ### Reuse the uploaded binary in a later job
 
-This needs the first job to wait for its results: with `async: true`, `DEVICE_CLOUD_APP_BINARY_ID` isn't set.
+This needs the first job to wait for its results: with `async: true`, `DEVICE_CLOUD_APP_BINARY_ID` isn't set. The second job runs only if the first one passed.
 
 ```yaml
 jobs:
@@ -236,16 +245,23 @@ jobs:
     outputs:
       binary-id: ${{ steps.devicecloud.outputs.DEVICE_CLOUD_APP_BINARY_ID }}
     steps:
+      - uses: actions/checkout@v7
+
+      - name: Build app
+        run: ./gradlew assembleDebug
+
       - uses: devicecloud-dev/device-cloud-for-maestro@v2
         id: devicecloud
         with:
           api-key: ${{ secrets.DCD_API_KEY }}
-          app-file: app.apk
+          app-file: app/build/outputs/apk/debug/app-debug.apk
 
   test-another-suite:
     needs: upload-and-test
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v7
+
       - uses: devicecloud-dev/device-cloud-for-maestro@v2
         with:
           api-key: ${{ secrets.DCD_API_KEY }}
@@ -327,7 +343,7 @@ This writes `<upload_id>_dcd.json` to the job's working directory, for example `
   "status": "FAILED",
   "tests": [
     {
-      "device": { "name": "Pixel 7", "osVersion": "34", "googlePlay": false },
+      "device": { "name": "Pixel 10", "osVersion": "36", "googlePlay": false },
       "durationSeconds": 48,
       "fileName": "./login.yaml",
       "flowName": "Login",
@@ -336,7 +352,7 @@ This writes `<upload_id>_dcd.json` to the job's working directory, for example `
       "tags": ["smoke"]
     },
     {
-      "device": { "name": "Pixel 7", "osVersion": "34", "googlePlay": false },
+      "device": { "name": "Pixel 10", "osVersion": "36", "googlePlay": false },
       "durationSeconds": 95,
       "failReason": "Element not found: Text matching regex: Pay now",
       "fileName": "./checkout.yaml",
@@ -357,13 +373,14 @@ This writes `<upload_id>_dcd.json` to the job's working directory, for example `
 
 ## Migrating from Maestro Cloud
 
-Replace the `uses` value, then check your inputs against the table below:
+Replace the `uses` value, then check your inputs and outputs against the tables below:
 
 ```yaml
 # Before
-- uses: mobile-dev-inc/action-maestro-cloud@v2
+- uses: mobile-dev-inc/action-maestro-cloud@v3
   with:
     api-key: ${{ secrets.MCLOUD_API_KEY }}
+    project-id: proj_xxx
     app-file: app.apk
 
 # After
@@ -375,14 +392,24 @@ Replace the `uses` value, then check your inputs against the table below:
 
 Update your secret name from `MCLOUD_API_KEY` to `DCD_API_KEY` (or whatever name you choose when storing your DeviceCloud API key).
 
-These Maestro Cloud inputs work unchanged: `api-key`, `app-file`, `app-binary-id`, `workspace`, `name`, `env`, `async`, `android-api-level`, `ios-version`, `device-locale`, `include-tags` and `exclude-tags`. The ones below aren't supported. GitHub only warns about inputs an action doesn't recognise, so remove or replace them. In particular, `device-model` and `device-os` are ignored, so until you replace them your flows run on the [default device](../getting-started/devices-configuration.md#default-devices).
+These Maestro Cloud inputs work unchanged: `api-key`, `app-file`, `app-binary-id`, `workspace`, `name`, `env`, `async`, `android-api-level`, `ios-version`, `device-locale`, `priority`, `include-tags` and `exclude-tags`. The ones below aren't supported. GitHub only warns about inputs an action doesn't recognise, so remove or replace them. In particular, `device-model` and `device-os` are ignored, so until you replace them your flows run on the [default device](../getting-started/devices-configuration.md#default-devices).
 
 | Maestro Cloud input | DeviceCloud equivalent |
 |---------------------|------------------------|
 | `project-id` | Not needed: runs belong to the team that owns the API key. |
-| `device-model` | `ios-device` or `android-device` |
-| `device-os` | `ios-version` or `android-api-level` |
+| `api-url` | Remove it. Left in place, it points the Action at another API. |
+| `device-model` | `ios-device` or `android-device`, with DeviceCloud's device names, e.g. `iphone-16` or `pixel-8` |
+| `device-os` | `ios-version` (the major version, e.g. `18`) or `android-api-level` (e.g. `34`) |
 | `maestro-cli-version` | `maestro-version` |
 | `timeout` | None. The Action waits until the run finishes; use `async: true` to return straight away. |
 | `branch` | None. The branch is attached automatically with the rest of the [GitHub / PR context](#github-pr-context). |
 | `mapping-file` | Not supported. |
+
+The outputs have new names, so update any step that reads them:
+
+| Maestro Cloud output | DeviceCloud output |
+|----------------------|--------------------|
+| `MAESTRO_CLOUD_CONSOLE_URL` | `DEVICE_CLOUD_CONSOLE_URL` |
+| `MAESTRO_CLOUD_APP_BINARY_ID` | `DEVICE_CLOUD_APP_BINARY_ID` |
+| `MAESTRO_CLOUD_UPLOAD_STATUS` | `DEVICE_CLOUD_UPLOAD_STATUS`. Its values differ too: a finished run is `PASSED` or `FAILED`, not `SUCCESS`, `ERROR`, `CANCELED`, `WARNING` or `STOPPED`. See [Outputs Reference](#outputs-reference). |
+| `MAESTRO_CLOUD_FLOW_RESULTS` | `DEVICE_CLOUD_FLOW_RESULTS`. Each entry has the flow's `name` and `status`. |
