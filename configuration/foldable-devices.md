@@ -2,7 +2,7 @@
 
 DeviceCloud runs two foldables: the **iPhone Duo** on iOS 27 and the **Pixel 10 Pro Fold** on API levels 36 and 37. Each starts a run in one posture, and a flow can fold or unfold it part-way through, then tap, swipe and take screenshots on whichever screen is active. Foldable runs are charged at the advanced rate, see [pricing](../billing/test-run-billing.md).
 
-| Device            | Flags                                                      | Starts                         | Postures                  | Screens                                         |
+| Device            | Flags                                                      | Starts                         | Postures                  | Screens (pixels)                                |
 | ----------------- | ---------------------------------------------------------- | ------------------------------ | ------------------------- | ----------------------------------------------- |
 | iPhone Duo        | `--ios-device iphone-duo --ios-version 27`                 | `closed`, on the cover screen  | `closed`, `book`, `open`  | cover 1398 x 2034, plus the larger inner screen |
 | Pixel 10 Pro Fold | `--android-device pixel-10-pro-fold --android-api-level 36` | `open`, on the inner screen    | `closed`, `half`, `open`  | inner 2076 x 2152, cover 1080 x 2364            |
@@ -74,7 +74,7 @@ Maestro's assertions keep working on the inner screen, but Maestro's own taps an
 
 ## Coordinates
 
-`tap`, `longPress` and `swipe` take coordinates on the screen the app is currently on: interface points on iOS and pixels on Android, from the top-left corner of the whole screen, status bar included. Take a `screenshot` in that posture, or read `screen` from `state`, to find them. A point outside the active screen is refused.
+`tap`, `longPress` and `swipe` take coordinates on the screen the app is currently on: interface points on iOS and pixels on Android, from the top-left corner of the whole screen, status bar included. Read `screen` from `state` for the active screen's size in those units. On Android a `screenshot` uses the same pixels, so you can measure on it directly. On iOS a screenshot is in pixels, not points, so divide what you measure on it by the screen's scale (the screenshot's `width` divided by `screen.width`). A point outside the active screen is refused with `422`.
 
 A control tap is not a Maestro command, so nothing waits for your app to be ready before it. Put an `assertVisible` on the element you are about to tap first.
 

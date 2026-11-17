@@ -2,16 +2,20 @@
 
 Control Android device orientation during test execution.
 
-> **Note**: Android only. iOS devices are always portrait.
+::: info
+Android only. `--orientation` is ignored on iOS, where devices stay in portrait.
+:::
 
 ## Options
 
 * `0`: Portrait (default)
 * `90`: Landscape
 
-> **Note**: Only `0` and `90` are supported. The legacy `180` and `270` values are no longer accepted.
+Only `0` and `90` are accepted. The legacy `180` and `270` values are rejected.
 
-> **Note**: Generic Tablet starts in landscape, so on it `0` (and the default) is landscape and `90` is portrait.
+::: info
+Generic Tablet starts in landscape, so on it `0` (and the default) is landscape and `90` is portrait.
+:::
 
 ## Usage
 

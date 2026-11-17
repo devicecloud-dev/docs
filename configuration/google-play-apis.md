@@ -34,14 +34,14 @@ env:
 ```
 
 Only that flow boots on a Google Play emulator; the rest of the upload uses the
-standard image. Billing is per flow — Play-image flows are charged at the Google
-Play rate, the others at the standard rate.
+standard image. Billing is per flow — Play-image flows are charged at the advanced
+rate, the others at the standard rate.
 
-## Precedence
+## Which flows use Google Play
 
-1. `DEVICECLOUD_OVERRIDE_GOOGLE_PLAY: true` (per test, opt-in)
-2. The upload-wide `--google-play` flag
-3. Default: standard Google APIs image
+A flow runs on a Google Play image when the upload passes `--google-play` or the flow sets `DEVICECLOUD_OVERRIDE_GOOGLE_PLAY: true`. Otherwise it uses the standard Google APIs image.
+
+A flow can't opt out of `--google-play`. `DEVICECLOUD_OVERRIDE_GOOGLE_PLAY: false` has no effect, so the flow still runs on Google Play and is charged at the advanced rate. To put only some flows on Google Play, leave out `--google-play` and opt those flows in.
 
 In a [device matrix](device-matrix.md) upload, each cell's own setting decides instead (`:play` on the cell, or `--google-play` for every cell). A flow's `DEVICECLOUD_OVERRIDE_GOOGLE_PLAY` is ignored there unless the flow also names its own device.
 
@@ -67,7 +67,7 @@ dcd cloud ... --google-play --android-device pixel-8 --android-api-level 34
 
 If you pass only one of them, DeviceCloud picks the other so the pair has a Google Play image: a device runs on its Google Play API level, and an API level runs on a Google Play device that offers it. If you pass neither, the run uses the default Android device, Pixel 10 on API 36, which has a Google Play image. A device with no Google Play image, or an API level no Google Play device offers, is rejected.
 
-If only some flows opt in with `DEVICECLOUD_OVERRIDE_GOOGLE_PLAY`, those flows are resolved the same way, from the device and API level the flow names, then the ones the upload names. A flow that opts in and names neither runs on Pixel 10 on API 36. To choose the device, pin it on the upload, or on those flows with [per-flow devices](per-flow-devices.md).
+If only some flows opt in with `DEVICECLOUD_OVERRIDE_GOOGLE_PLAY`, those flows are resolved the same way, from the device and API level the flow names, then the ones the upload names. A flow that opts in runs on Pixel 10 on API 36 when neither the flow nor the upload names a device or API level. To choose the device, pin it on the upload, or on those flows with [per-flow devices](per-flow-devices.md).
 
 ## Moving to Apple Silicon (`m1`)
 
