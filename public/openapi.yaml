@@ -7,11 +7,11 @@ openapi: 3.1.0
 info:
   title: DeviceCloud REST API
   version: 1.0.0
-  summary: Test results, run status, flow analytics and device sessions for DeviceCloud.
+  summary: Test results, run status, flow analytics, team settings and device sessions for DeviceCloud.
   description: |
     The DeviceCloud REST API gives you programmatic access to the same data as the
     console: test runs and their results, reports and artifacts, flow analytics,
-    and device sessions for AI agents.
+    your team's settings, and device sessions for AI agents.
 
     To start test runs, use the [`dcd` CLI](https://docs.devicecloud.dev/cli-reference/cloud)
     or one of the CI integrations. This API reads their results.
@@ -87,6 +87,13 @@ tags:
       leaving out cancelled and unfinished runs.
     externalDocs:
       url: https://docs.devicecloud.dev/rest-api/flows
+  - name: Team settings
+    description: |
+      How your team is set up: concurrency limits, test runtime, sign-in
+      requirement, retry escalation, overage limit and connected integrations.
+      Read-only. Change settings in the console.
+    externalDocs:
+      url: https://docs.devicecloud.dev/rest-api/team-settings
   - name: Device sessions
     description: >-
       Start, list, read and stop device sessions (cloud iOS simulators and Android emulators), and list the
@@ -650,6 +657,73 @@ paths:
                   value:
                     statusCode: 400
                     message: fileName query parameter is required.
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/ServerError'
+        '503':
+          $ref: '#/components/responses/KeyCheckUnavailable'
+  /org/settings:
+    get:
+      operationId: getTeamSettings
+      tags: [Team settings]
+      summary: Get team settings
+      description: |
+        Your team's settings, the ones the console shows under **Settings**. An
+        API key or any team member's login session can read them.
+
+        Some settings are shown only to team owners and admins in the console,
+        and the API follows the same rule. For a standard member, `restricted`
+        is `true` and `signInRequirement`, `retryEscalation` and `overage` are
+        `null`. API keys see every setting.
+      responses:
+        '200':
+          description: The team's settings.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamSettings'
+              examples:
+                owner:
+                  summary: An owner, an admin or an API key
+                  value:
+                    orgId: 7
+                    name: Acme
+                    restricted: false
+                    concurrency:
+                      runners:
+                        - { platform: ios, runnerType: m4, min: 0, max: 2 }
+                        - { platform: android, runnerType: gpu1, min: 0, max: 0 }
+                      pools:
+                        - name: standard
+                          min: 2
+                          max: 12
+                          members:
+                            - { platform: ios, runnerType: default }
+                            - { platform: android, runnerType: cpu1 }
+                    testRuntime: { defaultMinutes: 10, extendedMinutes: 20 }
+                    integrations: { webhook: true, slack: false, github: true }
+                    signInRequirement: passkey
+                    retryEscalation: { available: true, target: m1, enabled: true }
+                    overage: { hasSubscription: true, limitUsd: 200 }
+                standardMember:
+                  summary: A standard member
+                  value:
+                    orgId: 7
+                    name: Acme
+                    restricted: true
+                    concurrency:
+                      runners:
+                        - { platform: ios, runnerType: default, min: 1, max: 5 }
+                        - { platform: android, runnerType: cpu1, min: 1, max: 5 }
+                      pools: []
+                    testRuntime: { defaultMinutes: 10, extendedMinutes: null }
+                    integrations: { webhook: false, slack: true, github: false }
+                    signInRequirement: null
+                    retryEscalation: null
+                    overage: null
         '403':
           $ref: '#/components/responses/Forbidden'
         '429':
@@ -3643,7 +3717,146 @@ components:
           format: uuid
           description: The upload the run belongs to.
         uploadName:
+          type: string
+          description: The upload's name, or `Unknown` when it has none.
+    TeamSettings:
+      type: object
+      required:
+        - orgId
+        - name
+        - restricted
+        - concurrency
+        - testRuntime
+        - integrations
+        - signInRequirement
+        - retryEscalation
+        - overage
+      properties:
+        orgId:
+          type: integer
+          description: Your team's ID. It's the value a login session sends in `x-dcd-org`.
+        name:
           type: [string, 'null']
+          description: Your team's name.
+        restricted:
+          type: boolean
+          description: |
+            `true` when the caller is a standard member. `signInRequirement`,
+            `retryEscalation` and `overage` are then `null`. Owners, admins and
+            API keys see them.
+        concurrency:
+          type: object
+          description: |
+            How many tests the team can run at once. `min` can always run, and
+            `max` can run when capacity allows.
+          required: [runners, pools]
+          properties:
+            runners:
+              type: array
+              description: Runner types with their own limit. A runner type in a pool is listed under the pool instead.
+              items:
+                type: object
+                required: [platform, runnerType, min, max]
+                properties:
+                  platform:
+                    type: string
+                    enum: [ios, android]
+                  runnerType:
+                    type: string
+                    description: For example `default` or `m4` on iOS, `cpu1` or `gpu1` on Android.
+                  min:
+                    type: integer
+                  max:
+                    type: integer
+                    description: '`0` means the runner type isn''t enabled for the team.'
+            pools:
+              type: array
+              description: Limits that several runner types share.
+              items:
+                type: object
+                required: [name, min, max, members]
+                properties:
+                  name:
+                    type: string
+                    example: standard
+                  min:
+                    type: integer
+                  max:
+                    type: integer
+                  members:
+                    type: array
+                    description: The runner types that share this limit.
+                    items:
+                      type: object
+                      required: [platform, runnerType]
+                      properties:
+                        platform:
+                          type: string
+                          enum: [ios, android]
+                        runnerType:
+                          type: string
+        testRuntime:
+          type: object
+          required: [defaultMinutes, extendedMinutes]
+          properties:
+            defaultMinutes:
+              type: integer
+              description: How long a flow can run by default.
+            extendedMinutes:
+              type: [integer, 'null']
+              description: |
+                How long a flow can run with the `EXTENDED_RUNTIME` override, which
+                is charged at twice the rate. `null` when extended runtime is off
+                for the team.
+        integrations:
+          type: object
+          required: [webhook, slack, github]
+          properties:
+            webhook:
+              type: boolean
+              description: Whether a webhook is set up.
+            slack:
+              type: boolean
+              description: Whether Slack is connected.
+            github:
+              type: boolean
+              description: Whether the GitHub App is connected.
+        signInRequirement:
+          type: [string, 'null']
+          enum: ['off', two_factor, passkey, passkey_and_code, null]
+          description: How members must sign in to reach the team. Owners and admins only.
+        retryEscalation:
+          type: [object, 'null']
+          description: Owners and admins only.
+          required: [available, target, enabled]
+          properties:
+            available:
+              type: boolean
+              description: Whether retry escalation can be turned on for the team.
+            target:
+              type: [string, 'null']
+              enum: [m1, gpu1, null]
+              description: |
+                The runner type an Android test moves to when it is retried after
+                an infrastructure failure. `null` when retry escalation isn't
+                available.
+            enabled:
+              type: boolean
+              description: Whether retry escalation is on.
+        overage:
+          type: [object, 'null']
+          description: Owners and admins only.
+          required: [hasSubscription, limitUsd]
+          properties:
+            hasSubscription:
+              type: boolean
+              description: Whether the team has an active subscription.
+            limitUsd:
+              type: [number, 'null']
+              description: |
+                The overage the team can run up per billing period, in US dollars,
+                on top of its included credits. `null` when it's uncapped or there's
+                no subscription.
     IpAddresses:
       type: object
       required: [updatedAt, ipAddresses, ranges]
