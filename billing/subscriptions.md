@@ -14,7 +14,7 @@ This subscription costs $25 per month and comes with $25 of usage included which
 
 Additional usage beyond $25 is billed as [overage](overage.md) on your next monthly invoice.
 
-This plan runs up to 5 tests at once on each [runner type](../configuration/runner-type.md): iOS `default` and `m4`, and Android `cpu1` and `m1`. It has no Concurrency Protection, so at busy times you may get fewer. See [Concurrency & Parallel Runs](../getting-started/concurrency-and-parallel-runs.md).
+This plan runs up to 5 tests at once on each [runner type](../configuration/runner-type.md), with no Concurrency Protection. See [Concurrency & Parallel Runs](../getting-started/concurrency-and-parallel-runs.md).
 
 For support, ask our team and community on [Discord](https://discord.gg/gm3mJwcNw8) or email [support@devicecloud.dev](mailto:support@devicecloud.dev).
 
@@ -26,9 +26,7 @@ This subscription costs $200 per month and comes with $200 of usage included whi
 
 Additional usage beyond $200 is billed as [overage](overage.md) on your next monthly invoice.
 
-This plan runs up to 20 tests at once on iOS `default`, Android `cpu1` and Android `m1`, and up to 5 on iOS `m4`.
-
-It also has **Concurrency Protection**: even at very busy times, at least 1 iOS `default` test and 1 Android `cpu1` test can always run. See [Concurrency & Parallel Runs](../getting-started/concurrency-and-parallel-runs.md) for how this works.
+This plan runs up to 20 tests at once on most runner types, and has **Concurrency Protection** on the standard runners. See [Concurrency & Parallel Runs](../getting-started/concurrency-and-parallel-runs.md) for the limits and how protection works.
 
 This plan supports [Enterprise SSO](../security/enterprise-single-sign-on.md) and priority support via email.
 

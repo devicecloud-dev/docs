@@ -20,7 +20,7 @@ env:
 
 * The value must be `true` (or the string `"true"`). Any other value is ignored, and the flow keeps the 10-minute limit.
 * Set it on each top-level flow that needs it. The other flows in the same upload keep the 10-minute limit. A flow that one of your flows calls with `runFlow` runs inside the caller's limit.
-* Like all `DEVICECLOUD_OVERRIDE_*` settings, this only works in the flow's `env:` block, not with `-e`.
+* Like all [per-flow overrides](per-flow-overrides.md), this only works in the flow's `env:` block, not with `-e`.
 
 The limit covers the whole Maestro run, including starting Maestro on the device, so the flow's own steps get slightly less than the full 20 minutes. A flow that is still running at the limit is stopped and marked as failed with a "Test run timed out after 20 minutes" error, and its logs and video are still uploaded.
 

@@ -100,7 +100,7 @@ env:
 - runScript: { file: dcd.js, env: { CMD: tap, ARGS: '{"x":30,"y":92}' } }
 ```
 
-`tap`, `longPress`, `swipe` and `screenshot` work as above, in points on iOS and pixels on Android, `state` reports an empty `postures` list, and `posture` is refused because the device doesn't fold. Like all `DEVICECLOUD_OVERRIDE_*` settings, this only works in the flow's `env:` block, not with `-e`.
+`tap`, `longPress`, `swipe` and `screenshot` work as above, in points on iOS and pixels on Android, `state` reports an empty `postures` list, and `posture` is refused because the device doesn't fold. Like all [per-flow overrides](per-flow-overrides.md), this only works in the flow's `env:` block, not with `-e`.
 
 ## Errors and limits
 

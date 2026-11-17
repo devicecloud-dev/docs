@@ -6,7 +6,7 @@ By default, a run uses the real current time. Our Android runners use UTC, and o
 
 ## Usage
 
-To set the time for a flow, set a DeviceCloud env variable in the flow's YAML. The value is an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date-time string. There's no `dcd cloud` flag for this, so it's set per flow.
+To set the time for a flow, set a [per-flow override](per-flow-overrides.md) in the flow's YAML. The value is an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date-time string. There's no `dcd cloud` flag for this, so it's set per flow.
 
 ```yaml
 # in your test.yaml

@@ -113,7 +113,7 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 | `--report <format>`, `--format` | Generate and download a report. Options: `junit`, `html`, `html-detailed`, `allure`. `html-detailed` and `allure` are deprecated, and we're targeting their removal on 7 December 2026. After that, runs that pass them still run (see [Report Formats](../artifacts/report-formats.md)) |
 | `--junit-path <path>` | Output path for the JUnit report (requires `--report junit`) |
 | `--html-path <path>` | Output path for the HTML report (requires `--report html` or `html-detailed`). The HTML report downloads as a ZIP, so use a `.zip` path such as `./report.zip` |
-| `--allure-path <path>` | Output path for the Allure report (requires `--report allure`). Deprecated, with removal targeted for 7 December 2026 |
+| `--allure-path <path>` | Output path for the Allure report (requires `--report allure`). Deprecated, along with `allure` |
 | `--download-artifacts <ALL\|FAILED>` | Download test artifacts after completion (see [Artifacts](../artifacts/artifacts.md)) |
 | `--artifacts-path <path>` | Output path for the artifacts zip (default `./artifacts.zip`). Requires `--download-artifacts` |
 | `--debug` | Enable verbose debug logging |

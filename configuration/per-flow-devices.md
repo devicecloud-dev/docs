@@ -12,7 +12,7 @@ nothing inherit the upload's device. Your run count does not change.
 
 ## Usage
 
-Set the device in the flow's `env:` block. Supported devices and OS versions are listed in [Devices & OS Versions](../getting-started/devices-configuration.md).
+Set the device in the flow's `env:` block, like the other [per-flow overrides](per-flow-overrides.md). Supported devices and OS versions are listed in [Devices & OS Versions](../getting-started/devices-configuration.md).
 
 ### iOS
 

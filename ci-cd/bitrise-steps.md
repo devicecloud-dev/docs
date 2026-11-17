@@ -77,7 +77,7 @@ For the devices and OS versions you can pass, and which combinations work, see [
 |---|---|---|---|
 | Test Run Name | `name` | — | Name for the run in the console. |
 | Maestro Version | `maestro_version` | DeviceCloud's default | See [Maestro Versions](../configuration/maestro-versions.md). |
-| Retry Count | `retry` | `0` | Retries on failure, up to `2`. Retries are free. |
+| Retry Count | `retry` | `0` | Retries on failure, up to `2`. See [Retry Strategies](../advanced/retry-strategies.md). |
 | Priority | `priority` | `normal` | From 1.5.0. `low`, `normal` or `high`: which of your team's queued runs starts first. It never moves your runs ahead of other customers. See [Run Priority](../configuration/run-priority.md). |
 | Cancel Previous Run | `cancel_previous` | `false` | From 1.4.0. Cancel the previous run's still-queued tests when this one starts. See [Cancelling superseded runs](#cancelling-superseded-runs). |
 | Async Execution | `async` | `false` | Don't wait for the results: the step passes once the run is submitted. See [Async Execution](../advanced/async-execution.md). |

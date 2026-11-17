@@ -16,7 +16,7 @@ The `gpu1` runner type was removed on 9 November 2026. Runs that still pass it r
 :::
 
 ::: info
-Google Play runs move to `m1` on 14 December 2026, after which they count towards the `m1` limit rather than `cpu1`. Runs you move there early with `--runner-type m1` count towards `m1` already. See [Google Play APIs](../configuration/google-play-apis.md#moving-to-apple-silicon-m1).
+Google Play runs are moving to `m1`, and then count towards the `m1` limit rather than `cpu1`. See [Deprecations & Removals](deprecations.md) for the date.
 :::
 
 The Pro plan has no Concurrency Protection, so during busy periods, when runner capacity is stretched, your tests may wait for a runner or run with less concurrency than your maximum.

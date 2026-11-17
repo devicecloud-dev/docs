@@ -67,11 +67,11 @@ For most projects, yes. The CLI mimics the Maestro Cloud API, so you change `mae
 
 ### How much does it cost?
 
-DeviceCloud bills per test run: one top-level flow on one device. A standard run costs $0.11 on iOS and $0.09 on Android. Runs on an iPad, the iPhone Duo, the Pixel 10 Pro Fold, the generic tablet or a Google Play image, and runs on the `m4` and `m1` runner types, cost the advanced rate of $0.15. New accounts get $20 of free credits. The Pro and Max plans include a set amount of usage each month, and usage beyond that is billed as [overage](billing/overage.md), up to a limit you control. See [Test Run Billing](billing/test-run-billing.md).
+DeviceCloud bills per test run: one top-level flow on one device, from $0.09 a run. Tablets, foldables, Google Play images and the `m4` and `m1` runner types cost the advanced rate, and new accounts get free credits to start. The Pro and Max plans include a set amount of usage each month, and usage beyond that is billed as [overage](billing/overage.md), up to a limit you control. See [Test Run Billing](billing/test-run-billing.md).
 
 ### How many tests can I run in parallel?
 
-It depends on your plan: on the standard runners, Pro runs up to 5 iOS and 5 Android tests at once, and Max up to 20 of each. Enterprise concurrency is arranged to fit your requirements. Once you hit your maximum, further tests queue and start automatically as capacity frees up. See [Concurrency & Parallel Runs](getting-started/concurrency-and-parallel-runs.md) and [Subscriptions](billing/subscriptions.md).
+It depends on your plan. On the standard runners, Max runs up to 20 iOS and 20 Android tests at once, and Enterprise concurrency is arranged to fit your requirements. Once you hit your maximum, further tests queue and start automatically as capacity frees up. See [Concurrency & Parallel Runs](getting-started/concurrency-and-parallel-runs.md) and [Subscriptions](billing/subscriptions.md).
 
 ### Which devices and OS versions can I run on?
 
@@ -79,7 +79,7 @@ Android runs cover a range of Google Pixel phones plus a generic tablet, and iOS
 
 ### Which Maestro versions are supported?
 
-We always support the latest version of Maestro, and older versions back to v2.2.0. We're targeting v2.2.0 for removal on 23 November 2026, after which v2.6.1 is the oldest. Runs default to v2.10.0, and `--maestro-version latest` always uses the newest version we support. We announce removals of older versions well in advance. See [Maestro Versions](configuration/maestro-versions.md).
+We always support the latest version of Maestro, and several older ones. Runs default to v2.10.0, and `--maestro-version latest` always uses the newest version we support. We announce removals of older versions well in advance, in [Deprecations & Removals](getting-started/deprecations.md). See [Maestro Versions](configuration/maestro-versions.md).
 
 ### Do I need an API key, or can I just log in?
 
@@ -91,11 +91,11 @@ There are first-class integrations for GitHub Actions, Bitrise, Bitbucket Pipeli
 
 ### How do I get videos, logs and test reports?
 
-Pass `--download-artifacts ALL` (or `FAILED`) to a `dcd cloud` run, or fetch them after the fact with `dcd artifacts --upload-id <uuid> --download-artifacts ALL`. Each result in the console also has a download menu for its logs, reports, app binary and workspace. Reports are available as `junit` and `html` via `--report`. `html-detailed` and `allure` are deprecated, and we're targeting their removal on 7 December 2026. See [Artifacts & Downloads](artifacts/artifacts.md) and [Report Formats](artifacts/report-formats.md).
+Pass `--download-artifacts ALL` (or `FAILED`) to a `dcd cloud` run, or fetch them after the fact with `dcd artifacts --upload-id <uuid> --download-artifacts ALL`. Each result in the console also has a download menu for its logs, reports, app binary and workspace. Reports are available as `junit` and `html` via `--report` (`html-detailed` and `allure` are [deprecated](getting-started/deprecations.md)). See [Artifacts & Downloads](artifacts/artifacts.md) and [Report Formats](artifacts/report-formats.md).
 
 ### Is there a time limit on a test?
 
-Yes. Every flow has a 10-minute execution limit. A flow that is still running when it reaches the limit is stopped and marked as failed, with a "Test run timed out after 10 minutes" error. A flow that needs longer can opt into [extended runtime](configuration/extended-runtime.md), which gives it up to 20 minutes and is charged at 2×. `--retry` re-runs a failed test up to twice, free of charge, and you can also retry failed tests from the console. See [Quick Start](getting-started/quickstart.md#limits) and [Retry Strategies](advanced/retry-strategies.md).
+Yes. Every flow has a 10-minute execution limit, and a flow that is still running when it reaches the limit is stopped and marked as failed. A flow that needs longer can opt into [extended runtime](configuration/extended-runtime.md). A failed test can be retried for free, see [Retry Strategies](advanced/retry-strategies.md).
 
 ### Can I allow-list DeviceCloud in our firewall?
 
@@ -107,7 +107,7 @@ Yes. `dcd mcp`, the Model Context Protocol server built into the CLI, lets Claud
 
 ### How do I get support?
 
-Every account gets community and team support via [Discord](https://discord.gg/gm3mJwcNw8), and you can also email [support@devicecloud.dev](mailto:support@devicecloud.dev). We aim to respond within four hours for urgent queries, and within one to three business days for other queries, depending on severity. Max and Enterprise customers both receive priority email support and Enterprise customers have direct access to the team via Slack Connect. Support hours are 8am–8pm UK time, Monday to Friday. See [Service Level Agreements](legal/service-level-agreements.md).
+Every account gets community and team support via [Discord](https://discord.gg/gm3mJwcNw8), and you can also email [support@devicecloud.dev](mailto:support@devicecloud.dev). We aim to respond to urgent queries within four hours, during our support hours. Max and Enterprise customers both receive priority email support and Enterprise customers have direct access to the team via Slack Connect. See [Service Level Agreements](legal/service-level-agreements.md) for response times and support hours.
 
 ::: info
 Question not answered here? Ask in our [Discord](https://discord.gg/gm3mJwcNw8) or email [support@devicecloud.dev](mailto:support@devicecloud.dev) and we'll be happy to help.

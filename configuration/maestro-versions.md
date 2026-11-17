@@ -61,4 +61,4 @@ Once Maestro 2.5.0 is released, 2.0.10 is five minor versions old, so we may mar
 
 We may update the default version from time to time and we will always provide at least 30 days of notice beforehand.
 
-We will always provide at least 30 days of warning before removing support for previous Maestro versions.
+We will always provide at least 30 days of warning before removing support for previous Maestro versions. Upcoming removals are listed in [Deprecations & Removals](../getting-started/deprecations.md).

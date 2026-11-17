@@ -127,7 +127,7 @@ For the devices and OS versions you can pass, and which combinations work, see [
 | `maestro-version` | No | — | Maestro CLI version to run flows with. See [Maestro Versions](../configuration/maestro-versions.md). |
 | `env` | No | — | Multiline list of environment variables (`KEY=value`) to inject into flows. |
 | `name` | No | PR title or commit message | Custom name for this test run, visible in the console. Defaults to the pull request's title on PR events, the commit message on push events, and the commit SHA otherwise. |
-| `retry` | No | `0` | Number of retries on failure (max `2`). Retries are free — same as pressing retry in the UI. |
+| `retry` | No | `0` | Number of retries on failure, up to `2`. See [Retry Strategies](../advanced/retry-strategies.md). |
 | `report` | No | — | Report format: `junit` or `html`, saved in the working directory as `report.xml` or `report.zip`. `html-detailed` still works but is deprecated. See [Report Formats](../artifacts/report-formats.md). |
 
 ### Android-Specific Options

@@ -34,7 +34,7 @@ dcd cloud ... --device-locale de_DE
 dcd cloud ... --android-device pixel-6 --device-locale ja_JP
 ```
 
-To override locale for a specific test, pass in the DeviceCloud env variable. This will override the upload setting above, but just for a single test:
+To override the locale for a single test, set a [per-flow override](per-flow-overrides.md) in its `env:` block. It overrides the upload setting above, for that test only:
 
 ```yaml
 # in your test.yaml

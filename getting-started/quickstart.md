@@ -43,7 +43,7 @@ Log in once in your browser. The CLI remembers your session, so you don't need t
 dcd login
 ```
 
-No account yet? Sign up at the [console](https://console.devicecloud.dev) first. New accounts get $20 of free credits.
+No account yet? Sign up at the [console](https://console.devicecloud.dev) first. New accounts get $20 of [free credits](../billing/test-run-billing.md#credits).
 
 Running in CI or a headless environment? Use an API key instead. Create one under **Settings → API Keys** in the [console](https://console.devicecloud.dev/settings). The key is shown only once, so copy it straight into an environment variable or your CI secrets:
 

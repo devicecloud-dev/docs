@@ -75,7 +75,7 @@ Most pipe variables map to the [`dcd cloud`](../cli/dcd-cloud.md) CLI flag of th
 | `ENV_LIST` | Newline-separated `KEY=VALUE` env vars injected into flows. |
 | `METADATA` | Newline-separated `key=value` metadata attached to the run. |
 | `INCLUDE_TAGS` / `EXCLUDE_TAGS` | Filter flows by Maestro tag. |
-| `RETRY` | Number of retries on failure, up to `2`. Retries are free. |
+| `RETRY` | Number of retries on failure, up to `2`. See [Retry Strategies](../advanced/retry-strategies.md). |
 | `REPORT` | `junit` or `html`. `html-detailed` and `allure` are deprecated, see [Report Formats](../artifacts/report-formats.md). |
 | `JUNIT_PATH` | Where to write the JUnit report (default `./report.xml`). |
 | `DOWNLOAD_ARTIFACTS` | `ALL` or `FAILED` — downloads logs/screenshots/videos. |

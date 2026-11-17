@@ -51,7 +51,7 @@ See the [`dcd artifacts` reference](../cli/dcd-artifacts.md) for the full flag l
 
 ### From the Console
 
-Each test result in the [DeviceCloud console](https://console.devicecloud.dev) has a download menu with the files for that result: `commands.json`, the Maestro log, Maestro stdout and stderr, the logcat (Android), the HTML, JUnit and Allure reports (when the run generated them; Allure is deprecated, with removal targeted for 7 December 2026), the app binary (APK or APP build) and the workspace. Videos and screenshots are shown on the result page; to download them in bulk, use `--download-artifacts` or `dcd artifacts`.
+Each test result in the [DeviceCloud console](https://console.devicecloud.dev) has a download menu with the files for that result: `commands.json`, the Maestro log, Maestro stdout and stderr, the logcat (Android), the HTML, JUnit and Allure reports (when the run generated them; Allure is deprecated, see [Deprecations & Removals](../getting-started/deprecations.md)), the app binary (APK or APP build) and the workspace. Videos and screenshots are shown on the result page; to download them in bulk, use `--download-artifacts` or `dcd artifacts`.
 
 ## Artifact Archive Structure
 
@@ -76,7 +76,7 @@ artifacts.zip
 
 Files are named after the flow file (without its extension), e.g. `login-maestro.log` for `login.yaml`. The `logs/` folder also holds stdout/stderr, the device log (`-logcat.zip` on Android, `-ios-device-log.zip` on iOS) and any per-flow reports. With `--download-artifacts FAILED`, only failed tests get a folder, but `report.xml` is always included and still covers every test.
 
-When `--retry` reruns a flow, every attempt gets its own result-ID folder, so the failed attempt's screenshots and video are in the zip even if a retry passed. `report.xml` covers only the final attempt of each flow.
+Each [retry](../advanced/retry-strategies.md#seeing-every-attempt) attempt gets its own result-ID folder, so the failed attempt's screenshots and video are in the zip even if a retry passed.
 
 ## Retention
 
