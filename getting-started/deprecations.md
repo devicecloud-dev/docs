@@ -32,10 +32,6 @@ Removal dates are targets, subject to change based on usage.
 | 19 October 2026 | Android API levels 29-31 (Android 10-12) |
 | 19 October 2026 | Maestro 2.0.4, 2.0.9, 2.1.0, 2.5.0, 2.5.1 and 2.6.0 |
 
-## Support policies
+## Support policy
 
-Each policy says when something is deprecated, and when it can be removed:
-
-* [Device & OS Support Policy](devices-configuration.md#device-os-support-policy)
-* [Maestro Support Policy](../configuration/maestro-versions.md#maestro-support-policy)
-* [Runner Type Support Policy](../configuration/runner-type.md#runner-type-support-policy)
+When something is deprecated, and when it can be removed, is set out in our [Support Policy](support-policy.md).

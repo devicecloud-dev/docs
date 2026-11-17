@@ -30,7 +30,7 @@ If your app or test struggles on the default runner types, try the options below
 | `m1`        | Android  | MacOS   | M1           | 8 GB  | 8         | Apple Silicon (arm64). Google Play runs are moving here, see below. |
 
 ::: warning
-The `gpu1` runner type was removed on 9 November 2026. Android runs that still pass `--runner-type gpu1`, or set it with `DEVICECLOUD_OVERRIDE_RUNNER_TYPE`, run on `cpu1` instead, billed at the standard Android rate. They don't fail. On iOS, `gpu1` is still rejected. Stop passing `gpu1`: Android runs use `cpu1` by default, or you can pass `--runner-type cpu1`. See the [Runner Type Support Policy](#runner-type-support-policy) for more information.
+The `gpu1` runner type was removed on 9 November 2026. Android runs that still pass `--runner-type gpu1`, or set it with `DEVICECLOUD_OVERRIDE_RUNNER_TYPE`, run on `cpu1` instead, billed at the standard Android rate. They don't fail. On iOS, `gpu1` is still rejected. Stop passing `gpu1`: Android runs use `cpu1` by default, or you can pass `--runner-type cpu1`. See the [Support Policy](../getting-started/support-policy.md#runner-types) for more information.
 :::
 
 ::: info
@@ -78,7 +78,4 @@ env:
 
 ## Runner Type Support Policy
 
-We may occasionally need to retire a runner type from our platform. This may be that it overlaps with other runner types or due to a lack of usage. Our policy for this is as follows:
-
-* Once a runner type is to be no longer offered, we'll mark it as deprecated.
-* Deprecated runner types are then removed after at least 30 days provided their total usage over seven days is less than 1%.
+How we retire runner types is set out in our [Support Policy](../getting-started/support-policy.md#runner-types).
