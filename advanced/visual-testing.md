@@ -63,8 +63,38 @@ Maestro has no "record" mode, so you have to capture the first baseline yourself
 
 3. Swap the command to `assertScreenshot`. A literal path needs nothing else; a path with a variable also needs `includedPaths` in your config.
 
+### Capturing a cropped baseline on DeviceCloud
+
+A baseline cropped to one element with `cropOn` can be captured on the DeviceCloud device itself, so you don't have to set up a matching local device:
+
+1. Run the flow on the device you will assert on, with `takeScreenshot` and the same `cropOn` the assertion will use, and download the result:
+
+   ```yaml
+   - takeScreenshot:
+       path: home-header
+       cropOn:
+         id: header
+   ```
+
+   ```bash
+   dcd cloud app.apk .maestro/ --android-device pixel-8 --android-api-level 34 --download-artifacts ALL
+   ```
+
+2. The zip holds the crop as `<result-id>/screenshots/visual-home-header.jpg`, named after the flow and the `path`. Commit it unchanged, keeping the `.jpg` extension, for example as `screenshots/home-header.jpg`.
+
+3. Swap the command to `assertScreenshot` with the same `cropOn`, and name the file with its extension:
+
+   ```yaml
+   - assertScreenshot:
+       path: screenshots/home-header.jpg
+       cropOn:
+         id: header
+   ```
+
+The download is a JPEG, so a few pixels differ slightly from the device's own capture. That is well within the default threshold.
+
 ::: warning
-**Don't use `--download-artifacts` to create a baseline.** Screenshots and videos from a run are downscaled and re-encoded for the console — a 1080x2400 screen comes back as a 486x1080 JPEG — so they will never match at full size. They are for looking at, not for asserting against.
+**Don't use `--download-artifacts` to create a full-screen baseline.** Screenshots taller than 1080 px are downscaled and re-encoded for the console — a 1080x2400 screen comes back as a 486x1080 JPEG — so they will never match at full size. Only a crop up to 1080 px tall comes back at its real size.
 :::
 
 If the dimensions are wrong you will see a size mismatch naming both sizes, which tells you exactly what to capture at:
@@ -137,10 +167,14 @@ Comparison error: Assert screenshot matches screenshots/home.png (threshold: 90%
   - threshold not met, current: 7.78%
 ```
 
-Maestro also writes a diff image highlighting the changed regions. DeviceCloud collects it at full resolution and shows it in the run's media strip alongside the video and screenshots, so you can see what moved without re-running anything.
+Maestro also writes a diff image that boxes the changed regions. It does this for every assertion that doesn't match, including `optional: true` assertions that only warn and let the flow pass. DeviceCloud collects each diff as a full-resolution PNG and shows it in the run's media strip alongside the video and screenshots, and `--download-artifacts` puts it in the result's `screenshots/` folder, so you can see what moved without re-running anything.
+
+Each diff is named after the flow and the baseline it was compared with, with the baseline's folders joined by hyphens. A flow `visual.yaml` that asserts `screenshots/pixel-8-api-34/home.png` gives `visual-diff-screenshots-pixel-8-api-34-home_diff.png`, so a flow that checks several baselines gets one diff for each, and you can tell them apart. From Maestro 2.12.0, a flow that asserts the same baseline twice gets a diff for each time, and the second name ends in the step, such as `…-home_diff-step-017-assertScreenshot.png`.
 
 The diff is only produced for a pixel mismatch. A size mismatch fails before any comparison happens, and reports the expected and actual dimensions in the step error instead.
 
 ::: warning
-When you run locally, Maestro writes that diff next to the baseline **in your working directory**, named after it: `screenshots/home_diff.png` for `screenshots/home.png`. Delete these before you run `dcd cloud` from the same folder. An `includedPaths` pattern such as `screenshots/**` uploads them, and DeviceCloud shows every `*_diff.png` it finds as a diff from the run. Add `**/*_diff.png` to your `.gitignore` too, so they never reach your repository.
+Up to Maestro 2.11, a local run writes that diff next to the baseline **in your working directory**, named after it: `screenshots/home_diff.png` for `screenshots/home.png`. Delete these before you run `dcd cloud` from the same folder. An `includedPaths` pattern such as `screenshots/**` uploads them, and DeviceCloud shows every `*_diff.png` it finds as a diff from the run. Add `**/*_diff.png` to your `.gitignore` too, so they never reach your repository.
+
+From Maestro 2.12.0, a local run writes the diff to Maestro's own output folder instead, as `assert-screenshot/step-NNN-assertScreenshot-diff.png` under the flow's folder in `~/.maestro/tests/<run>/`, and leaves your working directory alone.
 :::
