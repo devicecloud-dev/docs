@@ -120,7 +120,7 @@ With a `dcd login` session, the server works in your active team, the one [`dcd 
 The `dcd_*` tools are in beta, so they may change.
 :::
 
-`dcd mcp` serves the `dcd_*` tools: list devices, submit a cloud test run, list recent runs, check a run's status and download its artifacts. [Cloud Test Tools](tools.md) describes each one.
+`dcd mcp` serves the `dcd_*` tools: list devices, submit a cloud test run, list recent runs, check a run's status, download its artifacts and read your team's settings. [Cloud Test Tools](tools.md) describes each one.
 
 If your team is in the [Agent Devices](agent-devices.md) beta, `dcd mcp` also serves the device tools, which start and drive cloud devices. It passes them through from the hosted server, and adds what only a local process can do: `install_app` takes `app_path`, a build on your machine, and `run` takes `path`, a flow file or a directory of flows. [Agent Devices Tools](agent-devices-tools.md) describes each one.
 

@@ -3674,7 +3674,8 @@ components:
           format: uuid
           description: The upload the run belongs to.
         uploadName:
-          type: [string, 'null']
+          type: string
+          description: The upload's name, or `Unknown` when it has none.
     TeamSettings:
       type: object
       required:
