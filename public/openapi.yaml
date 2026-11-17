@@ -31,9 +31,10 @@ info:
 
     ## Rate limits
 
-    The API accepts up to 60 requests a minute. Over the limit it answers `429`
-    with a `Retry-After` header. These endpoints aren't rate limited, so they're
-    safe to poll: `GET /results/{uploadId}`, `GET /uploads/status` and
+    Each endpoint accepts up to 60 requests a minute. Over the limit it answers
+    `429` with a `Retry-After` header: wait that many seconds, then retry, and
+    back off further if you get `429` again. These endpoints aren't counted, so
+    they're safe to poll: `GET /results/{uploadId}`, `GET /uploads/status` and
     `GET /ip-addresses`. The device session endpoints have their own limits,
     described on each one.
 
@@ -315,10 +316,10 @@ paths:
                         duration_seconds: 32
                         fail_reason: 'Element not found: Text matching regex next.* not found'
                         cancellation_reason: null
-                        simulator_name: pixel-7-api-34
+                        simulator_name: pixel-10-api-36
                         config:
-                          deviceName: Pixel 7
-                          osVersion: '34'
+                          deviceName: Pixel 10
+                          osVersion: '36'
                 full:
                   summary: Full view (config and result_files shortened)
                   value:
@@ -333,11 +334,11 @@ paths:
                         duration_seconds: 32
                         fail_reason: 'Element not found: Text matching regex next.* not found'
                         cancellation_reason: null
-                        simulator_name: pixel-7-api-34
+                        simulator_name: pixel-10-api-36
                         platform: android
                         config:
-                          deviceName: Pixel 7
-                          osVersion: '34'
+                          deviceName: Pixel 10
+                          osVersion: '36'
                           maestroVersion: 2.10.0
                         result_files:
                           id: 9120
@@ -377,7 +378,7 @@ paths:
               example: |
                 <?xml version="1.0" encoding="UTF-8"?>
                 <testsuites tests="1" failures="0" time="11">
-                  <testsuite name="Test Suite" device="pixel-7-api-34" tests="1" failures="0" time="11">
+                  <testsuite name="Test Suite" device="pixel-10-api-36" tests="1" failures="0" time="11">
                     <testcase id="Onboarding" name="Onboarding" classname="Onboarding" time="11"/>
                   </testsuite>
                 </testsuites>
@@ -586,14 +587,18 @@ paths:
       operationId: getFlowRuns
       tags: [Flows]
       summary: Get runs for a flow
-      description: Every run of one flow file, newest first.
+      description: |
+        The newest runs of one flow file, up to `limit`. Neither date has a
+        default, so without them runs of any age count. `uploadName` is `Unknown` for an
+        upload that was given no name.
       parameters:
         - name: fileName
           in: query
           required: true
           description: |
-            The flow's path exactly as `GET /flows` returns it in `file_name`:
-            relative to the flows folder that was run, starting with `./`.
+            The flow's path exactly as `GET /flows` returns it in `file_name`,
+            starting with `./`. It's relative to the flows folder that was run,
+            unless the flows use files outside that folder.
           schema:
             type: string
           example: ./auth/login.yaml
@@ -854,8 +859,9 @@ paths:
                     message: Not enough credits to start a live session.
         '403':
           description: >-
-            `LIVE_NOT_ENABLED`: device sessions aren't enabled for your organization. A missing or invalid API
-            key also answers 403 (see the shared `Forbidden` response).
+            `LIVE_NOT_ENABLED`: device sessions aren't enabled for your organization. They're in a closed beta:
+            contact support to have them turned on. A missing or invalid API key also answers 403 (see the
+            shared `Forbidden` response).
           content:
             application/json:
               schema:
@@ -945,7 +951,7 @@ paths:
                     monitor_url: https://console.devicecloud.dev/device/brave-teal-otter
                   - id: calm-blue-heron
                     live_id: 4177
-                    state: released
+                    state: expired
                     release_reason: idle_timeout
                     platform: ios
                     model: iphone-16-ios-26.4
@@ -2995,7 +3001,8 @@ components:
       name: x-dcd-org
       description: |
         The team (organization) ID to act as, with a Bearer token. The signed-in
-        user must be a member of that team.
+        user must be a member of that team. The ID is a number: `dcd whoami --json`
+        shows it as `org.id`.
   parameters:
     UploadId:
       name: uploadId
@@ -3060,7 +3067,7 @@ components:
                 message: This API key is limited to device_sessions and can't reach /uploads/list. Use a key with full access for this.
                 error: API_KEY_SCOPE
     RateLimited:
-      description: Over 60 requests a minute. Wait for `Retry-After` seconds.
+      description: Over 60 requests a minute to this endpoint. Wait `Retry-After` seconds, then retry with backoff.
       headers:
         Retry-After:
           $ref: '#/components/headers/RetryAfter'
@@ -3374,7 +3381,7 @@ components:
             durationSeconds: 32
             failReason: 'Element not found: Text matching regex next.* not found'
             createdAt: '2026-01-15T10:30:04+00:00'
-            device: pixel-7-api-34
+            device: pixel-10-api-36
     UploadStatusTest:
       type: object
       required: [name, status]
@@ -3395,7 +3402,7 @@ components:
           format: date-time
         device:
           type: string
-          description: The device the test ran on, such as `pixel-7-api-34` or `iPhone 16 - 18`.
+          description: The device the test ran on, such as `pixel-10-api-36` or `iPhone 16 - 18`.
     ResultsResponse:
       type: object
       required: [statusCode, results]
@@ -3437,8 +3444,9 @@ components:
         status:
           $ref: '#/components/schemas/TestStatus'
           description: |
-            The test's state. This endpoint still reports a queued test as
-            `PENDING` rather than `QUEUED`, so treat both as "not started yet".
+            The test's state. This endpoint reports a queued test as `PENDING`
+            rather than `QUEUED`, so that older CLIs keep working. Treat both as
+            "not started yet". `GET /uploads/status` reports `QUEUED`.
         retry_of:
           type: [integer, 'null']
           description: For a retry, the `id` of the attempt it retried.
@@ -3461,7 +3469,7 @@ components:
             reasons may be added.
         simulator_name:
           type: string
-          description: The device the test ran on, such as `pixel-7-api-34`.
+          description: The device the test ran on, such as `pixel-10-api-36`.
         platform:
           $ref: '#/components/schemas/Platform'
           description: Full view only.
@@ -3473,10 +3481,10 @@ components:
           properties:
             deviceName:
               type: string
-              example: Pixel 7
+              example: Pixel 10
             osVersion:
               type: [string, number]
-              example: '34'
+              example: '36'
           additionalProperties: true
         result_files:
           type: [object, 'null']
@@ -3603,7 +3611,10 @@ components:
           description: When the list last changed.
         ipAddresses:
           type: array
-          description: Every address as a bare IP, the simplest thing to allow-list.
+          description: |
+            Every address in one flat list, the simplest thing to allow-list. A
+            single host (`/32`) appears as a bare IP; a wider range would appear in
+            CIDR notation.
           items:
             type: string
         ranges:
@@ -3670,7 +3681,7 @@ components:
             - `LIVE_NO_APP` (409): no app is installed, and none was named.
             - `LIVE_COMMAND_NOT_FOUND` (404): no such command in this session.
             - `LIVE_LOGS_UNAVAILABLE` (502): the device logs couldn't be read.
-            - `LIVE_SESSION_REQUIRED`: MCP only, never returned by this API. More than one session is open, so pass `session_id`.
+            - `LIVE_SESSION_REQUIRED`: MCP only, never returned by this API. No session is open, or more than one is, so pass `session_id`.
             - `LIVE_RATE_LIMITED` (429): too many requests. Wait `retry_after_s` seconds.
             - `LIVE_NOT_WAITING_FOR_HUMAN` (409): hand-back on a session that isn't waiting for a person.
             - `LIVE_HUMAN_IN_CONTROL` (409): a person has taken control in the console. Wait for them to hand back.
@@ -3970,7 +3981,10 @@ components:
           description: Android only. An image with Google Play services. Sending it on iOS is a 400.
         binaryUploadId:
           type: string
-          description: An uploaded build to install once the device is ready. It must be your organization's and for this platform.
+          description: >-
+            An uploaded build to install once the device is ready. It must be your organization's and for this
+            platform. Upload one with `dcd upload`, which prints its ID, or reuse a test run's `appBinaryId` from
+            GET /uploads/status.
         deviceLocale:
           type: string
           pattern: '^[a-z]{2,3}_[A-Z]{2}$'
@@ -4010,7 +4024,9 @@ components:
       properties:
         binaryUploadId:
           type: string
-          description: An uploaded build of your organization's, for the session's platform.
+          description: >-
+            An uploaded build of your organization's, for the session's platform. Upload one with `dcd upload`,
+            which prints its ID, or reuse a test run's `appBinaryId` from GET /uploads/status.
         url:
           type: string
           format: uri

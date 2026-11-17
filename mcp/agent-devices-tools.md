@@ -1,18 +1,19 @@
 # Agent Devices tool reference
 
-These are the tools DeviceCloud's hosted MCP server (`https://api.devicecloud.dev/mcp`) offers for [Agent Devices](agent-devices.md). Each description below is the one your agent sees. Every tool except `list_devices` and `cheat_sheet` takes an optional `session_id`. You can leave it out when your organization has exactly one open session.
+These are the tools DeviceCloud's hosted MCP server (`https://api.devicecloud.dev/mcp`) offers for [Agent Devices](agent-devices.md). Each description below is the one your agent sees. Every tool except `list_devices`, `start_device` and `cheat_sheet` takes an optional `session_id`. You can leave it out when your team has exactly one open session. With none open, or several, the tool answers `LIVE_SESSION_REQUIRED`.
 
 A [read-only connection](agent-devices.md#read-only) offers only the tools marked **Read-only**. [`dcd mcp`](agent-devices.md#headless-through-the-cli) serves the same tools, and adds `app_path` to `install_app` and `path` to `run` for files on your machine.
 
 ## The session block
 
-Every result includes a `session` block, so the agent never needs a separate call to stay oriented:
+Every result about a session includes a `session` block, so the agent never needs a separate call to stay oriented:
 
 | Field | What it says |
 |-------|--------------|
 | `id` | The session id, such as `brave-teal-otter` |
-| `state` | `queued`, `provisioning`, `ready`, `active`, `needs_human`, `released`, `expired` or `failed` |
-| `release_reason` | Why the session ended, once it has |
+| `live_id` | The session's internal number. Tools take `id`, not this. REST API paths accept either |
+| `state` | `queued`, `provisioning`, `ready`, `active` or `needs_human` while it's open. Once it has ended: `released` (stopped, or ended for another reason), `expired` (it reached a time limit or the spend cap) or `failed` (the device failed) |
+| `release_reason` | Why the session ended, once it has: `user_stop`, `idle_timeout`, `max_duration`, `queue_timeout`, `spend_cap`, `needs_human_timeout`, `runner_error`, `heartbeat_lost` or `other` |
 | `platform`, `model` | The device, such as `ios` and `iphone-16-ios-26.5` |
 | `client_label` | Who is driving, such as `claude-code` |
 | `created_at`, `started_at`, `released_at` | When the session was asked for, got its device, and ended |
@@ -99,7 +100,9 @@ Launch an app on the device: the installed build by default, or any app by id (e
 
 The current screen as compact JSON: every element of the app with text, an id, a label or a hint, with its bounds and any state (checked, selected, focused, enabled: false). Use it before tapping, and copy txt and rid values exactly into run commands (tapOn text / id). Shows the result of your last command. The on-screen keyboard's keys and the System UI (status bar, navigation bar) are left out and counted in `hidden`; keyboard_open says a keyboard is showing.
 
-While a keyboard is open, some apps report their own fields and buttons with clipped accessibility bounds, and those elements are then missing from inspect_screen even with `all`, while the screenshot still shows them. Seen with React Native apps on Android that slide an input bar up above the keyboard. Hide the keyboard first, with `run` and `- hideKeyboard`, then inspect_screen again. Typing does not need the keyboard on screen: `inputText` goes to the focused field.
+::: info
+This note isn't part of the tool's description, but the `cheat_sheet` tool tells agents the same. While a keyboard is open, some apps report their own fields and buttons with clipped accessibility bounds, and those elements are then missing from inspect_screen even with `all`, while the screenshot still shows them. Seen with React Native apps on Android that slide an input bar up above the keyboard. Hide the keyboard first, with `press_key` and `back` on Android, or with `run` and `- hideKeyboard`, then inspect_screen again. Typing does not need the keyboard on screen: `inputText` goes to the focused field.
+:::
 
 Read-only.
 
@@ -125,8 +128,8 @@ Tap one thing on the screen: an element by its text (txt or a11y from inspect_sc
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
 | `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
-| `text` | string | No | The element's text, label or hint, copied from inspect_screen. |
-| `id` | string | No | The element's resource id (rid in inspect_screen). |
+| `text` | string, up to 1000 characters | No | The element's text, label or hint, copied from inspect_screen. |
+| `id` | string, up to 1000 characters | No | The element's resource id (rid in inspect_screen). |
 | `x` | number, 0 to 100 | No | x as a percentage of the screen, 0 to 100. |
 | `y` | number, 0 to 100 | No | y as a percentage of the screen, 0 to 100. |
 
@@ -137,7 +140,7 @@ Type into the focused field (tap_on the field first). Answers once the screen ha
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
 | `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
-| `text` | string | Yes | What to type, as the user would. |
+| `text` | string, up to 1000 characters | Yes | What to type, as the user would. |
 | `sensitive` | boolean | No | The text is a secret: a password, a code. Default false. |
 
 ## `swipe`

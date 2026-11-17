@@ -7,7 +7,7 @@ dcd status --upload-id <uuid> [flags]
 dcd status --name <upload-name> [flags]
 ```
 
-One of `--upload-id` or `--name` is required. If multiple uploads share the same name, the most recent is returned.
+Pass either `--upload-id` or `--name`, not both. If multiple uploads share the same name, the most recent is returned.
 
 ## Flags
 
@@ -15,10 +15,13 @@ One of `--upload-id` or `--name` is required. If multiple uploads share the same
 |------|-------------|
 | `--upload-id <uuid>` | UUID of the upload to check |
 | `--name <name>` | Name of the upload to check |
-| `--api-key <key>` | Your DeviceCloud API key. Defaults to `DEVICE_CLOUD_API_KEY` env var |
-| `--json` | Output results as JSON. Exits `0` once a result is retrieved (including a `FAILED` run); usage errors, such as omitting both `--upload-id` and `--name`, exit `1` |
+| `--api-key <key>` | Your DeviceCloud API key. Defaults to `DEVICE_CLOUD_API_KEY` env var. Optional if you've run [`dcd login`](dcd-login.md) |
+| `--api-url <url>` | API base URL. Defaults to the environment you logged in to with `dcd login`, otherwise `https://api.devicecloud.dev` |
+| `--json` | Output results as JSON (see [JSON Output](#json-output) for its fields and exit codes) |
 
 The upload status is one of `PASSED`, `FAILED`, `RUNNING`, `PENDING` or `QUEUED`. It's never `CANCELLED`: a run with a cancelled test is reported as `FAILED`, while the test itself keeps its `CANCELLED` status.
+
+`FAILED` doesn't mean the run has finished. The status turns `FAILED` as soon as any test has failed with no retries left, or has been cancelled, even while other tests are still queued or running. The run has finished when none of its tests is `QUEUED`, `PENDING` or `RUNNING`.
 
 ## Examples
 
@@ -83,6 +86,10 @@ dcd status --name "Nightly regression" --json
 }
 ```
 
+Each test's `device` is the device and OS version it ran on, as one string, such as `iPhone 16 - 18` or `pixel-8-api-34`.
+
+A run that a newer run superseded through [`--cancel-previous`](../advanced/cancel-previous.md) also has a `supersededBy` field: the newer run's upload ID. Its `status` is still `FAILED`, because its cancelled tests count against it, so check for `supersededBy` before you fail a CI job on `status`.
+
 If the lookup itself fails — for example the upload ID doesn't exist, or the API can't be reached — `--json` prints a `FAILED` status with an `error` message instead, and still exits `0`:
 
 ```json
@@ -94,7 +101,7 @@ If the lookup itself fails — for example the upload ID doesn't exist, or the A
 }
 ```
 
-Check for an `error` field before treating `FAILED` as a failed test run.
+Other errors print the same `status` and `error` but exit `1`. These include passing neither `--upload-id` nor `--name`, or having no API key and no `dcd login` session. Either way, check for an `error` field before treating `FAILED` as a failed test run.
 
 Use with [jq](https://jqlang.github.io/jq/) to extract specific values:
 
@@ -104,24 +111,43 @@ export BINARY_ID=$(dcd status --name "Nightly regression" --json | jq -r '.appBi
 
 ## Polling an Async Run
 
-When using `dcd cloud --async`, use `dcd status` to poll for completion:
+When using `dcd cloud --async`, use `dcd status` to poll for completion. Wait until no test is still queued, pending or running, rather than stopping at the first `FAILED`:
 
-```bash
+```yaml
 # GitHub Actions example
-- name: Run tests
-  run: dcd cloud app.apk flows/ --async --name "CI-${{ github.run_id }}"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      DEVICE_CLOUD_API_KEY: ${{ secrets.DCD_API_KEY }}
+    steps:
+      # ... build app.apk ...
 
-- name: Wait for results
-  run: |
-    while true; do
-      STATUS=$(dcd status --name "CI-${{ github.run_id }}" --json | jq -r '.status')
-      echo "Status: $STATUS"
-      if [[ "$STATUS" == "PASSED" || "$STATUS" == "FAILED" ]]; then
-        break
-      fi
-      sleep 30
-    done
-    [ "$STATUS" == "PASSED" ]
+      - name: Install the DeviceCloud CLI
+        run: |
+          curl -fsSL https://get.devicecloud.dev/install.sh | sh
+          echo "$HOME/.dcd/bin" >> "$GITHUB_PATH"
+
+      - name: Run tests
+        run: dcd cloud app.apk flows/ --async --name "CI-${{ github.run_id }}"
+
+      - name: Wait for results
+        run: |
+          while true; do
+            RESULT=$(dcd status --name "CI-${{ github.run_id }}" --json)
+            if echo "$RESULT" | jq -e '.error' > /dev/null; then
+              echo "$RESULT"
+              exit 1
+            fi
+            # Finished once no test is still queued, pending or running
+            if echo "$RESULT" | jq -e '[.tests[].status] | all(. == "PASSED" or . == "FAILED" or . == "CANCELLED")' > /dev/null; then
+              break
+            fi
+            sleep 30
+          done
+          echo "Status: $(echo "$RESULT" | jq -r '.status')"
+          # Pass when every test passed, or when a newer run superseded this one
+          echo "$RESULT" | jq -e '.status == "PASSED" or .supersededBy != null' > /dev/null
 ```
 
 See [Async Execution](../advanced/async-execution.md) for more patterns.

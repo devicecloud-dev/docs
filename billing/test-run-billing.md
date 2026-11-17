@@ -1,7 +1,7 @@
 # Test Run Billing
 
 ::: info
-All amounts exclude Sales Tax - this will be added at checkout for your country by our Merchant of Record, Paddle.
+All prices exclude Sales Tax. On the Pro and Max plans, tax is added at checkout for your country by our Merchant of Record, Paddle. On the Enterprise plan, tax is added to your invoice where applicable.
 :::
 
 DeviceCloud charges your Team's account per test run. This happens as soon as you run `dcd cloud`.
@@ -20,16 +20,20 @@ Details of charges made to your account can be found on the [billing page](https
 | Advanced Android | Any runs on our `m1` [runner type](../configuration/runner-type.md), and any Tablet, Pixel 10 Pro Fold or Play device runs | $0.15 |
 
 ::: info
-Enterprise customers with volume discounts or grandfathered users with older pricing may have different pricing. You can view your account's test run cost in the [billing page](https://console.devicecloud.dev/billing)
+Enterprise customers with volume discounts, and customers on older pricing, may pay different rates. Your team's rates, with any discount applied, are under **Flow Run Cost** on the [billing page](https://console.devicecloud.dev/billing).
 :::
 
 ### Extended runtime
 
 A flow that opts into [extended runtime](../configuration/extended-runtime.md) (up to 20 minutes instead of 10) is charged at 2× its rate above, whether or not it uses the extra time. Flows that don't opt in are charged at the normal rate.
 
+### Live and device sessions
+
+[Live sessions](../cli/dcd-live.md) and [Agent Devices](../mcp/agent-devices.md) sessions aren't charged per test run. They cost $0.03 a minute, charged in 30-second steps from when a device is assigned to the session until the session ends. Time spent queued isn't charged, and your team's discount applies.
+
 ### Credits
 
-New users are given $20 in free credits to test the service.
+New teams are given $20 in free credits to test the service.
 
 Historically, DeviceCloud users purchased credits in advance and these were drawn down via usage. Credits can no longer be purchased or topped up — [subscriptions](subscriptions.md) have replaced them — but any prepaid balance you still hold doesn't expire. If you also have a subscription, your prepaid balance (including any remaining free credits) is spent first, before your plan's included usage.
 

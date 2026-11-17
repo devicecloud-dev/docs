@@ -61,8 +61,10 @@ jobs:
       DCD_EAS_BUILD_ID: ${{ needs.build_android.outputs.build_id }}
       DCD_EAS_PLATFORM: ${{ needs.build_android.outputs.platform }}
       DCD_EAS_APP_VERSION: ${{ needs.build_android.outputs.app_version }}
+      DCD_GH_REPO: acme/my-app # your repository, as owner/repo
       DCD_GH_SHA: ${{ github.sha }}
       DCD_GH_BRANCH: ${{ github.ref_name }}
+      DCD_CHECK_NAME: Android
     outputs:
       console_url: ${{ steps.dcd.outputs.console_url }}
       status: ${{ steps.dcd.outputs.upload_status }}
@@ -99,8 +101,10 @@ jobs:
       DCD_EAS_BUILD_ID: ${{ needs.build_ios.outputs.build_id }}
       DCD_EAS_PLATFORM: ${{ needs.build_ios.outputs.platform }}
       DCD_EAS_APP_VERSION: ${{ needs.build_ios.outputs.app_version }}
+      DCD_GH_REPO: acme/my-app # your repository, as owner/repo
       DCD_GH_SHA: ${{ github.sha }}
       DCD_GH_BRANCH: ${{ github.ref_name }}
+      DCD_CHECK_NAME: iOS
     outputs:
       console_url: ${{ steps.dcd.outputs.console_url }}
       status: ${{ steps.dcd.outputs.upload_status }}
@@ -158,8 +162,10 @@ The build artifact itself is downloaded by `eas/download_build` and passed via `
 | `DCD_GH_RUN_ID` | `${{ workflow.id }}` | `gh_run_id` metadata — the EAS workflow run ID, the same on every job of one workflow run (EAS has no `github.run_id`) |
 | `DCD_GH_PR_NUMBER` | `${{ github.event.pull_request.number }}` | `gh_pr_number` metadata |
 | `DCD_GH_PR_URL` | `${{ github.event.pull_request.html_url }}` | `gh_pr_url` metadata |
-| `DCD_GH_REPO` | `${{ github.repository }}` | `gh_repo` metadata |
+| `DCD_GH_REPO` | `${{ github.repository }}`, or a fixed `owner/repo` string | `gh_repo` metadata |
 | `DCD_CHECK_NAME` | a fixed string, e.g. `iOS` | `gh_check_name` metadata — names the [GitHub check](github-checks.md) this job posts (`DeviceCloud / iOS`) |
+
+To post a [GitHub check](github-checks.md), set both `DCD_GH_REPO` and `DCD_GH_SHA`, and connect the DeviceCloud GitHub App. Without both, no check is posted. A fixed `owner/repo` string for `DCD_GH_REPO`, as in the [Platform Examples](#platform-examples), stays valid on manual runs, where `${{ github.repository }}` doesn't (see the warning below).
 
 Set `DCD_CHECK_NAME` when a commit is tested by more than one job, so each gets a check of its own that can be required separately in branch protection. Keep it fixed per job — GitHub matches required checks by name.
 
@@ -201,18 +207,20 @@ Anything you pass on the command line after `npx @devicecloud.dev/eas-workflow@v
 
 ### Device Configuration
 
+For the devices and OS versions you can pass, and which combinations work, see [Devices & OS Versions](../getting-started/devices-configuration.md).
+
 | Flag | Description |
 |------|-------------|
-| `--android-device <model>` | `pixel-6`, `pixel-7` (deprecated), `pixel-8`, `pixel-10`, `pixel-10-pro`, `pixel-10-pro-xl`, `pixel-10-pro-fold`, `pixel-11`, `generic-tablet`. Default `pixel-10`. |
-| `--android-api-level <n>` | `32` – `37`. Default `36`. |
-| `--ios-device <model>` | `iphone-14`, `iphone-16`, `iphone-16-pro` (deprecated), `iphone-17`, `iphone-air`, `iphone-18-pro`, `iphone-18-pro-max`, `iphone-duo`, `ipad-pro-m5-11`, `ipad-pro-m5-13`. |
-| `--ios-version <n>` | `17` (deprecated), `18`, `26`, `27`. Default `26`. |
+| `--android-device <model>` | Android device, e.g. `pixel-8`. Default `pixel-10`. |
+| `--android-api-level <n>` | Android API level, e.g. `34`. Default `36`. |
+| `--ios-device <model>` | iOS device, e.g. `iphone-17`. Default `iphone-16`. |
+| `--ios-version <n>` | Major iOS version, e.g. `18`. Default `26`. |
+| `--android-device-matrix <cell>`, `--ios-device-matrix <cell>` | Run every flow once per device and OS pair, e.g. `pixel-8:34`. Repeatable. See [Device Matrix](../configuration/device-matrix.md). |
 | `--device-locale <code>` | E.g. `de_DE`. See [Device Locale](../configuration/device-locale.md). |
 | `--orientation <deg>` | Android only. `0` or `90`. |
 | `--google-play` | Android only. Run on Google Play devices. |
 | `--runner-type <type>` | `default`, `cpu1`, `m1`, `m4`. `m1` and `m4` incur premium pricing. See [Runner Types](../configuration/runner-type.md). |
-
-See the [Devices & OS Versions](../getting-started/devices-configuration.md) page for the full availability matrix.
+| `--render-engine <engine>` | Android only. `lavapipe` or `swiftshader`, the software renderer the emulator boots with on the default Android runner. Leave it out to let DeviceCloud choose (`swiftshader` for apps built with Flutter, otherwise `lavapipe`). |
 
 ### Test Configuration
 
@@ -221,8 +229,10 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `--maestro-version <semver>` | Maestro CLI version. See [Maestro Versions](../configuration/maestro-versions.md). |
 | `--env KEY=value` | Inject environment variables into your flows. Repeatable. |
 | `--name <name>` | Custom name for this test run. |
+| `--metadata key=value` | Extra metadata for the run. Repeatable. |
 | `--retry <n>` | Number of automatic retries on failure (max `2`). Retries are free. |
-| `--report <format>` | `junit`, `html`, `html-detailed`, `allure`. `html-detailed` and `allure` are deprecated and will be removed on 7 December 2026. See [Report Formats](../artifacts/report-formats.md). |
+| `--report <format>` | `junit` or `html`, saved in the working directory as `report.xml` or `report.zip`. `html-detailed` and `allure` are deprecated, see [Report Formats](../artifacts/report-formats.md). |
+| `--junit-path <path>`, `--html-path <path>` | Save the report somewhere else. |
 
 ### Execution Options
 
@@ -231,7 +241,8 @@ See the [Devices & OS Versions](../getting-started/devices-configuration.md) pag
 | `--async` | Exit immediately without waiting for results (exit code `0` regardless). See [Async Execution](../advanced/async-execution.md). |
 | `--cancel-previous` | Cancel the still-queued tests of the previous run of this job on the same branch or PR. Needs `DCD_GH_REPO` plus `DCD_GH_BRANCH` or `DCD_GH_PR_NUMBER`; set `DCD_CHECK_NAME` per job. See [Cancelling superseded runs](../advanced/cancel-previous.md). |
 | `--priority <level>` | `low`, `normal` (default) or `high`. Reorders only your organisation's own queued runs. See [Run Priority](../configuration/run-priority.md). |
-| `--download-artifacts <mode>` | Download logs/screenshots/videos. Options: `ALL`, `FAILED`. |
+| `--download-artifacts <mode>` | Download logs/screenshots/videos as `artifacts.zip` in the working directory. Options: `ALL`, `FAILED`. `--artifacts-path` saves it somewhere else. |
+| `--json-file` | Write the results to `<upload_id>_dcd.json`. The job still fails when the run fails. |
 | `--disable-animations` | Disable device animations. See [Animations](../configuration/disable-animations.md). |
 | `--maestro-chrome-onboarding` | Android only. See [Chrome Onboarding](../advanced/chrome-onboarding.md). |
 | `--android-no-snapshot` | Force cold boot. Auto-enabled for API 34+. |
@@ -288,10 +299,10 @@ jobs:
 
 | Code | Meaning |
 |------|---------|
-| `0` | All flows passed, or run started successfully in async mode. |
-| `1` | At least one flow failed, the run was cancelled, or the wrapper hit an internal error. |
+| `0` | Every flow passed, a newer run superseded this one through [`--cancel-previous`](../advanced/cancel-previous.md), or, with `--async`, the run was submitted. |
+| `1` | A flow failed or was cancelled, the CLI hit an error, or the wrapper couldn't read the run's status. |
 
-See [Exit Codes](../advanced/exit-codes.md) for the full list.
+The wrapper only exits `0` or `1`: it turns the CLI's `2` (the run failed) into `1`. See [Exit Codes](../advanced/exit-codes.md) for what `dcd cloud` itself returns.
 
 ---
 
@@ -341,11 +352,13 @@ jobs:
 
 ### Pass secrets into flows
 
-Set the secret as an EAS env var first:
+Set each secret as an EAS env var first:
 
 ```bash
 eas env:create --scope project --environment production \
   --name TEST_USERNAME --visibility secret --type string --value <value>
+eas env:create --scope project --environment production \
+  --name TEST_PASSWORD --visibility secret --type string --value <value>
 ```
 
 Then reference it as a regular env var in the wrapper invocation:
@@ -374,7 +387,7 @@ Then reference it as a regular env var in the wrapper invocation:
 
 ## Migrating from `maestro-cloud`
 
-EAS's built-in `maestro-cloud` job is closed-source and hardcoded to Maestro Cloud. To switch to DeviceCloud, replace the whole job with a custom job that calls the wrapper:
+EAS's built-in `maestro-cloud` job only runs your flows on Maestro Cloud. To switch to DeviceCloud, replace the whole job with a custom job that calls the wrapper:
 
 ```yaml
 # Before
@@ -384,7 +397,6 @@ e2e:
     build_id: ${{ needs.build.outputs.build_id }}
     maestro_project_id: proj_xxx
     flows: ./.maestro
-    maestro_api_key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
 
 # After
 e2e:
@@ -403,6 +415,25 @@ e2e:
 ```
 
 Then store your DeviceCloud API key as a project secret (as shown in [Quick Start](#quick-start)).
+
+Move the other `maestro-cloud` params like this:
+
+| `maestro-cloud` param | In the new job |
+|---|---|
+| `build_id` | `build_id` on the `eas/download_build` step, which hands the file to `--app-file` |
+| `maestro_project_id`, `maestro_api_key` | Remove them. The wrapper uses `DEVICE_CLOUD_API_KEY`. |
+| `flows` | `--flows` |
+| `include_tags`, `exclude_tags` | `--include-tags`, `--exclude-tags` |
+| `maestro_version` | `--maestro-version`, see [Maestro Versions](../configuration/maestro-versions.md) |
+| `maestro_config` | `--config` |
+| `device_locale` | `--device-locale` |
+| `device_model` | `--android-device` or `--ios-device`, with DeviceCloud's device names, e.g. `pixel-8` or `iphone-16` |
+| `device_os` | `--android-api-level` (e.g. `34`) or `--ios-version` (the major version, e.g. `18`) |
+| `name` | `--name` |
+| `branch` | `DCD_GH_BRANCH` in the job's `env:` |
+| `async` | `--async` |
+| `skip_build_check` | Not needed. |
+| `environment` | Keep it on the new job: it picks the EAS environment that `DEVICE_CLOUD_API_KEY` is read from. A custom job uses `production` unless you set it, while `maestro-cloud` defaults to `preview`. |
 
 ## Source
 

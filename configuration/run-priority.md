@@ -24,6 +24,8 @@ Once you reach your maximum concurrency, extra tests are queued until you're bac
 
 * Priority takes effect when your team is at its maximum concurrency and runs are waiting in the queue. When you're under the limit, nothing is held back, so there is nothing to reorder.
 * Retries keep the original run's priority. This covers both automatic retries from [`--retry`](../advanced/retry-strategies.md) and retries you queue from the console.
+* In an `executionOrder` sequence, priority only decides when the first flow starts. Each later flow in the sequence can start once the one before it finishes.
+* Priority reorders your queued runs within each device. If a higher-priority run on one device takes the slot your queued run on another device would have used, that run goes back in its device's queue as if you had just submitted it.
 
 ## FAQ
 
@@ -33,8 +35,8 @@ No.
 ### Do priority tests affect other teams and their tests?
 No, priority is scoped to only your team's queue.
 
-### What happens to low runs that get bumped continously?
-A run that has been queued for more than 6 hours is started first, no matter it's priority. A steady stream of `high` runs can delay your `low` runs, but can't hold them back indefinitely.
+### What happens to low runs that get bumped continuously?
+A run that has been queued for more than 6 hours is started first, no matter its priority. A steady stream of `high` runs can delay your `low` runs, but can't hold them back indefinitely.
 
 ## CI integrations
 

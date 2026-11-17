@@ -6,13 +6,16 @@ Download artifacts or reports for a completed test run by upload ID. Use this co
 dcd artifacts --upload-id <id> [flags]
 ```
 
+Pass exactly one of `--download-artifacts` or `--report`.
+
 ## Flags
 
 ### Authentication
 
 | Flag | Description |
 |------|-------------|
-| `--api-key <key>` | Your DeviceCloud API key. Defaults to `DEVICE_CLOUD_API_KEY` env var |
+| `--api-key <key>` | Your DeviceCloud API key. Defaults to `DEVICE_CLOUD_API_KEY` env var. Optional if you've run [`dcd login`](dcd-login.md) |
+| `--api-url <url>` | API base URL. Defaults to the environment you logged in to with `dcd login`, otherwise `https://api.devicecloud.dev` |
 
 ### Required
 
@@ -31,8 +34,8 @@ dcd artifacts --upload-id <id> [flags]
 
 | Flag | Description |
 |------|-------------|
-| `--report <format>` | Download a test report. Options: `junit`, `html`, `html-detailed`, `allure`. `html-detailed` and `allure` are deprecated and will be removed on 7 December 2026. Mutually exclusive with `--download-artifacts` |
-| `--allure-path <path>` | Output path for the Allure report (default: `./report.html`). Requires `--report allure`. Deprecated, removed on 7 December 2026 |
+| `--report <format>` | Download a test report. Options: `junit`, `html`, `html-detailed`, `allure`. `html-detailed` and `allure` are deprecated, and we're targeting their removal on 7 December 2026 (see [Report Formats](../artifacts/report-formats.md)). Mutually exclusive with `--download-artifacts` |
+| `--allure-path <path>` | Output path for the Allure report (default: `./report.html`). Requires `--report allure`. Deprecated, with removal targeted for 7 December 2026 |
 | `--html-path <path>` | Output path for the HTML report (default: `./report.zip`). Requires `--report html` or `html-detailed`. The HTML report downloads as a ZIP, so use a `.zip` path |
 | `--junit-path <path>` | Output path for the JUnit report (default: `./report.xml`). Requires `--report junit` |
 
@@ -40,7 +43,10 @@ dcd artifacts --upload-id <id> [flags]
 
 | Flag | Description |
 |------|-------------|
+| `--json` | Print the result as one JSON object: `status` (`SUCCESS` or `FAILED`), `uploadId`, and `downloads`, with one entry per file giving its `type`, `path`, `ok` and, if it failed, `error` |
 | `--debug` | Enable detailed debug logging |
+
+A download that fails prints a warning, and the command still exits `0`. With `--json`, it exits `1` when every download failed.
 
 ## Examples
 
@@ -66,7 +72,7 @@ dcd artifacts --upload-id 123e4567-e89b-12d3-a456-426614174000 --report html --h
 
 ## Using with Async Runs
 
-`dcd artifacts` is especially useful alongside `--async`. Submit the run without blocking, then retrieve artifacts later:
+`dcd artifacts` is especially useful alongside `--async`, which skips `--download-artifacts` and `--report`. Submit the run without blocking, wait for it to finish ([`dcd status`](dcd-status.md#polling-an-async-run) shows how), then retrieve artifacts:
 
 ```bash
 # Submit tests and capture the upload ID

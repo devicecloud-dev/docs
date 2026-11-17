@@ -11,13 +11,15 @@ Slack is configured once per organization from the DeviceCloud console — there
 3. After you approve, you'll be returned to the console.
 4. Pick the **channel** you want notifications posted to and click **Save**.
 
+The channel list shows every public channel. A private channel only appears once the DeviceCloud app is in it: add the app to the channel in Slack (for example with `/invite` in that channel), then reload the settings page.
+
 ::: info
 DeviceCloud requests only the permissions it needs to list your channels and post messages. It cannot read your messages.
 :::
 
 #### Sending a test message
 
-Once a channel is selected, use **Send test** to post a sample message to that channel and confirm everything is wired up. The test uses data from your most recent run when available.
+Once you've saved a channel, use **Send test** to post a sample message to that channel and confirm everything is wired up. The test uses data from your most recent run when available.
 
 #### Only notify on failures
 
@@ -60,7 +62,11 @@ dcd cloud app.apk flows/ \
   --pr-url "https://github.com/owner/repo/pull/123"
 ```
 
-The line only appears when at least one of these values is present, and the commit/PR become clickable GitHub links when a `--repo-name` is supplied.
+The line only appears when at least one of these values is present. The commit links to GitHub when `--repo-name` is set. The pull request links to `--pr-url`, or to the pull request built from `--repo-name` and `--pr-number`.
+
+### Usage alerts
+
+If a [usage alert](../billing/usage-alerts.md) includes **Slack**, it's posted to the same channel, whatever your **Only notify on failures** setting.
 
 ### Disconnecting
 

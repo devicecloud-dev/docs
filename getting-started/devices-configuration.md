@@ -55,7 +55,7 @@ Pixel 10 runs API levels 36 and 37 only. To run on API level 32-35, pass `--andr
 | `pixel-10-pro-xl`   | Pixel 10 Pro XL                                                                        | 1344 x 2992 | 36, 37                             |
 | `pixel-10-pro-fold` | Pixel 10 Pro Fold (starts unfolded)                                                    | 2076 x 2152 | 36, 37                             |
 | `pixel-11`          | Pixel 11                                                                               | 1080 x 2424 | 37                                 |
-| `generic-tablet`    | Generic Tablet (Note: starts in landscape by default, use orientation=90 for portrait) | 2560 x 1440 | 36, 37                             |
+| `generic-tablet`    | Generic Tablet (starts in landscape; pass `--orientation 90` for portrait) | 2560 x 1440 | 36, 37                             |
 
 Generic Tablet and Pixel 10 Pro Fold runs are billed at the Advanced Android rate, see [pricing](../billing/test-run-billing.md).
 
@@ -119,7 +119,7 @@ iPad and iPhone Duo runs are billed at the Advanced iOS rate, see [pricing](../b
 iPhone 16 Pro is deprecated and we're targeting removal on 7 December 2026; this is subject to change based on usage. Runs that target it will be rejected once it's removed, so move them to `iphone-16` (the default), `iphone-17`, `iphone-air`, `iphone-18-pro` or `iphone-18-pro-max`.
 :::
 
-iPhone 16 Pro Max was removed on 9 November 2026, and runs that target it are rejected. Move them to `iphone-16` (the default), `iphone-17`, `iphone-air`, `iphone-18-pro` or `iphone-18-pro-max`. `iphone-18-pro` and `iphone-18-pro-max` run iOS 27 only, so pass `--ios-version 27` with them.
+iPhone 16 Pro Max was removed on 9 November 2026, and runs that target it are rejected. Move them to one of the devices above. `iphone-18-pro` and `iphone-18-pro-max` run iOS 27 only, so pass `--ios-version 27` with them.
 
 iPhone 15, iPhone 16 Plus and iPad Pro (6th Generation) were removed on 2 November 2026.
 
@@ -147,13 +147,13 @@ If you need a device or OS that we don't currently offer, please feel free to re
 
 We will always aim to support the latest versions of iOS and additionally continue to provide support for previous versions. Our policy for this is as follows:
 
-* The latest even-numbered iPhone model & its variations, i.e. iPhone 18, 18e, 18 Pro & 18 Pro Max. We support the ones Apple has actually released; at the time of writing that is the iPhone 18 Pro and 18 Pro Max.
+* The latest even-numbered iPhone model & its variations, e.g. iPhone 18, 18e, 18 Pro & 18 Pro Max, once Apple has released them. The table above lists the ones available now.
 * The previous two supported (i.e. even-numbered) generations of base-model iPhones, i.e. iPhone 16 & iPhone 14. Variations such as Plus, Pro and Pro Max are covered only for the latest even-numbered generation, so they fall out of support when a new even-numbered generation arrives.
 * The latest "un-numbered" iPhones provided their screen dimensions are noticeably different from currently supported devices, i.e. iPhone Air and iPhone Duo.
 * The latest odd-numbered, base-model iPhone, i.e. iPhone 17.
 * The latest generation of iPad Pro, in both screen sizes.
 * Once a device is to be no longer supported, we'll mark it as deprecated.
-* Deprecated devices are then removed after 30 days provided its total usage over seven days is less than 1%.
+* Deprecated devices are then removed after 30 days, provided their total usage over seven days is less than 1%.
 
 #### iOS Versions
 
@@ -161,8 +161,8 @@ We will always aim to support the latest versions of iOS and additionally contin
 
 * We will always support the latest version plus the previous two.
 * Supported versions will always be the latest point release (i.e. 26.x rather than 26.0). Point releases change without notice; you target a major version such as `--ios-version 26` and we run it on the newest 26.x we hold.
-* Once a version is two major versions old, we'll mark it as deprecated.
-* Deprecated versions are then removed after 30 days provided it's total usage over seven days is less than 1%.
+* Once a version is no longer one of the latest three, we'll mark it as deprecated.
+* Deprecated versions are then removed after 30 days, provided its total usage over seven days is less than 1%.
 
 It may be possible in some cases to provide support for a beta version however this will be on a case-by-case basis; please contact our Support team if you would like to request this.
 
@@ -179,7 +179,7 @@ We will always aim to support the latest devices and additionally continue to pr
 * The latest odd-numbered, base-model Pixel i.e. Pixel 11.
 * A generic-tablet model.
 * Once a device is to be no longer supported, we'll mark it as deprecated.
-* Deprecated devices are then removed after 30 days provided its total usage over seven days is less than 1%.
+* Deprecated devices are then removed after 30 days, provided their total usage over seven days is less than 1%.
 
 #### Android Versions
 
@@ -187,7 +187,7 @@ We will always aim to support the latest versions of Android and additionally co
 
 * We will always support the latest version.
 * Once a version is no longer supported by Google, we'll mark it as deprecated.
-* Deprecated versions are then removed after 30 days provided it's total usage over seven days is less than 1%.
+* Deprecated versions are then removed after 30 days, provided its total usage over seven days is less than 1%.
 * We consider API versions unsupported once they are no longer included in [Android Security Bulletins](https://source.android.com/docs/security/bulletin).
 
 It may be possible in some cases to provide support for a beta version however this will be on a case-by-case basis; please contact our Support team if you would like to request this.

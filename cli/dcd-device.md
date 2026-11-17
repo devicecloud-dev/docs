@@ -38,7 +38,7 @@ dcd device stop
   | Code | Meaning |
   |---|---|
   | `0` | Done |
-  | `1` | Called wrongly: a bad flag or value, or no session to pick |
+  | `1` | Called wrongly: a bad flag or value, no session to pick, or credentials the API rejected |
   | `2` | It ran and failed: a flow or launch failed, or the API couldn't do it |
   | `3` | A limit was hit: concurrent sessions, spend cap, or rate limit |
   | `4` | The session has ended, or there is no such session |
@@ -111,7 +111,11 @@ Tap one thing on the screen, by exactly one target. Answers once the screen has 
 
 ## `dcd device type [id] --text <text>`
 
-Type into the focused field (tap it first). `--sensitive` keeps the text secret: it is stored encrypted, never shown, and masked in the output.
+Type into the focused field (tap it first). `--sensitive` treats the text as a secret: DeviceCloud stores it encrypted and masks it in the output.
+
+::: warning
+CLI 5.13.0 also sends the text you type with `dcd device type` in its usage [telemetry](overview.md#telemetry), with or without `--sensitive`. Until the next CLI release, which leaves it out, don't type real passwords or codes this way, or set `DCD_TELEMETRY_DISABLED=1` first.
+:::
 
 ## `dcd device swipe [id] <up|down|left|right>`
 
@@ -127,6 +131,8 @@ Each of these sends one [typed action](../api/device-sessions.md). For several s
 
 Run Maestro on the device and wait for the result. A failed flow exits `2`. Maestro's output is printed either way, and after a failure, so is the app's visible text.
 
+A device session runs the common Maestro commands, not all of them. It refuses flow scripts (`runScript`, `evalScript`, and JavaScript conditions or expressions), and doesn't run `addMedia`, `copyTextFrom`, `pasteText`, `inputRandom*`, `setLocation` or `travel`. A flow that uses one fails before its first step, and the error names the line. See [What a session runs](../mcp/agent-devices.md#what-a-session-runs) for the full list.
+
 | Flag | Description |
 |------|-------------|
 | `<flow.yaml>` | One flow file, run whole |
@@ -135,7 +141,7 @@ Run Maestro on the device and wait for the result. A failed flow exits `2`. Maes
 | `--yaml <flow>` | The flow inline, instead of a file |
 | `--env KEY=VALUE` | A variable for the flow, used as `${KEY}`. Repeat it for more. Values are encrypted before they're stored, and masked in the output |
 
-For a directory, only the YAML files and the files the flows use, such as scripts and media, are uploaded, up to 50 MB.
+For a directory, only the YAML files, the files the flows refer to and the `includedPaths` in its `config.yaml` are uploaded, up to 50 MB.
 
 ## `dcd device logs [id]`
 

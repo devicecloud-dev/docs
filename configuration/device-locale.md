@@ -3,7 +3,7 @@
 Set device language and region for localization testing.
 
 ::: info
-The default locale for Android is `en_US` . The default locale for iOS is currently `en_GB` but will be changing to `en_US` later in 2026.
+If you don't set a locale, Android runs use `en_US` and iOS runs use `en_GB`. Pass `--device-locale` to get the same locale on both.
 :::
 
 ## Format
@@ -44,8 +44,6 @@ env:
 ---
 # test steps
 ```
-
-
 
 ## Common Locales
 

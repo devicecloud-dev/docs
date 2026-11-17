@@ -13,13 +13,13 @@ By default each test run uses the following underlying hardware specifications:
 
 Android runs use `cpu1` unless you choose another runner type. Default iOS runs usually run on M1 hosts, but an idle M4 host can also pick them up.
 
-As modern simulators and emulators are becoming more resource intensive, we're gradually rolling out additional runner types to support more advanced/intensive test scenarios.
+Simulators and emulators keep needing more resources, so we offer extra runner types for heavier apps and tests.
 
 ::: info
-Additional runner types are currently in beta as we work to increase capacity.
+The `m4` runner type is in beta while we add capacity.
 :::
 
-If your app or test is struggling with the default runner types, you can try the options below. Please note that non-default runner types are charged at the advanced run fee as per our [pricing](../billing/test-run-billing.md).
+If your app or test struggles on the default runner types, try the options below. `m4` and `m1` runs are charged at the advanced rate, see our [pricing](../billing/test-run-billing.md).
 
 ## Available runners
 

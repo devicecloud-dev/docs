@@ -12,13 +12,14 @@ dcd upload <app-file> [flags]
 
 | Argument | Description |
 |----------|-------------|
-| `<app-file>` | Path to your app binary: `.apk` for Android, `.app` or `.zip` for iOS, or an Expo iOS build archive (`.tar.gz`), which is extracted automatically |
+| `<app-file>` | Path to your app binary: `.apk` for Android, `.app` or `.zip` for iOS, or an Expo iOS build archive (`.tar.gz`), which is extracted automatically. A signed URL to an Expo iOS build works here too, the same as `--app-url` |
 
 ## Flags
 
 | Flag | Description |
 |------|-------------|
-| `--api-key <key>` | Your DeviceCloud API key. Defaults to `DEVICE_CLOUD_API_KEY` env var |
+| `--api-key <key>` | Your DeviceCloud API key. Defaults to `DEVICE_CLOUD_API_KEY` env var. Optional if you've run [`dcd login`](dcd-login.md) |
+| `--api-url <url>` | API base URL. Defaults to the environment you logged in to with `dcd login`, otherwise `https://api.devicecloud.dev` |
 | `--app-url <url>` | Signed URL to an Expo iOS build (`.tar.gz`), used instead of `<app-file>`. The archive is downloaded and extracted automatically |
 | `--ignore-sha-check` | Force re-upload even if a binary with the same SHA already exists |
 | `--encrypt` / `--no-encrypt` | Envelope encryption is on by default: the binary is encrypted on your machine before upload, with its own key. Pass `--no-encrypt` (or set `DCD_ENCRYPT=0`) to turn it off; the upload is still encrypted in transit. See [Data Encryption](../security/security-overview.md#data-encryption) |

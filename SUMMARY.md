@@ -100,6 +100,7 @@
 
 * [Subscriptions](billing/subscriptions.md)
 * [Overage](billing/overage.md)
+* [Usage Alerts & Limits](billing/usage-alerts.md)
 * [Test Run Billing](billing/test-run-billing.md)
 
 ## Legal

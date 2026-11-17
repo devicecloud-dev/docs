@@ -4,13 +4,13 @@ DeviceCloud can send a POST request to a URL of your choice when a set of tests 
 
 ### Enabling Webhooks
 
-Head to the [console settings](https://console.devicecloud.dev/settings?section=notifications) page, open the **Notifications** section and find **Webhooks**. Enter your webhook URL there.
+Head to the [console settings](https://console.devicecloud.dev/settings?section=notifications) page, open the **Notifications** section and find **Webhooks**. Enter your webhook URL there and select **Save**. **Delete** removes the webhook.
 
 ::: info
-Only HTTPS URLs are supported. The hostname must resolve to a public IP address. Redirects aren't followed, so use the final URL: a `3xx` response counts as a failed delivery.
+Only HTTPS URLs are supported, up to 2,048 characters. The hostname must resolve to a public IP address, and ports 22, 25, 53, 3306, 5432, 6379 and 27017 aren't allowed. Redirects aren't followed, so use the final URL: a `3xx` response counts as a failed delivery.
 :::
 
-You can also send a test request from the console to verify that your endpoint processes webhooks correctly. The test payload will contain information from your most recent job (or sample data if there isn't one yet), is marked with `"test": true`, and uses an `upload_id` prefixed with `test_` and a webhook ID prefixed with `wh_test_`.
+Select **Test** to send a test request and verify that your endpoint processes webhooks correctly. The test payload will contain information from your most recent job (or sample data if there isn't one yet), is marked with `"test": true`, and uses an `upload_id` prefixed with `test_` and a webhook ID prefixed with `wh_test_`.
 
 ### Webhook Structure
 
@@ -18,7 +18,7 @@ You can also send a test request from the console to verify that your endpoint p
 
 ```
 Content-Type: application/json
-X-DeviceCloud-Secret: DeviceCloud_<webhook_secret>
+X-DeviceCloud-Secret: <your_webhook_secret>
 X-DeviceCloud-Webhook-ID: wh_<random_hex>
 X-DeviceCloud-Timestamp: <unix_timestamp>
 User-Agent: DeviceCloud-Webhooks/1.0
@@ -71,7 +71,7 @@ User-Agent: DeviceCloud-Webhooks/1.0
 
 | Field | Description |
 | --- | --- |
-| `event` | `upload.completed` for a finished run. Device sessions add [`device.needs_human`](#device-needs-human). |
+| `event` | `upload.completed` for a finished run. Device sessions add [`device.needs_human`](#device-needs-human), and usage alerts add [`usage.alert`](#usage-alert). |
 | `status` | Overall run outcome: `PASSED` only when every test passed, otherwise `FAILED`. Use this to gate a deploy or set a commit status. |
 | `device` | Device and runner context for the run: `name`, `osVersion`, `runnerType`, and `maestroVersion`. Individual fields are omitted when unavailable — `name` and `osVersion` are left out when the run's flows used more than one device. |
 | `summary` | Aggregate counts (`totalTests`, `passed`, `failed`, and optional `cancelled`/`queued`/`pending`/`running`) plus `durationSeconds`, `wallClockDurationSeconds`, and `retryCount`. |
@@ -108,9 +108,9 @@ Property values must be scalars. Maestro rejects a flow whose `properties:` cont
 ### Delivery
 
 * Each attempt times out after 10 seconds, so respond with a `2xx` quickly and do any slow processing afterwards.
-* Only timeouts are retried, up to 3 attempts in total (1 second, then 2 seconds apart). Every attempt carries the same `X-DeviceCloud-Webhook-ID`, so you can use it to ignore duplicates.
-* Any HTTP response ends delivery, including a `4xx` or `5xx`, and so does any other connection error — these aren't retried.
-* The URL's address is checked before every delivery. URLs that resolve to private, loopback, link-local or other reserved addresses are rejected, as are ports 22, 25, 53, 3306, 5432, 6379 and 27017.
+* Timeouts and connection errors, such as a refused or reset connection or a failed DNS lookup, are retried, up to 3 attempts in total (1 second, then 2 seconds apart). Every attempt carries the same `X-DeviceCloud-Webhook-ID`, so you can use it to ignore duplicates.
+* Any HTTP response ends delivery, including a `3xx`, `4xx` or `5xx`. These aren't retried.
+* The URL's address is checked again before every delivery. If the hostname now resolves to a private, loopback, link-local or other reserved address, nothing is sent.
 * The console doesn't keep a delivery log, so log incoming requests on your side if you need a record.
 
 ### Repeat Deliveries After Retries
@@ -143,6 +143,50 @@ When an [Agent Devices](../mcp/agent-devices.md) session asks for a person's hel
 ```
 
 `reason` is what the agent asked for. `expires_at` is when the session ends unless someone hands it back. `console_url` opens the session in the console, where you can take control and hand it back.
+
+### Usage alert
+
+When a [usage alert](../billing/usage-alerts.md) that includes **Webhook** is sent, your webhook receives a `usage.alert` event, with the same headers and delivery as `upload.completed`:
+
+```json
+{
+  "event": "usage.alert",
+  "timestamp": "2026-11-17T09:12:44.000Z",
+  "alert": {
+    "id": 42,
+    "window_type": "day",
+    "threshold": 50,
+    "threshold_type": "credits",
+    "hard_stop": true
+  },
+  "blocked": true,
+  "blocked_by": "hard_stop",
+  "window": {
+    "start": "2026-11-17T00:00:00.000Z",
+    "end": "2026-11-18T00:00:00.000Z",
+    "used": 48.6,
+    "limit": 50,
+    "remaining": 1.4
+  },
+  "period": {
+    "start": "2026-11-03T10:21:07.000Z",
+    "end": "2026-12-03T10:21:07.000Z",
+    "used": 212.4,
+    "allowance": 225,
+    "remaining": 12.6,
+    "estimated_cap_at": "2026-11-18T14:02:11.000Z"
+  },
+  "billing_url": "https://console.devicecloud.dev/settings?section=billing"
+}
+```
+
+| Field | Description |
+| --- | --- |
+| `alert` | The alert that fired: its `window_type` (`day`, `week` or `period`), `threshold`, `threshold_type` (`credits` for dollars, or `percent`) and whether it's a `hard_stop`. |
+| `blocked` | `true` when a run was refused, rather than usage reaching the threshold. |
+| `blocked_by` | What refused the run: `hard_stop` (this alert) or `overage_cap` (your [Overage Limit](../billing/overage.md#overage-limit)). `null` when nothing was refused. |
+| `window` | The alert's window (UTC), the usage in it so far, the threshold in dollars (`limit`) and what's left before it. Amounts are in dollars. |
+| `period` | The billing period: its usage, your `allowance` (included credits plus Overage Limit), what's left, and `estimated_cap_at`, when you'll reach the allowance at your current rate (`null` if it can't be estimated). `period` is `null` when your team has no Overage Limit. |
 
 ### Webhook Secrets
 

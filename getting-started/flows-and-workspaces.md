@@ -20,11 +20,7 @@ dcd cloud <appFile> <flowFile>
 
 Where:
 
-* `<appFile>` is one of:
-  * `.app`
-  * `.zip`
-  * `.apk`
-  * `.tar.gz` (an Expo iOS build)
+* `<appFile>` is an iOS simulator build (`.app`, a `.zip` of one, or an Expo `.tar.gz`) or an Android `.apk`. See [App Management](../configuration/app-management.md) for details.
 * `<flowFile>` is one of:
   * `.yaml`
   * `.yml`
@@ -37,8 +33,8 @@ dcd cloud <appFile> <directoryPath>
 
 Where `<directoryPath>` is either:
 
-* an absolute path, i.e. `/path/from/root`
-* a relative path, i.e. `./` or `path/from/currentDir`
+* an absolute path, e.g. `/path/from/root`
+* a relative path, e.g. `./` or `path/from/currentDir`
 
 The CLI will inspect all YAML files at the top level of the directory (sub-directories are not scanned) and create a test for each. To pick up flows in sub-directories, use `flows` glob patterns in a workspace config file (see below).
 
@@ -48,7 +44,7 @@ The CLI takes a single flow path, not a glob. A quoted glob such as `"./**/*.yam
 
 ### 3. Executing flows using a Workspace Config file
 
-For complex setups, a `config.yaml` file is recommended. Place it in the top-level directory you pass to the CLI and it will be detected automatically. Its `flows` field accepts glob patterns such as `./**/*.yaml`, so you can select flows in sub-directories.
+For complex setups, a `config.yaml` file is recommended. Place it in the top-level directory you pass to the CLI and it will be detected automatically. It's only picked up when you pass a directory: with a single flow file, point at the config with `--config`. Its `flows` field accepts glob patterns such as `./**/*.yaml`, so you can select flows in sub-directories.
 
 ```
 dcd cloud <appFile> <directoryPathIncludingConfigYaml>

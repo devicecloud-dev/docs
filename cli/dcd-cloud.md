@@ -47,10 +47,10 @@ See [Authentication](../getting-started/api-keys.md) for the full picture.
 | `--device-locale <locale>` | Device locale (see [Device Locale](../configuration/device-locale.md)) |
 | `--orientation <orientation>` | Device orientation, `0` (portrait) or `90` (landscape). Android only (see [Orientation](../configuration/orientation.md)) |
 | `--google-play` | Use a Google Play-enabled device. Android only (see [Google Play APIs](../configuration/google-play-apis.md)) |
-| `--runner-type <type>` | Runner type to use (see [Runner Types](../configuration/runner-type.md)) |
+| `--runner-type <type>` | Runner type to use: `default` (the default), `cpu1`, `m1` or `m4` (see [Runner Types](../configuration/runner-type.md)) |
 | `--render-engine <engine>` | Android only. Software renderer the emulator boots with: `lavapipe` (default) or `swiftshader`. Try `swiftshader` if your app fails to render or the device drops out mid-run. Apps built with Flutter are detected and switched automatically |
-| `--ios-device-matrix <device>:<version>` | Run every flow once on each listed iOS device, e.g. `iphone-16:18`. Repeat the flag for each device (see [Device Matrix](../configuration/device-matrix.md)) |
-| `--android-device-matrix <device>:<apiLevel>` | Run every flow once on each listed Android device, e.g. `pixel-8:34`. Append `:play` for Google Play. Repeat the flag for each device (see [Device Matrix](../configuration/device-matrix.md)) |
+| `--ios-device-matrix <device>:<version>` | Run every flow once on each listed iOS device, e.g. `iphone-16:18`. Repeat the flag for each device. Can't be combined with `--android-device-matrix` (see [Device Matrix](../configuration/device-matrix.md)) |
+| `--android-device-matrix <device>:<apiLevel>` | Run every flow once on each listed Android device, e.g. `pixel-8:34`. Append `:play` for Google Play. Repeat the flag for each device. Can't be combined with `--ios-device-matrix` (see [Device Matrix](../configuration/device-matrix.md)) |
 
 ### Flows
 
@@ -58,9 +58,9 @@ See [Authentication](../getting-started/api-keys.md) for the full picture.
 |------|-------------|
 | `--flows <path>` | Path to a flow file or a directory of flows (alternative to the positional `<flows-dir>` argument) |
 | `--config <path>` | Path to a `config.yaml` workspace config file (see [Workspace Configuration](../configuration/workspace-config.md)) |
-| `--exclude-flows <paths>` | Comma-separated list of flow files or sub-directories to exclude |
-| `--include-tags <tags>` | Only run flows with these tags (comma-separated) |
-| `--exclude-tags <tags>` | Skip flows with these tags (comma-separated) |
+| `--exclude-flows <paths>` | Flow files or sub-directories to exclude. Comma-separated, or repeat the flag |
+| `--include-tags <tags>` | Only run flows with these tags. Comma-separated, or repeat the flag |
+| `--exclude-tags <tags>` | Skip flows with these tags. Comma-separated, or repeat the flag |
 
 ### Test Configuration
 
@@ -70,7 +70,7 @@ See [Authentication](../getting-started/api-keys.md) for the full picture.
 | `--env <KEY=VALUE>`, `-e` | Environment variables to pass to the test. Repeat for multiple values (see [Environment Variables](../configuration/environment-variables.md)) |
 | `--metadata <key=value>`, `-m` | Arbitrary metadata to attach to the run (shown in the console). Repeat for multiple values |
 | `--name <name>` | Name for this upload (shown in the console) |
-| `--retry <n>` | Retry failed tests up to `n` times (free of charge). Max `2` (see [Retry Strategies](../advanced/retry-strategies.md)) |
+| `--retry <n>` | Retry failed tests up to `n` times (free of charge). Max `2`: a higher value is reduced to `2` (see [Retry Strategies](../advanced/retry-strategies.md)) |
 
 ### GitHub / PR Context
 
@@ -96,27 +96,78 @@ Attach Git and pull request metadata to a run. These values are displayed in the
 
 | Flag | Description |
 |------|-------------|
-| `--disable-animations` | Disable device animations during test execution. On Android, disables system animation scales. On iOS, enables Reduce Motion |
+| `--disable-animations` | Disable device animations during test execution. On Android, disables system animation scales. On iOS, enables Reduce Motion. Overrides `disableAnimations` in `config.yaml`, and `--no-disable-animations` keeps animations on even when `config.yaml` turns them off (see [Animations](../configuration/disable-animations.md)) |
 
 ### Output & Execution
 
 | Flag | Description |
 |------|-------------|
-| `--async` | Submit tests and return immediately (exit `0`) without waiting for results (see [Async Execution](../advanced/async-execution.md)) |
-| `--cancel-previous` | Cancel the still-queued tests of the previous run from the same CI context. Needs `--repo-name` plus `--branch` or `--pr-number` (see [Cancelling superseded runs](../advanced/cancel-previous.md)) |
+| `--async` | Submit tests and return immediately (exit `0`) without waiting for results. `--download-artifacts` and `--report` do nothing with `--async`: download them later with [`dcd artifacts`](dcd-artifacts.md) (see [Async Execution](../advanced/async-execution.md)) |
+| `--cancel-previous` | Cancel the still-queued tests of the previous run from the same CI context. Needs a repository plus a branch or PR: `--repo-name` with `--branch` or `--pr-number`, or the same values as `--metadata gh_repo=…` with `gh_branch=…` or `gh_pr_number=…` (see [Cancelling superseded runs](../advanced/cancel-previous.md)) |
 | `--priority <level>` | `low`, `normal` (default) or `high`. Reorders only your organisation's own queued runs (see [Run Priority](../configuration/run-priority.md)) |
 | `--quiet`, `-q` | Suppress per-test progress; print only the final summary |
-| `--json` | Output results as JSON. Exits `0` on success, `2` on test failure, `1` on CLI/infrastructure errors. The output includes a `notices` array with any deprecation or other notices for the run. A run superseded through `--cancel-previous` has `status` `SUPERSEDED` and exits `0` |
-| `--json-file` | Write JSON results to a file (`<upload_id>_dcd.json` by default). Exits `0` even if the test run fails; infrastructure errors still exit `1` |
+| `--json` | Output results as JSON (see [JSON output](#json-output)). Exits `0` on success, `2` on test failure, `1` on CLI/infrastructure errors. The output includes a `notices` array with any deprecation or other notices for the run. A run superseded through `--cancel-previous` has `status` `SUPERSEDED` and exits `0` |
+| `--json-file` | Write JSON results to a file (`<upload_id>_dcd.json` by default). Exits `0` even if the test run fails; infrastructure errors still exit `1`. Also turns on `--quiet` |
 | `--json-file-name <name>` | Custom name (or relative path) for the JSON file. Requires `--json-file` |
 | `--dry-run` | Simulate the run without uploading or triggering a test — useful for debugging workflow issues |
-| `--report <format>`, `--format` | Generate and download a report. Options: `junit`, `html`, `html-detailed`, `allure`. `html-detailed` and `allure` are deprecated and will be removed on 7 December 2026 (see [Report Formats](../artifacts/report-formats.md)) |
+| `--report <format>`, `--format` | Generate and download a report. Options: `junit`, `html`, `html-detailed`, `allure`. `html-detailed` and `allure` are deprecated, and we're targeting their removal on 7 December 2026. After that, runs that pass them still run (see [Report Formats](../artifacts/report-formats.md)) |
 | `--junit-path <path>` | Output path for the JUnit report (requires `--report junit`) |
 | `--html-path <path>` | Output path for the HTML report (requires `--report html` or `html-detailed`). The HTML report downloads as a ZIP, so use a `.zip` path such as `./report.zip` |
-| `--allure-path <path>` | Output path for the Allure report (requires `--report allure`). Deprecated, removed on 7 December 2026 |
+| `--allure-path <path>` | Output path for the Allure report (requires `--report allure`). Deprecated, with removal targeted for 7 December 2026 |
 | `--download-artifacts <ALL\|FAILED>` | Download test artifacts after completion (see [Artifacts](../artifacts/artifacts.md)) |
 | `--artifacts-path <path>` | Output path for the artifacts zip (default `./artifacts.zip`). Requires `--download-artifacts` |
 | `--debug` | Enable verbose debug logging |
+
+## JSON output
+
+`--json` prints one JSON object on stdout when the run has finished. `--json-file` writes the same object to `<upload_id>_dcd.json`, or to the path you give with `--json-file-name`.
+
+```json
+{
+  "consoleUrl": "https://console.devicecloud.dev/results?upload=3f6c1a2e-8b4d-4c1e-9a7f-2d5e6b8c9a01&result=4500",
+  "status": "FAILED",
+  "tests": [
+    {
+      "device": { "name": "Pixel 8", "osVersion": "34", "googlePlay": false },
+      "durationSeconds": 48,
+      "fileName": "./login.yaml",
+      "flowName": "Login",
+      "name": "./login.yaml",
+      "status": "PASSED",
+      "tags": ["smoke"]
+    },
+    {
+      "device": { "name": "Pixel 8", "osVersion": "34", "googlePlay": false },
+      "durationSeconds": 95,
+      "failReason": "Element not found: Text matching regex: Pay now",
+      "fileName": "./checkout.yaml",
+      "flowName": "Checkout",
+      "name": "./checkout.yaml",
+      "status": "FAILED",
+      "tags": []
+    }
+  ],
+  "uploadId": "3f6c1a2e-8b4d-4c1e-9a7f-2d5e6b8c9a01",
+  "notices": []
+}
+```
+
+| Field | Description |
+|---|---|
+| `status` | `PASSED` when every test passed, `SUPERSEDED` when a newer run replaced this one through `--cancel-previous`, otherwise `FAILED`. With `--async` it's `PENDING`, because the CLI doesn't wait for the run |
+| `uploadId` | The run's upload ID, for [`dcd status`](dcd-status.md) and [`dcd artifacts`](dcd-artifacts.md) |
+| `consoleUrl` | The run in the console |
+| `tests[]` | One entry per flow and device. When a test was [retried](../advanced/retry-strategies.md), the entry is its last attempt |
+| `tests[].name`, `tests[].fileName` | The flow's path within the upload, such as `./login.yaml` |
+| `tests[].flowName` | The flow's `name:`, or its file name without the extension |
+| `tests[].status` | The test's own status, such as `PASSED`, `FAILED` or `CANCELLED`. With `--async`, its status when it was submitted |
+| `tests[].durationSeconds` | How long the test ran, in seconds, or `null` if that isn't known. Not included with `--async` |
+| `tests[].failReason` | Why the test failed. Only on failed tests |
+| `tests[].tags` | The flow's tags |
+| `tests[].device` | The device the test ran on: `name`, `osVersion` and `googlePlay`. Left out when the API doesn't report it |
+| `notices[]` | Deprecation and other notices for the run, each with `slug`, `level`, `title`, `body` and `learnMoreUrl` |
+
+If the CLI itself fails, for example on a bad flag, a network error or a run the API refuses to start, `--json` prints `{"status": "FAILED", "error": "…"}` and exits `1`. That's the same `status` as a failed run, so check the exit code, or look for an `error` field, before you treat `FAILED` as a test failure. `--json-file` writes no file in that case.
 
 ## Examples
 

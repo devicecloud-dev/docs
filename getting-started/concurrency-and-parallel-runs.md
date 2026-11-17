@@ -19,7 +19,7 @@ The `gpu1` runner type was removed on 9 November 2026. Runs that still pass it r
 Google Play runs move to `m1` on 14 December 2026, after which they count towards the `m1` limit rather than `cpu1`. Runs you move there early with `--runner-type m1` count towards `m1` already. See [Google Play APIs](../configuration/google-play-apis.md#moving-to-apple-silicon-m1).
 :::
 
-Cheaper plans typically have no Concurrency Protection, which means that during busy periods when runner capacity is stretched, you may need to wait for runner availability or experience less concurrency than your maximum.
+The Pro plan has no Concurrency Protection, so during busy periods, when runner capacity is stretched, your tests may wait for a runner or run with less concurrency than your maximum.
 
 Once you reach your maximum concurrency for a runner type, additional tests enter a queued state and sit in a backlog until you're under your concurrency limits. At that point, they automatically move to pending and are processed by the runners. To choose which of your own queued runs starts first, see [Run Priority](../configuration/run-priority.md).
 

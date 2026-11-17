@@ -15,5 +15,6 @@ The policies available are:
 7. Data Retention and Disposal Policy
 8. Encryption Policy
 9. Human Resources Policy
-10. Security Incident Management Policy
-11. Vendor Management Policy
+10. Logging and Monitoring Policy
+11. Security Incident Management Policy
+12. Vendor Management Policy
