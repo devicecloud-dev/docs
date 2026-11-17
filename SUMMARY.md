@@ -26,7 +26,6 @@
 * [Devices & OS Versions](getting-started/devices-configuration.md)
 * [Deprecations & Removals](getting-started/deprecations.md)
 * [Device Matrix](configuration/device-matrix.md)
-* [Per-flow Devices](configuration/per-flow-devices.md)
 * [Per-flow Overrides](configuration/per-flow-overrides.md)
 * [Runner Types](configuration/runner-type.md)
 * [Google Play APIs](configuration/google-play-apis.md)

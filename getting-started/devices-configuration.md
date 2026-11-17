@@ -129,7 +129,7 @@ The iPhone Duo starts folded, on its cover screen, and the Pixel 10 Pro Fold sta
 
 ## Targeting a single flow
 
-The flags above set the device for the whole upload. When only one flow needs a particular device then that flow can name its own device in its YAML instead. See [Per-flow Devices](../configuration/per-flow-devices.md).
+The flags above set the device for the whole upload. When only one flow needs a particular device then that flow can name its own device in its YAML instead. See [Pin a flow to a device](../configuration/per-flow-overrides.md#pin-a-flow-to-a-device).
 
 ## Running your suite across several devices
 
