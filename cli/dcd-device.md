@@ -101,13 +101,14 @@ Save a screenshot. `-o <file>` sets where (default `./<session>-<time>.jpg`). Wi
 
 ## `dcd device tap [id]`
 
-Tap one thing on the screen, by exactly one target. Answers once the screen has settled. A target that is not on screen waits about 17 seconds before it fails, so `dcd device inspect` first. A failed tap exits `2`.
+Tap one thing on the screen, by exactly one target. Answers once the screen has settled. A `--text` or `--rid` that is not on screen is waited for, 17 seconds unless `--timeout` says otherwise, and then the tap fails. So `dcd device inspect` first, or give a short `--timeout` when the element may not be there. A failed tap exits `2`.
 
 | Flag | Description |
 |------|-------------|
 | `--text <text>` | The element's text, label or hint, matched whole and ignoring case (not a regex) |
 | `--rid <id>` | The element's resource id, `rid` in `dcd device inspect` |
 | `--x <n> --y <n>` | A point, as percentages of the screen (0 to 100) |
+| `--timeout <seconds>` | With `--text` or `--rid`: how long to wait for it to appear, from 0 to 60. `0` looks at the screen once and fails at once if it isn't there. Requires CLI 5.14.0 or later |
 
 ## `dcd device type [id] --text <text>`
 
@@ -123,7 +124,28 @@ Swipe across most of the screen in a direction (`up` scrolls the content up, dow
 
 ## `dcd device press-key [id] <key>`
 
-Press a key: `back`, `home`, `enter`, `backspace`, `tab`, and on Android `volume_up`, `volume_down`, `lock` or `power`. `enter` submits the focused field. On Android `back` closes a keyboard or goes back; on iOS it uses the app's own back control when it has one. On iOS, `enter`, `backspace` and `tab` need a focused field.
+Press a key: `back`, `home`, `enter`, `backspace`, `tab`, and on Android `volume_up`, `volume_down`, `lock` or `power`. `enter` submits the focused field. On Android `back` closes a keyboard or goes back. iOS has no back key: there `back` presses the app's own back button, or taps the top-left corner where one usually is, and fails if the screen doesn't change. It is navigation, not a way to close a keyboard: press `enter`, or tap outside the field. On iOS, `enter`, `backspace` and `tab` need a focused field.
+
+## `dcd device open-link [id] <url>`
+
+Open a link on the device, the way tapping it would. A link your app handles, such as `myapp://orders/42`, opens in your app. Any other web link opens in the browser. Nothing on the device opening the link is a failure, and exits `2`. See [links](../api/device-sessions.md#links) for what the first link of a session can meet. Requires CLI 5.14.0 or later.
+
+`--sensitive` is for a link that carries a token, such as a sign-in link: it is stored encrypted, never shown in the timeline, and not printed.
+
+```bash
+dcd device open-link myapp://orders/42
+dcd device open-link "https://example.com/welcome?token=..." --sensitive
+```
+
+Quote a link that has a `?` or an `&` in it, so your shell passes it whole.
+
+## `dcd device set-location [id] --latitude <n> --longitude <n>`
+
+Set the device's GPS position, in decimal degrees. South and west are negative. It stays until you set another or the session ends. A position at `0, 0` is refused. See [location](../api/device-sessions.md#location) for what an app then reads. Requires CLI 5.14.0 or later.
+
+```bash
+dcd device set-location --latitude 51.5074 --longitude -0.1278
+```
 
 Each of these sends one [typed action](../api/device-sessions.md). For several steps, an assertion, scrolling until something is visible, or launching an app, use `run`.
 

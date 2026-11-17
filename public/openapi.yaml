@@ -1428,12 +1428,14 @@ paths:
       operationId: performAction
       summary: Perform one action
       description: >-
-        Sends one action to the device: `tap`, `type`, `swipe` or `press_key`. The request waits for it to
-        finish, up to 120 s, after waiting up to 45 s for a device that is still starting or installing. A
-        `tap` on text or an id that is not on screen waits about 17 s for it before it fails. On iOS an
-        action goes to the app in front: on the home screen it is refused, so launch an app first. An action that fails on the device still answers 201, with
-        `result.success` false. A `type` action with `sensitive: true` sends its text as a secret: it never
-        appears in the timeline and is masked in `inspect`.
+        Sends one action to the device: `tap`, `type`, `swipe`, `press_key`, `open_link` or `set_location`.
+        The request waits for it to finish, up to 120 s, after waiting up to 45 s for a device that is still
+        starting or installing. A `tap` on text or an id that is not on screen waits for it, 17 s unless
+        `timeoutSeconds` says otherwise, before it fails. On iOS a tap, a swipe, typing and a key go to the app
+        in front: on the home screen they are refused, so launch an app first. `open_link` and `set_location`
+        need no app in front. An action that fails on the device still answers 201, with `result.success`
+        false. A `type` or an `open_link` action with `sensitive: true` sends its text or its link as a
+        secret: it never appears in the timeline, and a typed secret is masked in `inspect`.
       parameters:
         - name: x-dcd-source
           in: header
@@ -1464,6 +1466,12 @@ paths:
                   type: tap
                   x: 50
                   y: 82
+              tapWait:
+                summary: Tap an element by id, waiting at most 3 s for it
+                value:
+                  type: tap
+                  id: checkout_button
+                  timeoutSeconds: 3
               typeSecret:
                 summary: Type a password without recording it
                 value:
@@ -1480,6 +1488,23 @@ paths:
                 value:
                   type: press_key
                   key: back
+              openLink:
+                summary: Open a link into the app
+                value:
+                  type: open_link
+                  url: myapp://orders/42
+              openSignInLink:
+                summary: Open a sign-in link without recording it
+                value:
+                  type: open_link
+                  url: https://example.com/welcome?token=correct-horse-battery
+                  sensitive: true
+              setLocation:
+                summary: Put the device in London
+                value:
+                  type: set_location
+                  latitude: 51.5074
+                  longitude: -0.1278
       responses:
         '201':
           description: The action ran. `result.success` says whether it worked.
@@ -1532,6 +1557,24 @@ paths:
                   value:
                     statusCode: 400
                     message: key must be one of back, home, enter, backspace, tab, volume_up, volume_down, lock, power.
+                    error: LIVE_INVALID_ACTION
+                badLink:
+                  summary: A link with no scheme
+                  value:
+                    statusCode: 400
+                    message: url must be a link with a scheme, such as https://example.com or myapp://path.
+                    error: LIVE_INVALID_ACTION
+                badLatitude:
+                  summary: A latitude out of range
+                  value:
+                    statusCode: 400
+                    message: latitude must be a number from -90 to 90.
+                    error: LIVE_INVALID_ACTION
+                waitOnAPoint:
+                  summary: A wait on a tap that has nothing to wait for
+                  value:
+                    statusCode: 400
+                    message: 'timeoutSeconds goes with text or id: a point is tapped where it is, with nothing to wait for.'
                     error: LIVE_INVALID_ACTION
         '403':
           $ref: '#/components/responses/Forbidden'
@@ -4082,6 +4125,8 @@ components:
         - $ref: '#/components/schemas/TypeAction'
         - $ref: '#/components/schemas/SwipeAction'
         - $ref: '#/components/schemas/PressKeyAction'
+        - $ref: '#/components/schemas/OpenLinkAction'
+        - $ref: '#/components/schemas/SetLocationAction'
       discriminator:
         propertyName: type
         mapping:
@@ -4089,13 +4134,15 @@ components:
           type: '#/components/schemas/TypeAction'
           swipe: '#/components/schemas/SwipeAction'
           press_key: '#/components/schemas/PressKeyAction'
+          open_link: '#/components/schemas/OpenLinkAction'
+          set_location: '#/components/schemas/SetLocationAction'
 
     TapAction:
       type: object
       description: >-
         Tap one target: a point (`x` and `y`), an element's `text`, or its `id`. Exactly one. Text and ids are
-        matched whole and ignoring case, literally, not as regular expressions. A target that is not on
-        screen waits about 17 s before the tap fails.
+        matched whole and ignoring case, literally, not as regular expressions. A text or an id that is not
+        on screen is waited for, 17 s unless `timeoutSeconds` says otherwise, before the tap fails.
       required: [type]
       properties:
         type:
@@ -4121,6 +4168,14 @@ components:
           minLength: 1
           maxLength: 1000
           description: The element's id (`rid` in inspect).
+        timeoutSeconds:
+          type: number
+          minimum: 0
+          maximum: 60
+          default: 17
+          description: >-
+            With `text` or `id`: how long to wait for it to appear before the tap fails. `0` looks at the screen
+            once. Refused with `x` and `y`, which have nothing to wait for.
       oneOf:
         - required: [x, y]
         - required: [text]
@@ -4177,6 +4232,52 @@ components:
         key:
           type: string
           enum: [back, home, enter, backspace, tab, volume_up, volume_down, lock, power]
+
+    OpenLinkAction:
+      type: object
+      description: >-
+        Open a link the way the device would if someone tapped it: in the app that handles it, or else in
+        the browser. It fails, with `result.success` false, when nothing on the device opens the link.
+      required: [type, url]
+      properties:
+        type:
+          type: string
+          const: open_link
+        url:
+          type: string
+          minLength: 1
+          maxLength: 2048
+          description: >-
+            The link, with its scheme: a web link, or an app link such as `myapp://orders/42`. No spaces or
+            control characters: percent-encode them.
+        sensitive:
+          type: boolean
+          default: false
+          description: >-
+            The link is a secret, such as a sign-in link. It is encrypted before it is stored and never shown
+            in the timeline. Answers 503 LIVE_SECRETS_UNAVAILABLE when the server can't take secrets.
+
+    SetLocationAction:
+      type: object
+      description: >-
+        Set the device's GPS position, for every app on it. It stays until it is set again or the session
+        ends. A position within 0.0001 of 0, 0 on both axes is refused with `LIVE_INVALID_ACTION`: a device
+        takes 0, 0 to mean no position.
+      required: [type, latitude, longitude]
+      properties:
+        type:
+          type: string
+          const: set_location
+        latitude:
+          type: number
+          minimum: -90
+          maximum: 90
+          description: Decimal degrees, north positive. Kept to six decimal places.
+        longitude:
+          type: number
+          minimum: -180
+          maximum: 180
+          description: Decimal degrees, east positive. Kept to six decimal places.
 
     ScreenPoint:
       type: object
@@ -4681,6 +4782,8 @@ components:
             - type
             - swipe
             - press_key
+            - open_link
+            - set_location
             - launch
             - install
             - stop

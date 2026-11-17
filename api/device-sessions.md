@@ -81,7 +81,7 @@ To get a `binaryUploadId`, upload the build with [`dcd upload`](../cli/dcd-uploa
 |---|---|
 | `POST /device/sessions/:id/install` | Install a build: `{ "binaryUploadId": "..." }`, or `{ "url": "https://..." }` for an `.apk` or a zipped simulator `.app` at a link (up to 500 MB). It installs in the background. A command sent meanwhile waits up to 45 s for it, then answers `LIVE_NOT_READY` |
 | `POST /device/sessions/:id/launch` | Launch an app: `{ "appId"?: "...", "clearState"?: true }`. Without `appId`, the installed build |
-| `POST /device/sessions/:id/actions` | One action: `tap` (`x`/`y` percent, `text` or `id`), `type` (`text`, and `sensitive: true` to keep it secret), `swipe` (`direction`: `up`, `down`, `left` or `right`, or `from`/`to` points in percent), `press_key` (`key`: `back`, `home`, `enter`, `backspace`, `tab`, and on Android `volume_up`, `volume_down`, `lock` or `power`). Answered once the screen has settled. `text` and `id` are matched whole, ignoring case. A `tap` on something that is not on screen waits about 17 s before it fails |
+| `POST /device/sessions/:id/actions` | One action: `tap` (`x`/`y` percent, `text` or `id`), `type` (`text`, and `sensitive: true` to keep it secret), `swipe` (`direction`: `up`, `down`, `left` or `right`, or `from`/`to` points in percent), `press_key` (`key`: `back`, `home`, `enter`, `backspace`, `tab`, and on Android `volume_up`, `volume_down`, `lock` or `power`), `open_link` (`url`: see [links](#links)) or `set_location` (`latitude`, `longitude`: see [location](#location)). Answered once the screen has settled. `text` and `id` are matched whole, ignoring case. A `tap` on text or an id that is not on screen waits for it, 17 s unless `timeoutSeconds` (0 to 60) says otherwise, and then fails. `0` looks at the screen once |
 | `POST /device/sessions/:id/run` | Run a Maestro flow, within [what a session runs](#what-a-session-runs): `{ "yaml": "..." }` for one flow, or `{ "flowUploadId": "...", "flow"?: "..." }` for a [flow bundle](#flow-bundles). `env` passes [secrets and variables](#secrets). Waits up to 110 s, or `waitSeconds` (0 to 300), then answers `running` with a `command_id`. A failed run's result includes `screen_text`, the app's visible text after the failure |
 | `GET /device/sessions/:id/commands/:commandId` | The status and result of a `run` that answered `running`. `?waitSeconds=` (0 to 300) waits for it to finish instead of answering at once |
 | `GET /device/sessions/:id/inspect` | The screen as compact JSON. On Android, the on-screen keyboard and the System UI are left out unless you add `?all=true`. Some apps also drop their own fields from the tree while a keyboard is open, and `all` cannot bring them back: hide the keyboard first (`run` with `- hideKeyboard`), then inspect again |
@@ -91,6 +91,73 @@ To get a `binaryUploadId`, upload the build with [`dcd upload`](../cli/dcd-uploa
 ## What a session runs
 
 A session runs the common Maestro commands, but not flow scripts, and a few things differ by platform. [What a session runs](../mcp/agent-devices.md#what-a-session-runs) in Agent Devices lists them.
+
+## Links
+
+`open_link` opens a link the way the device would if someone tapped it:
+
+```json
+{ "type": "open_link", "url": "myapp://orders/42" }
+```
+
+- A link your app handles opens in your app: its own scheme, such as `myapp://orders/42`, or a web link it claims.
+- Any other web link opens in the browser: Chrome on Android, Safari on iOS.
+- When nothing on the device opens the link, the action fails and says so.
+
+The action answers once the link has opened. `inspect` next shows where it led. On iOS the session then works on whichever app the link brought to the front.
+
+The first link of a session can meet a screen that is shown only once:
+
+- **iOS, a link into your app.** iOS asks "Open in “Your App”?" the first time. The action presses **Open** for you, and its result says so.
+- **Android, a web link.** Chrome opens on its welcome screens. Tap **Use without an account**, then **No thanks**, and the page is behind them.
+- **iOS, a web link.** Safari may cover the page with a tip. Tap **Close**.
+
+A link into your app takes about a second on Android and 3 to 4 seconds on iOS. The first web link starts the browser, which takes 2 to 3 seconds on Android and 10 seconds or more on iOS.
+
+A sign-in link is a credential. Send it with `"sensitive": true` and it is encrypted before it is stored and never shown in the timeline, like a sensitive `type`.
+
+A flow's `openLink` is not the same thing: it opens the link inside the flow's app. See [What a session runs](../mcp/agent-devices.md#what-a-session-runs).
+
+## Location
+
+`set_location` sets the device's GPS position, in decimal degrees. South and west are negative:
+
+```json
+{ "type": "set_location", "latitude": 51.5074, "longitude": -0.1278 }
+```
+
+- It applies to the whole device, and stays until you set another or the session ends. Leaving an app, relaunching it, and `launch` with `clearState` all keep it.
+- An app that is watching the position gets a new one within about 2 seconds. An app that asks later gets it when it asks.
+- An app reads it only once it has the location permission, and gets nothing without it. `launch` grants your app every permission.
+- Values are kept to six decimal places. iOS gives an app all six. Android gives about five: `51.507351` reads as `51.50735`.
+- A position within `0.0001` of `0, 0` on both axes is refused, because a device takes 0, 0 to mean no position. One axis at 0 is fine, such as `0, 10`.
+
+Until you set a position, an iOS app that asks is told the position is unavailable, and an Android app gets the emulator's own default, in California. Every session starts on a new device, so nothing carries over from an earlier one.
+
+A web page reads the position through the browser, and the browser asks first. On Android, give Chrome the permission in a flow, and Chrome then asks for the site (**Allow while visiting the site**):
+
+```yaml
+appId: com.android.chrome
+---
+- setPermissions:
+    appId: com.android.chrome
+    permissions:
+      location: allow
+```
+
+On iOS, Safari asks twice: **Allow While Using App** for Safari, then **Allow** for the site.
+
+## Permissions
+
+`launch` grants the app every permission. To deny one, or to see the app ask for it, set it in a flow before the app needs it:
+
+```yaml
+- setPermissions:
+    permissions:
+      notifications: deny
+```
+
+A permission is `allow`, `deny` or `unset`, and `unset` makes the app ask again. The names are `all`, `camera`, `microphone`, `photos`, `contacts`, `notifications`, `calendar`, `location`, `medialibrary`, `motion`, `reminders` and `siri`. `launchApp` takes the same `permissions`. A permission the app doesn't declare fails the step, and the error names it.
 
 ## Flow bundles
 
@@ -124,7 +191,7 @@ Taking control of a device is for people in the console. While someone has contr
 
 `env` on `run` is an object of names to string values: up to 50 of them, each up to 4096 characters. Names are up to 64 letters, digits and `_`, and don't start with a digit. Names starting with `DCD_`, in any case, are reserved. Refer to them in the YAML as `${NAME}`. They're encrypted before they're stored, never shown in the timeline, and masked in the command's output and in `inspect`.
 
-A `type` action with `sensitive: true` sends its text the same way.
+A `type` action with `sensitive: true` sends its text the same way, and an `open_link` action its link.
 
 ## Rate limits
 
