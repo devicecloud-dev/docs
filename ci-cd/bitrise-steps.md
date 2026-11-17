@@ -13,7 +13,7 @@ The **Device Cloud for Maestro** step runs your Maestro flows on DeviceCloud fro
 
 ![The Device Cloud for Maestro step added to a Bitrise workflow](../assets/bitrise-workflow-step.png)
 
-4. Populate the API key using a BitRise secret and set any variables. Give the key **CI: run tests only** access, so a leaked secret can't read your other runs (see [Key access](../getting-started/api-keys.md#key-access)). Most inputs correspond to a [`dcd cloud`](../cli/dcd-cloud.md) flag — see that reference for accepted values. Not every flag has an input: device matrices, for example, aren't available in the step.
+4. Populate the API key using a Bitrise secret and set any variables. Give the key **CI: run tests only** access, so a leaked secret can't read your other runs (see [Key access](../getting-started/api-keys.md#key-access)). Most inputs correspond to a [`dcd cloud`](../cli/dcd-cloud.md) flag — see that reference for accepted values. Not every flag has an input: device matrices, for example, aren't available in the step.
 
 ![The Device Cloud for Maestro step inputs in Bitrise](../assets/bitrise-step-config.png)
 

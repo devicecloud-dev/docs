@@ -251,7 +251,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           description: |
-            No upload in your organization matches. For a key with
+            No upload in your team matches. For a key with
             **CI: run tests only** access, no upload that key started matches.
           content:
             application/json:
@@ -506,7 +506,7 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           description: |
-            The upload has no results in your organization, or doesn't exist. Unlike
+            The upload has no results in your team, or doesn't exist. Unlike
             the report downloads, this one answers with the standard error envelope.
             For a key with **CI: run tests only** access, also a run that key didn't
             start.

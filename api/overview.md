@@ -14,6 +14,8 @@ x-app-api-key: <your-api-key>
 
 You can create an API key in the console under **Settings → API Keys**. The full key is shown only once, when it's created or rotated, so store it securely.
 
+A key's **Access**, chosen when you create it, limits what it can reach. **Full access** reaches every endpoint. **CI: run tests only** reaches the run status, results and report endpoints, and only for runs that key started. **Device sessions only** reaches the [device session](device-sessions.md) endpoints. An endpoint outside a key's access answers `403` with `API_KEY_SCOPE`. See [Key access](../getting-started/api-keys.md#key-access).
+
 Requests can also be authenticated with a DeviceCloud login session, which is how the CLI authenticates after `dcd login`: send `Authorization: Bearer <access-token>` together with `x-dcd-org: <team-id>`, where the signed-in user must be a member of that team. The team ID is a number: `dcd whoami --json` shows it as `org.id`. For scripts and CI, use an API key.
 
 A missing or invalid API key returns HTTP `403`.
