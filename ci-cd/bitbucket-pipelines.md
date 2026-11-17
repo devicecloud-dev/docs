@@ -1,6 +1,6 @@
 # Bitbucket Pipelines
 
-DeviceCloud ships a [Bitbucket Pipe](https://support.atlassian.com/bitbucket-cloud/docs/pipes/) that runs your Maestro flows on devicecloud.dev directly from your Bitbucket Pipelines.
+DeviceCloud ships a [Bitbucket Pipe](https://support.atlassian.com/bitbucket-cloud/docs/pipes/) that runs your Maestro flows on DeviceCloud directly from your Bitbucket Pipelines.
 
 ## Quick Start
 

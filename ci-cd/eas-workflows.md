@@ -134,13 +134,13 @@ You don't need a macOS runner for iOS — DeviceCloud runs iOS simulators on its
 
 EAS context that doesn't change per-flow goes through the **job-level** `env:` block. Step-level `env:` may be silently ignored — keep `env:` on the job.
 
-The wrapper turns these into either DCD flags or `--metadata` tags (so each run is searchable in the console).
+The wrapper turns these into either dcd CLI flags or `--metadata` tags (so each run is searchable in the console).
 
 ### Provided by EAS automatically
 
 | Variable | Source | Purpose |
 |----------|--------|---------|
-| `DEVICE_CLOUD_API_KEY` |`eas env:create --visibility secret` | DCD `--api-key` (required). Auto-injected at runtime. |
+| `DEVICE_CLOUD_API_KEY` |`eas env:create --visibility secret` | The dcd CLI's `--api-key` (required). Auto-injected at runtime. |
 
 ### Build context (recommended)
 
@@ -178,7 +178,7 @@ Set `DCD_CHECK_NAME` when a commit is tested by more than one job, so each gets 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `DEVICE_CLOUD_API_URL` | `https://api.devicecloud.dev` | Override the API URL (staging/dev environments). |
-| `DCD_USE_BETA` | `false` | Set to the string `true` to use the beta DCD CLI (any other value is treated as `false`). |
+| `DCD_USE_BETA` | `false` | Set to the string `true` to use the beta dcd CLI (any other value is treated as `false`). |
 | `DCD_EAS_BUILD_URL` | — | URL of an Expo iOS simulator build (`.tar.gz`), passed to `dcd cloud --app-url` instead of downloading the artifact and passing `--app-file`. The CLI downloads and extracts it. iOS only: Android builds must use `--app-file`. Expo's signed URLs expire after about an hour. |
 
 ---

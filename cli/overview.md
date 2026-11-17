@@ -1,6 +1,6 @@
 # CLI Reference
 
-The DCD CLI is the primary way to interact with DeviceCloud from your terminal or CI/CD pipeline. It is a drop-in replacement for `maestro cloud` — in most cases you can swap `maestro cloud` for `dcd cloud`.
+The dcd CLI is the primary way to interact with DeviceCloud from your terminal or CI/CD pipeline. It is a drop-in replacement for `maestro cloud` — in most cases you can swap `maestro cloud` for `dcd cloud`.
 
 The CLI is published as `@devicecloud.dev/dcd` on npm and as a standalone binary. Both include `dcd mcp`, an [MCP server](../mcp/connect.md) that lets AI agents run cloud tests and read their results. The npm package also ships `dcd-mcp`, the [older MCP server](../mcp/overview.md).
 

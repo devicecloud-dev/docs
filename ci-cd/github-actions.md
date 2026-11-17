@@ -164,7 +164,7 @@ The action automatically attaches Git and pull request metadata to each run, rea
 | `download-artifacts` | No | — | Download logs, screenshots, and videos after the run, as `artifacts.zip` in the working directory. Options: `ALL`, `FAILED`. |
 | `json-file` | No | `false` | Write test results to `<upload_id>_dcd.json` in the working directory. See [Save JSON results file](#save-json-results-file). |
 | `debug` | No | `false` | Enable verbose debug output. |
-| `use-beta` | No | `false` | Use the beta version of the DCD CLI. |
+| `use-beta` | No | `false` | Use the beta version of the dcd CLI. |
 
 ---
 
