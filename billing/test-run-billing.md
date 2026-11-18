@@ -31,6 +31,8 @@ A flow that opts into [extended runtime](../configuration/extended-runtime.md) (
 
 [Live sessions](../cli/dcd-live.md) and [Agent Devices](../mcp/agent-devices.md) sessions aren't charged per test run. They cost $0.03 a minute, charged in 30-second steps from when a device is assigned to the session until the session ends. Time spent queued isn't charged, and your team's discount applies.
 
+A session is charged when it ends, the way a test run is: from your prepaid balance first, then your plan's included usage, then as [overage](overage.md). A session whose device never became ready because of a problem on our side isn't charged. One you stop before its device is ready is still charged, from when the device was assigned.
+
 ## Credits
 
 New teams are given $20 in free credits to test the service.

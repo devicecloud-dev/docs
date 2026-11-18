@@ -78,6 +78,8 @@ To start testing again, raise your Overage Limit or wait for your next billing p
 
 A [hard stop](usage-alerts.md#hard-stop) that you've set on a usage alert refuses runs in the same way, with the same HTTP `402` and `USAGE_LIMIT_EXCEEDED`. Its message names the alert's limit instead of the Overage Limit.
 
+[Live sessions](../cli/dcd-live.md) and [Agent Devices](../mcp/agent-devices.md) sessions count towards your usage too, and are checked the same way when they start, at what they would cost at their maximum length. A session that is already running isn't stopped.
+
 
 ## Warnings
 
