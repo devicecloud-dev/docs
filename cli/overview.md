@@ -118,7 +118,7 @@ curl -fsSL https://get.devicecloud.dev/install.sh | DCD_VERSION=5.14.0 sh
 
 The CLI sends usage and error events to DeviceCloud to help us find and fix problems. Only commands that authenticate send anything — `--help`, `--version` and `dcd whoami`, for example, don't. Events include:
 
-- the command and its arguments, with the values of `--api-key`, `--app-url` and `--env` / `-e`, and the text you pass to `dcd device type`, redacted. Other values are sent as you typed them. CLI versions before 5.14.0 also sent the `dcd device type` text.
+- the command and its arguments, with the values of `--api-key`, `--app-url` and `--env` / `-e`, the text you pass to `dcd device type` and the link you pass to `dcd device open-link`, redacted. Other values are sent as you typed them. CLI versions before 5.14.0 also sent the `dcd device type` text.
 - how long the command took and its exit code
 - the error message and stack trace when a command fails
 - the names, durations and errors of [MCP server](../mcp/connect.md) tool calls
