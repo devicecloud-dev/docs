@@ -82,7 +82,7 @@ Variables whose names start with `MAESTRO_` are also set in the environment of t
 
 ## Masking Secrets
 
-Values of variables whose names contain a keyword such as `PASSWORD`, `TOKEN`, `SECRET` or `API_KEY` are masked in the result log and in the downloadable `maestro.log`, stdout/stderr and `commands.json` — see [Inspecting Variables](../artifacts/inspecting-variables.md) for the full list of keywords. Masking has limits:
+Values of variables whose names contain a keyword such as `PASSWORD`, `TOKEN`, `SECRET` or `API_KEY` are masked in the result log and in the downloadable `maestro.log`, stdout/stderr, `commands.json` and step screen hierarchies — see [Inspecting Variables](../artifacts/inspecting-variables.md) for the full list of keywords. Masking has limits:
 
 - Values passed with `--env` / `-e` are only masked if they're 5 or more characters long, so a short value such as a 4-digit PIN stays visible.
 - Literal values assigned in a script, such as `password = '...'`, are masked. Values written directly in a flow's `env:` block, and values computed at runtime (`output.*`), are not.

@@ -164,6 +164,7 @@ POST /results/:uploadId/download
 | Field | Values | Description |
 |-------|--------|-------------|
 | `results` | `FAILED`, `ALL` | Which test artifacts to include. |
+| `resultId` | A result ID (optional) | Only the files of the flow run this result belongs to: its first attempt and every retry, on that one device. `report.xml` then covers just that run. Use the `id` of a result from [Get results](#get-results). A value that isn't a positive whole number is a `400`, and a result that isn't in this upload is a `404`. |
 
 **Example**
 
@@ -172,5 +173,15 @@ curl -X POST https://api.devicecloud.dev/results/7e12345f-eb12-12ec-a30b-bb1234f
   -H "x-app-api-key: <key>" \
   -H "Content-Type: application/json" \
   -d '{"results": "FAILED"}' \
+  -o artifacts.zip
+```
+
+To download one flow run only, add its result ID:
+
+```bash
+curl -X POST https://api.devicecloud.dev/results/7e12345f-eb12-12ec-a30b-bb1234f1d12a/download \
+  -H "x-app-api-key: <key>" \
+  -H "Content-Type: application/json" \
+  -d '{"results": "ALL", "resultId": 4446290}' \
   -o artifacts.zip
 ```
