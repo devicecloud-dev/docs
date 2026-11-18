@@ -42,7 +42,7 @@ dcd device stop
   | `0` | Done |
   | `1` | Called wrongly: a bad flag or value, no session to pick, or credentials the API rejected |
   | `2` | It ran and failed: a flow or launch failed, or the API couldn't do it |
-  | `3` | A limit was hit: concurrent sessions, spend cap, or rate limit |
+  | `3` | A limit was hit: concurrent sessions, spend cap, your team's usage limit (`USAGE_LIMIT_EXCEEDED`), or rate limit |
   | `4` | The session has ended, or there is no such session |
 
 - **Progress** goes to stderr, so stdout holds only the result. There are no prompts, and no spinners unless you are at a terminal. Text from the device, such as an element's text or a log line, is printed with its control characters removed.
@@ -103,7 +103,7 @@ While a keyboard is open, some apps report their own fields and buttons with cli
 
 Save a screenshot. `-o <file>` sets where (default `./<session>-<time>.jpg`). With `--json`, `data` gives the file's path.
 
-`--full` saves a PNG at the device's own resolution instead of the smaller JPEG, for a baseline image (default `./<session>-<time>.png`). It takes a few seconds, and `data` also gives its `width`, `height` and `bytes`. A device too old for it answers `LIVE_NOT_SUPPORTED`. See [full-size screenshots](../api/device-sessions.md#full-size-screenshots).
+`--full` saves a PNG at the device's own resolution instead of the smaller JPEG, for a baseline image (default `./<session>-<time>.png`). It takes a few seconds, and `data` also gives its `width`, `height` and `bytes`. A device busy running a flow can't take it: after 30 s the command fails, so take it once the flow has finished. A device too old for it answers `LIVE_NOT_SUPPORTED`. See [full-size screenshots](../api/device-sessions.md#full-size-screenshots).
 
 ```bash
 dcd device screenshot --full -o baseline/login.png

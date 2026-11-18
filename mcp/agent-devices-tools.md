@@ -128,7 +128,7 @@ Read-only.
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
 | `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
-| `full_size` | boolean | No | A PNG at the device's own resolution, returned as a link with its size, not inline. Takes a few seconds; a device running a flow takes it when the flow ends. |
+| `full_size` | boolean | No | A PNG at the device's own resolution, returned as a link with its size, not inline. Takes a few seconds. A device busy running a flow can't take it: after 30 seconds the call fails and nothing is taken, so take it once the flow has finished. |
 
 ## `tap_on`
 
