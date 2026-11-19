@@ -128,7 +128,7 @@ Teammates' agents share your team's sessions, so each session says who started i
 
 A session takes Maestro YAML and runs the common Maestro commands: `tapOn`, `doubleTapOn`, `longPressOn`, `inputText`, `eraseText`, `hideKeyboard`, `pressKey` (`Back`, `Home` and `Enter`), `swipe`, `scroll`, `scrollUntilVisible`, `assertVisible`, `assertNotVisible`, `extendedWaitUntil`, `waitForAnimationToEnd`, `launchApp`, `stopApp`, `killApp`, `clearState`, `setPermissions`, `openLink`, `takeScreenshot`, `back`, and `runFlow`, `repeat` and `retry`. Conditions on `visible`, `notVisible` and `platform` work.
 
-`takeScreenshot` takes a name, or a relative path of plain names such as `screens/login`, and a run's result links each PNG it takes. A path that could lead out of the session's own folder, or is built from a variable, fails the flow.
+`takeScreenshot` takes a name, or a relative path of plain names such as `screens/login`, and a run's result links each PNG it takes, at the device's own resolution. On iOS, one inside `runFlow`, `repeat` or `retry`, or one with `cropOn`, is saved at one pixel per point instead. A path that could lead out of the session's own folder, or is built from a variable, fails the flow.
 
 It doesn't run flow scripts: `runScript`, `evalScript`, or a JavaScript condition or expression. Only `${NAME}` variables from `env` are filled in. It also doesn't run `copyTextFrom`, `pasteText`, `inputRandom*`, `setLocation`, `travel` or `addMedia`, or other `pressKey` keys. A flow with a command it doesn't run fails before its first step, and the error names the line. To set the device's position, use the [`set_location`](agent-devices-tools.md#set-location) tool: [location](../api/device-sessions.md#location) says what an app then reads.
 

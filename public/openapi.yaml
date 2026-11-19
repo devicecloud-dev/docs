@@ -4955,8 +4955,9 @@ components:
         screenshots:
           type: array
           description: >-
-            The PNGs the flow took with `takeScreenshot`, at the device's own resolution. Present when there
-            are any.
+            The PNGs the flow took with `takeScreenshot`, at the device's own resolution. On iOS, one inside
+            `runFlow`, `repeat` or `retry`, or one with `cropOn`, is at one pixel per point instead. Present
+            when there are any.
           items:
             $ref: '#/components/schemas/RunScreenshot'
 
@@ -4966,8 +4967,8 @@ components:
       properties:
         name:
           type: string
-          description: The file the flow wrote, such as `login.png`. A `/` in its path is written as `_`.
-          example: login.png
+          description: The path the flow gave `takeScreenshot`, such as `login`. A `/` in it is written as `_`.
+          example: login
         url:
           type: [string, 'null']
           format: uri

@@ -134,11 +134,13 @@ curl "https://api.devicecloud.dev/device/sessions/brave-teal-otter/screenshot?fu
 - It doesn't count as a command, so it doesn't keep a session open.
 - A device whose runner can't take one yet answers `409` with `LIVE_NOT_SUPPORTED`. Without `full=true`, `screenshot` still works.
 
-A flow's `takeScreenshot` steps are kept the same way. Once the run has finished, its result lists them in `screenshots`, each with the `name` the flow gave it, a `url` valid for an hour, and its size in `bytes`:
+A flow's `takeScreenshot` steps are kept the same way, at the device's own resolution. Once the run has finished, its result lists them in `screenshots`, each with the `name` the flow gave it (a `/` in it is written as `_`), a `url` valid for an hour, and its size in `bytes`:
 
 ```json
-{ "result": { "success": true, "screenshots": [{ "name": "login.png", "url": "https://...", "bytes": 812345 }] } }
+{ "result": { "success": true, "screenshots": [{ "name": "login", "url": "https://...", "bytes": 812345 }] } }
 ```
+
+On iOS, a `takeScreenshot` inside `runFlow`, `repeat` or `retry`, or one with `cropOn`, is saved at one pixel per point instead (393 × 852 on an iPhone 16). Put it at the top level of the flow, without `cropOn`, for a screenshot you will use as a baseline.
 
 ## What a session runs
 
