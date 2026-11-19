@@ -83,7 +83,7 @@ A start can be refused before any device is assigned:
 
 ## Whose session it is
 
-Every session block has `started_by`: who started the session, as `email` for a person or `api_key_name` for an API key, with its `client_label`. `you` is `true` when you started it, and `this_client` when you started it from this connection. You are the person signed in (in the console, with `dcd login` or through an MCP sign-in), or the API key a request uses.
+Every session block has `started_by`: who started the session, as `email` for a person or `key_name` for an API key, with its `client_label`. `you` is `true` when you started it, and `this_client` when you started it from this connection. You are the person signed in (in the console, with `dcd login` or through an MCP sign-in), or the API key a request uses.
 
 A request that changes a session someone else started is refused with `409` and `LIVE_NOT_YOURS`, which names who started it. Someone else means another person, or another API key: a teammate's agent may be using that session. To change it anyway, send `"force": true` in the body of `run`, `install`, `launch`, `actions` and `request-human`, or `?force=true` on `DELETE`. Reading a session is never refused, and nor is a person in the console, who sees whose session it is.
 

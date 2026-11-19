@@ -20,7 +20,7 @@ Every result about a session includes a `session` block, so the agent never need
 | `release_reason` | Why the session ended, once it has: `user_stop`, `idle_timeout`, `max_duration`, `queue_timeout`, `spend_cap`, `needs_human_timeout`, `runner_error`, `heartbeat_lost` or `other` |
 | `platform`, `model` | The device, such as `ios` and `iphone-16-ios-26.5` |
 | `client_label` | Who is driving, such as `claude-code` |
-| `started_by` | Who started the session: `email` when a person did, or `api_key_name` when an API key did, its `client_label`, and whether it was you (`you`: you, or the API key you're using) and this connection (`this_client`) |
+| `started_by` | Who started the session: `email` when a person did, or `key_name` when an API key did, its `client_label`, and whether it was you (`you`: you, or the API key you're using) and this connection (`this_client`) |
 | `created_at`, `started_at`, `released_at` | When the session was asked for, got its device, and ended |
 | `expires_at` | When it reaches its maximum length |
 | `queue` | While it's queued: its `position`, `eta_s` (an estimate, or `null`), `waited_s`, and `reason`: `waiting_for_device` (every device is busy), `fleet_busy` (sessions for this platform are at their fleet-wide limit) or `org_concurrency_full` (your team's tests and sessions hold all its concurrency) |

@@ -4358,12 +4358,12 @@ components:
     StartedBy:
       type: object
       description: Who started the session, as the caller sees it.
-      required: [email, api_key_name, client_label, this_client, you]
+      required: [email, key_name, client_label, this_client, you]
       properties:
         email:
           type: [string, 'null']
           description: The person who started it, when a person did and their email is known.
-        api_key_name:
+        key_name:
           type: [string, 'null']
           description: The name of the API key it was started with, when one was.
         client_label:
