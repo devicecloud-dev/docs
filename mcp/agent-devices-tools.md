@@ -1,8 +1,12 @@
 # Agent Devices Tools
 
-These are the tools DeviceCloud's hosted MCP server (`https://api.devicecloud.dev/mcp`) offers for [Agent Devices](agent-devices.md). Each description below is the one your agent sees. Every tool except `list_devices`, `start_device` and `cheat_sheet` takes an optional `session_id`. You can leave it out when your team has exactly one open session. With none open, or several, the tool answers `LIVE_SESSION_REQUIRED`.
+These are the tools DeviceCloud's hosted MCP server (`https://api.devicecloud.dev/mcp`) offers for [Agent Devices](agent-devices.md). Each description below is the one your agent sees.
 
-A [read-only connection](agent-devices.md#read-only) offers only the tools marked **Read-only**. [`dcd mcp`](agent-devices.md#headless-through-the-cli) serves the same tools, and adds `app_path` to `install_app` and `path` to `run` for files on your machine.
+Every tool except `list_devices`, `start_device` and `cheat_sheet` takes an optional `session_id`. Without it, a tool uses the session this connection started, or else your one open session. It never picks a session someone else started. With none of yours open, or several, the tool answers `LIVE_SESSION_REQUIRED` and lists the open sessions.
+
+The tools that change a session take `force`. A session another person started, or one started with another API key, is refused with `LIVE_NOT_YOURS`, which names who started it, unless `force` is `true`. Reading a session is never refused. See [Whose session it is](agent-devices.md#whose-session-it-is).
+
+A [read-only connection](agent-devices.md#read-only) offers only the tools marked **Read-only**. [`dcd mcp`](agent-devices.md#headless-through-the-cli) serves the same tools, and adds inputs for files on your machine: `app_path` on `start_device` and `install_app`, `path` on `run`, and `path` on `take_screenshot` with `full_size`.
 
 ## The session block
 
@@ -16,15 +20,16 @@ Every result about a session includes a `session` block, so the agent never need
 | `release_reason` | Why the session ended, once it has: `user_stop`, `idle_timeout`, `max_duration`, `queue_timeout`, `spend_cap`, `needs_human_timeout`, `runner_error`, `heartbeat_lost` or `other` |
 | `platform`, `model` | The device, such as `ios` and `iphone-16-ios-26.5` |
 | `client_label` | Who is driving, such as `claude-code` |
+| `started_by` | Who started the session: `email` when a person did, or `key_name` when an API key did, its `client_label`, and whether it was you (`you`: you, or the API key you're using) and this connection (`this_client`) |
 | `created_at`, `started_at`, `released_at` | When the session was asked for, got its device, and ended |
 | `expires_at` | When it reaches its maximum length |
-| `queue` | While it's queued: its `position`, `eta_s` (an estimate, or `null`), `waited_s`, and `reason` (`waiting_for_device` or `fleet_busy`) |
+| `queue` | While it's queued: its `position`, `eta_s` (an estimate, or `null`), `waited_s`, and `reason`: `waiting_for_device` (every device is busy), `fleet_busy` (sessions for this platform are at their fleet-wide limit) or `org_concurrency_full` (your team's tests and sessions hold all its concurrency) |
 | `time_remaining_s` | Seconds until its maximum length |
-| `idle_remaining_s` | Seconds until the idle timeout. `null` while it waits for a person |
+| `idle_remaining_s` | Seconds until the idle timeout. `null` while it waits for a person, or a person has control |
 | `cost_so_far_usd` | What it has cost so far, after your team's discount |
 | `install` | The build it was asked to install: `binary_upload_id`, `status` (`installing`, `installed` or `failed`) and `error` |
 | `last_crash` | The app's last crash: `at` and `summary` |
-| `warnings` | Plain-English warnings, such as an upcoming idle timeout, a crash or a failed install |
+| `warnings` | Plain-English warnings, such as an upcoming idle timeout, a crash, a failed install, or a session you started from another connection |
 | `monitor_url` | The session's page in the console, where you can watch it and take control |
 
 ## Errors
@@ -33,7 +38,7 @@ When a tool fails, its result is an error with the same `error` code and `messag
 
 ## `list_devices`
 
-List the cloud devices you can start (iOS simulators and Android emulators, with their OS versions and the defaults) and your organization's open device sessions. Use this first, before start_device, or to find a session_id.
+List the cloud devices you can start (iOS simulators and Android emulators, with their OS versions and the defaults) and your organization's open device sessions, yours first. Each session's started_by says who started it: this_client is true for the ones this connection started, you for any you started. Use this first, before start_device, or to find a session_id. Never stop or drive a session that is not yours: a teammate's agent may be using it.
 
 Read-only.
 
@@ -41,7 +46,7 @@ No inputs.
 
 ## `start_device`
 
-Lease a fresh cloud iOS simulator or Android emulator. Use this when you need a mobile device and none is available locally. Billed per minute from when a device is assigned until the session ends ($0.03/min before any discount); call stop_device when you are done. Sessions end on their own after 5 idle minutes or their max duration. If a start_device call fails without an answer (a connection error, or a 502 or 504 from a proxy), a session may still have started: call list_devices before you start another. When the fleet is busy the session is "queued": that is not an error, it starts on its own. Waits up to 60s for the device and the app_binary_id install (wait: false returns at once). If it is still queued or provisioning, or install.status is "installing", call get_device_status with wait: true until it is not, and do not end your turn meanwhile: a device that becomes ready with nobody driving it is billed and stops after 5 idle minutes. Ask the user anything you need before you start the device; a question asked while it starts ends your turn, so use a sensible default instead. Give the user session.monitor_url as soon as you have it: there they can watch the screen live and take control. Share it and carry on; do not wait for a reply.
+Lease a fresh cloud iOS simulator or Android emulator. Use this when you need a mobile device and none is available locally. Billed in 30-second units ($0.015 each, $0.03 a minute, before any discount) from when a device is assigned until the session ends; call stop_device when you are done. A session that has ended is final: its commands answer LIVE_SESSION_ENDED, so start a new one. Sessions end on their own after 5 idle minutes or their max duration. If a start_device call fails without an answer (a connection error, or a 502 or 504 from a proxy), a session may still have started: call list_devices before you start another. When the fleet is busy the session is "queued": that is not an error, it starts on its own. Waits up to 60s for the device and the app_binary_id install (wait: false returns at once). If it is still queued or provisioning, or install.status is "installing", call get_device_status with wait: true until it is not, and do not end your turn meanwhile: a device that becomes ready with nobody driving it is billed and stops after 5 idle minutes. Ask the user anything you need before you start the device; a question asked while it starts ends your turn, so use a sensible default instead. Give the user session.monitor_url as soon as you have it: there they can watch the screen live and take control. Share it and carry on; do not wait for a reply.
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -63,7 +68,7 @@ Read-only.
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
 | `wait` | boolean | No | If the session is queued or provisioning, or an app is installing, wait up to 60s for it to finish. Default false. |
 
 ## `stop_device`
@@ -74,7 +79,8 @@ Ends the session.
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
+| `force` | boolean | No | Change a session someone else started (another person, or another API key). Without it such a session is refused with LIVE_NOT_YOURS, naming who started it. Check list_devices for your own first. |
 
 ## `install_app`
 
@@ -82,7 +88,8 @@ Install an app on the session's device: an uploaded build (app_binary_id; upload
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
+| `force` | boolean | No | Change a session someone else started (another person, or another API key). Without it such a session is refused with LIVE_NOT_YOURS, naming who started it. Check list_devices for your own first. |
 | `app_binary_id` | string | No | An uploaded build's id. Pass this or app_url. |
 | `app_url` | string | No | An https link to the build, e.g. a CI artifact or a signed storage URL. Pass this or app_binary_id. |
 
@@ -92,7 +99,8 @@ Launch an app on the device: the installed build by default, or any app by id (e
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
+| `force` | boolean | No | Change a session someone else started (another person, or another API key). Without it such a session is refused with LIVE_NOT_YOURS, naming who started it. Check list_devices for your own first. |
 | `app_id` | string | No | Bundle id or package name. Default: the installed build. |
 | `clear_state` | boolean | No | Clear the app's data before launching. |
 
@@ -108,18 +116,19 @@ Read-only.
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
 | `all` | boolean | No | Also list the keyboard keys and System UI elements. Default false. |
 
 ## `take_screenshot`
 
-A screenshot of the device, showing the result of your last command. Prefer inspect_screen for finding things to tap; use this to see layout, images and colours.
+A screenshot of the device, showing the result of your last command. Prefer inspect_screen for finding things to tap; use this to see layout, images and colours. With full_size, a PNG at the device's own resolution instead, as a download link (valid for an hour) rather than an image: for a baseline image or fine detail.
 
 Read-only.
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
+| `full_size` | boolean | No | A PNG at the device's own resolution, returned as a link with its size, not inline. Takes a few seconds. A device busy running a flow can't take it: after 30 seconds the call fails and nothing is taken, so take it once the flow has finished. |
 
 ## `tap_on`
 
@@ -127,7 +136,8 @@ Tap one thing on the screen: an element by its text (txt or a11y from inspect_sc
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
+| `force` | boolean | No | Change a session someone else started (another person, or another API key). Without it such a session is refused with LIVE_NOT_YOURS, naming who started it. Check list_devices for your own first. |
 | `text` | string, up to 1000 characters | No | The element's text, label or hint, copied from inspect_screen. |
 | `id` | string, up to 1000 characters | No | The element's resource id (rid in inspect_screen). |
 | `x` | number, 0 to 100 | No | x as a percentage of the screen, 0 to 100. |
@@ -140,7 +150,8 @@ Type into the focused field (tap_on the field first). Answers once the screen ha
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
+| `force` | boolean | No | Change a session someone else started (another person, or another API key). Without it such a session is refused with LIVE_NOT_YOURS, naming who started it. Check list_devices for your own first. |
 | `text` | string, up to 1000 characters | Yes | What to type, as the user would. |
 | `sensitive` | boolean | No | The text is a secret: a password, a code. Default false. |
 
@@ -150,8 +161,9 @@ Swipe across the screen: a direction (up scrolls the content up, i.e. down the p
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
-| `direction` | `up`, `down`, `left` or `right` | No | A swipe across most of the screen. |
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
+| `force` | boolean | No | Change a session someone else started (another person, or another API key). Without it such a session is refused with LIVE_NOT_YOURS, naming who started it. Check list_devices for your own first. |
+| `direction` | `up`, `down`, `left` or `right` | No | up, down, left or right: a swipe across most of the screen. |
 | `from` | object `{ x, y }` | No | Where the swipe starts, in percentages of the screen. |
 | `to` | object `{ x, y }` | No | Where it ends. |
 
@@ -161,7 +173,8 @@ Press a device key: back, home, enter, backspace, tab, and on Android volume_up,
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
+| `force` | boolean | No | Change a session someone else started (another person, or another API key). Without it such a session is refused with LIVE_NOT_YOURS, naming who started it. Check list_devices for your own first. |
 | `key` | `back`, `home`, `enter`, `backspace`, `tab`, `volume_up`, `volume_down`, `lock` or `power` | Yes | Which key. |
 
 ## `open_link`
@@ -170,7 +183,8 @@ Open a link on the device, as tapping it would: a web link opens in the app that
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
+| `force` | boolean | No | Change a session someone else started (another person, or another API key). Without it such a session is refused with LIVE_NOT_YOURS, naming who started it. Check list_devices for your own first. |
 | `url` | string, up to 2048 characters | Yes | The link with its scheme, e.g. "https://example.com/page" or "myapp://path". No spaces: percent-encode them. |
 | `sensitive` | boolean | No | The link is a secret: it carries a token or a code. Default false. |
 
@@ -180,7 +194,8 @@ Set where the device is: the GPS position its apps read, in decimal degrees. It 
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
+| `force` | boolean | No | Change a session someone else started (another person, or another API key). Without it such a session is refused with LIVE_NOT_YOURS, naming who started it. Check list_devices for your own first. |
 | `latitude` | number, -90 to 90 | Yes | Decimal degrees, north positive, e.g. 51.5074. |
 | `longitude` | number, -180 to 180 | Yes | Decimal degrees, east positive, e.g. -0.1278. |
 
@@ -190,7 +205,8 @@ Run a Maestro flow on the device: `yaml` is one flow (a header naming the app, `
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
+| `force` | boolean | No | Change a session someone else started (another person, or another API key). Without it such a session is refused with LIVE_NOT_YOURS, naming who started it. Check list_devices for your own first. |
 | `yaml` | string | No | One Maestro flow, e.g. "appId: com.example\n---\n- tapOn: \"Log in\"". |
 | `flow_upload_id` | string | No | The id of a flow bundle (a zip of flows) registered at POST /device/bundles. The local `dcd mcp` server uploads a directory for you. |
 | `flow` | string | No | The entry flow inside the bundle, e.g. "flows/login.yaml". |
@@ -205,7 +221,7 @@ Read-only.
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
 | `command_id` | string | Yes | The command_id run returned. |
 | `wait` | boolean | No | If the run is still going, wait up to 110s for it to finish. Default false. |
 
@@ -217,7 +233,7 @@ Read-only.
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
 | `lines` | integer, at most 2000 | No | How many lines. Default 200. |
 | `level` | `warning` or `error` | No | Only lines at this level and above. iOS has no warning level, so warning gives its errors and faults. |
 | `grep` | string, up to 200 characters | No | Only lines containing this text, any case. |
@@ -228,7 +244,8 @@ Ask a person to do something on the device that you can't: enter a 2FA code, sol
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
+| `force` | boolean | No | Change a session someone else started (another person, or another API key). Without it such a session is refused with LIVE_NOT_YOURS, naming who started it. Check list_devices for your own first. |
 | `reason` | string, up to 500 characters | Yes | What the person should do, e.g. "Enter the 2FA code sent to the test phone, then hand back". |
 
 ## `get_human_status`
@@ -239,7 +256,7 @@ Read-only.
 
 | Input | Type | Required | Description |
 |-------|------|----------|-------------|
-| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional when your organization has exactly one open session. |
+| `session_id` | string | No | The session id from start_device, e.g. "brave-teal-otter". Optional: without it, the session this connection started, else your only open one; never someone else's. |
 
 ## `cheat_sheet`
 

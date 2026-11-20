@@ -52,7 +52,7 @@ A refused run also sends the alert on its channels, unless it has already been s
 
 To start testing again, raise the threshold, turn the hard stop off, or wait for the window to end.
 
-Hard stops apply to test runs. They don't stop [Live sessions](../cli/dcd-live.md) or [Agent Devices](../mcp/agent-devices.md) sessions.
+A hard stop also refuses to start a [Live session](../cli/dcd-live.md) or an [Agent Devices](../mcp/agent-devices.md) session that, at its maximum length, would take usage past it, with the same `402`. It doesn't stop a session that is already running.
 
 ## When the Overage Limit refuses a run
 
