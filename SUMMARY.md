@@ -95,6 +95,7 @@
 
 * [Security Overview](security/security-overview.md)
 * [IP Addresses](security/ip-addresses.md)
+* [Sign-in & Sessions](security/sign-in-and-sessions.md)
 * [Enterprise SSO](security/enterprise-single-sign-on.md)
 
 ## Product Lifecycle
