@@ -1,5 +1,5 @@
 ---
-description: "How DeviceCloud protects your data: security leadership, reporting a vulnerability, where data is held, encryption, sign-in and sessions, retention, payments, code control and the IT security policies we follow."
+description: "How DeviceCloud protects your data: security leadership, reporting a vulnerability, where data is held, encryption, retention, payments, code control and the IT security policies we follow."
 ---
 
 # Security Overview
@@ -39,32 +39,6 @@ Where your data is held:
 Data held by our database and file storage providers is encrypted at rest with AES-256, and data sent over the internet is encrypted in transit via TLS. Credentials get additional protection at the application level: API keys are stored only as a one-way hash, and webhook secrets and access tokens for connected services (such as Slack) are encrypted before being stored in the database.
 
 On top of TLS, your uploads get envelope encryption by default. Before anything is uploaded, the CLI encrypts your app binary, flows and environment variables on your machine, each with its own random key (AES-256-GCM). It then encrypts each of those keys with DeviceCloud's public key (X25519), so the copies held in our storage and caches are ciphertext, and only our API can recover the keys that decrypt them. To turn envelope encryption off, pass `--no-encrypt` or set `DCD_ENCRYPT=0`. The upload is still encrypted in transit.
-
-## Sign-in and two-factor authentication
-
-You can sign in to the console with an email code, GitHub, Google or a passkey. With [Enterprise SSO](enterprise-single-sign-on.md), you sign in through your identity provider instead.
-
-In **Settings → Account**, each person can add:
-
-* **Two-factor authentication**: a code from an authenticator app, asked for each time you sign in with an email code, GitHub or Google. A passkey already counts as two-factor, so the code isn't asked for after a passkey unless you turn on **Also ask for a code after signing in with a passkey**.
-* **Passkeys**: sign in with your fingerprint, face, screen lock or a security key instead of an email code.
-
-Owners and admins can set a team **Sign-in requirement** in **Settings → Team**:
-
-| Option | Members must sign in with |
-| --- | --- |
-| Off | Any method |
-| Two-factor | A passkey, or a code from an authenticator app |
-| A passkey | A passkey |
-| A passkey and a code | A passkey, then a code from an authenticator app |
-
-A member who hasn't signed in that way still sees the team listed, but can't open its results, uploads or settings until they do. This applies to `dcd login` sessions too: run `dcd login` again with a method that meets the requirement. Any SSO sign-in meets every option. API keys aren't affected.
-
-## Sessions
-
-Signing in to the console, or with `dcd login`, starts a session. A session ends 30 days after you sign in, or after 7 days without use, whichever comes first, and you then sign in again. An open console tab counts as use. The limits are checked when the session renews, which happens about once an hour, so a session can last up to an hour past them.
-
-You can see your sessions in the console under **Settings → Account → Active sessions**, sign out a single device, or sign out of all devices at once. API keys are not sessions, so these limits don't apply to them.
 
 ## Data Retention
 
