@@ -10,8 +10,8 @@ You can sign in to the console with an email code, GitHub, Google or a passkey. 
 
 In **Settings → Account**, each person can add:
 
-* **Two-factor authentication**: a code from an authenticator app, asked for each time you sign in with an email code, GitHub or Google. A passkey already counts as two-factor, so the code isn't asked for after a passkey unless you turn on **Also ask for a code after signing in with a passkey**.
-* **Passkeys**: sign in with your fingerprint, face, screen lock or a security key instead of an email code.
+* **Two-factor authentication**: a code from an authenticator app, asked for each time you sign in. A passkey counts as two-factor, so after a passkey the code is only asked for if you turn on **Also ask for a code after signing in with a passkey**.
+* **Passkeys**: sign in with your fingerprint, face, screen lock or a security key. Once you have a passkey, you must use it every time you sign in. An email code, GitHub or Google alone is no longer enough.
 
 Owners and admins can set a team **Sign-in requirement** in **Settings → Team**:
 
