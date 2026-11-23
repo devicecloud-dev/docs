@@ -113,7 +113,7 @@ codex mcp add devicecloud -- dcd mcp
 
 To run the npm package instead of an installed dcd, use `npx` as the command, with the arguments `-y`, `@devicecloud.dev/dcd` and `mcp`. That needs Node 22 or later.
 
-`dcd mcp` signs in like the CLI: with your `dcd login` session, which it renews as it runs, or with `DEVICE_CLOUD_API_KEY`. A `dcd login` session still ends 30 days after you log in, or after 7 days without use, so use an API key for a server that stays running. See [Session limits](../security/security-overview.md#sessions).
+`dcd mcp` signs in like the CLI: with your `dcd login` session, which it renews as it runs, or with `DEVICE_CLOUD_API_KEY`. A `dcd login` session still ends 30 days after you log in, or after 7 days without use, so use an API key for a server that stays running. See [Session limits](../security/sign-in-and-sessions.md#sessions).
 
 With a `dcd login` session, the server works in your active team, the one [`dcd switch-org`](../cli/dcd-login.md#dcd-switch-org) sets. After you switch teams, restart your MCP client: a running server can keep using the old team for up to an hour.
 
@@ -125,7 +125,9 @@ The `dcd_*` tools are in beta, so they may change.
 
 `dcd mcp` serves the `dcd_*` tools: list devices, submit a cloud test run, list recent runs, check a run's status, download its artifacts and read your team's settings. [Cloud Test Tools](tools.md) describes each one.
 
-If your team is in the [Agent Devices](agent-devices.md) beta, `dcd mcp` also serves the device tools, which start and drive cloud devices. It passes them through from the hosted server, and adds what only a local process can do: `install_app` takes `app_path`, a build on your machine, and `run` takes `path`, a flow file or a directory of flows. [Agent Devices Tools](agent-devices-tools.md) describes each one.
+If your team is in the [Agent Devices](agent-devices.md) beta, `dcd mcp` also serves the device tools, which start and drive cloud devices. It passes them through from the hosted server, and adds what only a local process can do: `start_device` and `install_app` take `app_path`, a build on your machine, `run` takes `path`, a flow file or a directory of flows, and `take_screenshot` with `full_size` takes `path`, where to save the PNG. Each of these paths must be inside the folder `dcd mcp` runs in. [Agent Devices Tools](agent-devices-tools.md) describes each one.
+
+Files an agent names this way, and those `dcd_download_artifacts` writes, must be inside the folder `dcd mcp` runs in, which your MCP client chooses. `dcd mcp` never writes over a file it didn't write itself.
 
 ## Read-only mode
 

@@ -4,7 +4,7 @@ The REST API behind [Agent Devices](../mcp/agent-devices.md). The MCP tools call
 
 Device sessions are in a closed beta: contact support to have them turned on for your team. Until they are, starting a session answers `403` with `LIVE_NOT_ENABLED`.
 
-A session is billed from the moment a device is assigned to it until it ends, so stop it with `DELETE` as soon as you're done. It also ends after 5 minutes without a command, or when it reaches its maximum length. [Agent Devices](../mcp/agent-devices.md#pricing) has the price and the [limits](../mcp/agent-devices.md#limits).
+A session is billed from the moment a device is assigned to it until it ends, so stop it with `DELETE` as soon as you're done. It also ends after 5 minutes without a command, or when it reaches its maximum length. Reading a session doesn't count as a command: its status, `inspect`, screenshots and logs don't keep it open. An ended session is final. Commands to it answer `LIVE_SESSION_ENDED`, so start a new one. [Agent Devices](../mcp/agent-devices.md#pricing) has the price and the [limits](../mcp/agent-devices.md#limits).
 
 A session is named by its `id` (for example `brave-teal-otter`) in every path. Its numeric `live_id` works too. Every successful response about a session includes a `session` block: its state, time and idle time left, cost so far, warnings and console link. [The tool reference](../mcp/agent-devices-tools.md#the-session-block) lists its fields. A successful `POST` answers `201`. Other successful requests answer `200`.
 
@@ -67,13 +67,27 @@ Starting a session answers `201` with its `session` block (some fields left out 
 |---|---|
 | `GET /device/models` | The devices you can start: models, OS versions and the defaults |
 | `POST /device/sessions` | Start a session. Body: `platform` (`ios` or `android`), and optionally `model`, `os`, `googlePlay`, `binaryUploadId`, `deviceLocale` (such as `de_DE`), `maxDurationMin`, `clientLabel`, `record` (default `true`) |
-| `GET /device/sessions` | Your team's open sessions. `?all=true` adds those that ended in the last day |
+| `GET /device/sessions` | Your team's open sessions: this connection's first, then yours, then the rest. `?all=true` adds those that ended in the last day. `?ended=true` lists ended sessions instead: see [History](#history) |
 | `GET /device/sessions/:id` | One session |
-| `DELETE /device/sessions/:id` | Stop a session and release the device |
+| `DELETE /device/sessions/:id` | Stop a session and release the device. `?force=true` stops one [someone else started](#whose-session-it-is) |
 
 `model`, `os` and `googlePlay` take the values `GET /device/models` lists. Without them, you get the platform's default device. `maxDurationMin` is a whole number of minutes, from 1 up to your team's limit (60 unless support has lowered it), and defaults to that limit. `clientLabel` says who is driving, such as `claude-code`: up to 64 letters, digits, spaces and `. _ / -`, starting with a letter or digit.
 
 To get a `binaryUploadId`, upload the build with [`dcd upload`](../cli/dcd-upload.md), which prints its ID, or reuse the `appBinaryId` of a test run from [`GET /uploads/status`](uploads.md#get-upload-status). It must be your team's build for the session's platform. To install from a link instead, use `install` with `url`.
+
+A start can be refused before any device is assigned:
+
+- **`409` `LIVE_CONCURRENCY_LIMIT`**: your team already has as many sessions open as it may. The body's `limit` says how many. A team whose sessions share its test concurrency gets `403` instead when that concurrency has no slots at all for the platform.
+- **`402` `USAGE_LIMIT_EXCEEDED`**: the session at its maximum length would take your usage past your [Overage Limit](../billing/overage.md#when-a-run-would-go-over-the-limit) or a usage alert's [hard stop](../billing/usage-alerts.md#hard-stop). `blocked_by` says which. A shorter `maxDurationMin` lowers that cost, so the session may then fit.
+- **`402` `LIVE_SPEND_CAP`**: your team reached its monthly spend cap on device sessions.
+
+## Whose session it is
+
+Every session block has `started_by`: who started the session, as `email` for a person or `key_name` for an API key, with its `client_label`. `you` is `true` when you started it, and `this_client` when you started it from this connection. You are the person signed in (in the console, with `dcd login` or through an MCP sign-in), or the API key a request uses.
+
+A request that changes a session someone else started is refused with `409` and `LIVE_NOT_YOURS`, which names who started it. Someone else means another person, or another API key: a teammate's agent may be using that session. To change it anyway, send `"force": true` in the body of `run`, `install`, `launch`, `actions` and `request-human`, or `?force=true` on `DELETE`. Reading a session is never refused, and nor is a person in the console, who sees whose session it is.
+
+You can use your own session from another connection, such as a second agent or script with the same key. Its session block then carries a warning that you started it from another connection, in case that one is still using it. To name a connection, send `x-dcd-client-instance` on every request, with an id you choose: 8 to 128 letters, digits and `.`, `_`, `:` or `-`. A session started with it has `this_client: true` for requests that send the same id. `dcd mcp` and the hosted MCP server name their connections for you.
 
 ## The device
 
@@ -82,11 +96,51 @@ To get a `binaryUploadId`, upload the build with [`dcd upload`](../cli/dcd-uploa
 | `POST /device/sessions/:id/install` | Install a build: `{ "binaryUploadId": "..." }`, or `{ "url": "https://..." }` for an `.apk` or a zipped simulator `.app` at a link (up to 500 MB). It installs in the background. A command sent meanwhile waits up to 45 s for it, then answers `LIVE_NOT_READY` |
 | `POST /device/sessions/:id/launch` | Launch an app: `{ "appId"?: "...", "clearState"?: true }`. Without `appId`, the installed build |
 | `POST /device/sessions/:id/actions` | One action: `tap` (`x`/`y` percent, `text` or `id`), `type` (`text`, and `sensitive: true` to keep it secret), `swipe` (`direction`: `up`, `down`, `left` or `right`, or `from`/`to` points in percent), `press_key` (`key`: `back`, `home`, `enter`, `backspace`, `tab`, and on Android `volume_up`, `volume_down`, `lock` or `power`), `open_link` (`url`: see [links](#links)) or `set_location` (`latitude`, `longitude`: see [location](#location)). Answered once the screen has settled. `text` and `id` are matched whole, ignoring case. A `tap` on text or an id that is not on screen waits for it, 17 s unless `timeoutSeconds` (0 to 60) says otherwise, and then fails. `0` looks at the screen once |
-| `POST /device/sessions/:id/run` | Run a Maestro flow, within [what a session runs](#what-a-session-runs): `{ "yaml": "..." }` for one flow, or `{ "flowUploadId": "...", "flow"?: "..." }` for a [flow bundle](#flow-bundles). `env` passes [secrets and variables](#secrets). Waits up to 110 s, or `waitSeconds` (0 to 300), then answers `running` with a `command_id`. A failed run's result includes `screen_text`, the app's visible text after the failure |
-| `GET /device/sessions/:id/commands/:commandId` | The status and result of a `run` that answered `running`. `?waitSeconds=` (0 to 300) waits for it to finish instead of answering at once |
+| `POST /device/sessions/:id/run` | Run a Maestro flow, within [what a session runs](#what-a-session-runs): `{ "yaml": "..." }` for one flow, up to 256 KB, or `{ "flowUploadId": "...", "flow"?: "..." }` for a [flow bundle](#flow-bundles). `env` passes [secrets and variables](#secrets). Waits up to 110 s, or `waitSeconds` (0 to 300), then answers `running` with a `command_id`. A failed run's result includes `screen_text`, the app's visible text after the failure. A run whose flow took screenshots lists them in `screenshots`: see [full-size screenshots](#full-size-screenshots) |
+| `GET /device/sessions/:id/commands/:commandId` | The status and result of a `run` that answered `running`. `?waitSeconds=` (0 to 300) waits for it to finish instead of answering at once. At most 4 requests wait on one session at a time, counting `run`'s own waits: past that, a request answers at once with the status as it is |
 | `GET /device/sessions/:id/inspect` | The screen as compact JSON. On Android, the on-screen keyboard and the System UI are left out unless you add `?all=true`. Some apps also drop their own fields from the tree while a keyboard is open, and `all` cannot bring them back: hide the keyboard first (`run` with `- hideKeyboard`), then inspect again |
-| `GET /device/sessions/:id/screenshot` | The screen as it is now, as a JPEG data URL. `fresh` is `false` when no new frame came within 3 s, so this is the latest there is |
+| `GET /device/sessions/:id/screenshot` | The screen as it is now, as a JPEG data URL. `fresh` is `false` when no new frame came within 3 s, so this is the latest there is. `?full=true` gives a PNG at the device's own resolution instead, as a link: see [full-size screenshots](#full-size-screenshots) |
 | `GET /device/sessions/:id/logs` | The installed app's recent device log lines. `lines` (default 200, at most 2000), `level` (`warning` or `error`) and `grep` (any case) narrow them. The answer stops at 24 KB, with `truncated: true` when older lines were left out |
+
+The commands that change the device (`install`, `launch`, `actions`, `run`) and `request-human` take `"force": true` to act on a session [someone else started](#whose-session-it-is). A command still waiting when its session ends answers that the session ended before it ran.
+
+## Full-size screenshots
+
+The screen in a session's frames, and the screenshot kept after each action, are JPEGs scaled down to 720 pixels high. For a baseline image, or detail they lose, ask for a PNG at the device's own resolution:
+
+```bash
+curl "https://api.devicecloud.dev/device/sessions/brave-teal-otter/screenshot?full=true" \
+  -H "x-app-api-key: <key>"
+```
+
+```json
+{
+  "screenshot": {
+    "url": "https://...",
+    "content_type": "image/png",
+    "width": 1179,
+    "height": 2556,
+    "bytes": 812345,
+    "captured_at": "2026-11-18T09:00:02.000Z",
+    "expires_in_s": 3600,
+    "full": true
+  },
+  "session": { "...": "..." }
+}
+```
+
+- The answer is a link, valid for `expires_in_s` seconds (an hour), never the image itself. `width` and `height` are `null` when the device couldn't say.
+- The device takes it in turn, after any command it is running, and the request waits up to 30 s. A device busy with a long flow may not get to it in time: the request then answers `504`, and you can ask again when the flow has finished.
+- It doesn't count as a command, so it doesn't keep a session open.
+- A device whose runner can't take one yet answers `409` with `LIVE_NOT_SUPPORTED`. Without `full=true`, `screenshot` still works.
+
+A flow's `takeScreenshot` steps are kept the same way, at the device's own resolution. Once the run has finished, its result lists them in `screenshots`, each with the `name` the flow gave it (a `/` in it is written as `_`), a `url` valid for an hour, and its size in `bytes`:
+
+```json
+{ "result": { "success": true, "screenshots": [{ "name": "login", "url": "https://...", "bytes": 812345 }] } }
+```
+
+On iOS, a `takeScreenshot` inside `runFlow`, `repeat` or `retry`, or one with `cropOn`, is saved at one pixel per point instead (393 × 852 on an iPhone 16). Put it at the top level of the flow, without `cropOn`, for a screenshot you will use as a baseline.
 
 ## What a session runs
 
@@ -176,9 +230,9 @@ A bundle can be up to 50 MB. Bundles are deleted a day after they're uploaded, o
 |---|---|
 | `POST /device/sessions/:id/request-human` | `{ "reason": "..." }`, up to 500 characters. The session waits for a person, with its idle timer paused, for up to your team's limit (30 minutes by default) and never past its maximum length. Your [webhook](../notifications/webhook-notifications.md#device-needs-human) gets a `device.needs_human` event |
 | `GET /device/sessions/:id/human` | Whether it's still waiting, or was handed back, with the person's note |
-| `POST /device/sessions/:id/hand-back` | `{ "note"?: "..." }`, up to 2000 characters. Hand the session back to the agent |
+| `POST /device/sessions/:id/hand-back` | `{ "note"?: "..." }`, up to 2000 characters. Hand the session back to the agent. Only a person signed in to the console can: an API key, the CLI and MCP get `403` with `LIVE_CONSOLE_ONLY`, and wait for the hand-back with `GET .../human` |
 
-Taking control of a device is for people in the console. While someone has control, commands that change the device answer `LIVE_HUMAN_IN_CONTROL`, and those already queued wait until the hand-back.
+Taking control of a device and handing it back are for people in the console. While someone has control, commands that change the device answer `LIVE_HUMAN_IN_CONTROL`, and those already queued wait until the hand-back. Reading the screen and the logs still works. While a person has control, the session no longer waits on the 30-minute limit for a person: it ends after 5 minutes without a command from them, as any session does.
 
 ## Artifacts
 
@@ -186,6 +240,19 @@ Taking control of a device is for people in the console. While someone has contr
 |---|---|
 | `GET /device/sessions/:id/timeline` | Every command and event, newest first: who sent it, its status, and the screenshot after it. Paged with `limit` (default 50, at most 200) and `before` (the last page's `next_before`) |
 | `GET /device/sessions/:id/artifacts` | Short-lived links to the session's video, device log, and the screenshot and screen dump after each action. Paged the same way. The video and log arrive after the session ends |
+
+A session's video, screenshots, screen dumps and device log are deleted a month after it ends. Its timeline is kept, with who sent each command and when, but not the commands' text or output.
+
+## History
+
+`GET /device/sessions?ended=true` lists your team's ended sessions, a page at a time, newest end first, so you can find one again after the day the plain list keeps it:
+
+| Parameter | What it does |
+|---|---|
+| `limit` | Sessions on a page: 20 unless you say, at most 50 |
+| `before`, `before_id` | The next page: the last page's `next_before` and `next_before_id` |
+
+The answer is `{ "sessions": [...], "next_before", "next_before_id", "history_from" }`. `next_before` and `next_before_id` are `null` on the last page. `history_from` is how far back the list goes: a month, when a session's recording and screenshots are deleted. The console's **Devices** page shows the same list under **History**, with **Open** on each session for its recording and steps.
 
 ## Secrets
 
@@ -202,8 +269,9 @@ These endpoints have their own limits instead of the API's general one:
 | Commands (install, launch, actions, run, asking a person, handing back) | 60 a minute, per session |
 | Reads (status, inspect, screenshot, logs, a command's status, whether a person is needed, timeline, artifacts) | 240 a minute, per session |
 | Session lists, device models and bundle uploads | 120 a minute, per team |
+| Starting a session | 10 a minute, per team |
 
-Over a limit, the API answers HTTP `429` with `LIVE_RATE_LIMITED`, and `retry_after_s` in the body is how many seconds to wait. Stopping an open session is never refused. Starting a session has no per-minute limit, but your team can only have so many sessions open at once (`LIVE_CONCURRENCY_LIMIT`).
+Over a limit, the API answers HTTP `429` with `LIVE_RATE_LIMITED`, and `retry_after_s` in the body is how many seconds to wait. Stopping an open session is never refused. Your team can also only have so many sessions open at once (`LIVE_CONCURRENCY_LIMIT`).
 
 ## Errors
 
@@ -212,22 +280,25 @@ Errors are JSON with a `message`. Most also have a stable `error` code, listed b
 | Code | Status | Meaning |
 |---|---|---|
 | `LIVE_NOT_ENABLED` | `403` | Device sessions aren't enabled for your team |
-| `LIVE_CONCURRENCY_LIMIT` | `409` | Your team has as many sessions open as it may |
+| `LIVE_CONCURRENCY_LIMIT` | `409` or `403` | Your team has as many sessions open as it may, or (`403`) its test concurrency has no slots for the platform |
 | `LIVE_SPEND_CAP` | `402` | Your team reached its monthly spend cap |
+| `USAGE_LIMIT_EXCEEDED` | `402` | The session at its maximum length would take usage past your Overage Limit or a hard stop |
 | `LIVE_NOT_FOUND` | `404` | No such session in your team |
 | `LIVE_NOT_READY` | `425` | The device is still starting, or installing an app: retry shortly |
-| `LIVE_SESSION_ENDED` | `409` | The session has ended |
+| `LIVE_SESSION_ENDED` | `409` | The session has ended. An ended session is final: start a new one |
+| `LIVE_NOT_YOURS` | `409` | Someone else started the session: use your own, or pass `force` |
+| `LIVE_NOT_SUPPORTED` | `409` | The session's device can't do this yet, such as a full-size screenshot |
 | `LIVE_INVALID_ACTION` | `400` | The request is malformed: the message says how |
 | `LIVE_INVALID_APP` | `400` | The build isn't one this device can install |
 | `LIVE_APP_DOWNLOAD_FAILED` | `400` | The build at the URL couldn't be downloaded |
 | `LIVE_NO_APP` | `409` | No app is installed, and none was named |
 | `LIVE_COMMAND_NOT_FOUND` | `404` | No such command in this session |
 | `LIVE_LOGS_UNAVAILABLE` | `502` | The device logs couldn't be read |
-| `LIVE_SESSION_REQUIRED` | None | MCP only: no session is open, or more than one is, so pass `session_id` |
+| `LIVE_SESSION_REQUIRED` | None | MCP only: none of the open sessions is yours, or several are, so pass `session_id` |
 | `LIVE_RATE_LIMITED` | `429` | Too many requests: slow down |
 | `LIVE_NOT_WAITING_FOR_HUMAN` | `409` | Hand-back on a session that isn't waiting for a person |
 | `LIVE_HUMAN_IN_CONTROL` | `409` | A person has taken control in the console: wait for them to hand back |
-| `LIVE_CONSOLE_ONLY` | `403` | Only a person signed in to the console can do this (take control) |
+| `LIVE_CONSOLE_ONLY` | `403` | Only a person signed in to the console can do this (take control, hand back) |
 | `LIVE_NOT_IN_CONTROL` | `409` | Only the person in control can do this (remove a held step) |
 | `LIVE_SECRETS_UNAVAILABLE` | `503` | Secrets can't be accepted right now |
 | `API_KEY_SCOPE` | `403` | The API key isn't allowed to reach this endpoint |

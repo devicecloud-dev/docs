@@ -16,7 +16,7 @@ This opens your browser, where you sign in with an email code, GitHub, Google, a
 - `$XDG_CONFIG_HOME/dcd/config.json`, or
 - `~/.dcd/config.json` if `XDG_CONFIG_HOME` is not set
 
-The file is written with `0600` permissions (owner read/write only). The CLI keeps the session fresh while you use it, but a session ends 30 days after you log in, or after 7 days without a `dcd` command, whichever comes first. Then the CLI tells you to run `dcd login` again. These limits don't apply to API keys: a key lasts until its expiry date, if you set one, or until you revoke it. So use a key for CI and for processes that keep running, such as the [MCP server](../mcp/connect.md). See [Session limits](../security/security-overview.md#sessions).
+The file is written with `0600` permissions (owner read/write only). The CLI keeps the session fresh while you use it, but a session ends 30 days after you log in, or after 7 days without a `dcd` command, whichever comes first. Then the CLI tells you to run `dcd login` again. These limits don't apply to API keys: a key lasts until its expiry date, if you set one, or until you revoke it. So use a key for CI and for processes that keep running, such as the [MCP server](../mcp/connect.md). See [Session limits](../security/sign-in-and-sessions.md#sessions).
 
 ::: info
 No browser on the box (e.g. over SSH)? Run `dcd login --no-browser` and the CLI prints a URL to open elsewhere.

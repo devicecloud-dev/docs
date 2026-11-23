@@ -89,7 +89,7 @@ When both are present, precedence is: `--api-key` flag → `DEVICE_CLOUD_API_KEY
 | [`dcd live`](dcd-live.md) | Deprecated: use `dcd device` |
 | `dcd upgrade` | Upgrade the standalone binary in place |
 
-Every command except the `dcd mcp` server takes `--json`, which prints one JSON object on stdout for scripts to read. Commands that call the API also take `--api-url`, which you only need for an environment other than production. See [Exit Codes](../advanced/exit-codes.md) for what each command's exit code means.
+Every command except the `dcd mcp` server takes `--json`, which prints one JSON object on stdout for scripts to read. Commands that call the API also take `--api-url`, which you only need for an environment other than production. It must be an `https` address, except for an API on your own machine, because your API key or login session goes with every request, and one outside `devicecloud.dev` gets a warning. The same goes for `DCD_API_URL`. See [Exit Codes](../advanced/exit-codes.md) for what each command's exit code means.
 
 ## Environment Variables
 

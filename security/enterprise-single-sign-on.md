@@ -52,5 +52,5 @@ The Default Relay State is where people land when they start from your identity 
 * People with an email address on a protected domain must sign in through **Login with SAML SSO**. The login screen turns away an email code, GitHub, Google or a passkey for those addresses.
 * Assign everyone who needs access to the DeviceCloud app in your identity provider before SSO is turned on. Anyone on a protected domain who isn't assigned can't sign in.
 * People who sign in through SSO for the first time join your team automatically.
-* Your identity provider handles multi-factor authentication. SSO accounts don't set up DeviceCloud two-factor authentication or passkeys, and an SSO sign-in meets every team [Sign-in requirement](security-overview.md#sign-in-and-two-factor-authentication).
+* Your identity provider handles multi-factor authentication. SSO accounts don't set up DeviceCloud two-factor authentication or passkeys, and an SSO sign-in meets every team [Sign-in requirement](sign-in-and-sessions.md#sign-in-and-two-factor-authentication).
 * API keys keep working as before.
