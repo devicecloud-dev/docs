@@ -21,6 +21,7 @@ Use the DeviceCloud MCP tools to check app changes on a real iOS simulator or An
 Never write passwords or tokens into the YAML. Pass them in `run`'s `env` and use `${NAME}` in the flow.
 Read the `warnings` in every result's session block: they say when the idle timeout or the session's time is running out.
 If a command answers `LIVE_HUMAN_IN_CONTROL`, a person has taken control: stop sending commands and poll `get_human_status` until it is handed back.
+If a command answers `LIVE_NOT_YOURS`, the session is a teammate's: use your own, and never stop or drive theirs.
 ````
 
 Claude Code reads `AGENTS.md` only when your repository has no `CLAUDE.md` or `CLAUDE.local.md`. If it has one, add the line `@AGENTS.md` to your `CLAUDE.md`, or put the section in `CLAUDE.md` instead.
@@ -46,6 +47,7 @@ description: Check app changes on a real cloud iOS simulator or Android emulator
 
 Pass secrets in `run`'s `env` and use `${NAME}` in the flow; never write them into YAML.
 If a command answers `LIVE_HUMAN_IN_CONTROL`, a person has taken control: stop sending commands and poll `get_human_status` until it is handed back.
+If a command answers `LIVE_NOT_YOURS`, the session is a teammate's: use your own, and never stop or drive theirs.
 ````
 
 Both assume your agent has the device tools, through the hosted server or `dcd mcp`: see [Connect your agent](agent-devices.md#connect-your-agent).

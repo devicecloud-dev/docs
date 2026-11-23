@@ -845,9 +845,9 @@ paths:
         Asks for a device. A new session is `queued` until a device is free, then moves through `provisioning`
         to `ready` on its own: poll GET /device/sessions/{id} until it is `ready`. Billing starts when a device
         is assigned. The session ends after 5 idle minutes, at its maximum duration, or when you stop it.
-        This endpoint has no per-minute rate limit, but your team can only have so many sessions
-        open at once.
+        Your team can start 10 sessions a minute, and can only have so many open at once.
       parameters:
+        - $ref: '#/components/parameters/ClientInstance'
         - name: x-dcd-source
           in: header
           required: false
@@ -943,7 +943,9 @@ paths:
         '402':
           description: >-
             `LIVE_SPEND_CAP`: your team reached its monthly spend cap on device sessions (the body adds
-            `limit` and `spent`, in USD). A payment problem (an overdue subscription, or not enough credits)
+            `limit` and `spent`, in USD). `USAGE_LIMIT_EXCEEDED`: the session at its maximum length would take
+            your usage past your Overage Limit or a usage alert's hard stop (`blocked_by` says which); a shorter
+            `maxDurationMin` may fit. A payment problem (an overdue subscription, or not enough credits)
             also answers 402, with no `error` code.
           content:
             application/json:
@@ -958,6 +960,13 @@ paths:
                     error: LIVE_SPEND_CAP
                     limit: 50
                     spent: 50.12
+                usageLimit:
+                  summary: Past the Overage Limit at its maximum length
+                  value:
+                    statusCode: 402
+                    message: 'Usage limit exceeded: …'
+                    error: USAGE_LIMIT_EXCEEDED
+                    blocked_by: overage_cap
                 noCredits:
                   summary: Not enough credits
                   value:
@@ -966,16 +975,27 @@ paths:
         '403':
           description: >-
             `LIVE_NOT_ENABLED`: device sessions aren't enabled for your team. They're in a closed beta:
-            contact support to have them turned on. A missing or invalid API key also answers 403 (see the
-            shared `Forbidden` response).
+            contact support to have them turned on. `LIVE_CONCURRENCY_LIMIT`: your team's sessions share its
+            test concurrency, which has no slots for this platform (`limit` is 0). A missing or invalid API key
+            also answers 403 (see the shared `Forbidden` response).
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LiveError'
-              example:
-                statusCode: 403
-                message: Live testing is in beta and not enabled for your organization. Contact support to request access.
-                error: LIVE_NOT_ENABLED
+              examples:
+                notEnabled:
+                  summary: Not enabled for your team
+                  value:
+                    statusCode: 403
+                    message: Live testing is in beta and not enabled for your organization. Contact support to request access.
+                    error: LIVE_NOT_ENABLED
+                noSlots:
+                  summary: No concurrency for this platform
+                  value:
+                    statusCode: 403
+                    message: Live sessions use your organization's test concurrency, which has no iOS slots. Contact support to request access.
+                    error: LIVE_CONCURRENCY_LIMIT
+                    limit: 0
         '409':
           description: >-
             `LIVE_CONCURRENCY_LIMIT`: your team has as many sessions open as it may. `limit` is that
@@ -989,6 +1009,8 @@ paths:
                 message: Maximum of 2 concurrent live sessions reached. Stop an existing session before starting another.
                 error: LIVE_CONCURRENCY_LIMIT
                 limit: 2
+        '429':
+          $ref: '#/components/responses/LiveRateLimited'
         '500':
           description: The session could not be created because of a problem on DeviceCloud's side.
           content:
@@ -1014,9 +1036,12 @@ paths:
       operationId: listDeviceSessions
       summary: List your team's sessions
       description: >-
-        Your team's open sessions (`queued` through `needs_human`), newest first, at most 100.
-        With `all=true`, sessions that ended in the last 24 hours are included too.
+        Your team's open sessions (`queued` through `needs_human`), at most 100: the ones this connection
+        started first, then yours, then the rest, each newest first. With `all=true`, sessions that ended in
+        the last 24 hours are included too. With `ended=true`, your team's ended sessions instead, newest end
+        first, a page at a time, back to when their recordings are deleted (`history_from`, a month).
       parameters:
+        - $ref: '#/components/parameters/ClientInstance'
         - name: all
           in: query
           required: false
@@ -1024,13 +1049,48 @@ paths:
           schema:
             type: boolean
             default: false
+        - name: ended
+          in: query
+          required: false
+          description: >-
+            List ended sessions instead, a page at a time (SessionHistoryResponse). `1` works as well as
+            `true`.
+          schema:
+            type: boolean
+            default: false
+        - name: before
+          in: query
+          required: false
+          description: >-
+            With `ended=true`, where the next page starts: the last page's `next_before`, as it came.
+          schema:
+            type: string
+            format: date-time
+        - name: before_id
+          in: query
+          required: false
+          description: With `ended=true` and `before`, the last page's `next_before_id`.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          required: false
+          description: With `ended=true`, sessions on a page.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 20
       responses:
         '200':
-          description: The sessions' blocks, newest first.
+          description: >-
+            The sessions' blocks. With `ended=true`, a page of ended sessions and where the next page starts.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SessionListResponse'
+                oneOf:
+                  - $ref: '#/components/schemas/SessionListResponse'
+                  - $ref: '#/components/schemas/SessionHistoryResponse'
               example:
                 sessions:
                   - id: brave-teal-otter
@@ -1140,8 +1200,10 @@ paths:
       description: >-
         Stops the session and releases the device. Billing stops. Stopping an open session is never refused
         for the rate limit. Stopping a session that has already ended changes nothing: it returns the session
-        as it is, and counts as a read.
+        as it is, and counts as a read. A session someone else started (another person, or another API key)
+        answers 409 `LIVE_NOT_YOURS` unless you add `force=true`.
       parameters:
+        - $ref: '#/components/parameters/ForceStop'
         - name: x-dcd-source
           in: header
           required: false
@@ -1187,6 +1249,16 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/LiveNotFound'
+        '409':
+          description: '`LIVE_NOT_YOURS`: someone else started the session. Add `force=true` to stop it anyway.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 409
+                message: 'Session "brave-teal-otter" was started by ann@example.com, not by you. Use your own session (list_devices and `dcd device list` show yours first), or pass force: true (--force on the CLI) if you mean to change this one.'
+                error: LIVE_NOT_YOURS
         '429':
           $ref: '#/components/responses/LiveRateLimited'
 
@@ -1303,11 +1375,18 @@ paths:
           description: >-
             `LIVE_SESSION_ENDED`: the session has ended (the body includes its `session` block).
             `LIVE_HUMAN_IN_CONTROL`: a person has taken control in the console; wait for the hand-back.
+            `LIVE_NOT_YOURS`: someone else started the session; send `force: true` to act on it anyway.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LiveError'
               examples:
+                notYours:
+                  summary: Someone else's session
+                  value:
+                    statusCode: 409
+                    message: 'Session "brave-teal-otter" was started by ann@example.com, not by you. Use your own session (list_devices and `dcd device list` show yours first), or pass force: true (--force on the CLI) if you mean to change this one.'
+                    error: LIVE_NOT_YOURS
                 humanInControl:
                   summary: A person has control
                   value:
@@ -1468,6 +1547,7 @@ paths:
           description: >-
             `LIVE_SESSION_ENDED`: the session has ended (the body includes its `session` block).
             `LIVE_HUMAN_IN_CONTROL`: a person has taken control in the console; wait for the hand-back.
+            `LIVE_NOT_YOURS`: someone else started the session; send `force: true` to act on it anyway.
             `LIVE_NO_APP`: no `appId` was given and no app is installed.
           content:
             application/json:
@@ -1480,6 +1560,12 @@ paths:
                     statusCode: 409
                     message: No app is installed in this session. Install one, or pass appId.
                     error: LIVE_NO_APP
+                notYours:
+                  summary: Someone else's session
+                  value:
+                    statusCode: 409
+                    message: 'Session "brave-teal-otter" was started by ann@example.com, not by you. Use your own session (list_devices and `dcd device list` show yours first), or pass force: true (--force on the CLI) if you mean to change this one.'
+                    error: LIVE_NOT_YOURS
                 humanInControl:
                   summary: A person has control
                   value:
@@ -1690,11 +1776,18 @@ paths:
           description: >-
             `LIVE_SESSION_ENDED`: the session has ended (the body includes its `session` block).
             `LIVE_HUMAN_IN_CONTROL`: a person has taken control in the console; wait for the hand-back.
+            `LIVE_NOT_YOURS`: someone else started the session; send `force: true` to act on it anyway.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LiveError'
               examples:
+                notYours:
+                  summary: Someone else's session
+                  value:
+                    statusCode: 409
+                    message: 'Session "brave-teal-otter" was started by ann@example.com, not by you. Use your own session (list_devices and `dcd device list` show yours first), or pass force: true (--force on the CLI) if you mean to change this one.'
+                    error: LIVE_NOT_YOURS
                 humanInControl:
                   summary: A person has control
                   value:
@@ -1937,6 +2030,7 @@ paths:
           description: >-
             `LIVE_SESSION_ENDED`: the session has ended (the body includes its `session` block).
             `LIVE_HUMAN_IN_CONTROL`: a person has taken control in the console; wait for the hand-back.
+            `LIVE_NOT_YOURS`: someone else started the session; send `force: true` to act on it anyway.
             `LIVE_NO_APP`: the inline flow has no header, uses the header's app (a bare `launchApp`), and no
             app is installed.
           content:
@@ -1944,6 +2038,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/LiveError'
               examples:
+                notYours:
+                  summary: Someone else's session
+                  value:
+                    statusCode: 409
+                    message: 'Session "brave-teal-otter" was started by ann@example.com, not by you. Use your own session (list_devices and `dcd device list` show yours first), or pass force: true (--force on the CLI) if you mean to change this one.'
+                    error: LIVE_NOT_YOURS
                 humanInControl:
                   summary: A person has control
                   value:
@@ -2214,14 +2314,26 @@ paths:
       description: >-
         The screen as a JPEG data URL. It waits up to 3 s for a frame taken after the request arrived, so it
         shows the result of your last command. `fresh` is false when no new frame came in time; the
-        screenshot is then the latest there is.
+        screenshot is then the latest there is. With `full=true`, a PNG at the device's own resolution
+        instead, as a link (FullScreenshotResponse): the device takes it in turn, after a command it is
+        running, and the request waits up to 30 s for it. It doesn't count as activity.
+      parameters:
+        - name: full
+          in: query
+          required: false
+          description: A PNG at the device's own resolution, as a link valid for an hour, instead of the JPEG frame.
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: The screenshot, and the session's block.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ScreenshotResponse'
+                anyOf:
+                  - $ref: '#/components/schemas/ScreenshotResponse'
+                  - $ref: '#/components/schemas/FullScreenshotResponse'
               example:
                 screenshot:
                   data_url: data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8U...
@@ -2255,11 +2367,35 @@ paths:
         '404':
           $ref: '#/components/responses/LiveNotFound'
         '409':
-          $ref: '#/components/responses/LiveSessionEnded'
+          description: >-
+            `LIVE_SESSION_ENDED`: the session has ended. `LIVE_NOT_SUPPORTED`: with `full=true`, the session's
+            device can't take a full-size screenshot yet. Without `full=true`, screenshot still works.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 409
+                message: "This session's device can't take a full-size screenshot: its runner is older. Without full=true, /screenshot returns the screen as a downscaled JPEG."
+                error: LIVE_NOT_SUPPORTED
         '425':
           $ref: '#/components/responses/LiveNotReady'
         '429':
           $ref: '#/components/responses/LiveRateLimited'
+        '502':
+          description: With `full=true`, the device couldn't take the screenshot, or it couldn't be stored. Retry.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+        '504':
+          description: >-
+            With `full=true`, the device didn't take the screenshot within 30 s, usually because a flow is
+            running. Ask again when it has finished.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
 
   /device/sessions/{id}/logs:
     parameters:
@@ -2649,8 +2785,9 @@ paths:
       summary: Ask a person for help
       description: >-
         Asks a person to do something on the device, such as entering a 2FA code. The session moves to
-        `needs_human` and its idle timer pauses, for up to your team's limit (30 minutes by default),
-        and never past the session's maximum duration. When the session starts waiting, your team's
+        `needs_human` and its idle timer pauses, for up to your team's limit (30 minutes by default) or
+        until someone takes control, and never past the session's maximum duration. A session someone else
+        started answers 409 `LIVE_NOT_YOURS` unless the body has `force: true`. When the session starts waiting, your team's
         webhook gets a `device.needs_human` event. Asking again while it waits updates the reason. Poll GET
         /device/sessions/{id}/human until `handed_back` is true. Allowed while a person has control.
       parameters:
@@ -2846,7 +2983,8 @@ paths:
       description: >-
         Ends the wait for a person. The session is `active` again, with a fresh idle window, and anyone in
         control is released. `note` is passed on to the agent, such as "Code entered, you're on the home
-        screen".
+        screen". Only a person signed in to the console can hand back: an API key, the CLI and MCP get 403
+        `LIVE_CONSOLE_ONLY`, and wait for the hand-back with GET /device/sessions/{id}/human.
       parameters:
         - name: x-dcd-source
           in: header
@@ -2918,7 +3056,17 @@ paths:
                 message: note is at most 2000 characters.
                 error: LIVE_INVALID_ACTION
         '403':
-          $ref: '#/components/responses/Forbidden'
+          description: >-
+            `LIVE_CONSOLE_ONLY`: only a person signed in to the console can hand back. A missing or invalid API
+            key also answers 403 (see the shared `Forbidden` response).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LiveError'
+              example:
+                statusCode: 403
+                message: 'Handing the session back is for the person in the DeviceCloud console. An agent waits for it: poll get_human_status (MCP), run `dcd device human --wait`, or poll GET /device/sessions/:id/human until handed_back is true.'
+                error: LIVE_CONSOLE_ONLY
         '404':
           $ref: '#/components/responses/LiveNotFound'
         '409':
@@ -3153,6 +3301,26 @@ components:
         user must be a member of that team. The ID is a number: `dcd whoami --json`
         shows it as `org.id`.
   parameters:
+    ClientInstance:
+      name: x-dcd-client-instance
+      in: header
+      required: false
+      description: >-
+        Names this connection with an id you choose. A session started with it has `started_by.this_client`
+        true for requests that send the same id. Another shape is ignored.
+      schema:
+        type: string
+        pattern: '^[A-Za-z0-9._:-]{8,128}$'
+    ForceStop:
+      name: force
+      in: query
+      required: false
+      description: >-
+        Stop a session someone else started: another person, or another API key. Without it, such a session
+        answers 409 `LIVE_NOT_YOURS`. `1` works as well as `true`.
+      schema:
+        type: boolean
+        default: false
     UploadId:
       name: uploadId
       in: path
@@ -3969,7 +4137,8 @@ components:
         The error body. `statusCode` equals the HTTP status and `message` is for people. `error`, when present,
         is a stable code to branch on. Some errors add fields: `session` (the session block), `phase`
         (LIVE_NOT_READY from a command), `limit` and `retry_after_s` (LIVE_RATE_LIMITED), `limit`
-        (LIVE_CONCURRENCY_LIMIT), and `limit` and `spent` (LIVE_SPEND_CAP). Ignore fields you don't know.
+        (LIVE_CONCURRENCY_LIMIT), `limit` and `spent` (LIVE_SPEND_CAP), and `blocked_by`
+        (USAGE_LIMIT_EXCEEDED). Ignore fields you don't know.
       required: [statusCode, message]
       properties:
         statusCode:
@@ -3982,25 +4151,28 @@ components:
         error:
           type: string
           description: |-
-            A stable code. Absent on errors that carry none: validation and payment errors when starting a session, an invalid `before` on artifacts, and 5xx errors other than the ones below.
+            A stable code. Absent on errors that carry none: validation errors and some payment errors (an overdue subscription, not enough credits) when starting a session, an invalid `before` on artifacts, and 5xx errors other than the ones below.
 
             - `LIVE_NOT_ENABLED` (403): device sessions aren't enabled for your team.
-            - `LIVE_CONCURRENCY_LIMIT` (409): your team has as many sessions open as it may.
+            - `LIVE_CONCURRENCY_LIMIT` (409): your team has as many sessions open as it may. 403 when its test concurrency has no slots for the platform.
             - `LIVE_SPEND_CAP` (402): your team reached its monthly spend cap.
+            - `USAGE_LIMIT_EXCEEDED` (402): the session at its maximum length would take your usage past your Overage Limit or a hard stop.
             - `LIVE_NOT_FOUND` (404): no such session in your team.
             - `LIVE_NOT_READY` (425): the device is still starting, or an app is installing. Retry shortly.
-            - `LIVE_SESSION_ENDED` (409): the session has ended.
+            - `LIVE_SESSION_ENDED` (409): the session has ended. An ended session is final: start a new one.
+            - `LIVE_NOT_YOURS` (409): someone else started the session. Use your own, or send `force`.
+            - `LIVE_NOT_SUPPORTED` (409): the session's device can't do this yet, such as a full-size screenshot.
             - `LIVE_INVALID_ACTION` (400): the request is malformed. The message says how.
             - `LIVE_INVALID_APP` (400): the build isn't one this device can install, or the install request named neither or both of a build and a URL.
             - `LIVE_APP_DOWNLOAD_FAILED` (400): the build at the URL couldn't be downloaded.
             - `LIVE_NO_APP` (409): no app is installed, and none was named.
             - `LIVE_COMMAND_NOT_FOUND` (404): no such command in this session.
             - `LIVE_LOGS_UNAVAILABLE` (502): the device logs couldn't be read.
-            - `LIVE_SESSION_REQUIRED`: MCP only, never returned by this API. No session is open, or more than one is, so pass `session_id`.
+            - `LIVE_SESSION_REQUIRED`: MCP only, never returned by this API. None of the open sessions is yours, or several are, so pass `session_id`.
             - `LIVE_RATE_LIMITED` (429): too many requests. Wait `retry_after_s` seconds.
             - `LIVE_NOT_WAITING_FOR_HUMAN` (409): hand-back on a session that isn't waiting for a person.
             - `LIVE_HUMAN_IN_CONTROL` (409): a person has taken control in the console. Wait for them to hand back.
-            - `LIVE_CONSOLE_ONLY` (403): only a person signed in to the console can do this (take control).
+            - `LIVE_CONSOLE_ONLY` (403): only a person signed in to the console can do this (take control, hand back).
             - `LIVE_NOT_IN_CONTROL` (409): only the person in control can do this (remove a held step).
             - `LIVE_SECRETS_UNAVAILABLE` (503): secrets can't be accepted right now.
           enum:
@@ -4023,6 +4195,9 @@ components:
             - LIVE_CONSOLE_ONLY
             - LIVE_NOT_IN_CONTROL
             - LIVE_SECRETS_UNAVAILABLE
+            - LIVE_NOT_YOURS
+            - LIVE_NOT_SUPPORTED
+            - USAGE_LIMIT_EXCEEDED
         session:
           $ref: '#/components/schemas/SessionBlock'
           description: >-
@@ -4047,6 +4222,10 @@ components:
         spent:
           type: number
           description: LIVE_SPEND_CAP only. What your team has spent on device sessions this month, in USD.
+        blocked_by:
+          type: string
+          description: USAGE_LIMIT_EXCEEDED only. What refused the session.
+          enum: [overage_cap, hard_stop]
 
     SessionBlock:
       type: object
@@ -4145,7 +4324,7 @@ components:
           minimum: 0
           description: >-
             Seconds until the idle timeout (5 minutes without a command). Null when the device isn't running,
-            and while the session waits for a person.
+            and while the session waits for a person or a person has control.
         cost_so_far_usd:
           type: [number, 'null']
           description: >-
@@ -4163,7 +4342,9 @@ components:
             - type: 'null'
         warnings:
           type: array
-          description: Plain-English notices, such as a long queue, an upcoming idle timeout, a crash or a failed install.
+          description: >-
+            Plain-English notices, such as a long queue, an upcoming idle timeout, a crash, a failed install, or
+            a session you started from another connection.
           items:
             type: string
         monitor_url:
@@ -4171,6 +4352,31 @@ components:
           format: uri
           description: The session's page in the console, where people can watch the screen and take control.
           example: https://console.devicecloud.dev/device/brave-teal-otter
+        started_by:
+          $ref: '#/components/schemas/StartedBy'
+
+    StartedBy:
+      type: object
+      description: Who started the session, as the caller sees it.
+      required: [email, key_name, client_label, this_client, you]
+      properties:
+        email:
+          type: [string, 'null']
+          description: The person who started it, when a person did and their email is known.
+        key_name:
+          type: [string, 'null']
+          description: The name of the API key it was started with, when one was.
+        client_label:
+          type: [string, 'null']
+          description: Who is driving it, such as `claude-code`.
+        this_client:
+          type: boolean
+          description: >-
+            Started from this connection: the same `x-dcd-client-instance`, MCP connection or `dcd mcp`
+            process.
+        you:
+          type: boolean
+          description: Started by you, the person signed in, or with the API key this request uses.
 
     SessionQueue:
       type: object
@@ -4191,8 +4397,10 @@ components:
           type: string
           description: >-
             `fleet_busy`: the platform is at the fleet-wide limit on device sessions. `waiting_for_device`: under
-            that limit, waiting for a free device. Neither is an error; the session starts on its own.
-          enum: [fleet_busy, waiting_for_device]
+            that limit, waiting for a free device. `org_concurrency_full`: your team's tests and sessions hold all
+            of its concurrency, and the session gets the next slot to free up. None is an error; the session
+            starts on its own, and isn't billed while it waits.
+          enum: [fleet_busy, waiting_for_device, org_concurrency_full]
 
     SessionInstall:
       type: object
@@ -4234,9 +4442,30 @@ components:
         sessions:
           type: array
           maxItems: 100
-          description: The sessions' blocks, newest first.
+          description: The sessions' blocks, this connection's first, then yours, then the rest, each newest first.
           items:
             $ref: '#/components/schemas/SessionBlock'
+
+    SessionHistoryResponse:
+      type: object
+      required: [sessions, next_before, next_before_id, history_from]
+      properties:
+        sessions:
+          type: array
+          maxItems: 50
+          description: Ended sessions' blocks, newest end first.
+          items:
+            $ref: '#/components/schemas/SessionBlock'
+        next_before:
+          type: [string, 'null']
+          description: Pass as `before` for the next page, as it came. Null on the last page.
+        next_before_id:
+          type: [integer, 'null']
+          description: Pass as `before_id` for the next page. Null on the last page.
+        history_from:
+          type: string
+          format: date-time
+          description: How far back the list goes. A session's recording and screenshots are deleted then.
 
     DeviceModel:
       type: object
@@ -4333,10 +4562,20 @@ components:
           deprecated: true
           description: Older form of `os` for Android, such as `34`. Needs `androidDevice`.
 
+    Force:
+      type: boolean
+      default: false
+      description: >-
+        Act on a session someone else started: another person, or another API key. Without it, such a
+        session answers 409 `LIVE_NOT_YOURS`, which names who started it. A person in the console is never
+        refused.
+
     InstallRequest:
       type: object
       description: Pass `binaryUploadId` or `url`, not both.
       properties:
+        force:
+          $ref: '#/components/schemas/Force'
         binaryUploadId:
           type: string
           description: >-
@@ -4379,6 +4618,8 @@ components:
     LaunchRequest:
       type: object
       properties:
+        force:
+          $ref: '#/components/schemas/Force'
         appId:
           type: string
           minLength: 1
@@ -4417,6 +4658,8 @@ components:
         on screen is waited for, 17 s unless `timeoutSeconds` says otherwise, before the tap fails.
       required: [type]
       properties:
+        force:
+          $ref: '#/components/schemas/Force'
         type:
           type: string
           const: tap
@@ -4458,6 +4701,8 @@ components:
       description: Type text into the focused field.
       required: [type, text]
       properties:
+        force:
+          $ref: '#/components/schemas/Force'
         type:
           type: string
           const: type
@@ -4477,6 +4722,8 @@ components:
       description: Swipe in a `direction`, or `from` one point `to` another. Not both.
       required: [type]
       properties:
+        force:
+          $ref: '#/components/schemas/Force'
         type:
           type: string
           const: swipe
@@ -4498,6 +4745,8 @@ components:
         simulator has no such buttons. On iOS, `enter`, `backspace` and `tab` need a focused field.
       required: [type, key]
       properties:
+        force:
+          $ref: '#/components/schemas/Force'
         type:
           type: string
           const: press_key
@@ -4512,6 +4761,8 @@ components:
         the browser. It fails, with `result.success` false, when nothing on the device opens the link.
       required: [type, url]
       properties:
+        force:
+          $ref: '#/components/schemas/Force'
         type:
           type: string
           const: open_link
@@ -4537,6 +4788,8 @@ components:
         takes 0, 0 to mean no position.
       required: [type, latitude, longitude]
       properties:
+        force:
+          $ref: '#/components/schemas/Force'
         type:
           type: string
           const: set_location
@@ -4597,12 +4850,14 @@ components:
       type: object
       description: Pass `yaml` or `flowUploadId`, not both.
       properties:
+        force:
+          $ref: '#/components/schemas/Force'
         yaml:
           type: string
           pattern: '\S'
           description: >-
-            One Maestro flow, run whole: a header naming the app, `---`, then commands. Without a header, the
-            installed build's app id is used.
+            One Maestro flow, run whole, up to 256 KB: a header naming the app, `---`, then commands. Without a
+            header, the installed build's app id is used.
         flowUploadId:
           type: string
           format: uuid
@@ -4697,6 +4952,29 @@ components:
             Present when the screen could be read.
           items:
             type: string
+        screenshots:
+          type: array
+          description: >-
+            The PNGs the flow took with `takeScreenshot`, at the device's own resolution. On iOS, one inside
+            `runFlow`, `repeat` or `retry`, or one with `cropOn`, is at one pixel per point instead. Present
+            when there are any.
+          items:
+            $ref: '#/components/schemas/RunScreenshot'
+
+    RunScreenshot:
+      type: object
+      required: [name, url, bytes]
+      properties:
+        name:
+          type: string
+          description: The path the flow gave `takeScreenshot`, such as `login`. A `/` in it is written as `_`.
+          example: login
+        url:
+          type: [string, 'null']
+          format: uri
+          description: A download link that works for an hour. Null when no link could be made.
+        bytes:
+          type: [integer, 'null']
 
     RunFlowResult:
       type: object
@@ -4826,6 +5104,43 @@ components:
         session:
           $ref: '#/components/schemas/SessionBlock'
 
+    FullScreenshotResponse:
+      type: object
+      required: [screenshot, session]
+      properties:
+        screenshot:
+          type: object
+          required: [url, content_type, width, height, bytes, captured_at, expires_in_s, full]
+          properties:
+            url:
+              type: string
+              format: uri
+              description: A link to the PNG, valid for `expires_in_s` seconds. Never the image itself.
+            content_type:
+              type: string
+              example: image/png
+            width:
+              type: [integer, 'null']
+              description: In the device's own pixels. Null when the device couldn't say.
+              example: 1179
+            height:
+              type: [integer, 'null']
+              example: 2556
+            bytes:
+              type: [integer, 'null']
+              example: 812345
+            captured_at:
+              type: string
+              format: date-time
+            expires_in_s:
+              type: integer
+              example: 3600
+            full:
+              type: boolean
+              enum: [true]
+        session:
+          $ref: '#/components/schemas/SessionBlock'
+
     ScreenshotResponse:
       type: object
       required: [screenshot, session]
@@ -4934,6 +5249,8 @@ components:
       type: object
       required: [reason]
       properties:
+        force:
+          $ref: '#/components/schemas/Force'
         reason:
           type: string
           minLength: 1
