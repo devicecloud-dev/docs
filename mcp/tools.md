@@ -51,7 +51,9 @@ Download a completed run's artifacts zip (videos, logs and screenshots) to local
 |-----------|------|-------------|
 | `uploadId` | string | **Required.** UUID of the upload to download artifacts for |
 | `type` | `ALL` \| `FAILED` | Which tests to include artifacts for (default `ALL`) |
-| `artifactsPath` | string | Where to write the artifacts zip (default `./artifacts.zip`), relative to the server's working directory, which your MCP client chooses. It must stay inside that folder, and a file the server didn't write is never replaced |
+| `artifactsPath` | string | Where to write the artifacts zip (default `./artifacts.zip`). A relative path is from the server's working directory, which your MCP client chooses, so prefer an absolute path |
+| `resultId` | integer | Only this result's artifacts: its flow's first attempt and every retry, on that one device. Can't be combined with `flow` |
+| `flow` | string | Only this flow's artifacts, by its file path (`flows/login.yaml`), file name or name (`login`). When it matches several results, for example one per device, the download fails with a warning that lists their IDs to pass as `resultId`. Can't be combined with `resultId` |
 | `report` | `junit` \| `allure` \| `html` | Also download a formatted report of this type. `allure` is deprecated, see [Deprecations & Removals](../getting-started/deprecations.md) |
 | `reportPath` | string | Where to write the report (defaults by type: `report.xml` for `junit`, `report.zip` for `html`, `report.html` for `allure`). The `html` report is a ZIP. It follows the same rules as `artifactsPath` |
 

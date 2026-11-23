@@ -469,6 +469,9 @@ paths:
         for the whole upload is at the root. Every attempt's files are included,
         so a retried test's failed attempt can still be debugged.
 
+        Pass `resultId` to get one flow run only: that result's first attempt and
+        every retry, on its one device. `report.xml` then covers just that run.
+
         The ZIP is streamed as it is built. An error after streaming starts ends
         the download early, leaving a truncated ZIP.
       parameters:
@@ -496,16 +499,25 @@ paths:
                 contentMediaType: application/zip
         '400':
           description: |
-            `uploadId` isn't a UUID (JSON), or the ZIP couldn't be assembled (the
-            message as plain text).
+            `uploadId` isn't a UUID or `resultId` isn't a positive whole number
+            (JSON), or the ZIP couldn't be assembled (the message as plain text).
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorEnvelope'
-              example:
-                statusCode: 400
-                message: Validation failed (uuid is expected)
-                error: Bad Request
+              examples:
+                badUploadId:
+                  summary: uploadId isn't a UUID
+                  value:
+                    statusCode: 400
+                    message: Validation failed (uuid is expected)
+                    error: Bad Request
+                badResultId:
+                  summary: resultId isn't a positive whole number
+                  value:
+                    statusCode: 400
+                    message: resultId must be a positive whole number
+                    error: Bad Request
             text/plain:
               schema:
                 type: string
@@ -516,7 +528,7 @@ paths:
             The upload has no results in your team, or doesn't exist. Unlike
             the report downloads, this one answers with the standard error envelope.
             For a key with **CI: run tests only** access, also a run that key didn't
-            start.
+            start. With `resultId`, also a result that isn't in this upload.
           content:
             application/json:
               schema:
@@ -534,6 +546,12 @@ paths:
                     statusCode: 404
                     message: Upload not found
                     error: UPLOAD_NOT_FOUND
+                resultNotInUpload:
+                  summary: A resultId from another upload
+                  value:
+                    statusCode: 404
+                    message: Result 4446290 not found in upload 7e12345f-eb12-12ec-a30b-bb1234f1d12a
+                    error: Not Found
         '429':
           $ref: '#/components/responses/RateLimited'
         '503':
@@ -3847,6 +3865,14 @@ components:
           description: |
             `FAILED` for the failed tests' files only, `ALL` for every test's.
             Any other value counts as `ALL`.
+        resultId:
+          type: integer
+          minimum: 1
+          description: |
+            Optional. Only the files of the flow run this result belongs to: its
+            first attempt and every retry, on that one device. Result IDs are the
+            `id` of each entry in `GET /results/{uploadId}`. Leave it out for the
+            whole upload.
     FlowSummaries:
       type: object
       required: [statusCode, flows]

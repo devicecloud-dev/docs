@@ -29,6 +29,8 @@ Pass exactly one of `--download-artifacts` or `--report`.
 |------|-------------|
 | `--download-artifacts <ALL\|FAILED>` | Download a zip of logs, screenshots, and videos. `ALL` includes every test; `FAILED` includes only failed tests. Mutually exclusive with `--report` |
 | `--artifacts-path <path>` | Output path for the artifacts zip (default: `./artifacts.zip`). Requires `--download-artifacts` |
+| `--result-id <id>` | Download only one result's artifacts: that flow's first attempt and every retry, on that one device. Requires `--download-artifacts`. Mutually exclusive with `--flow` |
+| `--flow <file-or-name>` | Download only one flow's artifacts, by its file path (`flows/login.yaml`), file name (`login.yaml`) or name (`login`). If it matches more than one result, for example one per device in a [device matrix](../configuration/device-matrix.md), the command fails and lists the result IDs to pass to `--result-id`. Requires `--download-artifacts`. Mutually exclusive with `--result-id` |
 
 ### Report Download
 
@@ -46,7 +48,7 @@ Pass exactly one of `--download-artifacts` or `--report`.
 | `--json` | Print the result as one JSON object: `status` (`SUCCESS` or `FAILED`), `uploadId`, and `downloads`, with one entry per file giving its `type`, `path`, `ok` and, if it failed, `error` |
 | `--debug` | Enable detailed debug logging |
 
-A download that fails prints a warning, and the command still exits `0`. With `--json`, it exits `1` when every download failed.
+A download that fails prints a warning, and the command exits `1`, with or without `--json`. Every ZIP download is checked for completeness: if a download ends early, the command retries it once through a slower route, and if that one is also incomplete, it deletes the partial file and fails.
 
 ## Examples
 
@@ -58,6 +60,16 @@ dcd artifacts --upload-id 123e4567-e89b-12d3-a456-426614174000 --download-artifa
 **Download artifacts for failed tests only, to a custom path:**
 ```bash
 dcd artifacts --upload-id 123e4567-e89b-12d3-a456-426614174000 --download-artifacts FAILED --artifacts-path ./failed-artifacts.zip
+```
+
+**Download artifacts for one flow:**
+```bash
+dcd artifacts --upload-id 123e4567-e89b-12d3-a456-426614174000 --download-artifacts ALL --flow login
+```
+
+**Download artifacts for one result, for example one device of a matrix:**
+```bash
+dcd artifacts --upload-id 123e4567-e89b-12d3-a456-426614174000 --download-artifacts ALL --result-id 4446290
 ```
 
 **Download a JUnit report:**
