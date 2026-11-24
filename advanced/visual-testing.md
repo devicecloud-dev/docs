@@ -8,6 +8,10 @@ Maestro's `assertScreenshot` command compares the current screen against a refer
 
 DeviceCloud runs these assertions like any other command. The one thing you need to set up is getting your baseline images onto the device.
 
+::: warning
+**Don't pin `--maestro-version 2.2.0`.** That version resolves the baseline path against a different working directory and reports `Screenshot file not found` no matter where you put the file. Use the default version or a later one (see [Maestro Versions](../configuration/maestro-versions.md)).
+:::
+
 ## Uploading your baselines
 
 The CLI reads your flows before it uploads them, and bundles every baseline that an `assertScreenshot` command names with a literal path, the same way it bundles `addMedia` and `runScript` files. The example above needs no configuration: `screenshots/home.png` is uploaded with the flow.
