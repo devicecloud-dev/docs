@@ -19,7 +19,7 @@
   "devDependencies": {
     "vitepress": "^1.6.4",
     "vitepress-plugin-tabs": "^0.9.1",
-    "wrangler": "^4.162.0"
+    "wrangler": "^4.166.0"
   },
   "private": true,
   "engines": {
