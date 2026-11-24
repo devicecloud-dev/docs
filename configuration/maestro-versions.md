@@ -21,8 +21,6 @@ We support these versions of Maestro:
 
 Maestro 2.2.0 was removed on 24 November 2026, and runs pinned to it are rejected. Move them to 2.6.1 or newer (the default is 2.10.0).
 
-Maestro 2.0.4, 2.0.9, 2.1.0, 2.5.0, 2.5.1 and 2.6.0 were removed on 19 October 2026. Runs pinned to these versions are rejected.
-
 ## Version Selection
 
 You can specify a version using `--maestro-version <version>`.
