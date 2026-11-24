@@ -15,6 +15,7 @@ Removal dates are targets, subject to change based on usage.
 | `html-detailed` and `allure` | Report formats | 7 December 2026 | `--report html` or `--report junit`. See [Report formats](../artifacts/artifacts.md#report-formats) for what happens to runs that still pass them |
 | iPhone 16 Pro (`iphone-16-pro`) | iOS device | 7 December 2026 | `iphone-16` (the default), `iphone-17`, `iphone-air`, `iphone-18-pro` or `iphone-18-pro-max` |
 | Pixel 7 (`pixel-7`) | Android device | 14 December 2026 | `pixel-8` or `pixel-10` (`pixel-6` for API level 33). On Google Play, `pixel-8` keeps API level 34 |
+| Maestro 2.2.0 | Maestro version | 14 December 2026 | 2.6.1 or newer |
 | Google Play on `cpu1` | Runner type change | 14 December 2026 | Nothing: Google Play runs move to `m1` on their own. Test your app on `m1` first, see [Moving to Apple Silicon](../configuration/google-play-apis.md#moving-to-apple-silicon-m1) |
 
 `dcd live` is deprecated too, with no removal date set. Use [`dcd device`](../cli/dcd-device.md) instead.
@@ -24,7 +25,6 @@ Removal dates are targets, subject to change based on usage.
 | Date | Removed |
 |------|---------|
 | 24 November 2026 | iOS 17. iPhone 14 runs iOS 18 |
-| 24 November 2026 | Maestro 2.2.0 |
 | 9 November 2026 | The `gpu1` runner type. Android runs that still pass it run on `cpu1`, see [Runner Types](../configuration/runner-type.md) |
 | 9 November 2026 | iPhone 16 Pro Max |
 | 2 November 2026 | iPhone 15, iPhone 16 Plus and iPad Pro (6th Generation) |
