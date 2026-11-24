@@ -73,6 +73,7 @@ artifacts.zip
 │   ├── screenshots/
 │   │   ├── login-failure-screenshot.jpg
 │   │   ├── login-step-004-tapOn.jpg
+│   │   ├── login-home.png
 │   │   └── login-diff-screenshots-home_diff.png
 │   └── videos/
 │       └── login-recording.mp4
@@ -83,7 +84,7 @@ artifacts.zip
 └── report.xml  # merged JUnit report covering every test in the download
 ```
 
-Files are named after the flow file (without its extension), e.g. `login-maestro.log` for `login.yaml`. In `screenshots/`, a failed flow has one `-failure-screenshot.jpg` of the whole screen, each `takeScreenshot` is named after its `path` (`login-home.jpg` for `takeScreenshot: home`), and each `assertScreenshot` diff is named after its baseline (see [Reading a failure](../advanced/visual-testing.md#reading-a-failure)). Screenshots taller than 1080 px are downscaled to 1080 px tall and saved as JPEG; smaller ones, such as a crop made with `cropOn`, keep their size. Diffs are always full-size PNGs. The `logs/` folder also holds stdout/stderr, the device log (`-logcat.zip` on Android, `-ios-device-log.zip` on iOS) and any per-flow reports. With `--download-artifacts FAILED`, only failed tests get a folder, but `report.xml` is always included and still covers every test.
+Files are named after the flow file (without its extension), e.g. `login-maestro.log` for `login.yaml`. In `screenshots/`, a failed flow has one `-failure-screenshot.jpg` of the whole screen, each `takeScreenshot` is named after its `path` (`login-home.png` for `takeScreenshot: home`), and each `assertScreenshot` diff is named after its baseline (see [Reading a failure](../advanced/visual-testing.md#reading-a-failure)). `takeScreenshot` output and diffs are the PNGs the device and Maestro wrote, at full size, so you can use a `takeScreenshot` as a [baseline](../advanced/visual-testing.md#capturing-a-baseline-on-devicecloud). Every other screenshot is saved as JPEG, and any taller than 1080 px is downscaled to 1080 px tall. The `logs/` folder also holds stdout/stderr, the device log (`-logcat.zip` on Android, `-ios-device-log.zip` on iOS) and any per-flow reports. With `--download-artifacts FAILED`, only failed tests get a folder, but `report.xml` is always included and still covers every test.
 
 ### Step screenshots and screen hierarchies
 
@@ -92,7 +93,7 @@ On Maestro 2.7 and later, each step that failed or warned (an `optional: true` s
 * its screen hierarchy in `logs/`, named `<flow>-step-<NNN>-<command>.json`
 * its screenshot in `screenshots/`, named `<flow>-step-<NNN>-<command>.jpg`
 
-The flow's `commands.json` lists these as `SCREEN_HIERARCHY` and `SCREENSHOT` artifacts at the paths Maestro wrote them to, such as `screen-hierarchy/step-009-tapOn.json` and `screenshots/step-009-tapOn.png`. To find a step's files in the archive, match on the `step-<NNN>` number. Two differences from those paths: screenshots are saved as JPEG like every other screenshot, and the step that failed the flow keeps its screenshot under the usual `-failure-screenshot.jpg` name. Secret-named variables are masked in screen hierarchies as they are in `commands.json`, within the limits in [Environment Variables](../configuration/environment-variables.md).
+The flow's `commands.json` lists these as `SCREEN_HIERARCHY` and `SCREENSHOT` artifacts at the paths Maestro wrote them to, such as `screen-hierarchy/step-009-tapOn.json` and `screenshots/step-009-tapOn.png`. To find a step's files in the archive, match on the `step-<NNN>` number. Two differences from those paths: screenshots are saved as JPEG, like the failure screenshot, and the step that failed the flow keeps its screenshot under the usual `-failure-screenshot.jpg` name. Secret-named variables are masked in screen hierarchies as they are in `commands.json`, within the limits in [Environment Variables](../configuration/environment-variables.md).
 
 ### One flow at a time
 
