@@ -35,6 +35,14 @@ For example, a Pro team uses $60 of test runs in one billing period. $25 of that
 
 You can see past invoices under **Invoice history** on the billing page.
 
+## Upgrading during a billing period
+
+When you upgrade from Pro to Max, the overage you've already used in the current billing period counts against Max's included credits first, up to what's left of them. The amount moved is taken off your next invoice, where that overage would otherwise have been billed. The upgrade itself is charged as the prorated difference, as usual (see [Plan changes](test-run-billing.md#plan-changes)).
+
+For example, a Pro team has used its $25 of included credits and $150 of overage, then upgrades to Max. The $150 moves onto Max's included credits, so the team has used $175 of its $200 and has no overage. Its next invoice has $150 less overage on it, and its next $25 of usage this billing period comes from its included credits.
+
+If the overage is more than Max's included credits can take, only that part moves. The rest stays overage. Under **Usage**, the move appears as two entries: a negative `OVERAGE` entry and a matching `SUBSCRIPTION` entry.
+
 ## Overage Limit
 
 The Overage Limit caps how much overage you can run up in one billing period, so a runaway pipeline can't produce an unexpected bill. The limit is added on top of your included credits. It doesn't cap your total spend.
