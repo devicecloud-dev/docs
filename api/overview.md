@@ -51,7 +51,7 @@ Any endpoint that needs an API key can answer:
 - `403` with `"error": "API_KEY_SCOPE"`: the key's access doesn't cover this endpoint, such as a key limited to **Device sessions only** calling `GET /uploads/list`.
 - `503` with the message "Could not validate the API key right now": the API couldn't check your key. Retry. It doesn't mean the key is invalid.
 
-The [JUnit report](results.md#download-junit-report) and [HTML report](results.md#download-html-report) downloads answer an error with a `message` only.
+The [JUnit report](results.md#download-junit-report) and [HTML report](results.md#download-html-report) downloads, and the [bundle manifests](results.md#download-zips-through-the-cdn), answer an error with a `message` only.
 
 Three endpoints report client errors differently: [`GET /results/:uploadId`](results.md#get-results), [`GET /flows`](flows.md#get-flow-summaries) and [`GET /flows/runs`](flows.md#get-runs-for-a-flow) respond with HTTP `200` and report the error in the body instead:
 

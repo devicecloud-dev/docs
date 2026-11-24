@@ -1,10 +1,10 @@
 ---
-description: "The devices, OS versions, Maestro versions, report formats and runner types DeviceCloud is retiring, when, and what to move to, plus what was removed recently."
+description: "The devices, OS versions, Maestro versions, report formats, runner types and API endpoints DeviceCloud is retiring, when, and what to move to, plus what was removed recently."
 ---
 
 # Deprecations & Removals
 
-Before we remove a device, an OS version, a Maestro version, a report format or a runner type, we mark it as deprecated and set a target date for its removal. This page lists what's deprecated now, and what was removed recently.
+Before we remove a device, an OS version, a Maestro version, a report format, a runner type or an API endpoint, we mark it as deprecated and set a target date for its removal. This page lists what's deprecated now, and what was removed recently.
 
 ## Upcoming
 
@@ -17,6 +17,7 @@ Removal dates are targets, subject to change based on usage.
 | Pixel 7 (`pixel-7`) | Android device | 14 December 2026 | `pixel-8` or `pixel-10` (`pixel-6` for API level 33). On Google Play, `pixel-8` keeps API level 34 |
 | Maestro 2.2.0 | Maestro version | 14 December 2026 | 2.6.1 or newer |
 | Google Play on `cpu1` | Runner type change | 14 December 2026 | Nothing: Google Play runs move to `m1` on their own. Test your app on `m1` first, see [Moving to Apple Silicon](../configuration/google-play-apis.md#moving-to-apple-silicon-m1) |
+| `GET /results/:uploadId/html-report` and `POST /results/:uploadId/download` | REST API endpoints | 1 March 2027 | `report-bundle` and `artifacts-bundle`, see [Download ZIPs through the CDN](../api/results.md#download-zips-through-the-cdn). The `dcd` CLI already uses them |
 
 `dcd live` is deprecated too, with no removal date set. Use [`dcd device`](../cli/dcd-device.md) instead.
 
