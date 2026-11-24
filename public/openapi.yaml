@@ -29,8 +29,9 @@ info:
 
     - **Full access** reaches every endpoint.
     - **CI: run tests only** reaches `GET /uploads/status`, `GET /results/{uploadId}`,
-      the report endpoints and `POST /results/{uploadId}/download`, and only for
-      runs that key started. Any other run answers `404` with
+      the report endpoints, `POST /results/{uploadId}/download` and the bundle
+      manifests (`GET /results/{uploadId}/artifacts-bundle` and
+      `GET /results/{uploadId}/report-bundle`), and only for runs that key started. Any other run answers `404` with
       `"error": "UPLOAD_NOT_FOUND"`, the same as a run that doesn't exist.
     - **Device sessions only** reaches the `/device/*` endpoints.
 
@@ -430,6 +431,9 @@ paths:
       description: |
         A ZIP holding the HTML report (`report.html`) with the screenshots, videos
         and logs of the latest attempt of every test in the upload.
+
+        `getReportBundle` gives the same ZIP, built and served by DeviceCloud's
+        CDN instead of the API, and is the recommended way to download it.
       parameters:
         - $ref: '#/components/parameters/UploadId'
       responses:
@@ -474,6 +478,10 @@ paths:
 
         The ZIP is streamed as it is built. An error after streaming starts ends
         the download early, leaving a truncated ZIP.
+
+        `getArtifactsBundle` gives the same ZIP, with the same `results` and
+        `resultId` filters, built and served by DeviceCloud's CDN instead of the
+        API. It is the recommended way to download it.
       parameters:
         - $ref: '#/components/parameters/UploadId'
       requestBody:
@@ -554,6 +562,187 @@ paths:
                     error: Not Found
         '429':
           $ref: '#/components/responses/RateLimited'
+        '503':
+          $ref: '#/components/responses/KeyCheckUnavailable'
+  /results/{uploadId}/artifacts-bundle:
+    get:
+      operationId: getArtifactsBundle
+      tags: [Results]
+      summary: Get an artifacts bundle manifest
+      description: |
+        A signed manifest for the artifacts ZIP, which DeviceCloud's CDN builds.
+        The ZIP has the same layout as `downloadArtifacts`: each test's files in
+        a folder named after its result ID, every attempt included, and a JUnit
+        `report.xml` at the root.
+
+        To get the ZIP, `POST` `{"manifest": "<manifest>", "sig": "<sig>"}` as
+        JSON to `bundleUrl`, as given, without your API key: the signature
+        authorizes the request. The answer is the ZIP, streamed as it is built.
+        A file that can't be fetched partway through ends the download early,
+        leaving a truncated ZIP. Errors before the ZIP starts are plain text:
+        `401` once the manifest has expired, `403` if `manifest` or `sig` doesn't
+        match what the API issued, `400` for a malformed body, and `502` for a
+        temporary problem on DeviceCloud's side (retry).
+
+        A manifest expires an hour after it's issued, so get a new one for each
+        download.
+      parameters:
+        - $ref: '#/components/parameters/UploadId'
+        - name: results
+          in: query
+          description: |
+            `FAILED` for the failed tests' files only, `ALL` for every test's.
+            Leave it out, or pass any other value, for `ALL`.
+          schema:
+            type: string
+            enum: [FAILED, ALL]
+            default: ALL
+        - name: resultId
+          in: query
+          description: |
+            Only the files of the flow run this result belongs to: its first
+            attempt and every retry, on that one device. `report.xml` then covers
+            just that run. Result IDs are the `id` of each entry in
+            `GET /results/{uploadId}`. Leave it out for the whole upload.
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: The signed manifest.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BundleManifest'
+              example:
+                bundleUrl: https://cdn.devicecloud.dev/bundle
+                manifest: '{"version":1,"filename":"artifacts-failed.zip",...}'
+                sig: Vb2y0pQ8xJ3kM1nR5tW7zA9cE4fH6iL0oS2uX8dG1qY
+                filename: artifacts-failed.zip
+                entryCount: 42
+        '400':
+          description: '`uploadId` isn''t a UUID, or `resultId` isn''t a positive whole number.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+              examples:
+                badUploadId:
+                  summary: uploadId isn't a UUID
+                  value:
+                    statusCode: 400
+                    message: Validation failed (uuid is expected)
+                    error: Bad Request
+                badResultId:
+                  summary: resultId isn't a positive whole number
+                  value:
+                    statusCode: 400
+                    message: resultId must be a positive whole number
+                    error: Bad Request
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: |
+            The upload has no results in your team, or doesn't exist. With
+            `resultId`, also a result that isn't in this upload. This body has only
+            a `message`. For a key with **CI: run tests only** access, a run that
+            key didn't start also answers `404`, but with the standard error
+            envelope and `"error": "UPLOAD_NOT_FOUND"`.
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: '#/components/schemas/MessageOnlyError'
+                  - $ref: '#/components/schemas/ErrorEnvelope'
+              examples:
+                noResults:
+                  summary: No results
+                  value:
+                    message: No results found for uploadId=7e12345f-eb12-12ec-a30b-bb1234f1d12a
+                resultNotInUpload:
+                  summary: A resultId from another upload
+                  value:
+                    message: Result 4446290 not found in upload 7e12345f-eb12-12ec-a30b-bb1234f1d12a
+                notStartedByKey:
+                  summary: A CI-only key, and a run it didn't start
+                  value:
+                    statusCode: 404
+                    message: Upload not found
+                    error: UPLOAD_NOT_FOUND
+        '413':
+          $ref: '#/components/responses/BundleTooLarge'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/MessageOnlyServerError'
+        '501':
+          $ref: '#/components/responses/BundleUnavailable'
+        '503':
+          $ref: '#/components/responses/KeyCheckUnavailable'
+  /results/{uploadId}/report-bundle:
+    get:
+      operationId: getReportBundle
+      tags: [Results]
+      summary: Get an HTML report bundle manifest
+      description: |
+        A signed manifest for the HTML report ZIP, which DeviceCloud's CDN builds.
+        The ZIP has the same layout as `getHtmlReport`: the HTML report
+        (`report.html`) with the screenshots, videos and logs of the latest
+        attempt of every test in the upload.
+
+        To get the ZIP, `POST` `{"manifest": "<manifest>", "sig": "<sig>"}` as
+        JSON to `bundleUrl`, as given, without your API key, the same as for
+        `getArtifactsBundle`. A manifest expires an hour after it's issued.
+      parameters:
+        - $ref: '#/components/parameters/UploadId'
+      responses:
+        '200':
+          description: The signed manifest.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BundleManifest'
+              example:
+                bundleUrl: https://cdn.devicecloud.dev/bundle
+                manifest: '{"version":1,"filename":"report-7e12345f-eb12-12ec-a30b-bb1234f1d12a.zip",...}'
+                sig: Vb2y0pQ8xJ3kM1nR5tW7zA9cE4fH6iL0oS2uX8dG1qY
+                filename: report-7e12345f-eb12-12ec-a30b-bb1234f1d12a.zip
+                entryCount: 42
+        '400':
+          $ref: '#/components/responses/InvalidUploadId'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: |
+            The upload has no results in your team, or doesn't exist. This body has
+            only a `message`. For a key with **CI: run tests only** access, a run
+            that key didn't start also answers `404`, but with the standard error
+            envelope and `"error": "UPLOAD_NOT_FOUND"`.
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: '#/components/schemas/MessageOnlyError'
+                  - $ref: '#/components/schemas/ErrorEnvelope'
+              examples:
+                noResults:
+                  summary: No results
+                  value:
+                    message: No results found for uploadId=7e12345f-eb12-12ec-a30b-bb1234f1d12a
+                notStartedByKey:
+                  summary: A CI-only key, and a run it didn't start
+                  value:
+                    statusCode: 404
+                    message: Upload not found
+                    error: UPLOAD_NOT_FOUND
+        '413':
+          $ref: '#/components/responses/BundleTooLarge'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/MessageOnlyServerError'
+        '501':
+          $ref: '#/components/responses/BundleUnavailable'
         '503':
           $ref: '#/components/responses/KeyCheckUnavailable'
   /flows:
@@ -3475,6 +3664,23 @@ components:
                 statusCode: 404
                 message: Upload not found
                 error: UPLOAD_NOT_FOUND
+    BundleTooLarge:
+      description: |
+        The ZIP would hold more than 9,000 files. Ask for fewer at a time: with
+        `getArtifactsBundle`, one flow run with `resultId` or the failed tests
+        with `results=FAILED`.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BundleTooLargeError'
+    BundleUnavailable:
+      description: |
+        This deployment can't deliver ZIPs through a CDN. `api.devicecloud.dev`
+        always can.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MessageOnlyError'
     MessageOnlyServerError:
       description: The report couldn't be built.
       content:
@@ -3637,7 +3843,7 @@ components:
           type: string
     MessageOnlyError:
       type: object
-      description: The error body of the JUnit and HTML report downloads.
+      description: The error body of the JUnit and HTML report downloads and the bundle manifests.
       required: [message]
       properties:
         message:
@@ -3873,6 +4079,46 @@ components:
             first attempt and every retry, on that one device. Result IDs are the
             `id` of each entry in `GET /results/{uploadId}`. Leave it out for the
             whole upload.
+    BundleManifest:
+      type: object
+      required: [bundleUrl, manifest, sig, filename, entryCount]
+      properties:
+        bundleUrl:
+          type: string
+          format: uri
+          description: Where to `POST` the manifest for the ZIP. Use it as given rather than hard-coding it.
+        manifest:
+          type: string
+          description: |
+            The signed manifest, a JSON document as a string. Send it back unchanged
+            and don't parse it: its contents may change.
+        sig:
+          type: string
+          description: The manifest's signature. Send it back unchanged.
+        filename:
+          type: string
+          description: |
+            A name to save the ZIP under: `artifacts-all.zip` or
+            `artifacts-failed.zip`, `artifacts-result-<id>-all.zip` or
+            `artifacts-result-<id>-failed.zip` with `resultId` (`<id>` is the flow
+            run's first attempt), or `report-<uploadId>.zip`.
+        entryCount:
+          type: integer
+          description: |
+            How many stored files the ZIP holds, not counting the generated
+            `report.xml` or `report.html`.
+    BundleTooLargeError:
+      type: object
+      required: [message, entryCount, maxEntries]
+      properties:
+        message:
+          type: string
+        entryCount:
+          type: integer
+          description: How many files the ZIP would hold.
+        maxEntries:
+          type: integer
+          description: The most files one ZIP can hold (9,000).
     FlowSummaries:
       type: object
       required: [statusCode, flows]
