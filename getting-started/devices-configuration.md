@@ -62,7 +62,7 @@ Generic Tablet and Pixel 10 Pro Fold runs are billed at the Advanced Android rat
 The Pixel 10 Pro Fold starts unfolded; a flow can fold it, see [Foldable Devices](../configuration/foldable-devices.md).
 
 ::: warning
-Pixel 7 is deprecated and we're targeting removal on 23 November 2026. This date is subject to change based on usage.
+Pixel 7 is deprecated and we're targeting removal on 14 December 2026. This date is subject to change based on usage.
 :::
 
 Pixel 6 Pro, Pixel 7 Pro and Generic Tablet on API level 33 were removed on 26 October 2026.
@@ -80,13 +80,8 @@ dcd cloud app.zip test.yaml --ios-device iphone-17 --ios-version 27
 | `27` | 27.0 (27.1 on the iPhone Duo) |
 | `26` | 26.5                          |
 | `18` | 18.6                          |
-| `17` | 17.5 (deprecated)             |
 
-iOS 17 runs only on iPhone 14, so pass `--ios-device iphone-14` with `--ios-version 17`.
-
-::: warning
-iOS 17 is deprecated and we're targeting removal on 23 November 2026. This date is subject to change based on usage.
-:::
+iOS 17 was removed on 24 November 2026, and runs that pass `--ios-version 17` are rejected. iPhone 14 runs iOS 18.
 
 ## iOS Devices
 
@@ -97,7 +92,7 @@ dcd cloud app.zip test.yaml --ios-device ipad-pro-m5-13 --ios-version 26
 ```
 
 ::: info
-A run that sets only the device runs on iOS 26, so a device that doesn't offer iOS 26 needs `--ios-version` as well, for example `--ios-device iphone-14` with `--ios-version 17` or `18`, or `--ios-device iphone-18-pro --ios-version 27`. Without it, the run is rejected.
+A run that sets only the device runs on iOS 26, so a device that doesn't offer iOS 26 needs `--ios-version` as well, for example `--ios-device iphone-14 --ios-version 18` or `--ios-device iphone-18-pro --ios-version 27`. Without it, the run is rejected.
 :::
 
 | id                  | Name                       | Dimensions  | Valid iOS versions |
@@ -109,7 +104,7 @@ A run that sets only the device runs on iOS 26, so a device that doesn't offer i
 | `iphone-17`         | iPhone 17                  | 1206 x 2622 | 26, 27             |
 | `iphone-16-pro`     | iPhone 16 Pro (deprecated) | 1206 x 2622 | 18, 26, 27         |
 | `iphone-16`         | iPhone 16                  | 1179 x 2556 | 18, 26, 27         |
-| `iphone-14`         | iPhone 14                  | 1170 x 2532 | 17, 18             |
+| `iphone-14`         | iPhone 14                  | 1170 x 2532 | 18                 |
 | `ipad-pro-m5-13`    | iPad Pro 13-inch (M5)      | 2064 x 2752 | 26, 27             |
 | `ipad-pro-m5-11`    | iPad Pro 11-inch (M5)      | 1668 x 2420 | 26, 27             |
 

@@ -37,6 +37,8 @@ We support:
 * We always run the latest point release of each (e.g. 26.x rather than 26.0). Point releases change without notice: you target a major version, such as `--ios-version 26`, and we run it on the newest 26.x we hold.
 * Once a version is no longer one of the latest three, we mark it as deprecated.
 
+### Default iOS device
+
 The default is the latest even-numbered base iPhone we support, running the previous version of iOS. It has been iPhone 16 on iOS 26 since 2 November 2026.
 
 ### Android devices
@@ -52,6 +54,8 @@ We support:
 
 * We support the latest version.
 * Once Google no longer supports a version, we mark it as deprecated. We consider an API level unsupported once it's no longer included in the [Android Security Bulletins](https://source.android.com/docs/security/bulletin).
+
+### Default Android device
 
 The default is the latest even-numbered base Pixel we support, running the previous version of Android: Pixel 10 on Android 16 (API 36).
 
