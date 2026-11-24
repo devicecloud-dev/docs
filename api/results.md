@@ -198,7 +198,7 @@ curl -X POST https://api.devicecloud.dev/results/7e12345f-eb12-12ec-a30b-bb1234f
 
 ## Download ZIPs through the CDN
 
-Gets the artifacts ZIP or the HTML report ZIP from DeviceCloud's CDN, which builds it. It takes two requests: one to the API for a signed manifest, then one to the CDN with that manifest, which answers with the ZIP. The ZIPs have the same layout as the [HTML report](#download-html-report) and [artifacts](#download-artifacts) downloads, which they replace (see [Artifact Archive Structure](../artifacts/artifacts.md#artifact-archive-structure)). The `dcd` CLI downloads them this way.
+Gets the artifacts ZIP or the HTML report ZIP from DeviceCloud's CDN, which builds it. It takes two requests: one to the API for a signed manifest, then one to the CDN with that manifest, which answers with the ZIP. The ZIPs have the same layout as the [HTML report](#download-html-report) and [artifacts](#download-artifacts) downloads, which they replace (see [Artifact Archive Structure](../artifacts/artifacts.md#artifact-archive-structure)). The `dcd` CLI downloads them this way: the CDN builds and serves the ZIP, so a large download doesn't have to pass through the API.
 
 ### 1. Get a manifest
 
