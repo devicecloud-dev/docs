@@ -47,7 +47,7 @@ The file extension is optional. `assertScreenshot: screenshots/home` looks for `
 
 ## Creating your first baseline
 
-Maestro has no "record" mode, so you have to capture the first baseline yourself. A baseline must match the device's screen dimensions **exactly**, so capture it on a local emulator or simulator configured identically to the DeviceCloud device you intend to test on — a `pixel-8` / API 34 AVD for `--android-device pixel-8 --android-api-level 34`, for example.
+Maestro has no "record" mode, so you have to capture the first baseline yourself. A baseline must match the device's screen dimensions **exactly**, so capture it on a local emulator or simulator configured identically to the DeviceCloud device you intend to test on — a `pixel-8` / API 34 AVD for `--android-device pixel-8 --android-api-level 34`, for example — or [on DeviceCloud itself](#capturing-a-baseline-on-devicecloud).
 
 1. Boot that local device and run the flow with `takeScreenshot` in place of the assertion:
 
@@ -63,11 +63,11 @@ Maestro has no "record" mode, so you have to capture the first baseline yourself
 
 3. Swap the command to `assertScreenshot`. A literal path needs nothing else; a path with a variable also needs `includedPaths` in your config.
 
-### Capturing a cropped baseline on DeviceCloud
+### Capturing a baseline on DeviceCloud
 
-A baseline cropped to one element with `cropOn` can be captured on the DeviceCloud device itself, so you don't have to set up a matching local device:
+A baseline can be captured on the DeviceCloud device itself, so you don't have to set up a matching local device. This works for the whole screen and for a crop made with `cropOn`:
 
-1. Run the flow on the device you will assert on, with `takeScreenshot` and the same `cropOn` the assertion will use, and download the result:
+1. Run the flow on the device you will assert on, with `takeScreenshot` in place of the assertion, and download the result. For a crop, use the same `cropOn` the assertion will use:
 
    ```yaml
    - takeScreenshot:
@@ -80,21 +80,21 @@ A baseline cropped to one element with `cropOn` can be captured on the DeviceClo
    dcd cloud app.apk .maestro/ --android-device pixel-8 --android-api-level 34 --download-artifacts ALL
    ```
 
-2. The zip holds the crop as `<result-id>/screenshots/visual-home-header.jpg`, named after the flow and the `path`. Commit it unchanged, keeping the `.jpg` extension, for example as `screenshots/home-header.jpg`.
+2. The zip holds the screenshot as `<result-id>/screenshots/visual-home-header.png`, named after the flow and the `path`. It is the PNG the device took, at its full size. Commit it unchanged, for example as `screenshots/home-header.png`.
 
-3. Swap the command to `assertScreenshot` with the same `cropOn`, and name the file with its extension:
+3. Swap the command to `assertScreenshot` with the same `cropOn`:
 
    ```yaml
    - assertScreenshot:
-       path: screenshots/home-header.jpg
+       path: screenshots/home-header.png
        cropOn:
          id: header
    ```
 
-The download is a JPEG, so a few pixels differ slightly from the device's own capture. That is well within the default threshold.
+Earlier downloads saved `takeScreenshot` output as a JPEG (`.jpg`). A baseline made from one still works if you name it with its `.jpg` extension, but a few of its pixels differ slightly from the device's own capture. Capture it again for an exact copy.
 
 ::: warning
-**Don't use `--download-artifacts` to create a full-screen baseline.** Screenshots taller than 1080 px are downscaled and re-encoded for the console — a 1080x2400 screen comes back as a 486x1080 JPEG — so they will never match at full size. Only a crop up to 1080 px tall comes back at its real size.
+**Use only `takeScreenshot` output as a baseline.** The other screenshots in a download, such as the failure screenshot and step screenshots, are re-encoded as JPEG for the console, and any taller than 1080 px are downscaled — a 1080x2400 screen comes back as a 486x1080 JPEG — so they will never match at full size.
 :::
 
 If the dimensions are wrong you will see a size mismatch naming both sizes, which tells you exactly what to capture at:
