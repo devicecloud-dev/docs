@@ -17,6 +17,7 @@ Removal dates are targets, subject to change based on usage.
 | Pixel 7 (`pixel-7`) | Android device | 14 December 2026 | `pixel-8` or `pixel-10` (`pixel-6` for API level 33). On Google Play, `pixel-8` keeps API level 34 |
 | Maestro 2.2.0 | Maestro version | 14 December 2026 | 2.6.1 or newer |
 | Google Play on `cpu1` | Runner type change | 14 December 2026 | Nothing: Google Play runs move to `m1` on their own. Test your app on `m1` first, see [Moving to Apple Silicon](../configuration/google-play-apis.md#moving-to-apple-silicon-m1) |
+| `POST /uploads/flow`, which `dcd` CLI 4.x uses to upload flows | REST API endpoint | 1 March 2027 | The latest `dcd` CLI: `npm install -g @devicecloud.dev/dcd@latest`. CLI 5.0.0 and later upload flows another way. If your CI pins a 4.x version, update the pin too |
 
 `dcd live` is deprecated too, with no removal date set. Use [`dcd device`](../cli/dcd-device.md) instead.
 
