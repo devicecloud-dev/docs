@@ -10,7 +10,6 @@ We periodically remove support for older versions, so we always recommend you st
 
 We support these versions of Maestro:
 
-* 2.2.0 (deprecated)
 * 2.6.1
 * 2.7.0
 * 2.8.0
@@ -20,11 +19,7 @@ We support these versions of Maestro:
 * 2.12.0
 * 2.12.1
 
-::: warning
-Maestro 2.2.0 is deprecated and we're targeting removal on 23 November 2026. This date is subject to change based on usage. If you pin `--maestro-version` to 2.2.0, move it to 2.6.1 or newer (the default is 2.10.0). See the [Support Policy](../getting-started/support-policy.md#maestro-versions) for more information.
-:::
-
-Maestro 2.0.4, 2.0.9, 2.1.0, 2.5.0, 2.5.1 and 2.6.0 were removed on 19 October 2026. Runs pinned to these versions are rejected.
+Maestro 2.2.0 was removed on 24 November 2026, and runs pinned to it are rejected. Move them to 2.6.1 or newer (the default is 2.10.0).
 
 ## Version Selection
 
