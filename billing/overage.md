@@ -24,7 +24,7 @@ The [billing page](https://console.devicecloud.dev/billing) shows your included 
 
 ## When overage is billed
 
-Overage is billed in arrears. It isn't charged to your card as you go. Overage is calculated daily and added to your next subscription invoice. Each renewal invoice therefore holds two things:
+Overage is billed in arrears. It isn't charged to your card as you go. It builds up through the billing period, and the billing page shows it as it does. It's added to your next subscription invoice in the last two days before you renew. Each renewal invoice therefore holds two things:
 
 * the plan fee for the billing period that's starting
 * the overage from the billing period that's ending
@@ -34,6 +34,16 @@ Overage from the last day of a billing period may only be added after you renew.
 For example, a Pro team uses $60 of test runs in one billing period. $25 of that is covered by its included credits and $35 is overage. At renewal it's invoiced $25 for the next period's plan fee plus $35 of overage, so $60 before tax.
 
 You can see past invoices under **Invoice history** on the billing page.
+
+## Upgrading during a billing period
+
+When you upgrade from Pro to Max, the overage you've already used in the current billing period counts against Max's included credits first, up to what's left of them. The amount moved isn't billed as overage. The upgrade itself is charged as the prorated difference, as usual (see [Plan changes](test-run-billing.md#plan-changes)).
+
+For example, a Pro team has used its $25 of included credits and $150 of overage, then upgrades to Max. The $150 moves onto Max's included credits, so the team has used $175 of its $200 and has no overage. None of the $150 is billed as overage, and its next $25 of usage this billing period comes from its included credits.
+
+If the overage is more than Max's included credits can take, only that part moves. The rest stays overage. Under **Usage**, the move appears as a negative `OVERAGE` entry and a matching `SUBSCRIPTION` entry.
+
+If you upgrade in the last two days before you renew, some of that overage may already be on your renewal invoice. It still moves onto Max's included credits, and we refund it after the renewal is paid.
 
 ## Overage Limit
 
@@ -90,7 +100,7 @@ To be told by email, Slack or webhook when usage reaches an amount you choose, p
 
 ## Refunds
 
-Tests you cancel before they start are refunded at 75% of their cost. A refund for a test paid from overage reduces overage that hasn't been added to an invoice yet. Overage is calculated daily, so the refund usually lands before the overage it cancels is invoiced. If that overage is already on your next invoice, the refund comes off any further overage in the same billing period instead. See [Cancelled tests](test-run-billing.md#cancelled-tests).
+Tests you cancel before they start are refunded at 75% of their cost. A refund for a test paid from overage reduces overage that hasn't been added to an invoice yet. Overage is only added to your invoice in the last two days before you renew, so the refund usually lands before the overage it cancels is invoiced. If that overage is already on your next invoice, the refund comes off any further overage in the same billing period instead. See [Cancelled tests](test-run-billing.md#cancelled-tests).
 
 ## Other plans
 
